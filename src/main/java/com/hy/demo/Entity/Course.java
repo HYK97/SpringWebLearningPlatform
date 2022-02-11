@@ -27,17 +27,22 @@ public class Course extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_id")
-    private User userId;
+    private User user;
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<UserCourse> userCourses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<CourseBoard> courseBoards = new ArrayList<>();
+
     private int heart;
 
-    public void addCourse(User userId) {
-        this.userId =userId;
-        userId.getCourses().add(this);
+    //코스 저장될때 유저의 리스트에도 저장되게함
+    public void addCourse(User user) {
+        this.user =user;
+        user.getCourses().add(this);
     }
+
 
 
 
