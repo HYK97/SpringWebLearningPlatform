@@ -30,6 +30,12 @@ public class UserCourse extends BaseEntity{
 
 
 
-
+    //유저 코스 넣을때 유저의 리스트에도 포함되게
+    public void addUserCourse(User user,Course course) {
+        this.user=user;
+        this.course=course;
+        user.getUserCourses().add(this);
+        course.getUserCourses().add(this);
+    }
 
 }
