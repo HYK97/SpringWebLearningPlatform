@@ -3,6 +3,7 @@ package com.hy.demo.config.auth;
 
 import com.hy.demo.Entity.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -21,7 +22,7 @@ import java.util.Map;
  * 패키징 순서는 security Session -> Authentication -> userDetails(PrincipalDetails) 순으로 접근한다.
  * */
 @Data
-
+@EqualsAndHashCode(of= {"userCd"})
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;// 콤포지션

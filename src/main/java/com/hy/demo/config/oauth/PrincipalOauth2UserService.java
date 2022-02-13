@@ -30,6 +30,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private UserRepository userRepository;
     // 구글로 부터 받은 userRequest 데이터를 후처리하는 함수
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         
