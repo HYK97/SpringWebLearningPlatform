@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.transaction.Transactional;
+
 @Controller
 public class IndexController {
 
@@ -40,6 +42,7 @@ public class IndexController {
     //OAuth 로그인을해도 principalDetails
     //일반로그인도 principalDetails
     @ResponseBody
+    @Transactional
     @GetMapping("/user")
     public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         logger.info("principalDetails.getUser() = " + principalDetails.getUser());
@@ -79,8 +82,10 @@ public class IndexController {
 
     @PostMapping("/join")
     public String join(User user) {
-        user.setRole("ROLE_USER");
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.builder()
+                .password(bCryptPasswordEncoder.encode(user.getPassword()))
+                .role("ROLE_USER").build();
+
 
         logger.info("user.toString() = " + user.toString());
 
