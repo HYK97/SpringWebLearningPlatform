@@ -27,9 +27,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 
-        logger.info("LoginSuccessHandler : principal.getUser().toString() = " + principal.getUser().toString());
 
-        logger.info("principal.getUser() = " + principal.getUser());
         if (principal.getAttributes()==null)// 일반로그인
         {
             redirect(request,response,authentication);

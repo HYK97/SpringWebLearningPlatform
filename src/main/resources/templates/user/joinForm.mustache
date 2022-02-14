@@ -70,19 +70,27 @@
 
 </main>
 <script>
+    var username="";
+    var email="";
         {{#user}}
-        var username='{{username}}';
-        var email='{{email}}';
+            username='{{username}}';
+            var email='{{email}}';
         {{/user}}
+
+
+
 
     $(document).ready(function() {
 
-        $('#id').val(username);
-        $('#id').attr('disabled','disabled');
-        $('#password').val("Password");
-        $('#password').attr('disabled','disabled');
-        $('#email').val(email);
-        $('#email').attr('disabled','disabled');
+        if(!username==""&&!email=="") {
+            $('#id').val(username);
+            $('#id').attr('disabled','disabled');
+            $('#password').val("Password");
+            $('#password').attr('disabled','disabled');
+            $('#email').val(email);
+            $('#email').attr('disabled','disabled');
+        }
+
 
     });
 

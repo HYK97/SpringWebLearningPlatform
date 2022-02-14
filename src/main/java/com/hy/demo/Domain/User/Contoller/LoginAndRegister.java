@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
+import com.hy.demo.Domain.ObjectUtils;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Controller
 public class LoginAndRegister {
@@ -23,7 +25,7 @@ public class LoginAndRegister {
 
     @ResponseBody
     @PostMapping("/login")
-    public String login(HttpServletRequest request,String username) {
+    public String login(@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
 
@@ -39,13 +41,12 @@ public class LoginAndRegister {
     @GetMapping("/joinForm")
     public String joinForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 
-        try{
-            model.addAttribute("user",principalDetails.getUser());
-        }
-        catch (NullPointerException e){
 
-            logger.info("e = " + e);
-        }
+        if (ObjectUtils.isEmpty(principalDetails)) {
+            model.addAttribute("user",null);
+        }else
+            model.addAttribute("user", principalDetails.getUser());
+
        
         return "/user/joinForm";
     }
@@ -63,6 +64,8 @@ public class LoginAndRegister {
         userService.register(user,provider);
         return "redirect:/user/info";
     }
+
+
 
 
 
