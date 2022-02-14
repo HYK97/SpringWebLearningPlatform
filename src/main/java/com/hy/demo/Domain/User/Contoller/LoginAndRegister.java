@@ -1,7 +1,7 @@
 package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
-import com.hy.demo.Domain.ObjectUtils;
+import com.hy.demo.Utils.ObjectUtils;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import org.slf4j.Logger;
@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @Controller
 public class LoginAndRegister {
@@ -28,32 +27,41 @@ public class LoginAndRegister {
     public String login(@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
-
+        if (!ObjectUtils.isEmpty(principalDetails)) {
+            return "redirect:/";
+        }
         return "login";
     }
 
 
     @GetMapping("/loginForm")
-    public String loginForm() {
+    public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (!ObjectUtils.isEmpty(principalDetails)) {
+            return "redirect:/";
+        }
         return "/user/loginForm";
     }
 
     @GetMapping("/joinForm")
     public String joinForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
-
+        if (!ObjectUtils.isEmpty(principalDetails)) {
+            return "redirect:/";
+        }
 
         if (ObjectUtils.isEmpty(principalDetails)) {
             model.addAttribute("user",null);
-        }else
+        }else{
             model.addAttribute("user", principalDetails.getUser());
+        }
 
-       
+
         return "/user/joinForm";
     }
 
 
     @PostMapping("/join")
     public String join(User user,@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {//setter 를 쓰지않기위해선 이렇게해야된다.
+
         User provider=null;
         if (principalDetails != null) {
 
@@ -62,7 +70,7 @@ public class LoginAndRegister {
 
 
         userService.register(user,provider);
-        return "redirect:/user/info";
+        return "redirect:/";
     }
 
 
