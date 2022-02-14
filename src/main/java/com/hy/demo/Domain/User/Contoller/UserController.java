@@ -31,7 +31,7 @@ public class UserController {
     @Transactional
     @GetMapping("info")
     public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        logger.info("principalDetails.getUser() = " + principalDetails.getUser());
+
         logger.info(principalDetails.getAttributes()==null ? "일반회원입니다.": "OAuth 외부 회원입니다.");
 
         return "user";

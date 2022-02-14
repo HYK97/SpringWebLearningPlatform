@@ -76,24 +76,23 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         String password =bCryptPasswordEncoder.encode("겟인데어");
         String username=oAuth2UserInfo.getProvider()+"_"+oAuth2UserInfo.getProviderId();
-        String role ="ROLE_USER";
+
 
         User userEntity = userRepository.findByUsername(username);
-
+        boolean flag= true;
         if (userEntity == null) {
             userEntity =User.builder()
                     .username(username)
                     .password(password)
                     .email(oAuth2UserInfo.getEmail())
-                    .role(role)
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
-            userRepository.save(userEntity);
+            flag=false;
         }
 
 
-        return new PrincipalDetails(userEntity,auth2User.getAttributes());
+        return new PrincipalDetails(userEntity,auth2User.getAttributes(), flag);
 
     }
 }

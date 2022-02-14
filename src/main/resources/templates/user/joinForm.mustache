@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>로그인</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/dist/css/signin.css" rel="stylesheet">
+</head>
+<body class="text-center">
+
+<main class="form-signin">
+    <form action="/join" method="post">
+
+        <h1 class="h3 mb-3 fw-normal">회원가입</h1>
+
+        <div class="form-floating">
+            <input type="text" name="username" class="form-control" id="id" placeholder="ID">
+            <label for="floatingInput">ID</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="email" name="email" class="form-control" id="email" placeholder="example@gmail.com">
+            <label for="floatingPassword">email</label>
+        </div>
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="radio" name="role" value="ROLE_USER" checked> 학생
+            </label>
+            <label>
+                <input type="radio" name="role" value="ROLE_MANAGER"> 선생님
+            </label>
+        </div>
+
+        <button type="submit" class="w-50 btn btn-lg btn-primary">회원가입</button>
+
+    </form>
+    <h2 id="k"></h2>
+
+
+</main>
+<script>
+        {{#user}}
+        var username='{{username}}';
+        var email='{{email}}';
+        {{/user}}
+
+    $(document).ready(function() {
+
+        $('#id').val(username);
+        $('#id').attr('disabled','disabled');
+        $('#password').val("Password");
+        $('#password').attr('disabled','disabled');
+        $('#email').val(email);
+        $('#email').attr('disabled','disabled');
+
+    });
+
+</script>
+
+
+
+
+</body>
+</html>
+

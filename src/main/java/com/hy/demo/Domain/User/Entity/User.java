@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
 @Builder
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString(exclude="courses,comments,userCourses,notices")
 public class User extends BaseEntity {
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class User extends BaseEntity {
     private String email;
     private String role; //ROLE_USER, ROLE_ADMIN
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Course> courses = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)

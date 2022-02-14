@@ -20,12 +20,27 @@ public class UserService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    public void register(User user) {
-        user.builder()
-                .password(bCryptPasswordEncoder.encode(user.getPassword()))
-                .role("ROLE_USER").build();
-        logger.info("user.toString() = " + user.toString());
+    public void register(User user,User provider) {
 
-        userRepository.save(user);
+
+        if (provider == null) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+
+        } else {
+            User user2 = User.builder()
+                    .username(provider.getUsername())
+                    .password(provider.getPassword())
+                    .email(provider.getEmail())
+                    .role(user.getRole())
+                    .provider(provider.getProvider())
+                    .providerId(provider.getProviderId())
+                    .build();
+            userRepository.save(user2);
+        }
+
+
+
     }
+
 }

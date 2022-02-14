@@ -2,21 +2,16 @@ package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Entity.User;
-import com.hy.demo.Domain.User.Repository.UserRepository;
 import com.hy.demo.Domain.User.Service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class LoginAndRegister {
@@ -28,7 +23,10 @@ public class LoginAndRegister {
 
     @ResponseBody
     @PostMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request,String username) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("prevPage", referrer);
+
         return "login";
     }
 
@@ -39,15 +37,31 @@ public class LoginAndRegister {
     }
 
     @GetMapping("/joinForm")
-    public String joinForm() {
+    public String joinForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+
+        try{
+            model.addAttribute("user",principalDetails.getUser());
+        }
+        catch (NullPointerException e){
+
+            logger.info("e = " + e);
+        }
+       
         return "/user/joinForm";
     }
 
 
     @PostMapping("/join")
-    public String join(User user) {
-        userService.register(user);
-        return "redirect:/user/loginForm";
+    public String join(User user,@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {//setter 를 쓰지않기위해선 이렇게해야된다.
+        User provider=null;
+        if (principalDetails != null) {
+
+        provider =principalDetails.getUser();
+        }
+
+
+        userService.register(user,provider);
+        return "redirect:/user/info";
     }
 
 
