@@ -1,7 +1,9 @@
 package com.hy.demo.Config;
 
 
+import com.hy.demo.Config.OAuth.LoginSuccessHandler;
 import com.hy.demo.Config.OAuth.PrincipalOauth2UserService;
+import com.hy.demo.Domain.User.Contoller.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PrincipalOauth2UserService principalOauth2UserService;
 
+
+
+
     @Bean
     public BCryptPasswordEncoder encodePwd() {
         return new BCryptPasswordEncoder();
@@ -46,12 +51,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/") //로그인 완료됬을대 페이지
                 .and()
                 .oauth2Login()
-                .loginPage("/loginForm") //구글로그인 완료된 후처리 필요
+                .loginPage("/loginForm")
                 //1. 코드받기(인증) 2. 엑세스토큰(권한)
                 //3. 사용자 프로필 정보를 가져오고 4-1 그정보를 토대로 회원가입을 진행시키거나
                 //4-2 기본정보(이메일,아이디,이름,전화번호) 정보가 모자라면 ex) 쇼핑몰 ->(집주소), 백화점몰 ->(등급)
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService); //Tip. 코드X,(액세스 토큰 +사용자 프로필정보)
+                .userService(principalOauth2UserService)
+                .and()
+                .successHandler(new LoginSuccessHandler("/"));//Tip. 코드X,(액세스 토큰 +사용자 프로필정보)
 
         http.sessionManagement()
 

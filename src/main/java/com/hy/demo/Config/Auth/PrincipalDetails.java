@@ -29,13 +29,19 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private Map<String, Object> attributes;
 
+    private boolean flag;
     public PrincipalDetails(User user) {
         this.user = user;
     }
 
-    public PrincipalDetails(User user,Map<String, Object> attributes) {
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public PrincipalDetails(User user, Map<String, Object> attributes, boolean flag) {
         this.user = user;
         this.attributes =attributes;
+        this.flag=flag;
     }
 
     @Override
@@ -59,6 +65,10 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
             }
         });
         return collection;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @Override

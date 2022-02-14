@@ -34,7 +34,7 @@
 <body class="text-center">
 
 <main class="form-signin">
-    <form action="/user/login" method="post">
+    <form action="/login" method="post">
         <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
@@ -53,7 +53,10 @@
             </label>
         </div>
         <button class="w-50 btn btn-lg btn-primary">로그인</button>
-        <h2>or</h2>
+        <br>
+        <br>
+        <hr>
+        <br>
         <a href="/oauth2/authorization/google"><img class="mb-4" src="../assets/brand/google.svg" alt="" width="72" height="57"></a>
         <a href="/oauth2/authorization/facebook"><img class="mb-4" src="../assets/brand/facebook.svg" alt="" width="72" height="57"></a>
         <a href="/oauth2/authorization/naver"><img class="mb-4" src="../assets/brand/naver.svg" alt="" width="72" height="57"></a>
@@ -69,7 +72,9 @@
     if (code == 1) {
         alert("Duplicate login");
         location.href="/user/loginForm";
-    }
+    };
+
+
 
 </script>
 
