@@ -79,8 +79,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
 
         User userEntity = userRepository.findByUsername(username);
-        boolean flag= true;
-        if (userEntity == null) {
+        boolean flag= true;// 회원일경우
+
+        if (userEntity == null) { // 처음가입시
             userEntity =User.builder()
                     .username(username)
                     .password(password)
@@ -88,9 +89,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
-            flag=false;
+            flag=false;//회원이 아닐경우
         }
 
+        logger.info("flag = " + flag);
+
+        logger.info("auth2User.getAttributes() = " + auth2User.getAttributes());
 
         return new PrincipalDetails(userEntity,auth2User.getAttributes(), flag);
 

@@ -30,8 +30,11 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     private Map<String, Object> attributes;
 
     private boolean flag;
-    public PrincipalDetails(User user) {
-        this.user = user;
+
+
+    public PrincipalDetails(User userEntity, boolean flag) {
+        this.user = userEntity;
+        this.flag=flag;
     }
 
     public boolean isFlag() {

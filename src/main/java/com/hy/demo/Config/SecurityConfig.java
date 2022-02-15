@@ -1,6 +1,7 @@
 package com.hy.demo.Config;
 
 
+import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Config.OAuth.LoginSuccessHandler;
 import com.hy.demo.Config.OAuth.PrincipalOauth2UserService;
 import com.hy.demo.Domain.User.Contoller.UserController;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

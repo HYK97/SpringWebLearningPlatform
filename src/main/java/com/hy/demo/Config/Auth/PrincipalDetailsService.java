@@ -24,10 +24,11 @@ public class PrincipalDetailsService implements UserDetailsService {
     //파라미터 변경 추가해줘야댐
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
-        logger.info("username = " + username);
+
         User userEntity =userRepository.findByUsername(username);
         if (userEntity != null) {
-            return new PrincipalDetails(userEntity); // Security session(내부 Authentication(내부 UserDetails));
+            //로그인성공
+            return new PrincipalDetails(userEntity,true); // Security session(내부 Authentication(내부 UserDetails));
         }
         return null;
     }
