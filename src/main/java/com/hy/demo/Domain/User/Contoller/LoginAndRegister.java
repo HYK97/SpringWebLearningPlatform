@@ -26,14 +26,9 @@ public class LoginAndRegister {
     @ResponseBody
     @PostMapping("/login")
     public String login(User user,@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
-        String referrer = request.getHeader("Referer");
-        request.getSession().setAttribute("prevPage", referrer);
 
-        if (!ObjectUtils.isEmpty(principalDetails)) {
-            return "redirect:/";
-        }
 
-        return "login";
+        return "redirect:/";
     }
 
 
@@ -72,7 +67,7 @@ public class LoginAndRegister {
 
 
     @PostMapping("/join")
-    public String join(User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
+    public @ResponseBody String join(User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
 
 
@@ -84,7 +79,7 @@ public class LoginAndRegister {
 
 
         userService.register(user,provider);
-        return "redirect:/loginForm";
+        return "/loginForm";
     }
 
 

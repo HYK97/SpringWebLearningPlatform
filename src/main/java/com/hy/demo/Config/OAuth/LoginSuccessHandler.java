@@ -22,9 +22,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-
-
-
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 
         logger.info("principal.isFlag() = " + principal.isFlag());
@@ -32,19 +29,21 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         logger.info("principal.getAttributes() = " + principal.getAttributes());
         if (principal.getAttributes()==null)// 일반로그인
         {
-            redirect(request,response,authentication);
+            response.sendRedirect("/");
         }
         else if (principal.getAttributes()!=null&&!principal.isFlag()){ //oauth 회원가입중
              response.sendRedirect("/joinForm");
         }else{
-            redirect(request,response,authentication);
+            response.sendRedirect("/");
         }
 
+
     }
-    public void redirect(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+  /*  public void redirect(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("prevPage");
+            logger.info("redirectUrl = " + redirectUrl);
             if (redirectUrl != null) {
                 session.removeAttribute("prevPage");
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
@@ -54,5 +53,5 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         } else {
             super.onAuthenticationSuccess(request, response, authentication);
         }
-    }
+    }*/
 }

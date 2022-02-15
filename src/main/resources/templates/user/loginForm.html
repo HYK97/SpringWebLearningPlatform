@@ -11,6 +11,7 @@
     <!-- Bootstrap core CSS -->
     <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -34,7 +35,7 @@
 <body class="text-center">
 
 <main class="form-signin">
-    <form action="/login" method="post">
+    <form name="loginForm">
         <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
@@ -52,7 +53,7 @@
                 <input type="checkbox" value="remember-me"> 아이디 기억
             </label>
         </div>
-        <button class="w-50 btn btn-lg btn-primary">로그인</button>
+        <button type="button" id="btn" class="w-50 btn btn-lg btn-primary">로그인</button>
         <br>
         <br>
         <hr>
@@ -74,8 +75,24 @@
         location.href="/user/loginForm";
     };
 
-    history.pushState(null, null, location.href); window.onpopstate = function(event) { history.go(1); };
 
+    $('#btn').click(function(){
+        var queryString = $("form[name=loginForm]").serialize() ;
+        $.ajax({
+            type : "post",
+            url : "/login",
+            data : queryString,
+            success : function(data){
+                alert(data);
+                location.href=data;
+            },
+            error:function(request, error) {
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                alert("로그인실패")
+
+            }
+        });
+    });
 
 
 
