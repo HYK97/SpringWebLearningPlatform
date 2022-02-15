@@ -25,8 +25,8 @@ public class UserService {
 
         if (provider == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            logger.info("user.getPassword() = " + user.getPassword());
             userRepository.save(user);
-
         } else {
             User user2 = User.builder()
                     .username(provider.getUsername())
@@ -36,8 +36,11 @@ public class UserService {
                     .provider(provider.getProvider())
                     .providerId(provider.getProviderId())
                     .build();
+            logger.info("user.getPassword() = " + user2.getPassword());
             userRepository.save(user2);
         }
+
+
 
 
 

@@ -27,18 +27,16 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 
+        logger.info("principal.isFlag() = " + principal.isFlag());
 
+        logger.info("principal.getAttributes() = " + principal.getAttributes());
         if (principal.getAttributes()==null)// 일반로그인
         {
             redirect(request,response,authentication);
-
         }
         else if (principal.getAttributes()!=null&&!principal.isFlag()){ //oauth 회원가입중
-
-        response.sendRedirect("/joinForm");
-
+             response.sendRedirect("/joinForm");
         }else{
-
             redirect(request,response,authentication);
         }
 

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginAndRegister {
@@ -24,27 +25,37 @@ public class LoginAndRegister {
 
     @ResponseBody
     @PostMapping("/login")
-    public String login(@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
+    public String login(User user,@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
+
         if (!ObjectUtils.isEmpty(principalDetails)) {
             return "redirect:/";
         }
+
         return "login";
     }
 
 
     @GetMapping("/loginForm")
     public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
         if (!ObjectUtils.isEmpty(principalDetails)) {
             return "redirect:/";
         }
+
+
         return "/user/loginForm";
     }
 
     @GetMapping("/joinForm")
     public String joinForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
-        if (!ObjectUtils.isEmpty(principalDetails)) {
+
+        //세션 비어있지 않음 즉 로그인 상태 , 일반로그인은 provider 비어있음 얘는 루트로 보내야댐 auth는 비어있지않음.예는 회원가입 해야됨
+        
+
+        if (!ObjectUtils.isEmpty(principalDetails)&&principalDetails.isFlag()) {
+
             return "redirect:/";
         }
 
@@ -52,6 +63,7 @@ public class LoginAndRegister {
             model.addAttribute("user",null);
         }else{
             model.addAttribute("user", principalDetails.getUser());
+
         }
 
 
@@ -60,17 +72,19 @@ public class LoginAndRegister {
 
 
     @PostMapping("/join")
-    public String join(User user,@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {//setter 를 쓰지않기위해선 이렇게해야된다.
+    public String join(User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
+
+
 
         User provider=null;
-        if (principalDetails != null) {
-
+        if (!ObjectUtils.isEmpty(principalDetails)) {
         provider =principalDetails.getUser();
+        principalDetails.setFlag(true);
         }
 
 
         userService.register(user,provider);
-        return "redirect:/";
+        return "redirect:/loginForm";
     }
 
 
