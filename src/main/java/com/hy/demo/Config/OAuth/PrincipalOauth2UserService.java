@@ -31,6 +31,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     private UserRepository userRepository;
     // 구글로 부터 받은 userRequest 데이터를 후처리하는 함수
 
+    private User userEntity;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         
@@ -90,6 +91,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
             flag=false;//회원이 아닐경우
+
+
         }
 
         logger.info("flag = " + flag);
@@ -99,4 +102,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         return new PrincipalDetails(userEntity,auth2User.getAttributes(), flag);
 
     }
+
+
 }

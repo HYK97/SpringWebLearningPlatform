@@ -8,6 +8,7 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+
     <!-- Bootstrap core CSS -->
     <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -34,7 +35,7 @@
 <body class="text-center">
 
 <main class="form-signin">
-    <form action="/join" method="post">
+    <form name="joinForm">
 
         <h1 class="h3 mb-3 fw-normal">회원가입</h1>
 
@@ -62,10 +63,10 @@
             </label>
         </div>
 
-        <button type="submit" class="w-50 btn btn-lg btn-primary">회원가입</button>
+        <button type="button" id="btn"  class="w-50 btn btn-lg btn-primary">회원가입</button>
 
     </form>
-    <h2 id="k"></h2>
+
 
 
 </main>
@@ -77,7 +78,6 @@
             var email='{{email}}';
         {{/user}}
 
-    history.pushState(null, null, location.href); window.onpopstate = function(event) { history.go(1); };
 
     $(document).ready(function() {
 
@@ -88,10 +88,41 @@
             $('#password').attr('disabled','disabled');
             $('#email').val(email);
             $('#email').attr('disabled','disabled');
+        }else {
+
+            $('#id').val("");
+            $('#password').val("");
+            $('#email').val("");
+
         }
 
 
+
+
     });
+
+    $('#btn').click(function(){
+        var queryString = $("form[name=joinForm]").serialize() ;
+        $.ajax({
+            type : "post",
+            url : "/join",
+            data : queryString,
+            success : function(data){
+                alert("회원가입을 환영합니다.");
+                alert(data);
+                location.replace(data);
+            },
+            error:function(request, error) {
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                alert("회원가입실패");
+            }
+        });
+    });
+
+
+
+
+
 
 </script>
 
