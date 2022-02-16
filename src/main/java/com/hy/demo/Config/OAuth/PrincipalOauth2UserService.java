@@ -92,7 +92,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .build();
             flag=false;//회원이 아닐경우
 
-
         }
 
         logger.info("flag = " + flag);

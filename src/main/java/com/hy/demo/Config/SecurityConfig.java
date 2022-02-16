@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll() // 위의 페이지 3개 이외는 아무나 접근하게 해주는 체인.
                 .and() //만약에 권한이 없는 페이지로 들어갈때 로그인페이지로 가게해주는 체인.
                 .formLogin()
-                .successHandler(new LoginSuccessHandler("/"))
                 .loginPage("/loginForm")
                 .loginProcessingUrl("/login") //login 주소가 호출되면 시큐리티가 낚아채서 대신 로그인 진행해줌 즉 컨트롤러에 /login필요없음
                 .and()
@@ -58,7 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //3. 사용자 프로필 정보를 가져오고 4-1 그정보를 토대로 회원가입을 진행시키거나
                 //4-2 기본정보(이메일,아이디,이름,전화번호) 정보가 모자라면 ex) 쇼핑몰 ->(집주소), 백화점몰 ->(등급)
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService);
+                .userService(principalOauth2UserService)
+                .and()
+                .successHandler(new LoginSuccessHandler("/"));
 
 
 
