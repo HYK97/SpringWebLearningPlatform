@@ -24,7 +24,7 @@ public class MainController {
     @GetMapping("/main")
     public String main(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        return "/";
+        return "/index";
     }
 
 }

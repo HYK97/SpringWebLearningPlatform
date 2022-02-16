@@ -23,7 +23,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-
         logger.info("principal.isFlag() = " + principal.isFlag());
         logger.info("principal.getAttributes() = " + principal.getAttributes());
         if (principal.isFlag())

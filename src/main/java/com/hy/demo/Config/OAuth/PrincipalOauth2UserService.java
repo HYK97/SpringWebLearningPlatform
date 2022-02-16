@@ -33,6 +33,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     private User userEntity;
     @Override
+
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         
         logger.info("userRequest = " + userRequest.getClientRegistration()); //getClientRegistration 으로 어떤 OAuth로 로그인했는지 확인가능

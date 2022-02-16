@@ -63,10 +63,10 @@
             </label>
         </div>
 
-        <button type="button" id="btn"  class="w-50 btn btn-lg btn-primary">회원가입</button>
+        <button type="button"  id="btn"  class="w-50 btn btn-lg btn-primary">회원가입</button>
 
     </form>
-
+    <input id="check"type="hidden" value="0">
 
 
 </main>
@@ -96,26 +96,53 @@
 
         }
 
+        $(window).on("beforeunload", callback);
+        function callback(){
+            var check=$('#check').val();
+            if (check == "0") {
+                console.log("beforeunload callback !");
+                $.ajax({
+                    type : "post",
+                    url : "/joinFails",
+                    data : {
+                        data : check,
+                    },
+                    success : function(data){
+                        location.href=data;
+                    },
+                    error:function(request, error) {
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    }
+                });
+            }
 
+        }
 
 
     });
 
-    $('#btn').click(function(){
+    $('#btn').click(function(event){
+
+
         var queryString = $("form[name=joinForm]").serialize() ;
         $.ajax({
             type : "post",
             url : "/join",
             data : queryString,
+            cache : false,
             success : function(data){
                 alert("회원가입을 환영합니다.");
+                $('#check').val("1");
                 location.replace(data);
+
             },
             error:function(request, error) {
                 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 alert("회원가입실패");
             }
         });
+        event.preventDefault();
+        event.stopPropagation();
     });
 
 

@@ -8,12 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import static com.hy.demo.Utils.ObjectUtils.*;
 
 @Controller
 public class LoginAndRegisterController {
@@ -31,12 +36,32 @@ public class LoginAndRegisterController {
         return "/login";
     }
 
+    @PostMapping("/joinFails")
+    public @ResponseBody String joinFails(String data,HttpServletRequest request) {
+
+        logger.info("data = " + data);
+        if (data.equals("1")) {
+            return "/";
+        } else {
+            logger.info("세션삭제");
+            HttpSession session = request.getSession();
+            session.invalidate();
+            SecurityContextHolder.clearContext();
+            return "/loginForm";
+        }
+
+
+    }
+
 
     @GetMapping("/loginForm")
     public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+            
 
-        if (!ObjectUtils.isEmpty(principalDetails)) {
+        if (!isEmpty(principalDetails)) {
+            logger.info("principalDetails.toString() = " + principalDetails.toString());
             return "redirect:/";
+
         }
 
 
@@ -47,9 +72,9 @@ public class LoginAndRegisterController {
     public String joinForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 
 
-        if (!ObjectUtils.isEmpty(principalDetails)&&principalDetails.isFlag()) {
+        if (!isEmpty(principalDetails)&&principalDetails.isFlag()) {
             return "redirect:/";
-        }else if(ObjectUtils.isEmpty(principalDetails)) {
+        }else if(isEmpty(principalDetails)) {
             model.addAttribute("user",null);
             return "/user/joinForm";
         }else{
@@ -67,7 +92,7 @@ public class LoginAndRegisterController {
 
 
         User provider=null;
-        if (!ObjectUtils.isEmpty(principalDetails)) {
+        if (!isEmpty(principalDetails)) {
         provider =principalDetails.getUser();
         principalDetails.setFlag(true);
         }
