@@ -34,6 +34,7 @@ public class PrincipalDetailsService implements UserDetailsService {
             logger.info("userEntity.toString() = " + userEntity.toString());
             return new PrincipalDetails(userEntity,true); // Security session(내부 Authentication(내부 UserDetails));
         }
-        return null;
+        throw new UsernameNotFoundException(username);
+
     }
 }
