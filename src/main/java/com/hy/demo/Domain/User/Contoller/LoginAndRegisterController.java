@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class LoginAndRegister {
+public class LoginAndRegisterController {
 
     @Autowired
     UserService userService;
@@ -46,23 +46,18 @@ public class LoginAndRegister {
     @GetMapping("/joinForm")
     public String joinForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 
-        //세션 비어있지 않음 즉 로그인 상태 , 일반로그인은 provider 비어있음 얘는 루트로 보내야댐 auth는 비어있지않음.예는 회원가입 해야됨
-        
 
         if (!ObjectUtils.isEmpty(principalDetails)&&principalDetails.isFlag()) {
-
             return "redirect:/";
-        }
-
-        if (ObjectUtils.isEmpty(principalDetails)) {
+        }else if(ObjectUtils.isEmpty(principalDetails)) {
             model.addAttribute("user",null);
+            return "/user/joinForm";
         }else{
             model.addAttribute("user", principalDetails.getUser());
-
+            return "/user/joinForm";
         }
 
 
-        return "/user/joinForm";
     }
 
 
