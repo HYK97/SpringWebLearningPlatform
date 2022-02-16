@@ -15,16 +15,16 @@ import javax.transaction.Transactional;
 
 @Controller
 
+@RequestMapping("/main/*")
 public class MainController {
 
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @ResponseBody
-    @GetMapping("/main")
-    public String main(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    @GetMapping( {"/index"})
+    public String index(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        return "/index";
+        return "/main/index";
     }
 
 }
