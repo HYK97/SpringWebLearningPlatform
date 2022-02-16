@@ -23,12 +23,12 @@ public class LoginAndRegisterController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @ResponseBody
+
     @PostMapping("/login")
-    public String login(User user,@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
+    public @ResponseBody String login(User user,@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
 
 
-        return "redirect:/";
+        return "/login";
     }
 
 
@@ -71,7 +71,6 @@ public class LoginAndRegisterController {
         provider =principalDetails.getUser();
         principalDetails.setFlag(true);
         }
-
 
         userService.register(user,provider);
         return "/loginForm";

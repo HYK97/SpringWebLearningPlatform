@@ -84,12 +84,11 @@
             data : queryString,
             success : function(data){
                 alert(data);
-                location.href=data;
+                location.replace(data);
             },
             error:function(request, error) {
                 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                alert("로그인실패")
-
+                alert("회원가입실패");
             }
         });
     });
