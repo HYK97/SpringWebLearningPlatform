@@ -30,18 +30,19 @@ public class LoginAndRegisterController {
 
 
     @PostMapping("/login")
-    public @ResponseBody String login(User user,@AuthenticationPrincipal PrincipalDetails principalDetails,HttpServletRequest request,String username) {
+    @ResponseBody
+    public String login() {
 
 
-        return "/login";
+        return "login";
     }
 
     @PostMapping("/joinFails")
-    public @ResponseBody String joinFails(String data,HttpServletRequest request) {
+    public String joinFails(String data,HttpServletRequest request) {
 
         logger.info("data = " + data);
         if (data.equals("1")) {
-            return "/";
+            return "/main/index";
         } else {
             logger.info("세션삭제");
             HttpSession session = request.getSession();
@@ -54,13 +55,33 @@ public class LoginAndRegisterController {
     }
 
 
-    @GetMapping("/loginForm")
-    public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-            
+    //login.html ajax return값 보내주는메소드
+    @GetMapping("/loginRedirect")
+    public @ResponseBody String loginRedirect(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         if (!isEmpty(principalDetails)) {
-            logger.info("principalDetails.toString() = " + principalDetails.toString());
-            return "redirect:/";
+            logger.info("redirect principalDetails.toString() = " + principalDetails.toString());
+            return "/main/index";
+        }
+
+        return "error";
+    }
+
+    @GetMapping("/loginFailRedirect")
+    public @ResponseBody String loginFailRedirect(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        return "error";
+    }
+
+
+
+    @GetMapping({"/loginForm","","/"})
+    public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+
+        if (!isEmpty(principalDetails)) {
+
+             return "/main/index";
 
         }
 
@@ -73,7 +94,7 @@ public class LoginAndRegisterController {
 
 
         if (!isEmpty(principalDetails)&&principalDetails.isFlag()) {
-            return "redirect:/";
+            return "redirect:/main/index";
         }else if(isEmpty(principalDetails)) {
             model.addAttribute("user",null);
             return "/user/joinForm";

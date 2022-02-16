@@ -27,16 +27,15 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         logger.info("principal.getAttributes() = " + principal.getAttributes());
         if (principal.isFlag())
         {
-
             logger.info("로그인입니다.");
-            response.sendRedirect("/main");
+            response.sendRedirect("/loginRedirect");
         }
         else if (!principal.isFlag()){ //oauth 회원가입중 login -> joinForm
-            logger.info("회원가입입니다");
+             logger.info("회원가입입니다");
              response.sendRedirect("/joinForm");
         }else{
             logger.info("오류");
-            response.sendRedirect("/");
+            response.sendRedirect("/error");
         }
 
 
