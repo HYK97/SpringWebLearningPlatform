@@ -30,6 +30,7 @@ public class IndexController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+
     @GetMapping({"", "/"})
     public String index() {
         return "/index";

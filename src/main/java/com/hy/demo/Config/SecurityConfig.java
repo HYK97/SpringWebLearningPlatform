@@ -49,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and() //만약에 권한이 없는 페이지로 들어갈때 로그인페이지로 가게해주는 체인.
                 .formLogin()
                 .loginPage("/loginForm")
-                .loginProcessingUrl("/login") //login 주소가 호출되면 시큐리티가 낚아채서 대신 로그인 진행해줌 즉 컨트롤러에 /login필요없음
+                .loginProcessingUrl("/login")
+                .successHandler(new LoginSuccessHandler("/"))//login 주소가 호출되면 시큐리티가 낚아채서 대신 로그인 진행해줌 즉 컨트롤러에 /login필요없음
                 .and()
                 .oauth2Login()
                 .loginPage("/loginForm")
