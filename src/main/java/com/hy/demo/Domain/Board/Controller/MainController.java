@@ -2,6 +2,7 @@ package com.hy.demo.Domain.Board.Controller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Service.UserService;
+import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.transaction.Transactional;
+
+import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Controller
 
@@ -24,7 +27,10 @@ public class MainController {
     @GetMapping( {"/index"})
     public String index(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        return "/main/index";
+        if (!isEmpty(principalDetails)) {
+            return "/main/index";
+        }else
+            return "/loginForm";
     }
 
 }

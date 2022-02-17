@@ -71,16 +71,95 @@
 
 </main>
 <script>
-    var username="";
-    var email="";
-        {{#user}}
-            username='{{username}}';
-            var email='{{email}}';
-        {{/user}}
+
 
 
     $(document).ready(function() {
 
+
+        var check;
+        autoForm();
+       /* $(window).on("beforeunload", callback);
+        function callback(){
+            autoForm();
+            if (check == "0") {
+                $.ajax({
+                    type : "post",
+                    url : "/joinFails",
+                    data : {
+                        data : check,
+                    },
+                    success : function(data){
+                        if (data=1) {
+                            location.replace(data);
+                        }
+                        history.go(1);
+
+                    },
+                    error:function(request, error) {
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    }
+                });
+            }
+
+        }*/
+
+
+    });
+
+    $('#btn').click(function(event){
+
+        var queryString = $("form[name=joinForm]").serialize() ;
+        if (joinCheck() == 1) {
+        $.ajax({
+            type : "post",
+            url : "/join",
+            data : queryString,
+            cache : false,
+            success : function(data){
+                alert("회원가입을 환영합니다.");
+                $('#check').val("1");
+                location.replace(data);
+            },
+            error:function(request, error) {
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                alert("회원가입실패");
+            }
+        });
+
+        }
+    });
+
+    var emailTest = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    function joinCheck(){
+        if($('#id').val() == ''){
+            alert('아이디를 입력하세요');
+            $('#id').focus();
+            return;
+        }else if($('#password').val() == ''){
+            alert('비밀번호를 입력하세요');
+            $('#password').focus();
+            return;
+        }else if($('#email').val() == ''){
+            alert('이메일을 입력하세요');
+            $('#email').focus();
+            return;
+        }else if(!emailTest.test($('#email').val())){
+            alert("유효하지않은 이메일입니다.");
+            $('#email').focus();
+            return;
+        }else{
+            return 1;
+        }
+    };
+
+    function autoForm() {
+        var username="";
+        var email="";
+        {{#user}}
+            username='{{username}}';
+            var email='{{email}}';
+        {{/user}}
         if(!username==""&&!email=="") {
             $('#id').val(username);
             $('#id').attr('disabled','disabled');
@@ -93,58 +172,10 @@
             $('#id').val("");
             $('#password').val("");
             $('#email').val("");
-
         }
 
-        $(window).on("beforeunload", callback);
-        function callback(){
-            var check=$('#check').val();
-            if (check == "0") {
-                console.log("beforeunload callback !");
-                $.ajax({
-                    type : "post",
-                    url : "/joinFails",
-                    data : {
-                        data : check,
-                    },
-                    success : function(data){
-                        location.href=data;
-                    },
-                    error:function(request, error) {
-                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                    }
-                });
-            }
-
-        }
-
-
-    });
-
-    $('#btn').click(function(event){
-        var queryString = $("form[name=joinForm]").serialize() ;
-        $.ajax({
-            type : "post",
-            url : "/join",
-            data : queryString,
-            cache : false,
-            success : function(data){
-                alert("회원가입을 환영합니다.");
-                $('#check').val("1");
-                location.replace(data);
-
-            },
-            error:function(request, error) {
-                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                alert("회원가입실패");
-            }
-        });
-        event.preventDefault();
-        event.stopPropagation();
-    });
-
-
-
+         check=$('#check').val();
+    }
 
 
 

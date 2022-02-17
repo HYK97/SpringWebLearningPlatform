@@ -32,7 +32,8 @@ public class UserController {
     @GetMapping("info")
     public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        logger.info(principalDetails.getAttributes()==null ? "일반회원입니다.": "OAuth 외부 회원입니다.");
+        
+        logger.info("principalDetails.getUsername() = " + principalDetails.getUsername());
 
         return "user";
     }

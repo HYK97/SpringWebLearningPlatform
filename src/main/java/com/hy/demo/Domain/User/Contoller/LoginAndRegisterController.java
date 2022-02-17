@@ -1,14 +1,15 @@
 package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
-import com.hy.demo.Utils.ObjectUtils;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import static com.hy.demo.Utils.ObjectUtils.*;
 
@@ -36,10 +38,9 @@ public class LoginAndRegisterController {
 
         return "login";
     }
-
+/*
     @PostMapping("/joinFails")
     public String joinFails(String data,HttpServletRequest request) {
-
         logger.info("data = " + data);
         if (data.equals("1")) {
             return "/main/index";
@@ -50,9 +51,7 @@ public class LoginAndRegisterController {
             SecurityContextHolder.clearContext();
             return "/loginForm";
         }
-
-
-    }
+    }*/
 
 
     //login.html ajax return값 보내주는메소드
@@ -76,17 +75,28 @@ public class LoginAndRegisterController {
 
 
     @GetMapping({"/loginForm","","/"})
-    public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest request) {
 
 
         if (!isEmpty(principalDetails)) {
+            Boolean check = userService.loginForm(principalDetails.getUser());
+            if (check) {
+                return "/main/index";
+            } else {
+                logger.info("세션삭제");
+                HttpSession session = request.getSession();
+                session.invalidate();
+                SecurityContextHolder.clearContext();
+                return "/user/loginForm";
+            }
 
-             return "/main/index";
 
+        } else {
+            return "/user/loginForm";
         }
 
 
-        return "/user/loginForm";
+
     }
 
     @GetMapping("/joinForm")
@@ -94,7 +104,7 @@ public class LoginAndRegisterController {
 
 
         if (!isEmpty(principalDetails)&&principalDetails.isFlag()) {
-            return "redirect:/main/index";
+            return "/main/index";
         }else if(isEmpty(principalDetails)) {
             model.addAttribute("user",null);
             return "/user/joinForm";
@@ -105,21 +115,22 @@ public class LoginAndRegisterController {
 
 
     }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 
     @PostMapping("/join")
     public @ResponseBody String join(User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
-
-
 
         User provider=null;
         if (!isEmpty(principalDetails)) {
         provider =principalDetails.getUser();
         principalDetails.setFlag(true);
         }
-
         userService.register(user,provider);
+
         return "/loginForm";
+
     }
 
 

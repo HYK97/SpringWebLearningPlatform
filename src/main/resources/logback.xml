@@ -34,7 +34,9 @@
         <appender-ref ref="consoleAppender"/>
         <appender-ref ref="fileAppender"/>
     </logger>
-
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+    <!-- 질의문 파라미터 보기 -->
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
     <root level="INFO">
         <appender-ref ref="fileAppender"/>
         <appender-ref ref="consoleAppender"/>

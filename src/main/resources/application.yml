@@ -20,13 +20,14 @@ spring:
     view:
       prefix: /templates/
       suffix: .mustache
-
   jpa:
     hibernate:
       ddl-auto: create-drop
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
+      properties:
+        hibernate:
+          show_sql: true
+          format_sql: true
+
 
   security:
     oauth2:
