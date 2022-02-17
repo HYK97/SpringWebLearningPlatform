@@ -38,20 +38,6 @@ public class LoginAndRegisterController {
 
         return "login";
     }
-/*
-    @PostMapping("/joinFails")
-    public String joinFails(String data,HttpServletRequest request) {
-        logger.info("data = " + data);
-        if (data.equals("1")) {
-            return "/main/index";
-        } else {
-            logger.info("세션삭제");
-            HttpSession session = request.getSession();
-            session.invalidate();
-            SecurityContextHolder.clearContext();
-            return "/loginForm";
-        }
-    }*/
 
 
     //login.html ajax return값 보내주는메소드
