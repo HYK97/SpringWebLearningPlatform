@@ -8,6 +8,10 @@ server:
       force: true
 
 spring:
+  devtools:
+    remote:
+      restart:
+        enabled: true
   main:
     allow-circular-references: true
     allow-bean-definition-overriding: true
