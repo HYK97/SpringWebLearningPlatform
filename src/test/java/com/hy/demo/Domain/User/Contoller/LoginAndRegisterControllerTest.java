@@ -2,6 +2,8 @@ package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,11 +33,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 class LoginAndRegisterControllerTest {
 
-
-    @Test
-    public void test() {
-
-    }
     @Autowired
     private WebApplicationContext context;
 
@@ -58,7 +55,6 @@ class LoginAndRegisterControllerTest {
                 .webAppContextSetup(this.context)
                 .apply(springSecurity())
                 .build();
-
         User user = User.builder()
                 .username("user")
                 .role("ROLE_USER")
@@ -84,7 +80,10 @@ class LoginAndRegisterControllerTest {
         userRepository.save(admin);
     }
 
-
+    @AfterEach
+    public void after(){
+     userRepository.deleteAll();
+    }
 
     @Test
     public void loginPostTest() throws Exception {
@@ -97,7 +96,7 @@ class LoginAndRegisterControllerTest {
         mvc.perform(formLogin().user(userId).password(password))
                 .andDo(print())
                 // then
-                .andExpect(status().isOk())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/loginRedirect"));
     }
 
@@ -112,7 +111,7 @@ class LoginAndRegisterControllerTest {
         mvc.perform(formLogin().user(userId).password(password))
                 .andDo(print())
                 // then
-                .andExpect(status().isOk())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/loginFailRedirect"));
     }
 
