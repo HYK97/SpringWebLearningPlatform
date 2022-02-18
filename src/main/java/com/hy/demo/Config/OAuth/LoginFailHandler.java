@@ -1,6 +1,11 @@
 package com.hy.demo.Config.OAuth;
 
+import com.hy.demo.Config.Auth.PrincipalDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Service;
@@ -14,9 +19,15 @@ import java.io.IOException;
 @Service
 public class LoginFailHandler implements AuthenticationFailureHandler {
 
+
+
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException accessException) throws IOException, ServletException {
+
+
 
 
         // 향후 세분화할예정
