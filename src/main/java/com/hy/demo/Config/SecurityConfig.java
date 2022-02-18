@@ -22,6 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.stereotype.Service;
+
 
 @Configuration
 @EnableWebSecurity //스프링 시큐리티 필터 -> 스프링 필터체인 등록
@@ -32,12 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PrincipalOauth2UserService principalOauth2UserService;
 
 
-
-
     @Bean
-    public BCryptPasswordEncoder encodePwd() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
