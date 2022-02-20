@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WithMockUser
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+
 class LoginAndRegisterControllerTest {
 
     @Autowired
