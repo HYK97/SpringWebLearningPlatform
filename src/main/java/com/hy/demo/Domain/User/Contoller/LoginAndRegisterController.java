@@ -111,24 +111,20 @@ public class LoginAndRegisterController {
     @PostMapping("/join")
     public @ResponseBody String join(User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
-        
+
         logger.info("user.toString() = " + user.toString());
-        User provider=null;
+        User provider = null;
         if (!isEmpty(principalDetails)) {
             provider = principalDetails.getUser();
             principalDetails.setFlag(true);
-            userService.register(user,provider);
-            return "/main/index";
+            userService.register(user, provider);
+            return "C";
         } else {
-            userService.register(user,provider);
+            userService.register(user, provider);
 
             return "/loginForm";
         }
-
-
-
-
-    }
+        }
 
 
 
@@ -155,4 +151,5 @@ public class LoginAndRegisterController {
         return "개인정보";
 
     }*/
-}
+    }
+
