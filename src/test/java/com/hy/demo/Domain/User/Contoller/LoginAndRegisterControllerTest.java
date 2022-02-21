@@ -1,23 +1,31 @@
 package com.hy.demo.Domain.User.Contoller;
 
+import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.junit.After;
+import com.sun.security.auth.UserPrincipal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.transaction.AfterTransaction;
+import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.annotation.PostConstruct;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 
@@ -26,7 +34,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -46,8 +53,22 @@ class LoginAndRegisterControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    private Long testCode;
 
     private MockMvc mvc;
+
+    @PostConstruct
+    public void accountSetup() {
+        testCode = userRepository.save(User.builder()
+                .username("test")
+                .email("test@com")
+                .role("ROLE_USER")
+                .password("password").build()).getId();
+    }
+    @AfterTransaction
+    public void accountCleanup() {
+        userRepository.deleteById(testCode);
+    }
 
     @BeforeEach
     public void setup(){
@@ -141,33 +162,53 @@ class LoginAndRegisterControllerTest {
 
 
 
-
     @Test
-    public void joinPost() throws Exception {
+    @WithUserDetails(value = "test")
+    public void joinOAuthPost() throws Exception {
         //given
-        ObjectMapper objectMapper=new ObjectMapper();
 
-        User user = User.builder()
-                .username("test")
-                .role("ROLE_USER")
-                .email("test@gmail.com")
-                .password(passwordEncoder.encode("test"))
-                .build();
-
-        String contents = objectMapper.writeValueAsString(user);
 
         // when
         mvc.perform(post("/join")
-                .param("user",contents))
-                .andDo(print())
-               // .andExpect(content().string("/loginForm"))
-                .andExpect(handler().methodName("join"))
-                .andExpect(view().name("/join"));
+                .param("username","test")
+                .param("password","test")
+                .param("email","test@gmail.com")
+                .param("role","ROLE_USER"))
 
+                .andDo(print())
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("/main/index"));
+
+
+        // then
+
+    }
+
+    @Test
+    public void joinNormalPost() throws Exception {
+        //given
+
+
+        // when
+        mvc.perform(post("/join")
+                .param("username","test")
+                .param("password","test")
+                .param("email","test@gmail.com")
+                .param("role","ROLE_USER"))
+
+                .andDo(print())
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("/loginForm"));
 
                 // then
 
     }
+
+
+
+
 
 
 
