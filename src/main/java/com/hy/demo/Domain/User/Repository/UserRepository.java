@@ -7,4 +7,5 @@ public interface UserRepository extends JpaRepository<User,Integer> {
 
     //findBy규칙 -> Username문법
     User findByUsername(String username);
+    User deleteById(Long id);
 }
