@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-@WithMockUser
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 
@@ -136,11 +136,13 @@ class LoginAndRegisterControllerTest {
                 .andExpect(handler().methodName("joinForm"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/user/joinForm"));
+
     }
 
 
-    //아이디 중복추가후
-   /* @Test
+
+
+    @Test
     public void joinPost() throws Exception {
         //given
         ObjectMapper objectMapper=new ObjectMapper();
@@ -151,18 +153,21 @@ class LoginAndRegisterControllerTest {
                 .email("test@gmail.com")
                 .password(passwordEncoder.encode("test"))
                 .build();
-        
-        String content = objectMapper.writeValueAsString(user);
+
+        String contents = objectMapper.writeValueAsString(user);
 
         // when
         mvc.perform(post("/join")
-                .param("user",content)
-                    )
+                .param("user",contents))
                 .andDo(print())
-                .andExpect(jsonPath());
+               // .andExpect(content().string("/loginForm"))
+                .andExpect(handler().methodName("join"))
+                .andExpect(view().name("/join"));
+
+
                 // then
 
-    }*/
+    }
 
 
 
