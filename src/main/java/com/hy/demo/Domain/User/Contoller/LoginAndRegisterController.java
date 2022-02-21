@@ -115,10 +115,11 @@ public class LoginAndRegisterController {
         logger.info("user.toString() = " + user.toString());
         User provider = null;
         if (!isEmpty(principalDetails)) {
+            logger.info("principalDetails.getUser().toString() = " + principalDetails.getUser().toString());
             provider = principalDetails.getUser();
             principalDetails.setFlag(true);
             userService.register(user, provider);
-            return "C";
+            return "/main/index";
         } else {
             userService.register(user, provider);
 
