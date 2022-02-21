@@ -171,7 +171,6 @@ class LoginAndRegisterControllerTest {
         // when
         mvc.perform(post("/join"))
 
-
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().isOk())
