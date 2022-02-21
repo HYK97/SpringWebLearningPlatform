@@ -169,11 +169,8 @@ class LoginAndRegisterControllerTest {
 
 
         // when
-        mvc.perform(post("/join")
-                .param("username","test")
-                .param("password","test")
-                .param("email","test@gmail.com")
-                .param("role","ROLE_USER"))
+        mvc.perform(post("/join"))
+
 
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
