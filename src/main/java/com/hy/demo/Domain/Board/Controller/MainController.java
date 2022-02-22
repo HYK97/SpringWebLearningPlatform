@@ -26,9 +26,9 @@ public class MainController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping( {"/index"})
-    public String index(Authentication authentication) {
+    public String index(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        if (!isEmpty(authentication)) {
+        if (!isEmpty(principalDetails)) {
             return "/main/index";
         }else
             return "/loginForm";
