@@ -2,6 +2,7 @@ package com.hy.demo.Domain.Board.Controller;
 
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +47,6 @@ class MainControllerTest {
     private MockMvc mvc;
 
     @PostConstruct
-
     public void accountSetup() {
         testCode = userRepository.save(User.builder()
                 .username("test")
@@ -54,8 +54,6 @@ class MainControllerTest {
                 .role("ROLE_USER")
                 .password("password").build()).getId();
     }
-
-
 
 
 
@@ -91,7 +89,10 @@ class MainControllerTest {
         userRepository.save(admin);
 
     }
-
+    @AfterEach
+    public void after(){
+        userRepository.deleteAll();
+    }
 
     @Test
     @WithUserDetails(value = "test")
