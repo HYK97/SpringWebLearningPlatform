@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,7 +48,7 @@ class MainControllerTest {
     @PostConstruct
     public void accountSetup() {
         testCode = userRepository.save(User.builder()
-                .username("test")
+                .userName("test")
                 .email("test@com")
                 .role("ROLE_USER")
                 .password("password").build()).getId();
@@ -65,19 +64,19 @@ class MainControllerTest {
                 .build();
 
         User user = User.builder()
-                .username("user")
+                .userName("user")
                 .role("ROLE_USER")
                 .email("user@gmail.com")
                 .password(passwordEncoder.encode("user"))
                 .build();
         User manager = User.builder()
-                .username("manager")
+                .userName("manager")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
                 .password(passwordEncoder.encode("manager"))
                 .build();
         User admin = User.builder()
-                .username("admin")
+                .userName("admin")
                 .role("ROLE_ADMIN")
                 .email("admin@gmail.com")
                 .password(passwordEncoder.encode("admin"))

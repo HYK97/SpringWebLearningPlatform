@@ -1,26 +1,18 @@
 package com.hy.demo.Domain.User.Contoller;
 
-import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import com.sun.security.auth.UserPrincipal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.transaction.AfterTransaction;
-import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -60,7 +52,7 @@ class LoginAndRegisterControllerTest {
     @PostConstruct
     public void accountSetup() {
         testCode = userRepository.save(User.builder()
-                .username("test")
+                .userName("test")
                 .email("test@com")
                 .role("ROLE_USER")
                 .password("password").build()).getId();
@@ -77,19 +69,19 @@ class LoginAndRegisterControllerTest {
                 .apply(springSecurity())
                 .build();
         User user = User.builder()
-                .username("user")
+                .userName("user")
                 .role("ROLE_USER")
                 .email("user@gmail.com")
                 .password(passwordEncoder.encode("user"))
                 .build();
         User manager = User.builder()
-                .username("manager")
+                .userName("manager")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
                 .password(passwordEncoder.encode("manager"))
                 .build();
         User admin = User.builder()
-                .username("admin")
+                .userName("admin")
                 .role("ROLE_ADMIN")
                 .email("admin@gmail.com")
                 .password(passwordEncoder.encode("admin"))
@@ -188,7 +180,7 @@ class LoginAndRegisterControllerTest {
 
         // when
         mvc.perform(post("/join")
-                .param("username","test")
+                .param("userName","test")
                 .param("password","test")
                 .param("email","test@gmail.com")
                 .param("role","ROLE_USER"))

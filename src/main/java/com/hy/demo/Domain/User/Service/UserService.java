@@ -6,15 +6,9 @@ import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 @Service
@@ -41,7 +35,7 @@ public class UserService {
 
 
             User user2 = User.builder()
-                    .username(provider.getUsername())
+                    .userName(provider.getUserName())
                     .password(provider.getPassword())
                     .email(provider.getEmail())
                     .role(user.getRole())
@@ -63,8 +57,8 @@ public class UserService {
     public Boolean loginForm(User user) {
 
 
-        String username = user.getUsername();
-        User findUser = userRepository.findByUsername(username);
+        String username = user.getUserName();
+        User findUser = userRepository.findByUserName(username);
         if (findUser != null) {
             logger.info("회원");
             return true;

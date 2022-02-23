@@ -33,7 +33,7 @@ public class UserController {
     public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         
-        logger.info("principalDetails.getUsername() = " + principalDetails.getUsername());
+        logger.info("principalDetails.getUserName() = " + principalDetails.getUsername());
 
         return "user";
     }
