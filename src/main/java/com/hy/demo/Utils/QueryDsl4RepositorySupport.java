@@ -1,4 +1,4 @@
-package com.hy.demo.Domain.Board.Repository.support;
+package com.hy.demo.Utils;
 
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
