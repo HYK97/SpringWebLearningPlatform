@@ -29,7 +29,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 
         logger.info("username = " + username);
         User userEntity =userRepository.findByUsername(username);
-        
+
 
         if (userEntity != null) {
             //로그인성공
@@ -40,8 +40,4 @@ public class PrincipalDetailsService implements UserDetailsService {
 
     }
 
-    @PreDestroy
-    public void destroy() {
-
-    }
 }
