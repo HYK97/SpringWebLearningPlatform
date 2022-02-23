@@ -42,8 +42,13 @@ public class Course extends BaseEntity {
         user.getCourses().add(this);
     }
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", user=" + user +
+                ", heart=" + heart +
+                '}';
+    }
 }

@@ -16,12 +16,16 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         super(Course.class);
     }
 
-    public Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable) {
+    public Page<Course> findByCourseNameAndUser(String courseName, Pageable pageable) {
 
         return applyPagination(pageable,query ->
-                query.select(course,user)
-                .from(course)
-                        .leftJoin(course.user, user));
+                        query.select(course)
+                        .from(course)
+                        .leftJoin(course.user, user)
+                        .fetchJoin()
+                        .where(course.courseName.contains(courseName))
+                    );
+
 
     }
 
