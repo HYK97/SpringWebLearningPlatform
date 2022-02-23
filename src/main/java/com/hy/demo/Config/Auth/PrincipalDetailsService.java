@@ -22,13 +22,13 @@ public class PrincipalDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
 
-    @Override // 로그인 html 의 name ="username"과 아래의 매개변수 username의 이름과 같아야 동작함 만약에 파라미터 바꾸고 싶으면 SecurityConifg에서
+    @Override // 로그인 html 의 name ="userName"과 아래의 매개변수 username의 이름과 같아야 동작함 만약에 파라미터 바꾸고 싶으면 SecurityConifg에서
     //파라미터 변경 추가해줘야댐
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
 
-        logger.info("username = " + username);
-        User userEntity =userRepository.findByUsername(username);
+        logger.info("userName = " + username);
+        User userEntity =userRepository.findByUserName(username);
         
 
         if (userEntity != null) {

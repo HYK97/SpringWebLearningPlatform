@@ -50,7 +50,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
          * locale=ko}
          *
          * 예를 들면 회원가입은
-         * username = google_12312423412341231412345123 이런식으로 하면중복안됌
+         * userName = google_12312423412341231412345123 이런식으로 하면중복안됌
          * password = "암호화(겟인데어)"
          * email = ddha963dw963@gmail.com
          * role = ROLE_USER
@@ -80,12 +80,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String username=oAuth2UserInfo.getProvider()+"_"+oAuth2UserInfo.getProviderId();
 
 
-        User userEntity = userRepository.findByUsername(username);
+        User userEntity = userRepository.findByUserName(username);
         boolean flag= true;// 회원일경우
 
         if (userEntity == null) { // 처음가입시
             userEntity =User.builder()
-                    .username(username)
+                    .userName(username)
                     .password(password)
                     .email(oAuth2UserInfo.getEmail())
                     .provider(oAuth2UserInfo.getProvider())
