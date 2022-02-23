@@ -28,10 +28,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-      properties:
-        hibernate:
-          show_sql: true
-          format_sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_commnets: true
 
 
   security:
