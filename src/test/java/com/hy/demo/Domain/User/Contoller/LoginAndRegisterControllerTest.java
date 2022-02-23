@@ -52,7 +52,7 @@ class LoginAndRegisterControllerTest {
     @PostConstruct
     public void accountSetup() {
         testCode = userRepository.save(User.builder()
-                .userName("test")
+                .username("test")
                 .email("test@com")
                 .role("ROLE_USER")
                 .password("password").build()).getId();
@@ -69,19 +69,19 @@ class LoginAndRegisterControllerTest {
                 .apply(springSecurity())
                 .build();
         User user = User.builder()
-                .userName("user")
+                .username("user")
                 .role("ROLE_USER")
                 .email("user@gmail.com")
                 .password(passwordEncoder.encode("user"))
                 .build();
         User manager = User.builder()
-                .userName("manager")
+                .username("manager")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
                 .password(passwordEncoder.encode("manager"))
                 .build();
         User admin = User.builder()
-                .userName("admin")
+                .username("admin")
                 .role("ROLE_ADMIN")
                 .email("admin@gmail.com")
                 .password(passwordEncoder.encode("admin"))
@@ -180,7 +180,7 @@ class LoginAndRegisterControllerTest {
 
         // when
         mvc.perform(post("/join")
-                .param("userName","test")
+                .param("username","test")
                 .param("password","test")
                 .param("email","test@gmail.com")
                 .param("role","ROLE_USER"))
