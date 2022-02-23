@@ -1,5 +1,6 @@
 package com.hy.demo.Domain.Board.Service;
 
+import com.hy.demo.Domain.Board.Dto.CourseDto;
 import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,13 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public List<Course> viewCourse(Pageable pageable) {
-        Page<Course> results = courseRepository.findByCourseNameAndUser("", pageable);
+    public List<CourseDto> viewCourse(Pageable pageable) {
+        Page<CourseDto> results = courseRepository.findByCourseNameAndUserDTO("", pageable);
         return results.getContent();
     }
 
-    public List<Course> searchCourse(String search, Pageable pageable) {
-        Page<Course> results = courseRepository.findByCourseNameAndUser(search, pageable);
+    public List<CourseDto> searchCourse(String search, Pageable pageable) {
+        Page<CourseDto> results = courseRepository.findByCourseNameAndUserDTO(search, pageable);
         return results.getContent();
     }
 
