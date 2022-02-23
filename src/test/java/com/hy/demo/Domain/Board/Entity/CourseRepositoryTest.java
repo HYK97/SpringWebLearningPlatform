@@ -14,14 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class CourseTest {
+class CourseRepositoryTest {
 
 
     @Autowired
@@ -42,13 +40,13 @@ class CourseTest {
 
 
         User manager1 = User.builder()
-                .userName("manager1")
+                .username("manager1")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
                 .password(passwordEncoder.encode("manager"))
                 .build();
         User manager2 = User.builder()
-                .userName("manager2")
+                .username("manager2")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
                 .password(passwordEncoder.encode("manager"))
@@ -90,11 +88,11 @@ class CourseTest {
     @Test
     public void searchCourse() {
 
-        AssertCourse(0,3,"test",3,"User","userName",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
-        AssertCourse(0,2,"test",2,"User","userName",new String[] {"manager1","manager1"},"courseName",new String[] {"test1","test2"});
-        AssertCourse(0,3,"english",1,"User","userName",new String[] {"manager2"},"courseName",new String[] {"english"});
-        AssertCourse(0,3,"false",0,"User","userName",new String[]{},"courseName",new String[]{});
-        AssertCourse(0,3,"",3,"User","userName",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
+        AssertCourse(0,3,"test",3,"User","username",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
+        AssertCourse(0,2,"test",2,"User","username",new String[] {"manager1","manager1"},"courseName",new String[] {"test1","test2"});
+        AssertCourse(0,3,"english",1,"User","username",new String[] {"manager2"},"courseName",new String[] {"english"});
+        AssertCourse(0,3,"false",0,"User","username",new String[]{},"courseName",new String[]{});
+        AssertCourse(0,3,"",3,"User","username",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
     }
 
     private void AssertCourse(int page,int size,String courseName,int resultSize,String extracting1,String extracting2,String []contains1,String extracting3,String []contains2) {
