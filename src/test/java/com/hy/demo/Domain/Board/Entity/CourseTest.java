@@ -3,7 +3,6 @@ package com.hy.demo.Domain.Board.Entity;
 import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,14 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.lang.reflect.Proxy;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @ExtendWith(SpringExtension.class)
@@ -47,32 +42,37 @@ class CourseTest {
 
 
         User manager1 = User.builder()
-                .username("manager")
+                .userName("manager1")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
                 .password(passwordEncoder.encode("manager"))
                 .build();
         User manager2 = User.builder()
-                .username("manager")
+                .userName("manager2")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
                 .password(passwordEncoder.encode("manager"))
                 .build();
 
         Course course1 = Course.builder()
-                .courseName("test")
+                .courseName("test1")
                 .user(manager1)
                 .heart(0)
                 .build();
 
         Course course2 = Course.builder()
-                .courseName("test")
+                .courseName("test2")
                 .user(manager1)
                 .heart(0)
                 .build();
 
         Course course3 = Course.builder()
-                .courseName("test")
+                .courseName("test3")
+                .user(manager2)
+                .heart(0)
+                .build();
+        Course course4 = Course.builder()
+                .courseName("english")
                 .user(manager2)
                 .heart(0)
                 .build();
@@ -83,18 +83,31 @@ class CourseTest {
         courseRepository.save(course1);
         courseRepository.save(course2);
         courseRepository.save(course3);
+        courseRepository.save(course4);
 
     }
 
     @Test
-    public void selectCourse() {
+    public void searchCourse() {
 
-        PageRequest pageRequest = PageRequest.of(0, 3);
-        Page<Course> findCourse = courseRepository.findByCourseNameAndUser("test", pageRequest);
-        assertThat(findCourse.getSize()).isEqualTo(3);
-        System.out.println("findCourse.getContent() = " + findCourse.getContent());
+        AssertCourse(0,3,"test",3,"User","userName",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
+        AssertCourse(0,2,"test",2,"User","userName",new String[] {"manager1","manager1"},"courseName",new String[] {"test1","test2"});
+        AssertCourse(0,3,"english",1,"User","userName",new String[] {"manager2"},"courseName",new String[] {"english"});
+        AssertCourse(0,3,"false",0,"User","userName",new String[]{},"courseName",new String[]{});
+        AssertCourse(0,3,"",3,"User","userName",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
+    }
 
-
+    private void AssertCourse(int page,int size,String courseName,int resultSize,String extracting1,String extracting2,String []contains1,String extracting3,String []contains2) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Course> findCourse = courseRepository.findByCourseNameAndUser(courseName, pageRequest);
+        assertThat(findCourse.getContent().size()).isEqualTo(resultSize);
+        assertThat(findCourse.getContent())
+                .extracting(extracting1)
+                .extracting(extracting2)
+                .contains(contains1);
+        assertThat(findCourse.getContent())
+                .extracting(extracting3)
+                .contains(contains2);
     }
 
 
