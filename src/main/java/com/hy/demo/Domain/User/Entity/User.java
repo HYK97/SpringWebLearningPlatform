@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "User_id")
     private Long id;
-    private String userName;
+    private String username;
     private String password;
     private String email;
     private String role; //ROLE_USER, ROLE_ADMIN
@@ -48,7 +48,7 @@ public class User extends BaseEntity {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +

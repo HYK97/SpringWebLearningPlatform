@@ -35,7 +35,7 @@ public class UserService {
 
 
             User user2 = User.builder()
-                    .userName(provider.getUserName())
+                    .username(provider.getUsername())
                     .password(provider.getPassword())
                     .email(provider.getEmail())
                     .role(user.getRole())
@@ -57,8 +57,8 @@ public class UserService {
     public Boolean loginForm(User user) {
 
 
-        String username = user.getUserName();
-        User findUser = userRepository.findByUserName(username);
+        String username = user.getUsername();
+        User findUser = userRepository.findByUsername(username);
         if (findUser != null) {
             logger.info("회원");
             return true;

@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/admin/**").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/main/**").authenticated()
+                .antMatchers("/course/**").authenticated()
                 .anyRequest().permitAll() // 위의 페이지 3개 이외는 아무나 접근하게 해주는 체인.
                 .and() //만약에 권한이 없는 페이지로 들어갈때 로그인페이지로 가게해주는 체인.
                 .formLogin()
