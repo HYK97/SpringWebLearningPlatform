@@ -1,0 +1,147 @@
+{{>layout/header}}
+
+
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">새로운 강의를 찾아보세요!</h1>
+                <p class="lead text-muted">원하는 기술을 배우고 업그레이드 하세요.</p>
+                <p>
+                </p>
+                <form method="get" action="/course/search" class="d-flex">
+                <input class="form-control me-sm-2" type="text" name="search" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+                <p>
+                </p>
+            </div>
+        </div>
+    </section>
+
+  <div class="album py-5 bg-light">
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+          {{#course}}
+          <div class="col">
+              <div class="card shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">X</text></svg>
+                  <div class="card-body">
+                      <h5 class="card-text">{{courseName}}</h5>
+                      <p class="card-text">{{user.username}}</p><div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                          <small class="text-muted">좋아요수  : {{heart}}</small></div>
+                      <small class="text-muted">시작일 : {{createDate}}
+                      </small>
+                  </div>
+                  </div>
+              </div>
+          </div>
+          {{/course}}
+
+
+
+      </div>
+        <hr class="my-4">
+        <div class="col" style=" display: flex; justify-content: center;">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+
+                    <li class="page-item disabled" id="previous">
+                        <a class="page-link" href="#" id="previousAtag" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+
+
+
+
+
+                    <li class="page-item" id="next">
+                        <a class="page-link" id="nextAtag"href="#" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+  </div>
+
+
+
+</main>
+<script>
+    $(document).ready(function() {
+    var Previous ={{Previous}};
+    var Next ={{Next}};
+    var pageNumber ={{pageNumber}};
+    var preNum=parseInt(pageNumber)-1;
+    var nexNum=parseInt(pageNumber)+1;
+    var totalPages ={{totalPages}};
+    const URLSearch = new URLSearchParams(location.search);
+    var search =URLSearch.get('search');
+    var html="" ;
+        for (var num=1;num<=totalPages;num++) {
+            if (num == pageNumber) {
+                if (URLSearch.get('search') != null) {
+                    html += '<li class="page-item active"><a class="page-link" href="/course/search?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                } else {
+                    html += '<li class="page-item active"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
+                }
+            } else {
+                if (URLSearch.get('search') != null) {
+                    html += '<li class="page-item"><a class="page-link" href="/course/search?search='+search+'&page=' + num + '">' + num + '</a></li>';
+                } else {
+                    html +='<li class="page-item"><a class="page-link" href="/course/view?page='+num+'">'+num+'</a></li>';
+                }
+            }
+        }
+        $("#previous").after(html);
+
+        if (Previous) {
+            $("#previous").removeClass("disabled");
+            if (URLSearch.get('search') != null) {
+
+                $("#previousAtag").attr("href", '/course/search?search=' + search + '&page=' + preNum);
+            } else {
+                $("#previousAtag").attr("href", '/course/view?page='+preNum);
+            }
+        } else {
+            $("#previous").addClass("disabled");
+
+
+        }
+
+
+        if (Next) {
+            $("#next").removeClass("disabled");
+            if (URLSearch.get('search') != null) {
+                $("#nextAtag").attr("href", '/course/search?search=' + search + '&page=' + nexNum);
+            } else {
+                $("#nextAtag").attr("href", '/course/view?page='+nexNum);
+            }
+        } else {
+            $("#next").addClass("disabled");
+
+        }
+
+
+
+
+
+
+
+
+    });
+
+</script>
+
+
+
+{{>layout/footer}}
