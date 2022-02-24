@@ -68,7 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(principalOauth2UserService)
                 .and()
                 .successHandler(new LoginSuccessHandler("/main/index"))
-                .failureHandler(new LoginFailHandler());
+                .failureHandler(new LoginFailHandler())
+                .and().httpBasic();
 
 
 
