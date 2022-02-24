@@ -112,10 +112,8 @@ class MainControllerTest {
         // when
         mvc.perform(get("/main/index"))
                 .andDo(print())
-
                 // then
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/loginForm"));
+                .andExpect(status().is4xxClientError());
 
     }
 
