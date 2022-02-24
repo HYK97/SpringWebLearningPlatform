@@ -38,7 +38,12 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                         ,course.id
                         ,course.courseName
                         ,user
-                        ,course.heart))
+                        ,course.heart
+                        ,course.fileSize
+                        ,course.filePath
+                        ,course.origFileName
+                        ,course.createDate
+                        ))
                         .from(course)
                         .leftJoin(course.user, user)
                         .where(course.courseName.contains(courseName))
