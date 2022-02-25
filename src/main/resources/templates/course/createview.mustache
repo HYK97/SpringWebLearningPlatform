@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>강좌생성</title>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/dist/css/form-validation.css" rel="stylesheet">
+
+    <script src="../assets/dist/summernote/summernote-lite.js"></script>
+    <script src="../assets/dist/summernote/lang/summernote-ko-KR.js"></script>
+    <link rel="stylesheet" href="../assets/dist/summernote/summernote-lite.css">
+</head>
+
+{{>layout/header}}
+
+<body class="bg-light">
+
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+            <h2>강좌 생성</h2>
+            <p class="lead">강좌를 생성하기 위한 정보를 입력해 주세요!</p>
+            <p class="lead">강사명과 현재 로그인한 id는 페이지에 노출되며 학생들이 검색할 때 필요한 정보입니다.</p>
+            <p class="lead">추후에 변경이 가능하나 신중하게 작성해 주세요.</p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-7 col-lg-12">
+                <h4 class="mb-3">강좌 정보 입력</h4>
+                <form class="needs-validation" novalidate>
+                    <div class="row g-3">
+
+                        <div class="col-sm-12">
+                            <label for="courseName" class="form-label">강좌명</label>
+                            <input type="text" name="courseName" class="form-control" id="courseName" placeholder="강좌명"
+                                   value="" required>
+                            <div class="invalid-feedback">
+                                강좌이름을 입력해 주세요.
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="teachName" class="form-label">강사명</label>
+                            <input type="text" class="form-control" id="teachName" placeholder="강사명" required>
+                            <div class="invalid-feedback">
+                                강사이름을 입력해 주세요.
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-12">
+                            <label for="thumbnail" class="form-label">썸네일</label>
+                            <input type="file" name="thumbnail" class="form-control" id="thumbnail" placeholder="썸내일"
+                                   value="" accept="image/*" name="file" onchange="fileCheck(this);" required>
+                            <div class="invalid-feedback">
+                                강좌 썸네일을 선택해주세요
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="summernote" class="form-label">강좌 설명</label>
+                            <textarea class="summernote" id="courseExplanation" name="courseExplanation" required></textarea>
+                            <div class="invalid-feedback">
+                                강좌 설명을 입력해주세요
+                            </div>
+                        </div>
+
+                        <script>
+                            $('.summernote').summernote({
+                                height: 500,
+                                lang: "ko-KR",
+                                placeholder: '강좌내용을 입력해주세요'
+
+                            });
+
+                        </script>
+                    </div>
+
+                    <hr class="my-4">
+                    <button id="courseBtn" class="w-100 btn btn-primary btn-lg" type="submit">강좌 생성하기</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+</div>
+
+<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="../assets/dist/js/form-validation.js"></script>
+
+</body>
+</html>
