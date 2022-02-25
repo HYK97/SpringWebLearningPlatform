@@ -29,6 +29,14 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
                 .password(passwordEncoder.encode("user"))
                 .build();
 
+        User manager = User.builder()
+                .username("tmanager")
+                .role("ROLE_MANAGER")
+                .email("manager@gmail.com")
+                .password(passwordEncoder.encode("manager"))
+                .build();
+
         userRepository.save(user);
+        userRepository.save(manager);
     }
 }
