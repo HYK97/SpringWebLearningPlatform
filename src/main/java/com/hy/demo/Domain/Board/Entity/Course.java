@@ -29,12 +29,9 @@ public class Course extends BaseEntity {
     @JoinColumn(name = "User_id")
     private User user;
 
-    private String origFileName;  // 파일 원본명
+    private String courseExplanation;
 
-    private String filePath;  // 파일 저장 경로
-
-    private Long fileSize;
-
+    private String thumbnail;
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<UserCourse> userCourses = new ArrayList<>();
 
