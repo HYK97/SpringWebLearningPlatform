@@ -1,5 +1,6 @@
 package com.hy.demo.Domain.Board.Entity;
 
+import com.hy.demo.Domain.Board.Dto.CourseDto;
 import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
@@ -87,17 +88,20 @@ class CourseRepositoryTest {
 
     @Test
     public void searchCourse() {
-
+        //강좌명으로검색
         AssertCourse(0,3,"test",3,"User","username",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
         AssertCourse(0,2,"test",2,"User","username",new String[] {"manager1","manager1"},"courseName",new String[] {"test1","test2"});
         AssertCourse(0,3,"english",1,"User","username",new String[] {"manager2"},"courseName",new String[] {"english"});
         AssertCourse(0,3,"false",0,"User","username",new String[]{},"courseName",new String[]{});
         AssertCourse(0,3,"",3,"User","username",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
+        //강사명으로 검색
+        AssertCourse(0,3,"manager2",2,"User","username",new String[]{"manager2","manager2"},"courseName",new String[]{"english","test3"});
+        AssertCourse(0,3,"manager1",2,"User","username",new String[]{"manager1","manager1"},"courseName",new String[]{"test1","test2"});
     }
 
     private void AssertCourse(int page,int size,String courseName,int resultSize,String extracting1,String extracting2,String []contains1,String extracting3,String []contains2) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Course> findCourse = courseRepository.findByCourseNameAndUser(courseName, pageRequest);
+        Page<CourseDto> findCourse = courseRepository.findByCourseNameAndUserDTO(courseName, pageRequest);
         assertThat(findCourse.getContent().size()).isEqualTo(resultSize);
         assertThat(findCourse.getContent())
                 .extracting(extracting1)

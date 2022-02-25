@@ -46,7 +46,7 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                         ))
                         .from(course)
                         .leftJoin(course.user, user)
-                        .where(course.courseName.contains(courseName))
+                        .where(course.courseName.contains(courseName).or(user.username.contains(courseName)))
         );
 
 
