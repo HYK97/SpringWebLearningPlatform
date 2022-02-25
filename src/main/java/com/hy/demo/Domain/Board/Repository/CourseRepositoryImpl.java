@@ -39,11 +39,10 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                         ,course.courseName
                         ,user
                         ,course.heart
-                        ,course.fileSize
-                        ,course.filePath
-                        ,course.origFileName
                         ,course.createDate
                         ,course.teachName
+                        ,course.thumbnail
+                        ,course.courseExplanation
                         ))
                         .from(course)
                         .leftJoin(course.user, user)

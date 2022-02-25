@@ -49,9 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
+                .antMatchers("assets/**").permitAll()
                 .antMatchers("/user/manager/**").access("hasRole('ROLE_ADMIN') or  hasRole('ROLE_MANAGER')") //access는 권한이필요하다는것 (로그인포함)
                 .antMatchers("/user/admin/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/course/create").access("hasRole('ROLE_ADMIN') or  hasRole('ROLE_MANAGER')")
+                .antMatchers("/course/create**").access("hasRole('ROLE_ADMIN') or  hasRole('ROLE_MANAGER')")
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/main/**").authenticated()
                 .antMatchers("/course/**").authenticated()

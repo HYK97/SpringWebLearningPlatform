@@ -28,25 +28,22 @@ public class CourseDto extends BaseEntity {
 
     private int heart;
 
-    private String origFileName;  // 파일 원본명
+    private String thumbnail;
 
-    private String filePath;  // 파일 저장 경로
-
-    private Long fileSize;
+    private String courseExplanation;
 
     private Timestamp createDate;
 
 
-    public CourseDto(Long id, String courseName, User user, int heart, Long fileSize, String filePath, String origFileName,Timestamp createDate,String teachName) {
+    public CourseDto(Long id, String courseName, User user, int heart,Timestamp createDate,String teachName,String thumbnail,String courseExplanation) {
         this.id = id;
         this.courseName = courseName;
         this.user =new CourseUser(user.getUsername(),user.getEmail(),user.getRole());
         this.heart = heart;
-        this.origFileName = origFileName;
-        this.filePath = filePath;
-        this.fileSize = fileSize;
         this.createDate =createDate;
         this.teachName =teachName;
+        this.thumbnail =thumbnail;
+        this.courseExplanation =courseExplanation;
     }
 
 
