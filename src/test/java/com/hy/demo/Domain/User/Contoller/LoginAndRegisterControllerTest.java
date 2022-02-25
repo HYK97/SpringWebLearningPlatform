@@ -174,13 +174,12 @@ class LoginAndRegisterControllerTest {
     }
 
     @Test
-    public void joinNormalPost() throws Exception {
+    public void joinSuccessPost() throws Exception {
         //given
-
 
         // when
         mvc.perform(post("/join")
-                .param("username","test")
+                .param("username","normal")
                 .param("password","test")
                 .param("email","test@gmail.com")
                 .param("role","ROLE_USER"))
@@ -191,7 +190,26 @@ class LoginAndRegisterControllerTest {
                 .andExpect(content().string("/loginForm"));
 
                 // then
+    }
 
+
+    @Test
+    public void joinDuplicationIdPost() throws Exception {
+        //given
+        //기존의 post 회원 아이디랑 같은 아이디로 회원가입시도
+        // when
+        mvc.perform(post("/join")
+                .param("username","test")
+                .param("password","test")
+                .param("email","test@gmail.com")
+                .param("role","ROLE_USER"))
+
+                .andDo(print())
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("false"));
+
+                // then
     }
 
 
