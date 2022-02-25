@@ -38,6 +38,13 @@ public class UserController {
         return "user";
     }
 
+    @ResponseBody
+    @PostMapping("role")
+    public String session(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        return principalDetails.getUser().getRole();
+    }
+
 
     //테스트용
     @ResponseBody

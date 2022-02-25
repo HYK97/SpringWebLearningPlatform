@@ -72,42 +72,6 @@ public class CourseController {
 
 
 
-
-
-
-   /* @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-
-    @GetMapping( {"/create"})
-    public String testCreate(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-
-        System.out.println("principalDetails.getUser().\\ = " + principalDetails.getUser().toString());
-        User user = userRepository.findByUsername(principalDetails.getUser().getUsername());
-        Course course = Course.builder()
-                .courseName("test1")
-                .user(user)
-                .teachName("이정한")
-                .heart(0)
-                .build();
-        Course course2 = Course.builder()
-                .courseName("asd")
-                .user(user)
-                .teachName("김지환")
-                .heart(0)
-                .build();
-
-        courseService.createCourse(course);
-        courseService.createCourse(course2);
-        return "/course/view";
-    }*/
-
     @GetMapping( {"/createview"})
     public String createView(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
@@ -116,8 +80,7 @@ public class CourseController {
 
 
     @PostMapping( {"/create"})
-    public void testCreate(@AuthenticationPrincipal PrincipalDetails principalDetails,MultipartFile thumbnail,String courseName,String teachName,String courseExplanation) {
-
+    public String testCreate(@AuthenticationPrincipal PrincipalDetails principalDetails,MultipartFile thumbnail,String courseName,String teachName,String courseExplanation) {
         Course course = null;
         try {
             SummerNoteImage uploadFile = imageService.store(thumbnail);
@@ -131,10 +94,11 @@ public class CourseController {
         } catch (Exception e) {
             //error
             e.printStackTrace();
+            return "/error/error400";
         }
         courseService.createCourse(course);
 
-
+        return "redirect:/course/view";
 
     }
 
