@@ -81,26 +81,31 @@
     var Previous ={{Previous}};
     var Next ={{Next}};
     var pageNumber ={{pageNumber}};
+    var totalElements ={{totalElements}}
     var preNum=parseInt(pageNumber)-1;
     var nexNum=parseInt(pageNumber)+1;
     var totalPages ={{totalPages}};
     const URLSearch = new URLSearchParams(location.search);
     var search =URLSearch.get('search');
     var html="" ;
-        for (var num=1;num<=totalPages;num++) {
-            if (num == pageNumber) {
-                if (URLSearch.get('search') != null) {
-                    html += '<li class="page-item active"><a class="page-link" href="/course/search?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+        if (totalElements != 0) {
+            for (var num = 1; num <= totalPages; num++) {
+                if (num == pageNumber) {
+                    if (URLSearch.get('search') != null) {
+                        html += '<li class="page-item active"><a class="page-link" href="/course/search?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                    } else {
+                        html += '<li class="page-item active"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
+                    }
                 } else {
-                    html += '<li class="page-item active"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
-                }
-            } else {
-                if (URLSearch.get('search') != null) {
-                    html += '<li class="page-item"><a class="page-link" href="/course/search?search='+search+'&page=' + num + '">' + num + '</a></li>';
-                } else {
-                    html +='<li class="page-item"><a class="page-link" href="/course/view?page='+num+'">'+num+'</a></li>';
+                    if (URLSearch.get('search') != null) {
+                        html += '<li class="page-item"><a class="page-link" href="/course/search?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                    } else {
+                        html += '<li class="page-item"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
+                    }
                 }
             }
+        } else if(totalElements == 0 && URLSearch.get('search') != null) {
+            alert("검색결과가 없습니다");
         }
         $("#previous").after(html);
 
