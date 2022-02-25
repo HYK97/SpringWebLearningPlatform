@@ -39,24 +39,11 @@ public class CourseController {
     @GetMapping( {"/view"})
         public String course(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-
         Page<CourseDto> courseDtos=courseService.viewCourse(pageable);
-        List<CourseDto> content = courseDtos.getContent();
-        int pageNumber = courseDtos.getPageable().getPageNumber();
-        int totalPages = courseDtos.getTotalPages();
-        boolean Previous = courseDtos.hasPrevious();
-        boolean Next = courseDtos.hasNext();
-        model.addAttribute("course",content);
-        model.addAttribute("pageNumber",pageNumber+1);
-        model.addAttribute("totalPages",totalPages);
-        model.addAttribute("Previous",Previous);
-        model.addAttribute("Next",Next);
-        logger.info("1현재페이지 = " + pageNumber);
-        logger.info("전체페이지 = " + totalPages);
-        logger.info("이전페이지있냐 = " + Previous);
-        logger.info("다음페이지있냐 = " + Next);
+        pagingDto(model, courseDtos);
         return "/course/view";
     }
+
 
 
 
@@ -65,23 +52,30 @@ public class CourseController {
     public String courseSearch(Model model,String search,@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC)Pageable pageable) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         Page<CourseDto> courseDtos=courseService.searchCourse(search,pageable);
+        pagingDto(model, courseDtos);
+
+        return "/course/view";
+
+    }
+
+    private void pagingDto(Model model, Page<CourseDto> courseDtos) {
         List<CourseDto> content = courseDtos.getContent();
         int pageNumber = courseDtos.getPageable().getPageNumber();
         int totalPages = courseDtos.getTotalPages();
         boolean Previous = courseDtos.hasPrevious();
         boolean Next = courseDtos.hasNext();
-        model.addAttribute("course",content);
-        model.addAttribute("pageNumber",pageNumber+1);
-        model.addAttribute("totalPages",totalPages);
-        model.addAttribute("Previous",Previous);
-        model.addAttribute("Next",Next);
+        long totalElements = courseDtos.getTotalElements();
+        model.addAttribute("course", content);
+        model.addAttribute("pageNumber", pageNumber + 1);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("Previous", Previous);
+        model.addAttribute("Next", Next);
+        model.addAttribute("totalElements", totalElements);
         logger.info("1현재페이지 = " + pageNumber);
+        logger.info("콘텐츠갯수 = " + totalElements);
         logger.info("전체페이지 = " + totalPages);
         logger.info("이전페이지있냐 = " + Previous);
         logger.info("다음페이지있냐 = " + Next);
-
-        return "/course/view";
-
     }
 
 
