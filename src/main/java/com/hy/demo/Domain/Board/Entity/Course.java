@@ -23,6 +23,7 @@ public class Course extends BaseEntity {
 
     private String courseName;
 
+    private String teachName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_id")

@@ -24,6 +24,8 @@ public class CourseDto extends BaseEntity {
 
     private CourseUser user;
 
+    private String teachName;
+
     private int heart;
 
     private String origFileName;  // 파일 원본명
@@ -35,7 +37,7 @@ public class CourseDto extends BaseEntity {
     private Timestamp createDate;
 
 
-    public CourseDto(Long id, String courseName, User user, int heart, Long fileSize, String filePath, String origFileName,Timestamp createDate) {
+    public CourseDto(Long id, String courseName, User user, int heart, Long fileSize, String filePath, String origFileName,Timestamp createDate,String teachName) {
         this.id = id;
         this.courseName = courseName;
         this.user =new CourseUser(user.getUsername(),user.getEmail(),user.getRole());
@@ -44,6 +46,7 @@ public class CourseDto extends BaseEntity {
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.createDate =createDate;
+        this.teachName =teachName;
     }
 
 

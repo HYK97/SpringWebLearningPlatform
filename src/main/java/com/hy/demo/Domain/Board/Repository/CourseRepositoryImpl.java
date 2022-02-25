@@ -43,10 +43,11 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                         ,course.filePath
                         ,course.origFileName
                         ,course.createDate
+                        ,course.teachName
                         ))
                         .from(course)
                         .leftJoin(course.user, user)
-                        .where(course.courseName.contains(courseName).or(user.username.contains(courseName)))
+                        .where(course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
         );
 
 

@@ -100,11 +100,13 @@ public class CourseController {
         Course course = Course.builder()
                 .courseName("test1")
                 .user(user)
+                .teachName("이정한")
                 .heart(0)
                 .build();
         Course course2 = Course.builder()
                 .courseName("asd")
                 .user(user)
+                .teachName("김지환")
                 .heart(0)
                 .build();
 
@@ -112,4 +114,11 @@ public class CourseController {
         courseService.createCourse(course2);
         return "/course/view";
     }
+
+    @GetMapping( {"/createview"})
+    public String createView(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        return "/course/createview";
+    }
 }
+
