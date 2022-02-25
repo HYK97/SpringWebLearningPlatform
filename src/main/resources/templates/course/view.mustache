@@ -62,13 +62,13 @@
           {{#course}}
           <div class="col">
               <div class="card shadow-sm">
-                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">X</text></svg>
+                  <img class="bd-placeholder-img card-img-top" width="100%" height="225"src="{{thumbnail}}">
                   <div class="card-body">
                       <h5 class="card-text">{{courseName}}</h5>
                       <p class="card-text">강사명 : {{teachName}}({{user.username}})</p><div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                           <small class="text-muted">좋아요수  : {{heart}}</small></div>
-                      <small class="text-muted">시작일 : {{createDate}}
+                      <small class="text-muted">강의 생성일 : {{createDate}}
                       </small>
                   </div>
                   </div>
