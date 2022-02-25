@@ -92,9 +92,14 @@
             data : queryString,
             cache : false,
             success : function(data){
-                alert("회원가입을 환영합니다.");
-                $('#check').val("1");
-                location.replace(data);
+                if (data == "false") {
+                    alert("이미 id가 존재합니다.");
+                } else {
+                    alert("회원가입을 환영합니다.");
+                    $('#check').val("1");
+                    location.replace(data);
+                }
+
             },
             error:function(request, error) {
                 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);

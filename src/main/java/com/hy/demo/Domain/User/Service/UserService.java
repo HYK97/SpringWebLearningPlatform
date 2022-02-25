@@ -3,6 +3,7 @@ package com.hy.demo.Domain.User.Service;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 
+import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,25 @@ public class UserService {
 
 
     @Transactional
-    public void register(User user,User provider) {
+    public boolean register(User user, User provider) {
+        User byUsername;
+        boolean empty;
         if (provider == null) {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            logger.info("user.getPassword() = " + user.getPassword());
-            userRepository.save(user);
+            byUsername = userRepository.findByUsername(user.getUsername());
+            empty = ObjectUtils.isEmpty(byUsername);
+            if (empty) { // 회원없을시
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+                logger.info("user.getPassword() = " + user.getPassword());
+                userRepository.save(user);
+                return true;
+            } else {   //회원있을시에
+                return false;
+            }
+
         } else {
-
-
+            byUsername = userRepository.findByUsername(user.getUsername());
+            empty = ObjectUtils.isEmpty(byUsername);
+            if (empty) { // 회원없을시
 
             User user2 = User.builder()
                     .username(provider.getUsername())
@@ -45,6 +57,10 @@ public class UserService {
             logger.info("user.getPassword() = " + user2.getPassword());
 
             userRepository.save(user2);
+                return true;
+            } else {   //회원있을시에
+                return false;
+            }
 
         }
 
