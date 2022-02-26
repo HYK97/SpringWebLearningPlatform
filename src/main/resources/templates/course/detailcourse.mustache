@@ -56,7 +56,7 @@
 
     </div>
         <div class="col-md-6 ">
-            <h1 class="display-4 fst-italic">{{courseName}}</h1>
+            <h1 class="display-4 fst-italic my-4">{{courseName}}</h1>
             <p class="lead my-3">강사명 : {{teachName}}({{user.username}})</p>
             <p class="lead mb-0">
             <div class="d-flex justify-content-between align-items-center">
@@ -69,17 +69,17 @@
                             <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                         </div>
                     </div>
-                    <div class="star-ratings">
+                    <div class="star-ratings my-1">
                         <small id="scope" class="text-muted"> ({{scope}})</small>
                     </div>
                 </div>
-                <small id="date" class="text-muted">
-                </small>
             </div>
+            <p id="date" class="text-muted my-3 ">
+                강좌 생성일 : {{createDate}}
             </p>
         </div>
     </div>
-    {{/course}}
+
     <div class="row mb-2">
 
 
@@ -93,9 +93,9 @@
 
 
 
-            {{#course}}
+
                 {{{courseExplanation}}}
-            {{/course}}
+
 
 
         </div>
@@ -116,7 +116,18 @@
                     </ol>
                 </div>
                 <div class="p-4 mb-3 bg-light rounded">
-                    <button type="button" id="btn" class="w-100 btn btn-lg btn-success">> 수강신청하기 !</button>
+
+
+                        {{#applicationCheck}}
+                            <a href="#" id="btn" class="w-100 btn btn-lg btn-success" >> 강의 이어보기 </a>
+                        {{/applicationCheck}}
+                        {{^applicationCheck}}
+                        <form method="post" action="/course/application">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <button type="submit" id="btn" class="w-100 btn btn-lg btn-success" >> 수강신청하기 </button>
+                        </form>
+                        {{/applicationCheck}}
+
                 </div>
 
 
@@ -126,9 +137,7 @@
     </div>
 
 </main>
-
+    {{/course}}
 {{>layout/footer}}
-
-
 </body>
 </html>

@@ -83,10 +83,11 @@
                                             </div>
                                         </div>
                                         <div class="star-ratings">
-                                            <small id="scope" class="text-muted">  ({{scope}})</small>
+                                            <small id="scope" class="text-muted">({{scope}})</small>
                                         </div>
                                     </div>
-                                    <small id="date" class="text-muted">
+                                    <small id="date" class="text-muted mt-1 ">
+                                        강좌 생성일 : {{createDate}}
                                     </small>
                                 </div>
                             </div>
@@ -129,9 +130,6 @@
 
 
         //생성일
-        var createDate = '{{#course}}{{createDate}}{{/course}}';
-        createDate =createDate.split(" ");
-        $('#date').text('강좌생성일  :  ' +createDate[0]);
 
 
         Previous ={{Previous}};
