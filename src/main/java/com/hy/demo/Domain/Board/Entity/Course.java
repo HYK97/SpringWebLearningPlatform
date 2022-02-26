@@ -29,7 +29,11 @@ public class Course extends BaseEntity {
     @JoinColumn(name = "User_id")
     private User user;
 
+    @Column(length = 100000000)
     private String courseExplanation;
+
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<CourseEvaluation> courseEvaluations = new ArrayList<>();
 
     private String thumbnail;
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
@@ -37,8 +41,6 @@ public class Course extends BaseEntity {
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CourseBoard> courseBoards = new ArrayList<>();
-
-    private int heart;
 
     //코스 저장될때 유저의 리스트에도 저장되게함
     public void addCourse(User user) {

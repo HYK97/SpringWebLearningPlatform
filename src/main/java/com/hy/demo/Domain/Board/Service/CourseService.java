@@ -5,7 +5,6 @@ import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +21,14 @@ public class CourseService {
         Page<CourseDto> results = courseRepository.findByCourseNameAndUserDTO("", pageable);
         return results;
     }
+
+    public CourseDto detailView(Long id) {
+
+        CourseDto results = courseRepository.findByIdAndUserDTO(id);
+
+        return results;
+    }
+
 
     public Page<CourseDto> searchCourse(String search, Pageable pageable) {
         Page<CourseDto> results = courseRepository.findByCourseNameAndUserDTO(search, pageable);
