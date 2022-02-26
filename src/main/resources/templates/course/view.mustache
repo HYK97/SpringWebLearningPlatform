@@ -4,10 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>강좌</title>
-    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{>layout/import}}
 
     <style>
         .bd-placeholder-img {
@@ -25,13 +22,10 @@
         }
     </style>
 
-    <link href="../assets/dist/css/headers.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../assets/dist/css/carousel.css" rel="stylesheet">
 
-    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
+
 <body>
 {{>layout/header}}
 
@@ -45,83 +39,111 @@
                 <p>
                 </p>
                 <form method="get" action="/course/search" class="d-flex">
-                <input class="form-control me-sm-2" type="text" name="search" placeholder="강좌명이나 강사명을 검색해주세요!">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+                    <input class="form-control me-sm-2" type="text" name="search" placeholder="강좌명이나 강사명을 검색해주세요!">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
                 <p>
                 </p>
             </div>
         </div>
     </section>
 
-  <div class="album py-5 bg-light">
-    <div class="container">
+    <div class="album py-5 bg-light">
+        <div class="container">
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {{#course}}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            {{#thumbnail}}<a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top" width="100%" height="255" src="{{thumbnail}}"></a>
 
-          {{#course}}
-          <div class="col">
-              <div class="card shadow-sm">
-                  <img class="bd-placeholder-img card-img-top" width="100%" height="225"src="{{thumbnail}}">
-                  <div class="card-body">
-                      <h5 class="card-text">{{courseName}}</h5>
-                      <p class="card-text">강사명 : {{teachName}}({{user.username}})</p><div class="d-flex justify-content-between align-items-center">
-                      <div class="btn-group">
-                          <small class="text-muted">좋아요수  : {{heart}}</small></div>
-                      <small class="text-muted">강의 생성일 : {{createDate}}
-                      </small>
-                  </div>
-                  </div>
-              </div>
-          </div>
-          {{/course}}
+                            {{/thumbnail}}
+
+                            {{^thumbnail}}
+                                <a href="/course/detailcourse?id={{id}}">
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="255"
+                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#55595c"></rect>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">x</text>
+                                </svg>
+                                </a>
+                            {{/thumbnail}}
+                            <div class="card-body">
+                                <h5 class="card-text">{{courseName}}</h5>
+                                <p class="card-text">강사명 : {{teachName}}({{user.username}})</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <div class="star-ratings">
+                                            <div id="star" style="width: {{starscope}}%" class="star-ratings-fill space-x-2 text-lg">
+                                                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                            </div>
+                                            <div class="star-ratings-base space-x-2 text-lg">
+                                                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                            </div>
+                                        </div>
+                                        <div class="star-ratings">
+                                            <small id="scope" class="text-muted">  ({{scope}})</small>
+                                        </div>
+                                    </div>
+                                    <small id="date" class="text-muted">
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/course}}
+            </div>
+
+            <hr class="my-4">
+            <div class="col" style=" display: flex; justify-content: center;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+
+                        <li class="page-item disabled" id="previous">
+                            <a class="page-link" href="#" id="previousAtag" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
 
 
+                        <li class="page-item" id="next">
+                            <a class="page-link" id="nextAtag" href="#" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
 
-      </div>
-        <hr class="my-4">
-        <div class="col" style=" display: flex; justify-content: center;">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-
-                    <li class="page-item disabled" id="previous">
-                        <a class="page-link" href="#" id="previousAtag" aria-label="Previous">
-                            <span aria-hidden="true">«</span>
-                        </a>
-                    </li>
-
-
-
-
-
-                    <li class="page-item" id="next">
-                        <a class="page-link" id="nextAtag"href="#" aria-label="Next">
-                            <span aria-hidden="true">»</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </nav>
+                    </ul>
+                </nav>
+            </div>
         </div>
+
     </div>
-
-  </div>
-
 
 
 </main>
 <script>
-    $(document).ready(function() {
-    var Previous ={{Previous}};
-    var Next ={{Next}};
-    var pageNumber ={{pageNumber}};
-    var totalElements ={{totalElements}}
-    var preNum=parseInt(pageNumber)-1;
-    var nexNum=parseInt(pageNumber)+1;
-    var totalPages ={{totalPages}};
-    const URLSearch = new URLSearchParams(location.search);
-    var search =URLSearch.get('search');
-    var html="" ;
+    $(document).ready(function () {
+
+        //평점
+
+
+        //생성일
+        var createDate = '{{#course}}{{createDate}}{{/course}}';
+        createDate =createDate.split(" ");
+        $('#date').text('강좌생성일  :  ' +createDate[0]);
+
+
+        Previous ={{Previous}};
+        var Next ={{Next}};
+        var pageNumber ={{pageNumber}};
+        var totalElements ={{totalElements}}
+        var preNum = parseInt(pageNumber) - 1;
+        var nexNum = parseInt(pageNumber) + 1;
+        var totalPages ={{totalPages}};
+        const URLSearch = new URLSearchParams(location.search);
+        var search = URLSearch.get('search');
+        var html = "";
         if (totalElements != 0) {
             for (var num = 1; num <= totalPages; num++) {
                 if (num == pageNumber) {
@@ -138,7 +160,7 @@
                     }
                 }
             }
-        } else if(totalElements == 0 && URLSearch.get('search') != null) {
+        } else if (totalElements == 0 && URLSearch.get('search') != null) {
             alert("검색결과가 없습니다");
         }
         $("#previous").after(html);
@@ -149,7 +171,7 @@
 
                 $("#previousAtag").attr("href", '/course/search?search=' + search + '&page=' + preNum);
             } else {
-                $("#previousAtag").attr("href", '/course/view?page='+preNum);
+                $("#previousAtag").attr("href", '/course/view?page=' + preNum);
             }
         } else {
             $("#previous").addClass("disabled");
@@ -163,18 +185,12 @@
             if (URLSearch.get('search') != null) {
                 $("#nextAtag").attr("href", '/course/search?search=' + search + '&page=' + nexNum);
             } else {
-                $("#nextAtag").attr("href", '/course/view?page='+nexNum);
+                $("#nextAtag").attr("href", '/course/view?page=' + nexNum);
             }
         } else {
             $("#next").addClass("disabled");
 
         }
-
-
-
-
-
-
 
 
     });

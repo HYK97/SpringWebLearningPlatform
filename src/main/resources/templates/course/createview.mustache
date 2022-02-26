@@ -6,10 +6,10 @@
 
     <title>강좌생성</title>
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <!-- Bootstrap core CSS -->
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{>layout/import}}
 
+
+    <script src="../assets/dist/js/form-validation.js"></script>
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -27,8 +27,6 @@
     </style>
 
 
-    <!-- Custom styles for this template -->
-    <link href="../assets/dist/css/form-validation.css" rel="stylesheet">
 
     <script src="../assets/dist/summernote/summernote-lite.js"></script>
     <script src="../assets/dist/summernote/lang/summernote-ko-KR.js"></script>
@@ -49,7 +47,7 @@
             <p class="lead">추후에 변경이 가능하나 신중하게 작성해 주세요.</p>
         </div>
 
-        <div class="row g-5">
+        <div class="row g-5 mb-5">
             <div class="col-md-7 col-lg-12">
                 <h4 class="mb-3">강좌 정보 입력</h4>
                 <form class="needs-validation" method="post" action="/course/create" novalidate enctype="multipart/form-data">
@@ -105,9 +103,7 @@
 
 </div>
 
-<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="../assets/dist/js/form-validation.js"></script>
 <script>
     $('.summernote').summernote({
         height: 500,

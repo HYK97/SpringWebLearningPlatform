@@ -1,0 +1,134 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>강좌소개</title>
+
+    <!-- Bootstrap core CSS -->
+    {{>layout/import}}
+
+
+
+    <link href="../assets/dist/css/blog.css" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+</head>
+<body>
+{{>layout/header}}
+
+
+
+<main class="container">
+<div class="p-4 p-md-5 mb-4 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-white rounded bg-dark">
+<div class="col-md-6 ">
+    {{#course}}
+
+        {{#thumbnail}}<a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top" width="100%" height="255" src="{{thumbnail}}"></a>
+
+        {{/thumbnail}}
+
+        {{^thumbnail}}
+            <a href="/course/detailcourse?id={{id}}">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="255"
+                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#55595c"></rect>
+                <text x="50%" y="50%" fill="#eceeef" dy=".3em">x</text>
+            </svg>
+            </a>
+        {{/thumbnail}}
+
+    </div>
+        <div class="col-md-6 ">
+            <h1 class="display-4 fst-italic">{{courseName}}</h1>
+            <p class="lead my-3">강사명 : {{teachName}}({{user.username}})</p>
+            <p class="lead mb-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <div class="star-ratings">
+                        <div id="star" style="width: {{starscope}}%" class="star-ratings-fill space-x-2 text-lg">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                        <div class="star-ratings-base space-x-2 text-lg">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </div>
+                    </div>
+                    <div class="star-ratings">
+                        <small id="scope" class="text-muted"> ({{scope}})</small>
+                    </div>
+                </div>
+                <small id="date" class="text-muted">
+                </small>
+            </div>
+            </p>
+        </div>
+    </div>
+    {{/course}}
+    <div class="row mb-2">
+
+
+    </div>
+
+    <div class="row g-5">
+        <div class="col-md-8">
+            <h3 class="pb-4 mb-4 border-bottom">
+                강좌소개
+            </h3>
+
+
+
+            {{#course}}
+                {{{courseExplanation}}}
+            {{/course}}
+
+
+        </div>
+
+        <div class="col-md-4">
+
+
+            <div class="position-sticky" style="top: 2rem;">
+
+
+                <div class="p-4">
+                    <h4 class="fst-italic">수강신청하기</h4>
+                    <p class="mb-0">
+                        주의사항! : --
+                    </p>
+                    <ol class="list-unstyled mb-0">
+
+                    </ol>
+                </div>
+                <div class="p-4 mb-3 bg-light rounded">
+                    <button type="button" id="btn" class="w-100 btn btn-lg btn-success">> 수강신청하기 !</button>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{{>layout/footer}}
+
+
+</body>
+</html>
