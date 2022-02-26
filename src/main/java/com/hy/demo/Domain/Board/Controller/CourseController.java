@@ -6,9 +6,14 @@ import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Board.Service.CourseService;
 import com.hy.demo.Domain.Board.Service.ImageService;
+import com.hy.demo.Domain.User.Entity.User;
+import com.hy.demo.Domain.User.Entity.UserCourse;
+import com.hy.demo.Domain.User.Service.UserService;
+import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/course/*")
@@ -30,6 +36,8 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ImageService imageService;
@@ -46,11 +54,15 @@ public class CourseController {
     }
 
     @GetMapping( {"/detailcourse"})
-    public String detailcourse(String id,Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Long Lid= Long.parseLong(id);
-        logger.info("idss= " + Lid);
-        CourseDto courseDto = courseService.detailView(Lid);
-        model.addAttribute("course",courseDto);
+    public String detailcourse(String id,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+        Map map =userService.findByUserCourse(id,principalDetails.getUser());
+        model.addAttribute("course",map.get("course"));
+        if (ObjectUtils.isEmpty(map.get("userCourse"))) {
+            model.addAttribute("applicationCheck", null);
+        } else {
+            model.addAttribute("applicationCheck", 1);
+        }
         return "/course/detailcourse";
     }
 
@@ -68,6 +80,24 @@ public class CourseController {
         return "/course/view";
 
     }
+
+
+
+    @PostMapping( {"/application"})
+
+    public String courseSearch(String id,@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+        try {
+            Long Lid= Long.parseLong(id);
+            userService.application(Lid, principalDetails.getUser().getUsername());
+        } catch (DataIntegrityViolationException e) {
+            return  "오류처리";
+        }
+        return "redirect:/course/view";
+
+    }
+
+
 
 
 

@@ -11,13 +11,14 @@ import com.hy.demo.Utils.ObjectUtils;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Data
-public class CourseDto extends BaseEntity {
+public class CourseDto  {
 
     private Long id;
 
@@ -31,18 +32,26 @@ public class CourseDto extends BaseEntity {
 
     private String courseExplanation;
 
-    private Timestamp createDate;
+    private Date createDate;
 
     private Double scope;
 
     private Double starscope;
 
+    public Course returnEntity() {
+        return Course.builder()
+                .courseExplanation(this.courseExplanation)
+                .thumbnail(this.thumbnail)
+                .id(this.id)
+                .teachName(this.teachName)
+                .build();
+    }
 
     public CourseDto(Long id, String courseName, User user,Timestamp createDate,String teachName,String thumbnail,String courseExplanation,Double scope) {
         this.id = id;
         this.courseName = courseName;
         this.user =new CourseUser(user.getUsername(),user.getEmail(),user.getRole());
-        this.createDate =createDate;
+        this.createDate =new Date(createDate.getTime());
         this.teachName =teachName;
         this.thumbnail =thumbnail;
         this.courseExplanation =courseExplanation;

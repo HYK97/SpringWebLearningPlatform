@@ -1,6 +1,12 @@
 package com.hy.demo.Domain.User.Service;
 
+import com.hy.demo.Domain.Board.Dto.CourseDto;
+import com.hy.demo.Domain.Board.Entity.Course;
+import com.hy.demo.Domain.Board.Repository.CourseRepository;
+import com.hy.demo.Domain.Board.Service.CourseService;
 import com.hy.demo.Domain.User.Entity.User;
+import com.hy.demo.Domain.User.Entity.UserCourse;
+import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 
 import com.hy.demo.Utils.ObjectUtils;
@@ -11,12 +17,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserCourseRepository userCourseRepository;
+
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    CourseRepository courseRepository;
 
 
     @Autowired
@@ -82,6 +100,43 @@ public class UserService {
             logger.info("비회원");
             return false;
         }
+    }
+
+    public User findByUsername(User user) {
+        return  userRepository.findByUsername(user.getUsername());
+    }
+
+
+    public Map findByUserCourse(String course, User user) {
+
+        Long Lid= Long.parseLong(course);
+        logger.info("idss= " + Lid);
+        CourseDto courseDto = courseService.detailView(Lid);
+        User findUser = findByUsername(user);
+        UserCourse findUserCourse = userCourseRepository.findByUserAndCourse(user, courseDto.returnEntity());
+        Map map = new HashMap();
+        map.put("course",courseDto);
+        map.put("userCourse",findUserCourse);
+        return map;
+
+    }
+
+
+
+
+
+
+    public void application(Long id,String usernames) {
+
+
+        User username = userRepository.findByUsername(usernames);
+        Optional<Course> course = courseRepository.findById(id);
+        UserCourse userCourse = UserCourse.builder()
+                .user(username)
+                .course(course.orElseThrow(IllegalArgumentException::new))
+                .build();
+        userCourseRepository.save(userCourse);
+
     }
 
 
