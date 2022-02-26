@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(uniqueConstraints={@UniqueConstraint(name = "UserCourseUnique" ,columnNames={"User_id","Course_id"})})
 public class UserCourse extends BaseEntity {
 
     @Id // primary key
