@@ -1,5 +1,7 @@
 package com.hy.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,5 +15,9 @@ public class DemoApplication {
 	@Bean(name = "uploadPath")
 	public String uploadPath() {
 		return "D:/image/";
+	}
+
+	@Bean Logger logger () {
+		return LoggerFactory.getLogger(this.getClass());
 	}
 }

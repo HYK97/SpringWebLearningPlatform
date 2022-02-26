@@ -3,6 +3,8 @@ package com.hy.demo.Domain.Board.Controller;
 import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Board.Service.ImageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;

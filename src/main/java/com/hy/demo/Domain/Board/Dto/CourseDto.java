@@ -18,6 +18,7 @@ import java.util.List;
 
 
 @Data
+@NoArgsConstructor
 public class CourseDto  {
 
     private Long id;
@@ -38,6 +39,7 @@ public class CourseDto  {
 
     private Double starscope;
 
+
     public Course returnEntity() {
         return Course.builder()
                 .courseExplanation(this.courseExplanation)
@@ -47,7 +49,11 @@ public class CourseDto  {
                 .build();
     }
 
-    public CourseDto(Long id, String courseName, User user,Timestamp createDate,String teachName,String thumbnail,String courseExplanation,Double scope) {
+    public void setUser(User user) {
+        this.user =new CourseUser(user.getUsername(),user.getEmail(),user.getRole());
+    }
+
+    public CourseDto(Long id, String courseName, User user, Timestamp createDate, String teachName, String thumbnail, String courseExplanation, Double scope) {
         this.id = id;
         this.courseName = courseName;
         this.user =new CourseUser(user.getUsername(),user.getEmail(),user.getRole());

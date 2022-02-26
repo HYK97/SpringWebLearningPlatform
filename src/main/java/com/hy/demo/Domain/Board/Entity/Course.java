@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.Board.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
+import com.hy.demo.Domain.Board.Dto.CourseDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import lombok.*;
@@ -46,6 +47,15 @@ public class Course extends BaseEntity {
     public void addCourse(User user) {
         this.user =user;
         user.getCourses().add(this);
+    }
+
+    public CourseDto returnDto() {
+        CourseDto courseDto =new CourseDto();
+        courseDto.setCourseName(courseName);
+        courseDto.setCourseExplanation(courseExplanation);
+        courseDto.setUser(user);
+        courseDto.setTeachName(teachName);
+        return courseDto;
     }
 
 
