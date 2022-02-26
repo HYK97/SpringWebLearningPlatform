@@ -1,5 +1,9 @@
 package com.hy.demo.Test;
 
+import com.hy.demo.Domain.Board.Entity.Course;
+import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
+import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,12 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private CourseEvaluationRepository courseEvaluationRepository;
+
 
 
     @Autowired
@@ -36,7 +46,39 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
                 .password(passwordEncoder.encode("manager"))
                 .build();
 
+        Course course = Course.builder()
+                .courseName("test")
+                .teachName("tmt")
+                .courseExplanation("sdasd")
+                .user(manager)
+                .build();
+
+        CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
+                .comments("Sdsd")
+                .scope(4.0)
+                .course(course)
+                .user(user)
+                .build();
+
+        CourseEvaluation courseEvaluation2 = CourseEvaluation.builder()
+                .comments("Sdsd")
+                .scope(2.0)
+                .course(course)
+                .user(user)
+                .build();
+        CourseEvaluation courseEvaluation3 = CourseEvaluation.builder()
+                .comments("Sdsd")
+                .scope(3.5)
+                .course(course)
+                .user(user)
+                .build();
+
         userRepository.save(user);
         userRepository.save(manager);
+        courseRepository.save(course);
+
+        courseEvaluationRepository.save(courseEvaluation1);
+        courseEvaluationRepository.save(courseEvaluation2);
+        courseEvaluationRepository.save(courseEvaluation3);
     }
 }

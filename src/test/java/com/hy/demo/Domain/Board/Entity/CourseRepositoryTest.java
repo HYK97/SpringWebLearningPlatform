@@ -57,27 +57,23 @@ class CourseRepositoryTest {
                 .courseName("test1")
                 .user(manager1)
                 .teachName("manager1")
-                .heart(0)
                 .build();
 
         Course course2 = Course.builder()
                 .courseName("test2")
                 .user(manager1)
                 .teachName("manager1")
-                .heart(0)
                 .build();
 
         Course course3 = Course.builder()
                 .courseName("test3")
                 .user(manager2)
                 .teachName("manager2")
-                .heart(0)
                 .build();
         Course course4 = Course.builder()
                 .courseName("english")
                 .user(manager2)
                 .teachName("manager2")
-                .heart(0)
                 .build();
 
         userRepository.save(manager1);
