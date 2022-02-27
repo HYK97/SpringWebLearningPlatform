@@ -113,14 +113,13 @@ public class LoginAndRegisterController {
     public @ResponseBody String join(User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
 
-        int registe;
         logger.info("user.toString() = " + user.toString());
         User provider = null;
         if (!isEmpty(principalDetails)) {
             logger.info("principalDetails.getUser().toString() = " + principalDetails.getUser().toString());
             provider = principalDetails.getUser();
             principalDetails.setFlag(true);
-            return userService.register(user, provider) ?  "/main/index" :   "false";
+            return userService.register(user, provider) ?  "/logout" :   "false";
 
         } else {
             return userService.register(user, provider) ?  "/loginForm" :   "false";
