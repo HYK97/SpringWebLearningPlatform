@@ -4,6 +4,7 @@ import com.hy.demo.Domain.Board.Dto.CourseDto;
 import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -84,6 +85,11 @@ class CourseRepositoryTest {
         courseRepository.save(course3);
         courseRepository.save(course4);
 
+    }
+    @AfterEach
+    public void after(){
+        userRepository.deleteAll();
+        courseRepository.deleteAll();
     }
 
     @Test

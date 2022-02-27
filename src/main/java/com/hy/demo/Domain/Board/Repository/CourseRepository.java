@@ -21,6 +21,7 @@ public interface CourseRepository extends JpaRepository<Course,Long>,CourseRepos
     Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
     Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable) ;
     Page<CourseEvaluation> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable);
-    public CourseDto findByIdAndUserDTO(Long id);
+    CourseDto findByIdAndUserDTO(Long id);
+    Course findByCourseName(String coursename);
     void deleteById(Long id);
 }
