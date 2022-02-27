@@ -8,6 +8,7 @@ import com.hy.demo.Domain.Board.Entity.QCourseEvaluation;
 import com.hy.demo.Domain.User.Entity.QUser;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -37,37 +38,30 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
 
     public Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable) {
         return applyPagination(pageable, query ->
-                query.select(Projections.constructor(CourseDto.class
-                        , course.id
-                        , course.courseName
-                        , user
-                        , course.createDate
-                        , course.teachName
-                        , course.thumbnail
-                        , course.courseExplanation
-                        ,query.select(courseEvaluation.scope.avg()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
-                ))
-                        .from(course)
-                        .leftJoin(course.user, user)
+                getCourseDtoJPAQuery()
                         .where(course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
         );
     }
 
-
     public CourseDto findByIdAndUserDTO(Long id) {
-        return select(Projections.constructor(CourseDto.class
-                        , course.id
-                        , course.courseName
-                        , user
-                        , course.createDate
-                        , course.teachName
-                        , course.thumbnail
-                        , course.courseExplanation
-                        ,select(courseEvaluation.scope.avg()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
-                ))
-                        .from(course)
-                        .leftJoin(course.user, user)
+        return getCourseDtoJPAQuery()
                         .where(course.id.eq(id)).fetchOne();
+    }
+
+    private JPAQuery<CourseDto> getCourseDtoJPAQuery() {
+        return select(Projections.constructor(CourseDto.class
+                , course.id
+                , course.courseName
+                , user
+                , course.createDate
+                , course.teachName
+                , course.thumbnail
+                , course.courseExplanation
+                , select(courseEvaluation.scope.avg()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
+                , select(courseEvaluation.scope.count()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
+        ))
+                .from(course)
+                .leftJoin(course.user, user);
     }
 
 
