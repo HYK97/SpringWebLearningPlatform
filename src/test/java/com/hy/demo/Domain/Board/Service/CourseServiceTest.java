@@ -6,6 +6,7 @@ import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
 import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,10 +43,9 @@ class CourseServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
+    Course course1;
     @BeforeEach
     public void setup(){
-
 
         User manager1 = User.builder()
                 .username("manager1")
@@ -60,8 +60,8 @@ class CourseServiceTest {
                 .password(passwordEncoder.encode("manager"))
                 .build();
 
-        Course course1 = Course.builder()
-                .courseName("test1")
+        course1 = Course.builder()
+                .courseName("CourseTest1s")
                 .user(manager1)
                 .teachName("manager1")
                 .courseExplanation("text")
@@ -116,10 +116,16 @@ class CourseServiceTest {
         courseEvaluationRepository.save(courseEvaluation3);
 
     }
-
+    @AfterEach
+    public void after(){
+        userRepository.deleteAll();
+        courseRepository.deleteAll();
+        courseEvaluationRepository.deleteAll();
+    }
     @Test
     public void detailView() {
-        CourseDto courseDto = courseService.detailView(1L);
+        Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
+        CourseDto courseDto = courseService.detailView(byCourseName.getId());
         List<Double> doubles=new ArrayList<>();
         doubles.add(0.0);
         doubles.add(0.0);
@@ -128,7 +134,7 @@ class CourseServiceTest {
         doubles.add(16.666666666666664);
         assertThat(courseDto)
                 .extracting("courseName","teachName","scope","starScope","courseExplanation","starPercent")
-                .containsExactly("test1","manager1",4.0,81.5,"text",doubles);
+                .containsExactly("CourseTest1s","manager1",4.0,81.5,"text",doubles);
 
     }
 

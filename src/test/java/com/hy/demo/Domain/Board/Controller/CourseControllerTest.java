@@ -156,6 +156,8 @@ class CourseControllerTest {
     @AfterEach
     public void after(){
         userRepository.deleteAll();
+        courseRepository.deleteAll();
+        courseEvaluationRepository.deleteAll();
     }
 
 

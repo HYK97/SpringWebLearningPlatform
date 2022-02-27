@@ -4,6 +4,7 @@ import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class CourseEvaluationRepositoryImplTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
+    Course course1 ;
     @BeforeEach
     public void setup(){
 
@@ -55,8 +56,8 @@ class CourseEvaluationRepositoryImplTest {
                 .password(passwordEncoder.encode("manager"))
                 .build();
 
-        Course course1 = Course.builder()
-                .courseName("test1")
+        course1 = Course.builder()
+                .courseName("courseTest")
                 .user(manager1)
                 .teachName("manager1")
                 .build();
@@ -110,10 +111,16 @@ class CourseEvaluationRepositoryImplTest {
         courseEvaluationRepository.save(courseEvaluation3);
 
     }
-
+    @AfterEach
+    public void after(){
+        userRepository.deleteAll();
+        courseRepository.deleteAll();
+        courseEvaluationRepository.deleteAll();
+    }
     @Test
     public void countScope() {
-        Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(1L);
+        Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
+        Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(byCourseName.getId());
         for( String key : stringDoubleMap.keySet() ) {
             System.out.println(String.format("키 : %s, 값 : %s", key, stringDoubleMap.get(key)));
         }
