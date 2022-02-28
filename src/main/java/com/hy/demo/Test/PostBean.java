@@ -31,7 +31,7 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-      /*  //테스트유저 junit 돌릴때는 주석처리해야댐
+        //테스트유저 junit 돌릴때는 주석처리해야댐
         User user = User.builder()
                 .username("tuser")
                 .role("ROLE_USER")
@@ -79,6 +79,6 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
 
         courseEvaluationRepository.save(courseEvaluation1);
         courseEvaluationRepository.save(courseEvaluation2);
-        courseEvaluationRepository.save(courseEvaluation3);*/
+        courseEvaluationRepository.save(courseEvaluation3);
     }
 }
