@@ -11,9 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.hy.demo.Utils.ObjectUtils.*;
 
 @Controller
@@ -30,6 +37,14 @@ public class LoginAndRegisterController {
 
     @Autowired
     UserService userService;
+
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -104,13 +119,19 @@ public class LoginAndRegisterController {
 
 
     }
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+
+    private String updateOAuth(Authentication authentication) {
+        User findUsername = userService.findByUsername(((PrincipalDetails)authentication.getPrincipal()).getUser());
+        ((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().setRole(findUsername.getRole());
+        return "/main/index";
+    }
+
 
 
 
     @PostMapping("/join")
-    public @ResponseBody String join(User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
+    public @ResponseBody String join(Authentication authentication,User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
 
         logger.info("user.toString() = " + user.toString());
@@ -119,7 +140,7 @@ public class LoginAndRegisterController {
             logger.info("principalDetails.getUser().toString() = " + principalDetails.getUser().toString());
             provider = principalDetails.getUser();
             principalDetails.setFlag(true);
-            return userService.register(user, provider) ?  "/logout" :   "false";
+            return userService.register(user, provider) ?  updateOAuth(authentication) :   "false";
 
         } else {
             return userService.register(user, provider) ?  "/loginForm" :   "false";

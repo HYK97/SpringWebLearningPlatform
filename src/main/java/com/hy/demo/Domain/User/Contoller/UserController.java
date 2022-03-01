@@ -30,19 +30,22 @@ public class UserController {
     @ResponseBody
     @Transactional
     @GetMapping("info")
-    public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String user(@AuthenticationPrincipal PrincipalDetails principalDetails,Authentication authentication) {
 
-        
+        PrincipalDetails principalDetails1= (PrincipalDetails) authentication.getPrincipal();
+        logger.info("principalDetails1.getUser().getUsername() = " + principalDetails1.getUser().getUsername());
+        logger.info("authentication = " + principalDetails1.getUser().getRole());
         logger.info("principalDetails.getUsername() = " + principalDetails.getUsername());
 
+        logger.info("principalDetails.getUser().getRole() = " + principalDetails.getUser().getRole());
         return "user";
     }
 
     @ResponseBody
     @PostMapping("role")
-    public String session(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String session(Authentication authentication) {
 
-        return principalDetails.getUser().getRole();
+        return ((PrincipalDetails)authentication.getPrincipal()).getUser().getRole();
     }
 
 
