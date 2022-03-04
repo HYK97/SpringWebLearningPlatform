@@ -119,7 +119,9 @@ public class LoginAndRegisterController {
 
 
     }
-    private String updateOAuth(Authentication authentication) {
+
+    //세션 업데이트
+    private void updateOAuth(Authentication authentication) {
         User findUser = userService.findByUsername(((PrincipalDetails)authentication.getPrincipal()).getUser());
         PrincipalDetails newPrincipal = new PrincipalDetails(findUser,false);
         UsernamePasswordAuthenticationToken newAuth =
@@ -127,9 +129,7 @@ public class LoginAndRegisterController {
                         authentication.getCredentials(),
                         newPrincipal.getAuthorities());
         newAuth.setDetails(authentication.getDetails());
-
         SecurityContextHolder.getContext().setAuthentication(newAuth);
-        return "/main/index";
     }
 
 
@@ -143,7 +143,11 @@ public class LoginAndRegisterController {
         if (!isEmpty(principalDetails)) {
             provider = principalDetails.getUser();
             principalDetails.setFlag(true);
-            return userService.register(user, provider) ?  updateOAuth(authentication) :   "false";
+            if (userService.register(user, provider)){
+                updateOAuth(authentication);
+                return "/main/index";
+            }
+            return "false";
 
         } else {
             return userService.register(user, provider) ?  "/loginForm" :   "false";
