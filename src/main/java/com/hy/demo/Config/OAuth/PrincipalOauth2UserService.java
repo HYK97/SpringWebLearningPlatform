@@ -76,7 +76,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             logger.info(" 지원하지않는 OAuth 로그인입니다. ");
         }
 
-        String password =bCryptPasswordEncoder.encode("겟인데어");
+        String password =bCryptPasswordEncoder.encode("asd!@#11");
         String username=oAuth2UserInfo.getProvider()+"_"+oAuth2UserInfo.getProviderId();
 
 

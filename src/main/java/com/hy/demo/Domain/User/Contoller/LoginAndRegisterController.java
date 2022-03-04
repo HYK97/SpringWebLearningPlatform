@@ -119,14 +119,18 @@ public class LoginAndRegisterController {
 
 
     }
-
-
     private String updateOAuth(Authentication authentication) {
-        User findUsername = userService.findByUsername(((PrincipalDetails)authentication.getPrincipal()).getUser());
-        ((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().setRole(findUsername.getRole());
+        User findUser = userService.findByUsername(((PrincipalDetails)authentication.getPrincipal()).getUser());
+        PrincipalDetails newPrincipal = new PrincipalDetails(findUser,false);
+        UsernamePasswordAuthenticationToken newAuth =
+                new UsernamePasswordAuthenticationToken(newPrincipal,
+                        authentication.getCredentials(),
+                        newPrincipal.getAuthorities());
+        newAuth.setDetails(authentication.getDetails());
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
         return "/main/index";
     }
-
 
 
 
