@@ -46,6 +46,8 @@ class CourseEvaluationRepositoryImplTest {
 
     private Long course1Id;
     private Long course2Id;
+    private Long courseEvaluation4Id;
+    private CourseEvaluation courseEvaluation4;
 
     @BeforeEach
     public void setup(){
@@ -105,12 +107,13 @@ class CourseEvaluationRepositoryImplTest {
                 .comments("test3")
                 .course(course1)
                 .build();
-        CourseEvaluation courseEvaluation4 = CourseEvaluation.builder()
+        courseEvaluation4 = CourseEvaluation.builder()
                 .user(manager2)
                 .scope(1.0)
                 .comments("test4")
                 .course(course2)
                 .build();
+
 
         userRepository.save(manager1);
         userRepository.save(manager2);
@@ -123,7 +126,17 @@ class CourseEvaluationRepositoryImplTest {
         courseEvaluationRepository.save(courseEvaluation1);
         courseEvaluationRepository.save(courseEvaluation2);
         courseEvaluationRepository.save(courseEvaluation3);
-        courseEvaluationRepository.save(courseEvaluation4);
+        courseEvaluation4Id= courseEvaluationRepository.save(courseEvaluation4).getId();
+
+
+        CourseEvaluation reply1 = CourseEvaluation.builder()
+                .user(manager1)
+                .replyId(courseEvaluation4Id)
+                .comments("reply1")
+                .course(course2)
+                .build();
+
+        courseEvaluationRepository.save(reply1);
 
     }
     @AfterEach
@@ -152,9 +165,12 @@ class CourseEvaluationRepositoryImplTest {
     //when
         Page<CourseEvaluationDto> findEvaluation1= courseEvaluationRepository.findByIDCourseEvaluationDTO(course1Id, page);
         Page<CourseEvaluationDto> findEvaluation2= courseEvaluationRepository.findByIDCourseEvaluationDTO(course2Id, page);
+        CourseEvaluationDto find=courseEvaluationRepository.findByReply(courseEvaluation4.getId());
+
+        System.out.println("find.toString() = " + find.toString());
         //then
         assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
-        assertThat(findEvaluation2.getContent().size()).isEqualTo(1);
+        assertThat(findEvaluation2.getContent().size()).isEqualTo(2);
         assertThat(findEvaluation1.getContent())
                 .extracting("courseName", "username","scope","comments")
                 .containsOnly(
@@ -163,14 +179,11 @@ class CourseEvaluationRepositoryImplTest {
                         tuple("courseTest1", "manager1",4.5,"test3")
                 );
         assertThat(findEvaluation2.getContent())
-                .extracting("courseName", "username","scope","comments")
+                .extracting("courseName", "username","scope","comments","replyId")
                 .containsOnly(
-                        tuple("courseTest2","manager2" ,1.0,"test4")
+                        tuple("courseTest2","manager2" ,1.0,"test4",null),
+                        tuple("courseTest2","manager1" ,null,"reply1",courseEvaluation4Id)
                 );
 
     }
-
-
-
-
 }

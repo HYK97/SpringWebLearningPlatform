@@ -2,6 +2,7 @@ package com.hy.demo.Domain.Board.Repository;
 
 import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Board.Entity.QCourseEvaluation;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -103,6 +104,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                         , courseEvaluation.user.id
                         , courseEvaluation.scope
                         , courseEvaluation.comments
+                        , courseEvaluation.replyId
                 ))
                         .from(courseEvaluation)
                         .leftJoin(courseEvaluation.course, course)
@@ -110,4 +112,19 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         );
 
     }
+
+    @Override
+    public CourseEvaluationDto findByReply(Long id) {
+        return select(Projections.constructor(CourseEvaluationDto.class
+                        , courseEvaluation.id
+                        , courseEvaluation.course.courseName
+                        , courseEvaluation.user.username
+                        , courseEvaluation.course.id
+                        , courseEvaluation.user.id
+                        , courseEvaluation.scope
+                        , courseEvaluation.comments
+                ))
+                        .from(courseEvaluation)
+                        .where(courseEvaluation.replyId.eq(id)).fetchOne();
     }
+}

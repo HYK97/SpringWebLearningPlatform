@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CourseEvaluation extends BaseEntity {
     @Id // primary key
-    @Column(name = "Courseevalution_id")
+    @Column(name = "CourseEvalution_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,6 +34,7 @@ public class CourseEvaluation extends BaseEntity {
 
     private String comments;
 
+    private Long replyId;
 
 
 

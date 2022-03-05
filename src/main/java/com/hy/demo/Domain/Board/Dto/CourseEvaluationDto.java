@@ -27,6 +27,18 @@ public class CourseEvaluationDto {
 
     private String comments;
 
+    private Long replyId;
+
+    public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments,Long replyId) {
+        this.id = id;
+        this.courseName = courseName;
+        this.username = username;
+        this.courseID = courseID;
+        this.userID = userID;
+        this.scope = scope;
+        this.comments = comments;
+        this.replyId =replyId;
+    }
     public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments) {
         this.id = id;
         this.courseName = courseName;
