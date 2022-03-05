@@ -3,7 +3,10 @@ package com.hy.demo.Domain.Board.Repository;
 import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +92,21 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return list;
     }
 
+    public Page<CourseEvaluation> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable) { //강의평가
+        return applyPagination(pageable, query ->
+                query.select(Projections.constructor(CourseEvaluation.class
+                        , courseEvaluation.id
+                        , courseEvaluation.course.courseName
+                        , courseEvaluation.course.user.username
+                        , courseEvaluation.course.id
+                        , courseEvaluation.user.id
+                        , courseEvaluation.scope
+                        , courseEvaluation.comments
+                ))
+                        .from(courseEvaluation)
+                        .leftJoin(courseEvaluation.course, course)
+                        .where(courseEvaluation.course.id.eq(courseId))
+        );
 
-
-}
+    }
+    }

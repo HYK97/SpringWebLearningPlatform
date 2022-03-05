@@ -124,6 +124,7 @@ class CourseServiceTest {
     }
     @Test
     public void detailView() {
+        //given
         Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
         CourseDto courseDto = courseService.detailView(byCourseName.getId());
         List<Double> doubles=new ArrayList<>();
@@ -132,7 +133,10 @@ class CourseServiceTest {
         doubles.add(16.666666666666664);
         doubles.add(66.66666666666666);
         doubles.add(16.666666666666664);
+        //when
         assertThat(courseDto)
+
+                //then
                 .extracting("courseName","teachName","scope","starScope","courseExplanation","starPercent")
                 .containsExactly("CourseTest1s","manager1",4.0,81.5,"text",doubles);
 

@@ -196,7 +196,7 @@ class CourseControllerTest {
                 .andDo(print())
                 // then
                 .andExpect(status().is4xxClientError());
-        // then
+
     }
 
 
@@ -217,7 +217,7 @@ class CourseControllerTest {
                 .andExpect(model().attribute("Next",false))
                 .andExpect(model().attribute("totalElements",1L))
                 .andExpect(model().attribute("course",findDto));
-        // then
+
     }
 
 
