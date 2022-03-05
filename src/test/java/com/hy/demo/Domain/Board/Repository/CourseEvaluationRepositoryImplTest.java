@@ -1,5 +1,6 @@
 package com.hy.demo.Domain.Board.Repository;
 
+import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
 import com.hy.demo.Domain.User.Entity.User;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,6 +22,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.entry;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -33,12 +37,16 @@ class CourseEvaluationRepositoryImplTest {
     private CourseEvaluationRepository courseEvaluationRepository;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    Course course1 ;
+    private Course course1;
+
+    private Long course1Id;
+    private Long course2Id;
+
     @BeforeEach
     public void setup(){
 
@@ -57,24 +65,24 @@ class CourseEvaluationRepositoryImplTest {
                 .build();
 
         course1 = Course.builder()
-                .courseName("courseTest")
+                .courseName("courseTest1")
                 .user(manager1)
                 .teachName("manager1")
                 .build();
 
         Course course2 = Course.builder()
-                .courseName("test2")
+                .courseName("courseTest2")
                 .user(manager1)
                 .teachName("manager1")
                 .build();
 
         Course course3 = Course.builder()
-                .courseName("test3")
+                .courseName("courseTest3")
                 .user(manager2)
                 .teachName("manager2")
                 .build();
         Course course4 = Course.builder()
-                .courseName("english")
+                .courseName("courseTest4")
                 .user(manager2)
                 .teachName("manager2")
                 .build();
@@ -82,33 +90,40 @@ class CourseEvaluationRepositoryImplTest {
         CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
                 .user(manager1)
                 .scope(3.5)
-                .comments("test")
+                .comments("test1")
                 .course(course1)
                 .build();
         CourseEvaluation courseEvaluation2 = CourseEvaluation.builder()
-                .user(manager1)
+                .user(manager2)
                 .scope(4.0)
-                .comments("test")
+                .comments("test2")
                 .course(course1)
                 .build();
         CourseEvaluation courseEvaluation3 = CourseEvaluation.builder()
                 .user(manager1)
                 .scope(4.5)
-                .comments("test")
+                .comments("test3")
                 .course(course1)
+                .build();
+        CourseEvaluation courseEvaluation4 = CourseEvaluation.builder()
+                .user(manager2)
+                .scope(1.0)
+                .comments("test4")
+                .course(course2)
                 .build();
 
         userRepository.save(manager1);
         userRepository.save(manager2);
 
-        courseRepository.save(course1);
-        courseRepository.save(course2);
+        course1Id = courseRepository.save(course1).getId();
+        course2Id = courseRepository.save(course2).getId();
         courseRepository.save(course3);
         courseRepository.save(course4);
 
         courseEvaluationRepository.save(courseEvaluation1);
         courseEvaluationRepository.save(courseEvaluation2);
         courseEvaluationRepository.save(courseEvaluation3);
+        courseEvaluationRepository.save(courseEvaluation4);
 
     }
     @AfterEach
@@ -119,14 +134,42 @@ class CourseEvaluationRepositoryImplTest {
     }
     @Test
     public void countScope() {
+        //given
         Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
         Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(byCourseName.getId());
-        for( String key : stringDoubleMap.keySet() ) {
-            System.out.println(String.format("키 : %s, 값 : %s", key, stringDoubleMap.get(key)));
-        }
+        //when
         assertThat(stringDoubleMap).hasSize(5)
+                //then
                 .contains(entry("1",0.0), entry("2",0.0), entry("3",0.5), entry("4",2.0), entry("5",0.5));
     }
+
+    @Test
+    public void findByIDCourseEvaluationDTO() throws Exception{
+    //given
+        // 페이지
+    PageRequest page = PageRequest.of(0, 4);
+
+    //when
+        Page<CourseEvaluationDto> findEvaluation1= courseEvaluationRepository.findByIDCourseEvaluationDTO(course1Id, page);
+        Page<CourseEvaluationDto> findEvaluation2= courseEvaluationRepository.findByIDCourseEvaluationDTO(course2Id, page);
+        //then
+        assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
+        assertThat(findEvaluation2.getContent().size()).isEqualTo(1);
+        assertThat(findEvaluation1.getContent())
+                .extracting("courseName", "username","scope","comments")
+                .containsOnly(
+                        tuple("courseTest1","manager1" ,3.5,"test1"),
+                        tuple("courseTest1","manager2", 4.0,"test2"),
+                        tuple("courseTest1", "manager1",4.5,"test3")
+                );
+        assertThat(findEvaluation2.getContent())
+                .extracting("courseName", "username","scope","comments")
+                .containsOnly(
+                        tuple("courseTest2","manager2" ,1.0,"test4")
+                );
+
+    }
+
 
 
 
