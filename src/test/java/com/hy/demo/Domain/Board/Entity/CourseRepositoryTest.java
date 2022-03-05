@@ -94,7 +94,7 @@ class CourseRepositoryTest {
 
     @Test
     public void searchCourse() {
-
+        //when
         //강좌명으로검색
         AssertCourse(0,3,"test",3,"User","username",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
         AssertCourse(0,2,"test",2,"User","username",new String[] {"manager1","manager1"},"courseName",new String[] {"test1","test2"});
@@ -108,8 +108,11 @@ class CourseRepositoryTest {
     }
 
     private void AssertCourse(int page,int size,String courseName,int resultSize,String extracting1,String extracting2,String []contains1,String extracting3,String []contains2) {
+
+       //given
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<CourseDto> findCourse = courseRepository.findByCourseNameAndUserDTO(courseName, pageRequest);
+        //then
         assertThat(findCourse.getContent().size()).isEqualTo(resultSize);
         if (extracting2.equals("")) {
             assertThat(findCourse.getContent())

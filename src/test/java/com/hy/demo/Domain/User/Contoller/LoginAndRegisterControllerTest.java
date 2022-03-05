@@ -93,10 +93,12 @@ class LoginAndRegisterControllerTest {
         userRepository.save(admin);
     }
 
+
     @AfterEach
     public void after(){
      userRepository.deleteAll();
     }
+
 
     @Test
     public void loginPostTest() throws Exception {
@@ -180,13 +182,13 @@ class LoginAndRegisterControllerTest {
                 .param("password","test")
                 .param("email","test@gmail.com")
                 .param("role","ROLE_USER"))
-
+                // then
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("/loginForm"));
 
-                // then
+
     }
 
 
@@ -200,13 +202,13 @@ class LoginAndRegisterControllerTest {
                 .param("password","test")
                 .param("email","test@gmail.com")
                 .param("role","ROLE_USER"))
-
+                // then
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("false"));
 
-                // then
+
     }
 
 

@@ -66,23 +66,5 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
 
 
 
-
-    public Page<CourseEvaluation> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable) { //강의평가
-        return applyPagination(pageable,query ->
-                query.select(Projections.constructor(CourseEvaluation.class
-                        ,courseEvaluation.id
-                        ,courseEvaluation.course.courseName
-                        ,courseEvaluation.course.user.username
-                        ,courseEvaluation.course.id
-                        ,courseEvaluation.user.id
-                        ,courseEvaluation.scope
-                        ,courseEvaluation.comments
-                ))
-                        .from(courseEvaluation)
-                        .leftJoin(courseEvaluation.course, course)
-                        .where(courseEvaluation.course.id.eq(courseId))
-        );
-
-
     }
-}
+

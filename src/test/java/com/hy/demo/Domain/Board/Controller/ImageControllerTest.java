@@ -70,10 +70,10 @@ class ImageControllerTest {
         // when
         mvc.perform(
                 multipart("/image").file(file))
+                // then
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        // then
     }
 
 
