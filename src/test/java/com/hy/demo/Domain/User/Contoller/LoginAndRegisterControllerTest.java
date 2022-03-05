@@ -158,17 +158,14 @@ class LoginAndRegisterControllerTest {
     @WithUserDetails(value = "test")
     public void joinOAuthPost() throws Exception {
         //given
-
-
+        userRepository.deleteAll();
         // when
-        mvc.perform(post("/join"))
-
+        mvc.perform(post("/join")
+        .param("role","USER_ROLE"))
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("/main/index"));
-
-
         // then
 
     }
