@@ -12,5 +12,6 @@ public interface CourseEvaluationRepository extends JpaRepository<CourseEvaluati
     Map<String, Double> countScope(Long id);
     Page<CourseEvaluationDto> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable);
     Long countById(Long id);
+    CourseEvaluationDto findByReply(Long id);
 
 }

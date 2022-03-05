@@ -9,6 +9,6 @@ import java.util.Map;
 
 public interface CourseEvaluationRepositoryCustom {
     public Map<String, Double> countScope(Long id);
-
+    CourseEvaluationDto findByReply(Long id);
     Page<CourseEvaluationDto> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable);
 }
