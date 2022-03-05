@@ -1,5 +1,6 @@
 package com.hy.demo.Domain.Board.Repository;
 
+import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
@@ -92,12 +93,12 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return list;
     }
 
-    public Page<CourseEvaluation> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable) { //강의평가
+    public Page<CourseEvaluationDto> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable) { //강의평가
         return applyPagination(pageable, query ->
-                query.select(Projections.constructor(CourseEvaluation.class
+                query.select(Projections.constructor(CourseEvaluationDto.class
                         , courseEvaluation.id
                         , courseEvaluation.course.courseName
-                        , courseEvaluation.course.user.username
+                        , courseEvaluation.user.username
                         , courseEvaluation.course.id
                         , courseEvaluation.user.id
                         , courseEvaluation.scope
