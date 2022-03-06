@@ -55,10 +55,10 @@ public class CourseController {
         public String course(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         Page<CourseDto> courseDtos=courseService.viewCourse(pageable);
-
         pagingDto(model, courseDtos);
         return "/course/view";
     }
+
 
     @GetMapping( {"/detailcourse"})
     public String detailcourse(String id,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -109,18 +109,17 @@ public class CourseController {
 
 
 
-    @PostMapping( {"/commentsview"})
+    @GetMapping( {"/commentsview"})
     @ResponseBody
-    public List<CourseEvaluationDto> commentsView(Model model, @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC)Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails, String courseId){
+    public Page<CourseEvaluationDto> commentsView(Model model, @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC)Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails, String courseId){
         Long id = Long.parseLong(courseId);
         Page<CourseEvaluationDto> findView = courseEvaluationService.courseEvaluationView(id, pageable);
         model.addAttribute("CourseEvaluationDto",findView);
-
         List<CourseEvaluationDto> content = findView.getContent();
-        return content;
+        
+      
+        return findView;
     }
-
-
 
 
 
@@ -157,8 +156,8 @@ public class CourseController {
 
 
 
-    private void pagingDto(Model model, Page<CourseDto> courseDtos) {
-        List<CourseDto> content = courseDtos.getContent();
+    private <T> void pagingDto(Model model, Page<T> courseDtos) {
+        List<T> content = courseDtos.getContent();
         int pageNumber = courseDtos.getPageable().getPageNumber();
         int totalPages = courseDtos.getTotalPages();
         boolean Previous = courseDtos.hasPrevious();
@@ -172,14 +171,13 @@ public class CourseController {
         model.addAttribute("Next", Next);
         model.addAttribute("totalElements", totalElements);
 
-
-
         logger.info("1현재페이지 = " + pageNumber);
         logger.info("콘텐츠갯수 = " + totalElements);
         logger.info("전체페이지 = " + totalPages);
         logger.info("이전페이지있냐 = " + Previous);
         logger.info("다음페이지있냐 = " + Next);
     }
+
 
 
 }
