@@ -33,7 +33,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         JPAQueryFactory queryFactory=getQueryFactory();
          List<Tuple> fetch = queryFactory.select(courseEvaluation.scope, courseEvaluation.scope.count())
                 .from(courseEvaluation)
-                .where(course.id.eq(id))
+                .where(course.id.eq(id).and(courseEvaluation.scope.isNotNull()))
                 .groupBy(courseEvaluation.scope)
                 .fetch();
         Map<Double,Long> map = new HashMap();
@@ -95,6 +95,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     }
 
     public Page<CourseEvaluationDto> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable) { //강의평가
+        QCourseEvaluation reply = new QCourseEvaluation("reply");
         return applyPagination(pageable, query ->
                 query.select(Projections.constructor(CourseEvaluationDto.class
                         , courseEvaluation.id
@@ -104,11 +105,15 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                         , courseEvaluation.user.id
                         , courseEvaluation.scope
                         , courseEvaluation.comments
-                        , courseEvaluation.replyId
+                        , courseEvaluation.createDate
+                        , reply.comments
+                        , reply.createDate
                 ))
                         .from(courseEvaluation)
                         .leftJoin(courseEvaluation.course, course)
-                        .where(courseEvaluation.course.id.eq(courseId))
+                        .leftJoin(reply)
+                        .on(courseEvaluation.id.eq(reply.replyId))
+                            .where(courseEvaluation.course.id.eq(courseId).and(courseEvaluation.scope.isNotNull()))
         );
 
     }
