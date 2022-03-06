@@ -1,11 +1,15 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    var Previous;
+    var Next;
+    var pageNumber;
+    var totalElements;
+    var preNum ;
+    var nexNum ;
+    var totalPages;
 
 
-
-
-getData(function (data){
     var template = '<div>\n' +
-        '    {{#data}}\n' +
+        '    {{#data.content}}\n' +
         '        <div class="row my-1 ">\n' +
         '            <div >\n' +
         '                <div class="text-break">\n' +
@@ -16,8 +20,15 @@ getData(function (data){
         '                                     class="rounded-circle">\n' +
         '                            </div>\n' +
         '                            <div class="user-field-name">\n' +
-        '                                <p class=" my-3">{{username}}</p>\n' +
-        '                                <p class="lead mb-0">\n' +
+        '                                <div> <p class=" my-3">{{username}}</p></div>\n' +
+        '                                <div class="dropdown text-end">\n' +
+        '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
+        '                </a>\n' +
+        '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
+        '                    <li><a class="dropdown-item update" >수정</a></li>\n' +
+        '                    <li><a class="dropdown-item delete" >삭제</a></li>\n' +
+        '                </ul>\n' +
+        '            </div>\n' +
         '                            </div>\n' +
         '                        </div>\n' +
         '                        <div class="d-flex justify-content-between align-items-center">\n' +
@@ -49,7 +60,7 @@ getData(function (data){
         '            {{#reply}}\n' +
         '                <div class="reply-box  text-break">\n' +
         '                    <p class=" my-2 user-field-name ">\n' +
-        '                        강사 '+getId().teachName+'님의 답글\n' +
+        '                        강사 ' + getId().teachName + '님의 답글\n' +
         '                    </p>\n' +
         '                    <p class="text-muted my-2 ">\n' +
         '                        {{reply}}\n' +
@@ -63,35 +74,93 @@ getData(function (data){
         '            {{/reply}}\n' +
         '            <hr class=" mt-3 mb-2">\n' +
         '        </div>\n' +
-        '    {{/data}}\n' +
+        '    {{/data.content}}\n' +
         '</div>';
-    Mustache.parse(template);
-    var jsonData = {
-        "data" : data
+
+
+
+
+
+    pageing(0);
+
+    //수정 삭제
+    $(document).on("click", ".delete", function () {
+        alert("sss");
+    });
+
+
+
+
+    function pageing(page=0){
+        $.ajax({
+            type: "get",
+            url: "/course/commentsview",
+            data: {
+                courseId: getId().id,
+                page : page
+            },
+            success: function (data) {
+                //댓글데이터
+                $('#result').empty();
+                $('.page').remove();
+
+                Mustache.parse(template);
+                var jsonData = {
+                    "data": data
+                }
+                var rendered = Mustache.render(template, jsonData);
+                $('#result').html(rendered);
+
+                //페이징
+                pageNumber =data.pageable.pageNumber+1;
+                totalPages =data.totalPages;
+                totalElements = data.totalElements
+                preNum = parseInt(pageNumber) - 1;
+                nexNum = parseInt(pageNumber) + 1;
+                Previous = pageNumber!=1 ? true :false;
+                Next = totalPages>pageNumber ? true :false;
+                var html = "";
+
+                for (var num = 1; num <= totalPages; num++) {
+                    var onclick ='page('+num+')';
+                    if (num == pageNumber) {
+                        html += '<li class="page-item active"><a class="page-link page">' + num + '</a></li>';
+                    } else {
+                        html += '<li class="page-item"><a class="page-link page" >' + num + '</a></li>';
+                    }
+                }
+
+                $("#previous").after(html);
+                if (Previous) {
+                    $("#previous").removeClass("disabled");
+                } else {
+                    $("#previous").addClass("disabled");
+                }
+                if (Next) {
+                    $("#next").removeClass("disabled");
+                } else {
+                    $("#next").addClass("disabled");
+                }
+
+            },
+            error: function (request, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("세션오류");
+            }
+        });
     }
-    var rendered = Mustache.render(template, jsonData);
-    $('#result').html(rendered);
-
-})
-
+    $(document).on("click",".page",function(){
+        let text = $(this).text();
+        pageing(text);
+    });
+    $(document).on("click","#previousAtag",function(){
+        pageing(preNum);
+    });
+    $(document).on("click","#nextAtag",function(){
+        pageing(nexNum);
+    });
 
 });
 
-function getData(callback) {
-    let course=getId();
-    $.ajax({
-        type : "post",
-        url : "/course/commentsview",
-        data :  {
-            courseId : course.id
-        },
-        success : function(data){
-           callback(data);
-        },
-        error:function(request, error) {
-            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            alert("세션오류");
-        }
-    });
 
-}
+

@@ -106,8 +106,12 @@
 }
 
 .user-field-name{
+    display: flex;
     flex: 1 1 auto;
     font-weight: 900;
+    align-items: center;
+    justify-content: space-between;
+
 }
 .reply-box{
     position: relative;
