@@ -1,13 +1,14 @@
 package com.hy.demo.Domain.Board.Controller;
 
+
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Board.Dto.CourseDto;
+import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Entity.SummerNoteImage;
+import com.hy.demo.Domain.Board.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Board.Service.CourseService;
 import com.hy.demo.Domain.Board.Service.ImageService;
-import com.hy.demo.Domain.User.Entity.User;
-import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
@@ -24,11 +25,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+
+;
 
 @Controller
 @RequestMapping("/course/*")
@@ -42,6 +46,9 @@ public class CourseController {
     @Autowired
     private ImageService imageService;
 
+
+    @Autowired
+    private CourseEvaluationService courseEvaluationService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping( {"/view"})
@@ -58,6 +65,7 @@ public class CourseController {
 
         Map map =userService.findByUserCourse(id,principalDetails.getUser());
         model.addAttribute("course",map.get("course"));
+
         if (ObjectUtils.isEmpty(map.get("userCourse"))) {
             model.addAttribute("applicationCheck", null);
         } else {
@@ -84,7 +92,6 @@ public class CourseController {
 
 
     @PostMapping( {"/application"})
-
     public String courseSearch(String id,@AuthenticationPrincipal PrincipalDetails principalDetails){
 
         try {
@@ -95,6 +102,22 @@ public class CourseController {
         }
         return "redirect:/course/view";
 
+    }
+
+
+
+
+
+
+    @PostMapping( {"/commentsview"})
+    @ResponseBody
+    public List<CourseEvaluationDto> commentsView(Model model, @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC)Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails, String courseId){
+        Long id = Long.parseLong(courseId);
+        Page<CourseEvaluationDto> findView = courseEvaluationService.courseEvaluationView(id, pageable);
+        model.addAttribute("CourseEvaluationDto",findView);
+
+        List<CourseEvaluationDto> content = findView.getContent();
+        return content;
     }
 
 

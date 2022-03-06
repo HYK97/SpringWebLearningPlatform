@@ -54,31 +54,39 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
                 .build();
 
         CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
-                .comments("Sdsd")
+                .comments("hi")
                 .scope(4.0)
                 .course(course)
-                .user(user)
+                .user(manager)
                 .build();
 
         CourseEvaluation courseEvaluation2 = CourseEvaluation.builder()
-                .comments("Sdsd")
+                .comments("heelllo")
                 .scope(2.0)
                 .course(course)
                 .user(user)
                 .build();
         CourseEvaluation courseEvaluation3 = CourseEvaluation.builder()
-                .comments("Sdsd")
+                .comments("good")
                 .scope(3.5)
                 .course(course)
                 .user(user)
                 .build();
-
         userRepository.save(user);
         userRepository.save(manager);
         courseRepository.save(course);
 
-        courseEvaluationRepository.save(courseEvaluation1);
+        Long id = courseEvaluationRepository.save(courseEvaluation1).getId();
         courseEvaluationRepository.save(courseEvaluation2);
         courseEvaluationRepository.save(courseEvaluation3);
+
+        CourseEvaluation reply = CourseEvaluation.builder()
+                .comments("good")
+                .replyId(id)
+                .course(course)
+                .user(user)
+                .build();
+
+        courseEvaluationRepository.save(reply);
     }
 }
