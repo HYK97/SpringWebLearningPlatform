@@ -170,7 +170,7 @@ class CourseEvaluationRepositoryImplTest {
         System.out.println("find.toString() = " + find.toString());
         //then
         assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
-        assertThat(findEvaluation2.getContent().size()).isEqualTo(2);
+        assertThat(findEvaluation2.getContent().size()).isEqualTo(1);
         assertThat(findEvaluation1.getContent())
                 .extracting("courseName", "username","scope","comments")
                 .containsOnly(
@@ -179,10 +179,9 @@ class CourseEvaluationRepositoryImplTest {
                         tuple("courseTest1", "manager1",4.5,"test3")
                 );
         assertThat(findEvaluation2.getContent())
-                .extracting("courseName", "username","scope","comments","replyId")
+                .extracting("courseName", "username","scope","comments","reply")
                 .containsOnly(
-                        tuple("courseTest2","manager2" ,1.0,"test4",null),
-                        tuple("courseTest2","manager1" ,null,"reply1",courseEvaluation4Id)
+                        tuple("courseTest2","manager2" ,1.0,"test4","reply1")
                 );
 
     }
