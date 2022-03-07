@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(uniqueConstraints={@UniqueConstraint(name = "UserCourseEvaluationUnique" ,columnNames={"Course_id","User_id"})}) //코스하나당 한개의 수강평만남길수있음.
+@ToString
 public class CourseEvaluation extends BaseEntity {
     @Id // primary key
     @Column(name = "CourseEvalution_id")
@@ -34,7 +35,9 @@ public class CourseEvaluation extends BaseEntity {
 
     private String comments;
 
+    @Column(unique=true)
     private Long replyId;
+
 
 
 

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.hy.demo.Utils.ObjectUtils.isEmpty;
+
 @Service
 public class CourseEvaluationService {
     @Autowired
@@ -37,7 +39,7 @@ public class CourseEvaluationService {
     public CourseEvaluation save(String courseId,String content,String star,User user) {
         Long courseLid= Long.parseLong(courseId);
         Course course = courseRepository.findById(courseLid).get();
-        if (!ObjectUtils.isEmpty(course)) {
+        if (!isEmpty(course)) {
             CourseEvaluation build = CourseEvaluation.builder().course(course)
                     .comments(content)
                     .scope(Double.valueOf(star))
@@ -47,8 +49,20 @@ public class CourseEvaluationService {
         } else {
             throw new IllegalArgumentException("없는 코스임.");
         }
+    }
 
+    public void delete(Long id) {
+        CourseEvaluation courseEvaluation = courseEvaluationRepository.findByReplyId(id);
 
+        if (!isEmpty(courseEvaluation)) {//실제있을때
+            logger.info("courseEvaluation.toString() = " + courseEvaluation.toString());
+            Long replyId = courseEvaluation.getId();
+            logger.info("replyId = " + replyId);
+            if (!isEmpty(replyId)) {//reply 이있을때
+                courseEvaluationRepository.deleteById(replyId);
+            }
+        }
+        courseEvaluationRepository.deleteById(id);
     }
 
     public boolean countByUserAndCourse(String username,String id) {
