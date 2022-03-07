@@ -26,7 +26,7 @@ const template = '<div>\n' +
     '                </a>\n' +
     '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
     '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}"data-bs-target="#exampleModal" >수정</a></li>\n' +
-    '                    <li><a class="dropdown-item delete" >삭제</a></li>\n' +
+    '                    <li><a class="dropdown-item delete" data-id="{{id}}">삭제</a></li>\n' +
     '                </ul>{{/teachUser}}\n' +
 
 
@@ -103,9 +103,26 @@ $(document).ready(function () {
 
     pageing(0);
 
-    //수정 삭제
-    $(document).on("click", ".update", function () {
+    //삭제
+    $(document).on("click", ".delete", function () {
+        $.ajax({
+            type: "post",
+            url: "/course/deleteevaluation/"+ $(this).data("id"),
+            success: function (data) {
+                if (data == "1") {
+                    pageing(0);
+                    alert("삭제성공");
+                } else {
+                    alert("삭제실패");
+                }
 
+
+            },
+            error: function (request, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("오류");
+            }
+        });
 
     });
 
