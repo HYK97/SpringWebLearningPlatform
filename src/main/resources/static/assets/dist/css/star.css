@@ -125,3 +125,73 @@
 .d-contents{
     display: contents;
 }
+
+
+.blind {
+    position: absolute;
+    overflow: hidden;
+    margin: -1px;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+    border: none;
+    clip: rect(0, 0, 0, 0);
+}
+
+.startRadio {
+    display: inline-block;
+    overflow: hidden;
+    height: 40px;
+    background :#aaa9a9;
+    flex-direction: row-reverse;
+}
+.startRadio:after {
+    content: "";
+    display: block;
+    position: relative;
+    z-index: 10;
+    height: 40px;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAwdJREFUeF7t3MFuEzEQBuBxaYVUJIqqHpF66TPwONx5A8SF3voI3Ps4vAInJK5VVSSQUEuMvMpGW2s39vifyc4uk0urZsdrf/ntddIkIcYYyW/NAsEBm+26QgfE/BwQ9HNAB0QFwHpfAx0QFADLPYEOCAqA5Z5ABwQFwHJP4JoBQwghjc/y83WzCezx+oBYRXTANU7hPH2WU2gugVN4VtfCRQFaRDQFuC99w6XK0gVlkYCWkmgGsDZ91i4oJgC5eJYQHXDp+8DW9I2lcBOJjronf4e7zZpAFM/CVJ4VkFJgQoDfGTHntmZOwBfphRYJwNK25mlDdHykM61FABs7KApIN/EqfqRvOkzTrYoA1nb68gudf/9AD4PjxRK4a/M6vomf6b62T+hxaoC3X+ni/Tv6RURPRLRJ0zW9FyfrsDzgiIjmGikJ+GoLlYbwd/t7ghveesD0M4EeBHAsZVKoKOBwaW7Zgc0GODV1ubBVgDX7tRjjEDBPWupvn7ruotn9QWALg65hpfoSqBjgYFM7xBudPWvB68ZREu4FalI41MoSubtrCakr7SufLeq1gNvUtKxzpVli7n6WCefg/wGR7cEtWDNik0VL0RoRmx1aC9eECBkgxWtAzMf/+5Ho9KT+ula9jdnXJHeLU9893SNzvIc/RGcveecUAVxiEtGZt9sfSzW0JMR8zD9+Er19zUueCuASECUDw3oqx3l8rK6J0nhqgBaTqIGnCmgJUQvPATnr0sSxYtuYsfatrIWeQDApDuiAoABY7gl0QFAALPcEOiAoAJYvMoFW9oC9vRai2kbaAcFp44AAoDU8zWmsMoVRwKn1SqtdICv1743hnAQZaO1i33KO2rZZY1VpdPtRfU5HWvvBgWw9x75xzDqFJQdUAyl5PrV/KpVeidYYRJ6QQ37iXTyB4YYu6FO4ywdVgnvcEJ0If5bjEF9cIQ+YrX8lOM462Xqs5tenqAFagGsF59SJA3JOvoZjHRB8FB3QAUEBsNwT6ICgAFjuCXRAUAAs9wQ6ICgAlv8Du5h6L5XaTpAAAAAASUVORK5CYII=');
+    background-size: contain;
+    pointer-events: none;
+
+}
+.startRadio__box {
+    position: relative;
+    z-index: 1;
+    float: left;
+    width: 20px;
+    height: 40px;
+    cursor: pointer;
+}
+.startRadio__box input {
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    position: absolute !important;
+}
+.startRadio__box input:checked + .startRadio__img {
+    background-color: gold;
+}
+.startRadio__img {
+    display: block;
+    position: absolute;
+    right: 0;
+    width: 500px;
+    height: 40px;
+    pointer-events: none;
+}
+
+.startRadio__box input:hover + .startRadio__img{
+    background-color: #fff58c;
+}
+.d-center{
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
