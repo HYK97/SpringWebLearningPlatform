@@ -10,13 +10,14 @@ const template = '<div>\n' +
     '                                     class="rounded-circle">\n' +
     '                            </div>\n' +
     '                            <div class="user-field-name">\n' +
-    '                                <div> <p class=" my-3">{{username}}</p></div>\n' +
-    '                                <div class="dropdown text-end">\n' +
+    '                                <div> <p class=" my-3 ">{{username}}</p></div>\n' +
+    '                                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-bs-target="#exampleModal" >수정</a></li>\n' +
-    '                    <li><a class="dropdown-item delete" >삭제</a></li>\n' +
+    '                    {{#teachUser}}{{^reply}}<li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal2">답글쓰기</a></li>{{/reply}}{{/teachUser}}\n' +
+    '                    {{^teachUser}} <li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}"data-bs-target="#exampleModal" >수정</a></li>\n' +
+    '                    <li><a class="dropdown-item delete" >삭제</a></li>{{/teachUser}}\n' +
     '                </ul>\n' +
     '            </div>\n' +
     '                            </div>\n' +
@@ -49,9 +50,19 @@ const template = '<div>\n' +
     '            </div>\n' +
     '            {{#reply}}\n' +
     '                <div class="reply-box  text-break">\n' +
-    '                    <p class=" my-2 user-field-name ">\n' +
-    '                        강사 ' + getId().teachName + '님의 답글\n' +
-    '                    </p>\n' +
+    '                            <div class="user-field-name">\n' +
+    '                                <div> <p class=" my-3"> 강사 ' + getId().teachName + '님의 답글</p></div>\n' +
+    '                   {{#teachUser}}\n' +
+    '                                <div class="dropdown text-end">\n' +
+    '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
+    '                </a>\n' +
+    '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
+    '                    <li><a class="dropdown-item update" data-id="{{id}}" data-bs-toggle="modal" data-bs-target="#exampleModal2">수정</a></li>\n' +
+    '                    <li><a class="dropdown-item delete" data-id="{{id}}" >삭제</a></li>\n' +
+    '                </ul>\n' +
+    '                            </div>\n' +
+    '                        {{/teachUser}}\n' +
+    '                        </div>\n' +
     '                    <p class="text-muted my-2 ">\n' +
     '                        {{reply}}\n' +
     '                    </p>\n' +
@@ -88,6 +99,8 @@ $(document).ready(function () {
 
 
 
+
+
     //페이징 및 댓글데이터 불러오기
     function pageing(page=0,sort="createDate-Desc"){
         $.ajax({
@@ -105,14 +118,26 @@ $(document).ready(function () {
 
                 Mustache.parse(template);
                 var jsonData = {
-                    "data": data
+                    "data": data.CourseEvaluationDto,
+                    "applicationCheck":getId().applicationCheck,
+                    "teachUser": getId().teachUser
                 }
                 var rendered = Mustache.render(template, jsonData);
                 $('#result').html(rendered);
 
+                $('.dropdown-user').each(function(){
+                    let data1 = $( this ).data("user");
+                    if(data1==getId().loginUser || jsonData.teachUser==true)
+                    {
+                        $(this).removeAttr('hidden');
+                    }
+                })
+
+
+
                 //페이징
-                pageNumber =data.pageable.pageNumber+1;
-                totalPages =data.totalPages;
+                pageNumber =data.CourseEvaluationDto.pageable.pageNumber+1;
+                totalPages =data.CourseEvaluationDto.totalPages;
                 totalElements = data.totalElements
                 preNum = parseInt(pageNumber) - 1;
                 nexNum = parseInt(pageNumber) + 1;
@@ -147,7 +172,9 @@ $(document).ready(function () {
         });
     }
 
-    //페이징 클릭 이벤트
+
+
+
     //페이징 클릭 이벤트
     $(document).on("click",".page",function(){
         let page = $(this).text();
