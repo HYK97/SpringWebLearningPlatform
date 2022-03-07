@@ -42,7 +42,7 @@ public class CourseService {
             allCount+=countScope.get(key);
         }
         List<Double> percent =new ArrayList<>();
-        for (int i = 1; i <6 ; i++) {
+        for (int i = 5; i >0 ; i--) {
             percent.add(countScope.get(Integer.toString(i))/allCount*100);
         }
         for (Double aDouble : percent) {
