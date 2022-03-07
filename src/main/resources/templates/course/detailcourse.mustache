@@ -61,10 +61,10 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <div class="star-ratings">
-                        <div id="star" style="width: {{starScope}}%" class="star-ratings-fill space-x-2 text-lg">
+                        <div id="star" style="width: {{starScope}}%" class="star-ratings-fill ">
                             <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                         </div>
-                        <div class="star-ratings-base space-x-2 text-lg">
+                        <div class="star-ratings-base ">
                             <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                         </div>
                     </div>
@@ -109,10 +109,10 @@
 
                                 <div class="star-ratings">
                                     <div id="star" style="width: {{starScope}}%"
-                                         class="star-ratings-fill space-x-2 text-lg">
+                                         class="star-ratings-fill">
                                         <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                                     </div>
-                                    <div class="star-ratings-base space-x-2 text-lg">
+                                    <div class="star-ratings-base">
                                         <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                         <div class="col-md-8 ">
                             <div class="text-break">
                                 <div  style="display: flex;align-items: center; white-space: nowrap;">
-                                    <span class="text-black  review line">정렬</span>
+                                    <span class="text-black  review">정렬</span>
                                     <span> | </span>
 
                                     <span class="review review-sort text-success" data-sort="createDate-Desc">ㆍ 최신 순</span>
@@ -260,7 +260,10 @@
         function getId() {
             let course = {
                 id: {{id}},
-                teachName: '{{teachName}}'
+                teachName: '{{teachName}}',
+                teachUser : '{{user.username}}'==('{{loginUser}}') ? true : '',
+                loginUser : '{{loginUser}}',
+                applicationCheck : {{#applicationCheck}}'{{applicationCheck}}' {{/applicationCheck}} {{^applicationCheck}}'' {{/applicationCheck}}
             }
             return course;
         }
@@ -327,6 +330,30 @@
                             </label>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <textarea style="min-height:300px;" name="message"class="form-control" id="modal-message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">수정하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title" id="exampleModalLabel">답글 수정하기</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
                     <div class="mb-3">
                         <textarea style="min-height:300px;" name="message"class="form-control" id="modal-message-text"></textarea>
                     </div>
