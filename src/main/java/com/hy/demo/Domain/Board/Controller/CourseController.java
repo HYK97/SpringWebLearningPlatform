@@ -5,6 +5,7 @@ import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Board.Dto.CourseDto;
 import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Board.Entity.Course;
+import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Board.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Board.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Board.Service.CourseService;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,9 +48,9 @@ public class CourseController {
     @Autowired
     private ImageService imageService;
 
-
     @Autowired
     private CourseEvaluationService courseEvaluationService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping( {"/view"})
@@ -65,10 +67,18 @@ public class CourseController {
 
         Map map =userService.findByUserCourse(id,principalDetails.getUser());
         model.addAttribute("course",map.get("course"));
-
+        model.addAttribute("loginUser",principalDetails.getUsername());
         if (ObjectUtils.isEmpty(map.get("userCourse"))) {
             model.addAttribute("applicationCheck", null);
         } else {
+              boolean b = courseEvaluationService.countByUserAndCourse(principalDetails.getUsername(), id);
+            if (b) {//수강평을 썻는지에대해서
+                model.addAttribute("commentAccess",1); //안썻을떄
+            }else {
+                model.addAttribute("commentAccess",null); //썻을때
+            }
+
+
             model.addAttribute("applicationCheck", 1);
         }
         return "/course/detailcourse";
@@ -104,6 +114,20 @@ public class CourseController {
 
     }
 
+    @PostMapping( {"/createevaluation"})
+    @ResponseBody
+    public String createEvaluation(String courseId,String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+        try {
+            courseEvaluationService.save(courseId, content, star, principalDetails.getUser());
+            return "1";
+        } catch (IllegalArgumentException e) {
+            return "2";
+        } catch (DataIntegrityViolationException e) {
+            return "3";
+        }
+    }
+
 
 
 
@@ -111,14 +135,14 @@ public class CourseController {
 
     @GetMapping( {"/commentsview"})
     @ResponseBody
-    public Page<CourseEvaluationDto> commentsView(Model model, @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC)Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails, String courseId){
+    public Map<String, Object> commentsView(@PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC)Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails, String courseId){
         Long id = Long.parseLong(courseId);
         Page<CourseEvaluationDto> findView = courseEvaluationService.courseEvaluationView(id, pageable);
-        model.addAttribute("CourseEvaluationDto",findView);
-        List<CourseEvaluationDto> content = findView.getContent();
-        
-      
-        return findView;
+        Map<String, Object> map =new HashMap<>();
+        map.put("CourseEvaluationDto",findView);
+
+
+        return map;
     }
 
 
