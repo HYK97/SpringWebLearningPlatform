@@ -128,11 +128,11 @@ class CourseServiceTest {
         Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
         CourseDto courseDto = courseService.detailView(byCourseName.getId());
         List<Double> doubles=new ArrayList<>();
-        doubles.add(0.0);
-        doubles.add(0.0);
         doubles.add(16.666666666666664);
         doubles.add(66.66666666666666);
         doubles.add(16.666666666666664);
+        doubles.add(0.0);
+        doubles.add(0.0);
         //when
         assertThat(courseDto)
 
