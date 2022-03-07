@@ -11,14 +11,25 @@ const template = '<div>\n' +
     '                            </div>\n' +
     '                            <div class="user-field-name">\n' +
     '                                <div> <p class=" my-3 ">{{username}}</p></div>\n' +
-    '                                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
+
+    '               {{#teachUser}}{{^reply}} ' +
+    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    {{#teachUser}}{{^reply}}<li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal2">답글쓰기</a></li>{{/reply}}{{/teachUser}}\n' +
-    '                    {{^teachUser}} <li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}"data-bs-target="#exampleModal" >수정</a></li>\n' +
-    '                    <li><a class="dropdown-item delete" >삭제</a></li>{{/teachUser}}\n' +
-    '                </ul>\n' +
+    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal2">답글쓰기</a></li>\n' +
+    '                </ul>{{/reply}}{{/teachUser}}\n' +
+
+    '               {{^teachUser}}' +
+    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
+    '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
+    '                </a>\n' +
+    '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
+    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}"data-bs-target="#exampleModal" >수정</a></li>\n' +
+    '                    <li><a class="dropdown-item delete" >삭제</a></li>\n' +
+    '                </ul>{{/teachUser}}\n' +
+
+
     '            </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
@@ -34,7 +45,7 @@ const template = '<div>\n' +
     '                                    </div>\n' +
     '                                </div>\n' +
     '                                <div class="star-ratings my-1">\n' +
-    '                                    <small id="scope" class="text-muted"> ({{scope}})</small>\n' +
+    '                                    <small id="scope" data-scope="{{scope}}" class="text-muted"> ({{scope}})</small>\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
@@ -94,6 +105,7 @@ $(document).ready(function () {
 
     //수정 삭제
     $(document).on("click", ".update", function () {
+
 
     });
 
@@ -198,8 +210,28 @@ $(document).ready(function () {
     });
 
 
-
-
+    //수강평쓰기 버튼클릭
+    $(document).on("click","#evaluationBtn",function(){
+        var queryString = $("form[name=evaluation]").serialize() ;
+        $.ajax({
+            type: "post",
+            url: "/course/createevaluation",
+            data: queryString,
+            success: function (data) {
+                if (data=="1") {
+                    pageing();
+                }else if (data == "2") {
+                    alert("잘못된 접근입니다.");
+                } else {
+                    alert("이미 작성하신 수강평이있습니다.");
+                }
+            },
+            error: function (request, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("오류");
+            }
+        });
+    });
 
 });
 
