@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/user/manager/**").access("hasRole('ROLE_ADMIN') or  hasRole('ROLE_MANAGER')") //access는 권한이필요하다는것 (로그인포함)
                 .antMatchers("/user/admin/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/course/create**").access("hasRole('ROLE_ADMIN') or  hasRole('ROLE_MANAGER')")
+                .antMatchers("/course/createview").access("hasRole('ROLE_ADMIN') or  hasRole('ROLE_MANAGER')")
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/main/**").authenticated()
                 .antMatchers("assets/**").authenticated()
