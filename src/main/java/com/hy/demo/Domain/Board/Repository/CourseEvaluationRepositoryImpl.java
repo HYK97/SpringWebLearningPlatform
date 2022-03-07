@@ -7,6 +7,8 @@ import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -27,6 +29,8 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     }
 
 
+    @Autowired
+    Logger logger;
 
 
     public Map<String, Double> countScope(Long id){
@@ -46,46 +50,54 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         Double three= 0.0;
         Double four= 0.0;
         Double five= 0.0;
-        Map<String, Double> list =new HashMap<>();
+
         for( Double key : map.keySet() ){
-            if ((int) (key * 10) % 10 == 5) {//x.5 일때
-                int scope=(int)(key  % 10);
-                switch (scope){
-                    case 1:
-                        one+=0.5;
-                        two+=0.5;
-                        break;
-                    case 2:
-                        two+=0.5;
-                        three+=0.5;
-                        break;
-                    case 3:
-                        three+=0.5;
-                        four+=0.5;
-                        break;
-                    case 4:
-                        four+=0.5;
-                        five+=0.5;
-                        break;
-                    case 5:
-                        five+=0.5f;
-                        break;
-                }
-            } else {
-                if (key == 1.0) {
-                    one += 1.0;
-                } else if (key == 2.0) {
-                    two += 1.0;
-                } else if (key == 3.0) {
-                    three += 1.0;
-                } else if (key == 4.0) {
-                    four += 1.0;
-                } else if (key == 5.0) {
-                    five += 1.0;
+            for (int i = 0; i < map.get(key); i++) {
+                if (String.format("%.1f", key).charAt(2)=='5') {//x.5 일때
+                    int scope=(int)(key  % 10);
+                    switch (scope){
+                        case 0:
+                            one+=1.0;
+                            break;
+                        case 1:
+                            one+=0.5;
+                            two+=0.5;
+                            break;
+                        case 2:
+                            two+=0.5;
+                            three+=0.5;
+                            break;
+                        case 3:
+                            three+=0.5;
+                            four+=0.5;
+                            break;
+                        case 4:
+                            four+=0.5;
+                            five+=0.5;
+                            break;
+                        case 5:
+                            five+=0.5f;
+                            break;
+                    }
+                } else {
+
+                    if (key == 1.0) {
+                        one += 1.0;
+                    } else if (key == 2.0) {
+                        two += 1.0;
+                    } else if (key == 3.0) {
+                        three += 1.0;
+                    } else if (key == 4.0) {
+                        four += 1.0;
+                    } else if (key == 5.0) {
+                        five += 1.0;
+                    }
                 }
             }
 
+
         }
+        Map<String, Double> list =new HashMap<>();
         list.put("5",five);
         list.put("4",four);
         list.put("3",three);
