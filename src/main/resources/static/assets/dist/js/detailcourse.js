@@ -15,7 +15,7 @@ const template = '<div>\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update" >수정</a></li>\n' +
+    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-bs-target="#exampleModal" >수정</a></li>\n' +
     '                    <li><a class="dropdown-item delete" >삭제</a></li>\n' +
     '                </ul>\n' +
     '            </div>\n' +
@@ -82,8 +82,8 @@ $(document).ready(function () {
     pageing(0);
 
     //수정 삭제
-    $(document).on("click", ".delete", function () {
-        alert("sss");
+    $(document).on("click", ".update", function () {
+
     });
 
 
