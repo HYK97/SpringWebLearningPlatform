@@ -3,6 +3,7 @@ package com.hy.demo.Domain.Board.Repository;
 import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Board.Entity.QCourseEvaluation;
+import com.hy.demo.Domain.User.Entity.QUser;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 import static com.hy.demo.Domain.Board.Entity.QCourse.course;
 import static com.hy.demo.Domain.Board.Entity.QCourseEvaluation.courseEvaluation;
+import static com.hy.demo.Domain.User.Entity.QUser.*;
 
 
 public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport implements CourseEvaluationRepositoryCustom  {
@@ -144,4 +146,13 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                         .from(courseEvaluation)
                         .where(courseEvaluation.replyId.eq(id)).fetchOne();
     }
+
+    public CourseEvaluation findByUsernameAndId(String username,Long id) {
+        return select(courseEvaluation)
+                .from(courseEvaluation)
+                .leftJoin(courseEvaluation.user, user)
+                .where(courseEvaluation.user.username.eq(username).and(courseEvaluation.course.id.eq(id)))
+                .fetchJoin().fetchOne();
+    }
+
 }

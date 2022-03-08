@@ -124,14 +124,16 @@ public class CourseController {
             return "3";
         }
     }
-    @PostMapping( {"/deleteevaluation/{id}"})
+    @PostMapping( {"/deleteevaluation/{id}/{courseId}"})
     @ResponseBody
-    public String deleteEvaluation(String courseId,String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long id){
+    public String deleteEvaluation(String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long id,@PathVariable Long courseId){
 
         try {
-            courseEvaluationService.delete(id);
+            courseEvaluationService.delete(id, principalDetails.getUser(),courseId);
         } catch (EmptyResultDataAccessException e) {
             return "0";
+        } catch (NullPointerException e) {
+            return "2";
         }
         return "1";
     }
