@@ -124,6 +124,21 @@ public class CourseController {
             return "3";
         }
     }
+
+    @PostMapping( {"/updateevaluation"})
+    @ResponseBody
+    public String updateEvaluation(String id,String courseId,String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+        boolean update = courseEvaluationService.update(id, content, star, principalDetails.getUser(), courseId);
+        if (update) {
+            return "1";
+        } else {
+            return "2";
+        }
+
+    }
+
+
     @PostMapping( {"/deleteevaluation/{id}/{courseId}"})
     @ResponseBody
     public String deleteEvaluation(String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long id,@PathVariable Long courseId){
@@ -131,8 +146,10 @@ public class CourseController {
         try {
             courseEvaluationService.delete(id, principalDetails.getUser(),courseId);
         } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
             return "0";
         } catch (NullPointerException e) {
+            e.printStackTrace();
             return "2";
         }
         return "1";

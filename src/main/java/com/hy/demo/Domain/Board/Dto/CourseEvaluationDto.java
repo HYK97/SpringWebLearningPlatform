@@ -34,6 +34,8 @@ public class CourseEvaluationDto {
 
     private String reply;
 
+    private Long replyId;
+
     private Date createDate;
 
     private Date replyCreateDate;
@@ -41,7 +43,7 @@ public class CourseEvaluationDto {
 
 
 
-    public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments, Timestamp createDate, String reply,Timestamp replyCreateDate) {
+    public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments, Timestamp createDate, String reply,Timestamp replyCreateDate,Long replyId) {
         this.id = id;
         this.courseName = courseName;
         this.username = username;
@@ -64,6 +66,8 @@ public class CourseEvaluationDto {
             this.replyCreateDate = new Date(replyCreateDate.getTime());
         }else
             this.replyCreateDate=null;
+
+        this.replyId = replyId;
 
     }
     public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments) {

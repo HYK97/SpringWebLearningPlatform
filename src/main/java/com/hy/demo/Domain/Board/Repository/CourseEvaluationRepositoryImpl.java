@@ -122,6 +122,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                         , courseEvaluation.createDate
                         , reply.comments
                         , reply.createDate
+                        , reply.id
                 ))
                         .from(courseEvaluation)
                         .leftJoin(courseEvaluation.course, course)
@@ -132,27 +133,21 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
     }
 
-    @Override
-    public CourseEvaluationDto findByReply(Long id) {
-        return select(Projections.constructor(CourseEvaluationDto.class
-                        , courseEvaluation.id
-                        , courseEvaluation.course.courseName
-                        , courseEvaluation.user.username
-                        , courseEvaluation.course.id
-                        , courseEvaluation.user.id
-                        , courseEvaluation.scope
-                        , courseEvaluation.comments
-                ))
+
+    public CourseEvaluation findByReply(Long id) {
+        return select(courseEvaluation)
                         .from(courseEvaluation)
                         .where(courseEvaluation.replyId.eq(id)).fetchOne();
     }
 
-    public CourseEvaluation findByUsernameAndId(String username,Long id) {
+    public CourseEvaluation findByUsernameAndId(String username,Long courseId,Long id) {
         return select(courseEvaluation)
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.user, user)
-                .where(courseEvaluation.user.username.eq(username).and(courseEvaluation.course.id.eq(id)))
+                .where(courseEvaluation.user.username.eq(username).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.id.eq(id)))
                 .fetchJoin().fetchOne();
     }
+
+
 
 }
