@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
@@ -36,6 +37,8 @@ public class CourseEvaluationService {
     }
 
 
+
+    @Transactional
     public CourseEvaluation save(String courseId,String content,String star,User user) {
         Long courseLid= Long.parseLong(courseId);
         Course course = courseRepository.findById(courseLid).get();
@@ -51,10 +54,15 @@ public class CourseEvaluationService {
         }
     }
 
-    public void delete(Long id) {
-        CourseEvaluation courseEvaluation = courseEvaluationRepository.findByReplyId(id);
 
-        if (!isEmpty(courseEvaluation)) {//실제있을때
+    @Transactional
+    public void delete(Long id,User user,Long courseId) {
+        CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(),courseId); //널값뜨면 잘못된 session으로 인한 삭제 방지
+        courseEvaluationRepository.deleteById(findCourseEvaluation.getId());
+
+        //리플있을시에
+        CourseEvaluation courseEvaluation = courseEvaluationRepository.findByReplyId(id);
+        if (!isEmpty(courseEvaluation)) {//댓글이 실제있을때 함께삭제.
             logger.info("courseEvaluation.toString() = " + courseEvaluation.toString());
             Long replyId = courseEvaluation.getId();
             logger.info("replyId = " + replyId);
@@ -62,7 +70,6 @@ public class CourseEvaluationService {
                 courseEvaluationRepository.deleteById(replyId);
             }
         }
-        courseEvaluationRepository.deleteById(id);
     }
 
     public boolean countByUserAndCourse(String username,String id) {
