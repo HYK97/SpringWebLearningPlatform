@@ -17,7 +17,7 @@ const template = '<div>\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal2">답글쓰기</a></li>\n' +
+    '                    <li><a class="dropdown-item writeReply" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal2">답글쓰기</a></li>\n' +
     '                </ul>{{/reply}}{{/teachUser}}\n' +
 
     '               {{^teachUser}}' +
@@ -25,11 +25,9 @@ const template = '<div>\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-id="{{id}}"data-bs-target="#exampleModal" >수정</a></li>\n' +
+    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-scope="{{scope}}" data-comments="{{comments}}" data-id="{{id}}"data-bs-target="#exampleModal" >수정</a></li>\n' +
     '                    <li><a class="dropdown-item delete" data-id="{{id}}">삭제</a></li>\n' +
     '                </ul>{{/teachUser}}\n' +
-
-
     '            </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
@@ -45,11 +43,11 @@ const template = '<div>\n' +
     '                                    </div>\n' +
     '                                </div>\n' +
     '                                <div class="star-ratings my-1">\n' +
-    '                                    <small id="scope" data-scope="{{scope}}" class="text-muted"> ({{scope}})</small>\n' +
+    '                                    <small id="scope" class="text-muted"> ({{scope}})</small>\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
-    '                        <p class="text-muted my-2 ">\n' +
+    '                        <p class="text-muted my-2 comments">\n' +
     '                            {{comments}}\n' +
     '                        </p>\n' +
     '\n' +
@@ -68,8 +66,8 @@ const template = '<div>\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update" data-id="{{id}}" data-bs-toggle="modal" data-bs-target="#exampleModal2">수정</a></li>\n' +
-    '                    <li><a class="dropdown-item delete" data-id="{{id}}" >삭제</a></li>\n' +
+    '                    <li><a class="dropdown-item update" data-id="{{replyId}}" data-comments="{{reply}}" data-bs-toggle="modal" data-bs-target="#exampleModal2">수정</a></li>\n' +
+    '                    <li><a class="dropdown-item delete" data-id="{{replyId}}" >삭제</a></li>\n' +
     '                </ul>\n' +
     '                            </div>\n' +
     '                        {{/teachUser}}\n' +
@@ -96,29 +94,27 @@ $(document).ready(function () {
     var Next;
     var pageNumber;
     var totalElements;
-    var preNum ;
-    var nexNum ;
+    var preNum;
+    var nexNum;
     var totalPages;
 
 
-    pageing(0);
+    paging(0);
 
     //삭제
     $(document).on("click", ".delete", function () {
         $.ajax({
             type: "post",
-            url: "/course/deleteevaluation/"+ $(this).data("id")+"/"+getId().id,
+            url: "/course/deleteevaluation/" + $(this).data("id") + "/" + getId().id,
             success: function (data) {
                 if (data == "1") {
-                    pageing(0);
+                    paging(0);
                     alert("삭제성공");
                 } else if (data == "2") {
                     alert("허용되지않는 접근자");
                 } else {
                     alert("삭제실패")
                 }
-
-
             },
             error: function (request, error) {
                 alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -128,19 +124,70 @@ $(document).ready(function () {
 
     });
 
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $(this).find('form')[0].reset()
+    });
+
+
+// 수정
+    let modalId ;
+    $(document).on("click", ".update", function (e) {
+
+        let scope = String($(this).data('scope'));
+        if(scope.indexOf('.')== -1) {
+            scope=scope+'.0';
+        }
+        let id=$(this).data('id');
+        let comments =$(this).data('comments');
+
+        let target=$(this).data('bs-target');
+        modalId=target;
+            $(target).find("input:radio[name='star']:radio[value='" + scope + "']").prop('checked', true); // 선택하기
+            $(target).find('#modal-message-text').text(comments);
+            $(target).find('#evaluationId').val(id);
+    });
+
+
+    $(document).on("click", ".modalBtn", function () {
+        if (!starFormCheck("#evaluationUpdateForm")) {
+            alert("별점과 수강평을 입력해주세요");
+            return;
+        }
+        var queryString = $("form[name=evaluationUpdateForm]").serialize();
+        $.ajax({
+            type: "post",
+            url: "/course/updateevaluation",
+            data: queryString,
+            success: function (data) {
+                if (data == "1") {
+                    $(modalId).modal('hide');
+                     paging();
+                    alert("수정성공");
+
+                } else {
+                    alert("실패");
+                }
+
+            },
+            error: function (request, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("오류");
+            }
+        });
+    });
 
 
 
 
     //페이징 및 댓글데이터 불러오기
-    function pageing(page=0,sort="createDate-Desc"){
+    function paging(page = 0, sort = "createDate-Desc") {
         $.ajax({
             type: "get",
             url: "/course/commentsview",
             data: {
                 courseId: getId().id,
-                page : page,
-                sortBy : sort
+                page: page,
+                sortBy: sort
             },
             success: function (data) {
                 //댓글데이터
@@ -150,34 +197,32 @@ $(document).ready(function () {
                 Mustache.parse(template);
                 var jsonData = {
                     "data": data.CourseEvaluationDto,
-                    "applicationCheck":getId().applicationCheck,
+                    "applicationCheck": getId().applicationCheck,
                     "teachUser": getId().teachUser
                 }
                 var rendered = Mustache.render(template, jsonData);
                 $('#result').html(rendered);
 
-                $('.dropdown-user').each(function(){
-                    let data1 = $( this ).data("user");
-                    if(data1==getId().loginUser || jsonData.teachUser==true)
-                    {
+                $('.dropdown-user').each(function () {
+                    let data1 = $(this).data("user");
+                    if (data1 == getId().loginUser || jsonData.teachUser == true) {
                         $(this).removeAttr('hidden');
                     }
                 })
 
 
-
                 //페이징
-                pageNumber =data.CourseEvaluationDto.pageable.pageNumber+1;
-                totalPages =data.CourseEvaluationDto.totalPages;
+                pageNumber = data.CourseEvaluationDto.pageable.pageNumber + 1;
+                totalPages = data.CourseEvaluationDto.totalPages;
                 totalElements = data.totalElements
                 preNum = parseInt(pageNumber) - 1;
                 nexNum = parseInt(pageNumber) + 1;
-                Previous = pageNumber!=1 ? true :false;
-                Next = totalPages>pageNumber ? true :false;
+                Previous = pageNumber != 1 ? true : false;
+                Next = totalPages > pageNumber ? true : false;
                 var html = "";
 
                 for (var num = 1; num <= totalPages; num++) {
-                    var onclick ='page('+num+')';
+                    var onclick = 'page(' + num + ')';
                     if (num == pageNumber) {
                         html += '<li class="page-item active"><a class="page-link page">' + num + '</a></li>';
                     } else {
@@ -204,46 +249,44 @@ $(document).ready(function () {
     }
 
 
-
-
     //페이징 클릭 이벤트
-    $(document).on("click",".page",function(){
+    $(document).on("click", ".page", function () {
         let page = $(this).text();
         let sort = $('.text-success').data("sort");
-        pageing(page,sort);
+        paging(page, sort);
     });
-    $(document).on("click","#previousAtag",function(){
+    $(document).on("click", "#previousAtag", function () {
 
         let sort = $('.text-success').data("sort");
-        pageing(preNum,sort);
+        paging(preNum, sort);
     });
-    $(document).on("click","#nextAtag",function(){
+    $(document).on("click", "#nextAtag", function () {
         let sort = $('.text-success').data("sort");
-        pageing(nexNum,sort);
+        paging(nexNum, sort);
     });
-    $(document).on("click",".review-sort",function(){
+    $(document).on("click", ".review-sort", function () {
         let sort = $(this).data("sort");
         $('.review-sort').removeClass("text-success");
         $(this).addClass("text-success");
-        pageing(0,sort);
+        paging(0, sort);
     });
 
 
     //수강평쓰기 버튼클릭
-    $(document).on("click","#evaluationBtn",function(){
-        if (!formCheck("#evaluation")) {
+    $(document).on("click", "#evaluationBtn", function () {
+        if (!starFormCheck("#evaluation")) {
             alert("별점과 수강평을 입력해주세요");
             return;
         }
-        var queryString = $("form[name=evaluation]").serialize() ;
+        var queryString = $("form[name=evaluation]").serialize();
         $.ajax({
             type: "post",
             url: "/course/createevaluation",
             data: queryString,
             success: function (data) {
-                if (data=="1") {
-                    pageing();
-                }else if (data == "2") {
+                if (data == "1") {
+                    paging();
+                } else if (data == "2") {
                     alert("잘못된 접근입니다.");
                 } else {
                     history.go(0);

@@ -31,7 +31,7 @@ function fileCheck(el) {
 }
 
 
-function formCheck(form) {
+function starFormCheck(form) {
 
   let star = $(form).find('input:radio[name=star]').is(':checked');
   let text = $(form).find('.form-control').val();
