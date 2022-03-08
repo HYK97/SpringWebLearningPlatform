@@ -152,55 +152,57 @@
                             <div class="col-md-12">
                                 <div class=" border-1 review-box">
                                     <div id="box" class="mx-2 my-3 pl-">
-                                        <form name="evaluation">
+                                        <form id="evaluation" name="evaluation" class="was-validated">
                                             <input type="hidden" name="courseId" value="{{id}}">
                                             <div class="mb-3 d-center">
                                                 <p style="fontsize:20px">별점</p>
                                                 <div class="startRadio">
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="0.5">
+                                                        <input type="radio" class="form-check-input" name="star" value="0.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="1.0">
+                                                        <input type="radio" class="form-check-input" name="star" value="1.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="1.5">
+                                                        <input type="radio" class="form-check-input" name="star" value="1.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="2.0">
+                                                        <input type="radio" class="form-check-input" name="star" value="2.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="2.5">
+                                                        <input type="radio" class="form-check-input" name="star" value="2.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="3.0">
+                                                        <input type="radio" class="form-check-input" name="star" value="3.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star"value="3.5" >
+                                                        <input type="radio" class="form-check-input" name="star"value="3.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="4.0" >
+                                                        <input type="radio" class="form-check-input" name="star" value="4.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="4.5">
+                                                        <input type="radio" class="form-check-input" name="star" value="4.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" name="star" value="5.0" >
+                                                        <input type="radio" class="form-check-input" name="star" value="5.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
+
                                                 </div>
                                             </div>
                                             <div class="mb-3 d-center" >
-                                                <textarea style="min-height:150px" name="content"class="form-control" id="modal-message-text" placeholder="강의에 대한 평가를 써주세요!"></textarea>
+                                                <textarea style="min-height:150px" name="content" class="form-control is-invalid" id="modal-message-text" placeholder="강의에 대한 평가를 써주세요!" required></textarea>
+
                                                 <a id="evaluationBtn" class="btn btn-success mt-4" >수강평 등록하기</a>
                                             </div>
                                         </form>
@@ -353,7 +355,7 @@
                         <p style="fontsize:20px">별점</p>
                         <div class="startRadio">
                             <label class="startRadio-box">
-                                <input type="radio" name="star" value="0.5">
+                                <input type="radio"  name="star" value="0.5">
                                 <span class="startRadio-img"></span>
                             </label>
                             <label class="startRadio-box">
@@ -435,7 +437,7 @@
 
 
 <script src="../assets/dist/js/detailcourse.js"></script>
-
+<script src="../assets/dist/js/form-validation.js"></script>
 {{>layout/footer}}
 </body>
 </html>

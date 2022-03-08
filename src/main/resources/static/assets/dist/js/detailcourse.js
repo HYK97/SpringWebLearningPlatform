@@ -107,13 +107,15 @@ $(document).ready(function () {
     $(document).on("click", ".delete", function () {
         $.ajax({
             type: "post",
-            url: "/course/deleteevaluation/"+ $(this).data("id"),
+            url: "/course/deleteevaluation/"+ $(this).data("id")+"/"+getId().id,
             success: function (data) {
                 if (data == "1") {
                     pageing(0);
                     alert("삭제성공");
+                } else if (data == "2") {
+                    alert("허용되지않는 접근자");
                 } else {
-                    alert("삭제실패");
+                    alert("삭제실패")
                 }
 
 
@@ -229,6 +231,10 @@ $(document).ready(function () {
 
     //수강평쓰기 버튼클릭
     $(document).on("click","#evaluationBtn",function(){
+        if (!formCheck("#evaluation")) {
+            alert("별점과 수강평을 입력해주세요");
+            return;
+        }
         var queryString = $("form[name=evaluation]").serialize() ;
         $.ajax({
             type: "post",
@@ -240,6 +246,7 @@ $(document).ready(function () {
                 }else if (data == "2") {
                     alert("잘못된 접근입니다.");
                 } else {
+                    history.go(0);
                     alert("이미 작성하신 수강평이있습니다.");
                 }
             },
