@@ -10,22 +10,26 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.*;
 
+import static com.hy.demo.Domain.Board.Entity.QCourseEvaluation.courseEvaluation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.entry;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+
 class CourseEvaluationRepositoryImplTest {
     @Autowired
     private UserRepository userRepository;
@@ -41,6 +45,9 @@ class CourseEvaluationRepositoryImplTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    Logger logger;
 
     private Course course1;
 
@@ -201,4 +208,26 @@ class CourseEvaluationRepositoryImplTest {
                 );
 
     }
+
+
+    @Test
+    public void findByUserNameAndCourseId () throws Exception{
+    //given
+        String username1 ="user1";
+        String username2 ="user3";
+    //when
+        CourseEvaluation findEvaluation =courseEvaluationRepository.findByUsernameAndId(username1,course1Id);
+        CourseEvaluation findEvaluation2 =courseEvaluationRepository.findByUsernameAndId(username2,course1Id);
+        //then
+
+        assertThat(findEvaluation).extracting("scope","comments")
+                .containsOnly(3.5,"test1");
+
+        assertThat(findEvaluation2).isNull();
+
+
+    }
+
+
+
 }
