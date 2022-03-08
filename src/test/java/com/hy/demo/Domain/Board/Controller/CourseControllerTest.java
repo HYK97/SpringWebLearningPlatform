@@ -132,13 +132,13 @@ class CourseControllerTest {
                 .comments("Sdsd")
                 .scope(2.0)
                 .course(course)
-                .user(user)
+                .user(manager)
                 .build();
         CourseEvaluation courseEvaluation3 = CourseEvaluation.builder()
                 .comments("Sdsd")
                 .scope(3.5)
                 .course(course)
-                .user(user)
+                .user(manager2)
                 .build();
 
         userRepository.save(user);

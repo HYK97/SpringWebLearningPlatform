@@ -52,6 +52,20 @@ class CourseEvaluationRepositoryImplTest {
     @BeforeEach
     public void setup(){
 
+        User user1 = User.builder()
+                .username("user1")
+                .role("ROLE_USER")
+                .email("user@gmail.com")
+                .password(passwordEncoder.encode("user"))
+                .build();
+
+        User user2 = User.builder()
+                .username("user2")
+                .role("ROLE_USER")
+                .email("user@gmail.com")
+                .password(passwordEncoder.encode("user"))
+                .build();
+
 
         User manager1 = User.builder()
                 .username("manager1")
@@ -90,13 +104,13 @@ class CourseEvaluationRepositoryImplTest {
                 .build();
 
         CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
-                .user(manager1)
+                .user(user1)
                 .scope(3.5)
                 .comments("test1")
                 .course(course1)
                 .build();
         CourseEvaluation courseEvaluation2 = CourseEvaluation.builder()
-                .user(manager2)
+                .user(user2)
                 .scope(4.0)
                 .comments("test2")
                 .course(course1)
@@ -117,6 +131,8 @@ class CourseEvaluationRepositoryImplTest {
 
         userRepository.save(manager1);
         userRepository.save(manager2);
+        userRepository.save(user1);
+        userRepository.save(user2);
 
         course1Id = courseRepository.save(course1).getId();
         course2Id = courseRepository.save(course2).getId();
@@ -174,8 +190,8 @@ class CourseEvaluationRepositoryImplTest {
         assertThat(findEvaluation1.getContent())
                 .extracting("courseName", "username","scope","comments")
                 .containsOnly(
-                        tuple("courseTest1","manager1" ,3.5,"test1"),
-                        tuple("courseTest1","manager2", 4.0,"test2"),
+                        tuple("courseTest1","user1" ,3.5,"test1"),
+                        tuple("courseTest1","user2", 4.0,"test2"),
                         tuple("courseTest1", "manager1",4.5,"test3")
                 );
         assertThat(findEvaluation2.getContent())

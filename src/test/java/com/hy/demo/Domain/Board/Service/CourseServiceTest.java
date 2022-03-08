@@ -43,9 +43,29 @@ class CourseServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    Course course1;
+    private Course course1;
+
+    private Long course1Id;
+    private Long course2Id;
+    private Long courseEvaluation4Id;
+    private CourseEvaluation courseEvaluation4;
     @BeforeEach
     public void setup(){
+
+        User user1 = User.builder()
+                .username("user1")
+                .role("ROLE_USER")
+                .email("user@gmail.com")
+                .password(passwordEncoder.encode("user"))
+                .build();
+
+        User user2 = User.builder()
+                .username("user2")
+                .role("ROLE_USER")
+                .email("user@gmail.com")
+                .password(passwordEncoder.encode("user"))
+                .build();
+
 
         User manager1 = User.builder()
                 .username("manager1")
@@ -61,60 +81,78 @@ class CourseServiceTest {
                 .build();
 
         course1 = Course.builder()
-                .courseName("CourseTest1s")
+                .courseName("courseTest1")
                 .user(manager1)
                 .teachName("manager1")
-                .courseExplanation("text")
                 .build();
 
         Course course2 = Course.builder()
-                .courseName("test2")
+                .courseName("courseTest2")
                 .user(manager1)
                 .teachName("manager1")
                 .build();
 
         Course course3 = Course.builder()
-                .courseName("test3")
+                .courseName("courseTest3")
                 .user(manager2)
                 .teachName("manager2")
                 .build();
         Course course4 = Course.builder()
-                .courseName("english")
+                .courseName("courseTest4")
                 .user(manager2)
                 .teachName("manager2")
                 .build();
 
         CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
-                .user(manager1)
+                .user(user1)
                 .scope(3.5)
-                .comments("test")
+                .comments("test1")
                 .course(course1)
                 .build();
         CourseEvaluation courseEvaluation2 = CourseEvaluation.builder()
-                .user(manager1)
+                .user(user2)
                 .scope(4.0)
-                .comments("test")
+                .comments("test2")
                 .course(course1)
                 .build();
         CourseEvaluation courseEvaluation3 = CourseEvaluation.builder()
                 .user(manager1)
                 .scope(4.5)
-                .comments("test")
+                .comments("test3")
                 .course(course1)
                 .build();
+        courseEvaluation4 = CourseEvaluation.builder()
+                .user(manager2)
+                .scope(1.0)
+                .comments("test4")
+                .course(course2)
+                .build();
+
 
         userRepository.save(manager1);
         userRepository.save(manager2);
+        userRepository.save(user1);
+        userRepository.save(user2);
 
-        courseRepository.save(course1);
-        courseRepository.save(course2);
+        course1Id = courseRepository.save(course1).getId();
+        course2Id = courseRepository.save(course2).getId();
         courseRepository.save(course3);
         courseRepository.save(course4);
 
         courseEvaluationRepository.save(courseEvaluation1);
         courseEvaluationRepository.save(courseEvaluation2);
         courseEvaluationRepository.save(courseEvaluation3);
+        courseEvaluation4Id= courseEvaluationRepository.save(courseEvaluation4).getId();
 
+
+        CourseEvaluation reply1 = CourseEvaluation.builder()
+                .user(manager1)
+                .replyId(courseEvaluation4Id)
+                .comments("reply1")
+                .course(course2)
+                .build();
+
+        courseEvaluationRepository.save(reply1);
     }
     @AfterEach
     public void after(){
@@ -135,10 +173,9 @@ class CourseServiceTest {
         doubles.add(0.0);
         //when
         assertThat(courseDto)
-
                 //then
                 .extracting("courseName","teachName","scope","starScope","courseExplanation","starPercent")
-                .containsExactly("CourseTest1s","manager1",4.0,81.5,"text",doubles);
+                .containsExactly("courseTest1","manager1",4.0,81.5,null,doubles);
 
     }
 
