@@ -1,8 +1,11 @@
-package com.hy.demo.Domain.Board.Repository;
+package com.hy.demo.Domain.Board.Service;
 
-import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
+
+import com.hy.demo.Domain.Board.Dto.CourseDto;
 import com.hy.demo.Domain.Board.Entity.Course;
 import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
+import com.hy.demo.Domain.Board.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -13,8 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
@@ -22,15 +23,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.*;
 
-import static com.hy.demo.Domain.Board.Entity.QCourseEvaluation.courseEvaluation;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.contentOf;
 import static org.assertj.core.api.AssertionsForClassTypes.entry;
-import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-
-class CourseEvaluationRepositoryImplTest {
+class CourseEvaluationServiceTest {
     @Autowired
     private UserRepository userRepository;
 
@@ -38,10 +37,11 @@ class CourseEvaluationRepositoryImplTest {
     private CourseRepository courseRepository;
 
     @Autowired
-    private CourseEvaluationRepository courseEvaluationRepository;
+    private CourseEvaluationService courseEvaluationService;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private CourseEvaluationRepository courseEvaluationRepository;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -58,7 +58,7 @@ class CourseEvaluationRepositoryImplTest {
     private CourseEvaluation courseEvaluation4;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
 
         User user1 = User.builder()
                 .username("user1")
@@ -150,7 +150,7 @@ class CourseEvaluationRepositoryImplTest {
         courseEvaluation1Id = courseEvaluationRepository.save(courseEvaluation1).getId();
         courseEvaluationRepository.save(courseEvaluation2);
         courseEvaluationRepository.save(courseEvaluation3);
-        courseEvaluation4Id= courseEvaluationRepository.save(courseEvaluation4).getId();
+        courseEvaluation4Id = courseEvaluationRepository.save(courseEvaluation4).getId();
 
 
         CourseEvaluation reply1 = CourseEvaluation.builder()
@@ -163,74 +163,30 @@ class CourseEvaluationRepositoryImplTest {
         courseEvaluationRepository.save(reply1);
 
     }
+
     @AfterEach
-    public void after(){
+    public void after() {
         userRepository.deleteAll();
         courseRepository.deleteAll();
         courseEvaluationRepository.deleteAll();
     }
-    @Test
-    public void countScope() {
-        //given
-        Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
-        Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(byCourseName.getId());
-        //when
-        assertThat(stringDoubleMap).hasSize(5)
-                //then
-                .contains(entry("1",0.0), entry("2",0.0), entry("3",0.5), entry("4",2.0), entry("5",0.5));
-    }
+
 
     @Test
-    public void findByIDCourseEvaluationDTO() throws Exception{
+    public void updateEvaluation() throws Exception{
     //given
-        // 페이지
-    PageRequest page = PageRequest.of(0, 4);
-
+        User user =userRepository.findByUsername("user1");
     //when
-        Page<CourseEvaluationDto> findEvaluation1= courseEvaluationRepository.findByIDCourseEvaluationDTO(course1Id, page);
-        Page<CourseEvaluationDto> findEvaluation2= courseEvaluationRepository.findByIDCourseEvaluationDTO(course2Id, page);
-        CourseEvaluation find=courseEvaluationRepository.findByReply(courseEvaluation4.getId());
 
+        boolean result = courseEvaluationService.update("1", "updatecomments", "4.5", user, "1");
+
+        CourseEvaluation courseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
 
         //then
-        assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
-        assertThat(findEvaluation2.getContent().size()).isEqualTo(1);
-        assertThat(findEvaluation1.getContent())
-                .extracting("courseName", "username","scope","comments")
-                .containsOnly(
-                        tuple("courseTest1","user1" ,3.5,"test1"),
-                        tuple("courseTest1","user2", 4.0,"test2"),
-                        tuple("courseTest1", "manager1",4.5,"test3")
-                );
-        assertThat(findEvaluation2.getContent())
-                .extracting("courseName", "username","scope","comments","reply")
-                .containsOnly(
-                        tuple("courseTest2","manager2" ,1.0,"test4","reply1")
-                );
+        assertThat(result).isEqualTo(true);
+        assertThat(courseEvaluation).extracting("comments","scope")
+                .containsOnly("updatecomments",4.5);
+
 
     }
-
-
-    @Test
-    public void findByUserNameAndCourseId () throws Exception{
-    //given
-        String username1 ="user1";
-        String username2 ="user3";
-    //when
-        CourseEvaluation findEvaluation =courseEvaluationRepository.findByUsernameAndId(username1,course1Id,courseEvaluation1Id);
-        CourseEvaluation findEvaluation2 =courseEvaluationRepository.findByUsernameAndId(username2,course1Id,courseEvaluation1Id);
-        //then
-
-        assertThat(findEvaluation).extracting("scope","comments")
-                .containsOnly(3.5,"test1");
-
-        assertThat(findEvaluation2).isNull();
-    }
-
-
-
-
-
-
-
 }
