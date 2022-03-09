@@ -1,6 +1,6 @@
-package com.hy.demo.Domain.Board.Dto;
+package com.hy.demo.Domain.Course.Dto;
 
-import com.hy.demo.Domain.Board.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.*;

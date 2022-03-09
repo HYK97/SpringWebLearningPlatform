@@ -1,10 +1,7 @@
-package com.hy.demo.Domain.Board.Repository;
+package com.hy.demo.Domain.Course.Repository;
 
-import com.hy.demo.Domain.Board.Dto.CourseDto;
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Entity.QCourse;
-import com.hy.demo.Domain.Board.Entity.QCourseEvaluation;
+import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Entity.QUser;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
@@ -12,8 +9,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import static com.hy.demo.Domain.Board.Entity.QCourse.course;
-import static com.hy.demo.Domain.Board.Entity.QCourseEvaluation.courseEvaluation;
+import static com.hy.demo.Domain.Course.Entity.QCourse.course;
+import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
 
 

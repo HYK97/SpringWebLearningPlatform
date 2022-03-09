@@ -1,15 +1,14 @@
-package com.hy.demo.Domain.Board.Controller;
+package com.hy.demo.Domain.Course.Controller;
 
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
-import com.hy.demo.Domain.Board.Dto.CourseDto;
-import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Entity.SummerNoteImage;
-import com.hy.demo.Domain.Board.Service.CourseEvaluationService;
-import com.hy.demo.Domain.Board.Service.CourseService;
-import com.hy.demo.Domain.Board.Service.ImageService;
+import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
+import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
+import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
+import com.hy.demo.Domain.Course.Service.CourseService;
+import com.hy.demo.Domain.Course.Service.ImageService;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;

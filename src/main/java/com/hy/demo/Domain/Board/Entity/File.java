@@ -1,5 +1,6 @@
 package com.hy.demo.Domain.Board.Entity;
 
+import com.hy.demo.Domain.Course.Entity.CourseBoard;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,7 +36,7 @@ public class File {
     private Long fileSize;
 
 
-    public void addFile(CourseBoard courseBoard,Notice notice) {
+    public void addFile(CourseBoard courseBoard, Notice notice) {
         this.courseBoard =courseBoard;
         this.notice=notice;
         notice.getFile().add(this);

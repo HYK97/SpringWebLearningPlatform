@@ -1,14 +1,9 @@
-package com.hy.demo.Domain.Board.Dto;
+package com.hy.demo.Domain.Course.Dto;
 
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.sql.Date;
 import java.sql.Timestamp;
 

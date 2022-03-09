@@ -1,6 +1,8 @@
-package com.hy.demo.Domain.Board.Entity;
+package com.hy.demo.Domain.Course.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
+import com.hy.demo.Domain.Board.Entity.Comments;
+import com.hy.demo.Domain.Board.Entity.File;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,9 +1,8 @@
-package com.hy.demo.Domain.Board.Repository;
+package com.hy.demo.Domain.Course.Repository;
 
-import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Entity.QCourseEvaluation;
-import com.hy.demo.Domain.User.Entity.QUser;
+import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
+import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Course.Entity.QCourseEvaluation;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -17,8 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.hy.demo.Domain.Board.Entity.QCourse.course;
-import static com.hy.demo.Domain.Board.Entity.QCourseEvaluation.courseEvaluation;
+import static com.hy.demo.Domain.Course.Entity.QCourse.course;
+import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
 import static com.hy.demo.Domain.User.Entity.QUser.*;
 
 

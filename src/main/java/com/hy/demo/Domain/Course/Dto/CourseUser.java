@@ -1,4 +1,4 @@
-package com.hy.demo.Domain.Board.Dto;
+package com.hy.demo.Domain.Course.Dto;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
