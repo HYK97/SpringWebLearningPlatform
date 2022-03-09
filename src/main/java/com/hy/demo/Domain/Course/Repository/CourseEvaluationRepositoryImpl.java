@@ -6,6 +6,7 @@ import com.hy.demo.Domain.Course.Entity.QCourseEvaluation;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,9 +144,22 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return select(courseEvaluation)
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.user, user)
-                .where(courseEvaluation.user.username.eq(username).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.id.eq(id)))
+                .where(usernameEq(username),
+                        courseIdEq(courseId),
+                        idEq(id))
                 .fetchJoin().fetchOne();
     }
+
+    private BooleanExpression usernameEq(String username) {
+        return username != null ? courseEvaluation.user.username.eq(username) : null;
+    }
+    private BooleanExpression courseIdEq(Long courseId) {
+        return courseId != null ? courseEvaluation.course.id.eq(courseId) : null;
+    }
+    private BooleanExpression idEq(Long id) {
+        return id != null ? courseEvaluation.id.eq(id) : null;
+    }
+
 
 
 

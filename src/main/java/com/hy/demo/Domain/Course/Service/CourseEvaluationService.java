@@ -10,6 +10,7 @@ import com.hy.demo.Domain.User.Repository.UserRepository;
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -52,11 +53,16 @@ public class CourseEvaluationService {
                         .user(user)
                         .build();
             } else { //일반 수강평일때
-                build = CourseEvaluation.builder().course(course)
-                        .comments(content)
-                        .scope(Double.valueOf(star))
-                        .user(user)
-                        .build();
+                CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid,null);
+                if (isEmpty(findCourseEvaluation)) {
+                    build = CourseEvaluation.builder().course(course)
+                            .comments(content)
+                            .scope(Double.valueOf(star))
+                            .user(user)
+                            .build();
+                } else {
+                    throw new DataIntegrityViolationException("이미있는 수강평");
+                }
             }
             return courseEvaluationRepository.save(build);
         } else {
@@ -88,7 +94,6 @@ public class CourseEvaluationService {
         Long courseLid = Long.parseLong(courseId);
         Long Lid = Long.parseLong(id);
         CourseEvaluation courseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid, Lid);
-
         if (!isEmpty(star)) { //일반수강평
             Double doubleStar = Double.valueOf(star);
             if (!isEmpty(courseEvaluation)) {
