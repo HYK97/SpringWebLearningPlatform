@@ -113,11 +113,12 @@ public class CourseController {
 
     @PostMapping( {"/createevaluation"})
     @ResponseBody
-    public String createEvaluation(String courseId,String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String createEvaluation(String courseId,String content,String star,String replyId ,@AuthenticationPrincipal PrincipalDetails principalDetails){
         try {
-            courseEvaluationService.save(courseId, content, star, principalDetails.getUser());
+            courseEvaluationService.save(courseId, content, star, principalDetails.getUser(),replyId);
             return "1";
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             return "2";
         } catch (DataIntegrityViolationException e) {
             return "3";

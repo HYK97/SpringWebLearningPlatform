@@ -17,7 +17,7 @@ const template = '<div>\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item writeReply" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal2">답글쓰기</a></li>\n' +
+    '                    <li><a class="dropdown-item createReply" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal3">답글쓰기</a></li>\n' +
     '                </ul>{{/reply}}{{/teachUser}}\n' +
 
     '               {{^teachUser}}' +
@@ -132,28 +132,40 @@ $(document).ready(function () {
 // 수정
     let modalId ;
     $(document).on("click", ".update", function (e) {
-
         let scope = String($(this).data('scope'));
-        if(scope.indexOf('.')== -1) {
-            scope=scope+'.0';
-        }
         let id=$(this).data('id');
         let comments =$(this).data('comments');
-
         let target=$(this).data('bs-target');
         modalId=target;
+        if (scope !=null) {
+            if(scope.indexOf('.')== -1) {
+                scope=scope+'.0';
+            }
             $(target).find("input:radio[name='star']:radio[value='" + scope + "']").prop('checked', true); // 선택하기
-            $(target).find('#modal-message-text').text(comments);
-            $(target).find('#evaluationId').val(id);
+        }
+        $(target).find('#modal-message-text').text(comments);
+        $(target).find('#evaluationId').val(id);
+    });
+
+    $(document).on("click", ".createReply", function (e) {
+        let id=$(this).data('id');
+        let target=$(this).data('bs-target');
+        modalId=target;
+        $(target).find('#replyId').val(id);
     });
 
 
     $(document).on("click", ".modalBtn", function () {
-        if (!starFormCheck("#evaluationUpdateForm")) {
-            alert("별점과 수강평을 입력해주세요");
+        if (!starFormCheck(modalId+" form")) {
+            if (modalId == "replyUpdate") {
+                alert("답글을 입력해주세요");
+            }else{
+                alert("별점과 수강평을 입력해주세요");
+            }
             return;
         }
-        var queryString = $("form[name=evaluationUpdateForm]").serialize();
+
+        var queryString = $(modalId+" form").serialize();
         $.ajax({
             type: "post",
             url: "/course/updateevaluation",
@@ -163,7 +175,6 @@ $(document).ready(function () {
                     $(modalId).modal('hide');
                      paging();
                     alert("수정성공");
-
                 } else {
                     alert("실패");
                 }
@@ -270,6 +281,39 @@ $(document).ready(function () {
         $(this).addClass("text-success");
         paging(0, sort);
     });
+
+
+    //강사답변쓰기 클릭
+    $(document).on("click", "#replyCreateBtn", function () {
+        if (!starFormCheck("#replyCreate")) {
+            alert("답글을 입력해주세요");
+            return;
+        }
+
+        var queryString = $("form[name=replyCreate]").serialize();
+        $.ajax({
+            type: "post",
+            url: "/course/createevaluation",
+            data: queryString,
+            success: function (data) {
+                if (data == "1") {
+                    $(modalId).modal('hide');
+                    paging();
+                } else if (data == "2") {
+                    alert("잘못된 접근입니다.");
+                } else {
+                    paging();
+                    alert("이미 작성하셨습니다.");
+                }
+            },
+            error: function (request, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("오류");
+            }
+        });
+    });
+
+
 
 
     //수강평쓰기 버튼클릭
