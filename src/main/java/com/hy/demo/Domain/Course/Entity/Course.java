@@ -1,7 +1,7 @@
-package com.hy.demo.Domain.Board.Entity;
+package com.hy.demo.Domain.Course.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
-import com.hy.demo.Domain.Board.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import lombok.*;

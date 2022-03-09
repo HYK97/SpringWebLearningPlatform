@@ -1,7 +1,7 @@
 package com.hy.demo.Domain.User.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
-import com.hy.demo.Domain.Board.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.Course;
 import lombok.*;
 
 import javax.persistence.*;

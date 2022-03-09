@@ -1,10 +1,10 @@
-package com.hy.demo.Domain.Board.Service;
+package com.hy.demo.Domain.Course.Service;
 
-import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
-import com.hy.demo.Domain.Board.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
+import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
+import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import com.hy.demo.Utils.ObjectUtils;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
@@ -82,7 +81,9 @@ public class CourseEvaluationService {
         Long courseLid= Long.parseLong(courseId);
         Long Lid = Long.parseLong(id);
         Double doubleStar = Double.valueOf(star);
+
         CourseEvaluation courseEvaluation= courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid, Lid);
+        
         if (!ObjectUtils.isEmpty(courseEvaluation)) {
             courseEvaluation.updateCourseEvalution(comments, doubleStar);
             courseEvaluationRepository.save(courseEvaluation);

@@ -1,13 +1,13 @@
 package com.hy.demo.Domain.Board.Service;
-import com.hy.demo.Domain.Board.Dto.CourseDto;
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
-import com.hy.demo.Domain.Board.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
+import com.hy.demo.Domain.Course.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +21,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.contentOf;
-import static org.assertj.core.api.AssertionsForClassTypes.entry;
-import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class CourseServiceTest {

@@ -1,10 +1,10 @@
 package com.hy.demo.Domain.Board.Controller;
 
-import com.hy.demo.Domain.Board.Dto.CourseDto;
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
-import com.hy.demo.Domain.Board.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
+import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -14,8 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -28,7 +26,6 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.PostConstruct;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 

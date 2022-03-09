@@ -1,8 +1,7 @@
-package com.hy.demo.Domain.Board.Service;
+package com.hy.demo.Domain.Course.Service;
 
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.SummerNoteImage;
-import com.hy.demo.Domain.Board.Repository.ImageRepository;
+import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
+import com.hy.demo.Domain.Course.Repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.util.FileCopyUtils;

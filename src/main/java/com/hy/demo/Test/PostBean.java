@@ -1,9 +1,9 @@
 package com.hy.demo.Test;
 
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
-import com.hy.demo.Domain.Board.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
+import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         //테스트유저 junit 돌릴때는 주석처리해야댐
-        for (int i = 0; i < 10; i++) {
+      /*  for (int i = 0; i < 10; i++) {
             User user = User.builder()
                     .username("tuser"+i)
                     .role("ROLE_USER")
@@ -58,7 +58,6 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
             courseRepository.save(course);
 
 
-
                 CourseEvaluation courseEvaluations = CourseEvaluation.builder()
                         .comments("good"+i)
                         .scope((double) (i/3))
@@ -75,11 +74,7 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
                     .user(manager)
                     .build();
             courseEvaluationRepository.save(reply);
-        }
-
-
-
-
+        }*/
 
 
 

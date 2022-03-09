@@ -1,7 +1,7 @@
-package com.hy.demo.Domain.Board.Repository;
+package com.hy.demo.Domain.Course.Repository;
 
-import com.hy.demo.Domain.Board.Dto.CourseEvaluationDto;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
+import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,9 +1,9 @@
 package com.hy.demo.Domain.User.Service;
 
-import com.hy.demo.Domain.Board.Dto.CourseDto;
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Repository.CourseRepository;
-import com.hy.demo.Domain.Board.Service.CourseService;
+import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Domain.User.Repository.UserCourseRepository;

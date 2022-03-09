@@ -1,6 +1,6 @@
-package com.hy.demo.Domain.Board.Repository;
+package com.hy.demo.Domain.Course.Repository;
 
-import com.hy.demo.Domain.Board.Entity.SummerNoteImage;
+import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

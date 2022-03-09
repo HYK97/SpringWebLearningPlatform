@@ -1,4 +1,4 @@
-package com.hy.demo.Domain.Board.Entity;
+package com.hy.demo.Domain.Course.Entity;
 
 
 import com.hy.demo.Domain.BaseEntity;
