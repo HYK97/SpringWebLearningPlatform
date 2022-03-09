@@ -98,6 +98,10 @@ $(document).ready(function () {
     var nexNum;
     var totalPages;
 
+    if (getId().teachUser == true) {
+        $('.review-container').remove();
+    }
+
 
     paging(0);
 
