@@ -1,32 +1,27 @@
 package com.hy.demo.Domain.Board.Service;
 
 
-import com.hy.demo.Domain.Board.Dto.CourseDto;
-import com.hy.demo.Domain.Board.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Board.Repository.CourseEvaluationRepository;
-import com.hy.demo.Domain.Board.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
+import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
+import com.hy.demo.Domain.Course.Repository.CourseRepository;
+import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.contentOf;
-import static org.assertj.core.api.AssertionsForClassTypes.entry;
-import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class CourseEvaluationServiceTest {
@@ -178,8 +173,7 @@ class CourseEvaluationServiceTest {
         User user =userRepository.findByUsername("user1");
     //when
 
-        boolean result = courseEvaluationService.update("1", "updatecomments", "4.5", user, "1");
-
+        boolean result = courseEvaluationService.update(  courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString() );
         CourseEvaluation courseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
 
         //then
