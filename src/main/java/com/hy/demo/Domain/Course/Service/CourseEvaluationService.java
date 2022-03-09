@@ -36,17 +36,28 @@ public class CourseEvaluationService {
     }
 
 
-
     @Transactional
-    public CourseEvaluation save(String courseId,String content,String star,User user) {
-        Long courseLid= Long.parseLong(courseId);
+    public CourseEvaluation save(String courseId, String content, String star, User user, String replyId) {
+        Long courseLid = Long.parseLong(courseId);
+
+
         Course course = courseRepository.findById(courseLid).get();
-        if (!isEmpty(course)) {
-            CourseEvaluation build = CourseEvaluation.builder().course(course)
-                    .comments(content)
-                    .scope(Double.valueOf(star))
-                    .user(user)
-                    .build();
+        if (!isEmpty(course)) { // 해당코스가있을때
+            CourseEvaluation build;
+            if (isEmpty(star) && !isEmpty(replyId)) { //강사 답변일때
+                Long replyLid = Long.parseLong(replyId);
+                build = CourseEvaluation.builder().course(course)
+                        .comments(content)
+                        .replyId(replyLid)
+                        .user(user)
+                        .build();
+            } else { //일반 수강평일때
+                build = CourseEvaluation.builder().course(course)
+                        .comments(content)
+                        .scope(Double.valueOf(star))
+                        .user(user)
+                        .build();
+            }
             return courseEvaluationRepository.save(build);
         } else {
             throw new IllegalArgumentException("없는 코스임.");
@@ -55,48 +66,53 @@ public class CourseEvaluationService {
 
 
     @Transactional
-    public void delete(Long id,User user,Long courseId) {
-        //리플인지 먼저확인
+    public void delete(Long id, User user, Long courseId) {
 
-        
-        logger.info("id = " + id);
-        CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(),courseId,id); //널값뜨면 잘못된 session으로 인한 삭제 방지
+        CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseId, id); //널값뜨면 잘못된 session으로 인한 삭제 방지
         if (!isEmpty(findCourseEvaluation.getReplyId())) { //리플일때
             courseEvaluationRepository.deleteById(findCourseEvaluation.getId());
-        }else { //일반댓글일때
+        } else { //일반댓글일때
             CourseEvaluation replyId = courseEvaluationRepository.findByReplyId(id);
             if (!isEmpty(replyId)) {//댓글이 실제있을때 함께삭제.
-                    courseEvaluationRepository.deleteById(replyId.getId()); //리플삭제
+                courseEvaluationRepository.deleteById(replyId.getId()); //리플삭제
             }
-            
+
             logger.info("id = " + id);
-                courseEvaluationRepository.deleteById(id);
+            courseEvaluationRepository.deleteById(id);
         }
-
 
 
     }
 
-    public boolean update(String id,String comments,String star,User user,String courseId) {
-        Long courseLid= Long.parseLong(courseId);
+    public boolean update(String id, String comments, String star, User user, String courseId) {
+        Long courseLid = Long.parseLong(courseId);
         Long Lid = Long.parseLong(id);
-        Double doubleStar = Double.valueOf(star);
+        CourseEvaluation courseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid, Lid);
 
-        CourseEvaluation courseEvaluation= courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid, Lid);
-        
-        if (!ObjectUtils.isEmpty(courseEvaluation)) {
-            courseEvaluation.updateCourseEvalution(comments, doubleStar);
-            courseEvaluationRepository.save(courseEvaluation);
-            return true;
-        } else {
-
-            return false;
+        if (!isEmpty(star)) { //일반수강평
+            Double doubleStar = Double.valueOf(star);
+            if (!isEmpty(courseEvaluation)) {
+                courseEvaluation.updateCourseEvaluation(comments, doubleStar);
+                courseEvaluationRepository.save(courseEvaluation);
+                return true;
+            } else {
+                return false;
+            }
+        } else {    // 강사 답글
+            if (!isEmpty(courseEvaluation)) {
+                courseEvaluation.updateReply(comments);
+                courseEvaluationRepository.save(courseEvaluation);
+                return true;
+            } else {
+                return false;
+            }
         }
+
     }
 
-    public boolean countByUserAndCourse(String username,String id) {
+    public boolean countByUserAndCourse(String username, String id) {
 
-        Long Lid= Long.parseLong(id);
+        Long Lid = Long.parseLong(id);
 
         User byUsername = userRepository.findByUsername(username);
         Long aLong = courseEvaluationRepository.countByUserIdAndCourseId(byUsername.getId(), Lid);
@@ -106,7 +122,6 @@ public class CourseEvaluationService {
             return true;
         }
     }
-
 
 
 }

@@ -32,7 +32,7 @@ function fileCheck(el) {
 
 
 function starFormCheck(form) {
-
+  let starForm=$(form).find('input:radio[name=star]').length;
   let star = $(form).find('input:radio[name=star]').is(':checked');
   let text = $(form).find('.form-control').val();
   let textBoolean;
@@ -44,13 +44,15 @@ function starFormCheck(form) {
     textBoolean = true;
   }
 
+
+  if (starForm == 0) {
+    return textBoolean;
+  } else{
     return star && textBoolean;
-
-
+  }
 
 
 }
-
 
 
 

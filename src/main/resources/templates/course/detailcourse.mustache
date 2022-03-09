@@ -421,15 +421,17 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form name="evaluationUpdate" id="replyUpdate">
+                    <input type="hidden" id= "evaluationId" name="id" value="">
+                    <input type="hidden" name="courseId" value="{{id}}">
                     <div class="mb-3">
-                        <textarea style="min-height:300px;" name="message"class="form-control" id="modal-message-text"></textarea>
+                        <textarea style="min-height:300px;" name="content"class="form-control" id="modal-message-text"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">수정하기</button>
+                <button type="button" class="btn btn-primary modalBtn">수정하기</button>
             </div>
         </div>
     </div>
@@ -439,19 +441,21 @@
     <div class="modal-dialog  modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">답글 달기</p>
+                <p class="modal-title" id="exampleModalLabel">수강평 답글 달기</p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="replyCreate" name="replyCreate">
+                    <input type="hidden"  id= "replyId" name="replyId" value="">
+                    <input type="hidden" name="courseId" value="{{id}}">
                     <div class="mb-3">
-                        <textarea style="min-height:300px;" name="message"class="form-control" id="modal-message-text"></textarea>
+                        <textarea style="min-height:300px;" name="content"class="form-control" id="modal-message-text"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">등록하기</button>
+                <button type="button" id="replyCreateBtn" class="btn btn-primary">등록하기</button>
             </div>
         </div>
     </div>

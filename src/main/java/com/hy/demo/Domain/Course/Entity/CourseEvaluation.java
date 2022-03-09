@@ -35,10 +35,16 @@ public class CourseEvaluation extends BaseEntity {
     @Column(unique=true)
     private Long replyId;
 
-    public void updateCourseEvalution(String comments,Double scope) {
+    public void updateCourseEvaluation(String comments, Double scope) {
         this.comments = comments;
         this.scope = scope;
     }
+
+    public void updateReply(String comments) {
+        this.comments = comments;
+
+    }
+
 
 
 
