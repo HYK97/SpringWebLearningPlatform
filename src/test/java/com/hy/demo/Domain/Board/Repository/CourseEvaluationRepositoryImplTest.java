@@ -46,44 +46,44 @@ class CourseEvaluationRepositoryImplTest {
 
     @Autowired
     Logger logger;
-    
+
     private List<Long> userIdList = new ArrayList<Long>();
     private List<Long> courseIdList = new ArrayList<Long>();
     private List<Long> courseEvaluationIdList = new ArrayList<Long>();
     private List<Long> replyIdList = new ArrayList<Long>();
     @BeforeEach
-    public void setup(){
-        
+    public void setup() {
+
         for (int i = 0; i < 20; i++) { // 유저 및 코스
             User user;
             Course course;
             Long userId;
             if (i % 2 == 0) {
                 user = User.builder()
-                        .username("user"+i)
+                        .username("user" + i)
                         .role("ROLE_USER")
-                        .email("user"+i+"@gmail.com")
-                        .password(passwordEncoder.encode("user"+i))
+                        .email("user" + i + "@gmail.com")
+                        .password(passwordEncoder.encode("user" + i))
                         .build();
                 userId = userRepository.save(user).getId();
                 userIdList.add(userId);
             } else {
-                 user = User.builder()
-                        .username("manager"+i)
+                user = User.builder()
+                        .username("manager" + i)
                         .role("ROLE_MANAGER")
-                        .email("manager"+i+"@gmail.com")
-                        .password(passwordEncoder.encode("manager"+i))
+                        .email("manager" + i + "@gmail.com")
+                        .password(passwordEncoder.encode("manager" + i))
                         .build();
 
                 course = Course.builder()
-                        .courseName("courseName"+user.getUsername())
+                        .courseName("courseName" + user.getUsername())
                         .user(user)
-                        .courseExplanation("코스 "+i+"번 입니다.")
-                        .teachName("manager"+i)
+                        .courseExplanation("코스 " + i + "번 입니다.")
+                        .teachName("manager" + i)
                         .build();
                 userId = userRepository.save(user).getId();
                 userIdList.add(userId);
-                Long courseId= courseRepository.save(course).getId();
+                Long courseId = courseRepository.save(course).getId();
                 courseIdList.add(courseId);
             }
         }
@@ -94,8 +94,8 @@ class CourseEvaluationRepositoryImplTest {
             for (int i = 0; i < 3; i++) {
                 CourseEvaluation courseEvaluation = CourseEvaluation.builder()
                         .user(allUser.get(i))
-                        .scope((double) (i+8/3))
-                        .comments("courseEvaluation"+i)
+                        .scope((double) (i + 8 / 3))
+                        .comments("courseEvaluation" + i)
                         .course(course)
                         .build();
                 Long courseEvaluationId = courseEvaluationRepository.save(courseEvaluation).getId();
@@ -105,7 +105,7 @@ class CourseEvaluationRepositoryImplTest {
                 User findManger = userRepository.findByUsername(teachName);
                 CourseEvaluation reply = CourseEvaluation.builder()
                         .user(findManger)
-                        .comments("reply"+i)
+                        .comments("reply" + i)
                         .course(course)
                         .replyId(courseEvaluationId)
                         .build();
@@ -113,84 +113,83 @@ class CourseEvaluationRepositoryImplTest {
                 replyIdList.add(replyId);
             }
         }
-     
+
 
     }
+
     @AfterEach
-    public void after(){
+    public void after() {
         userRepository.deleteAll();
         courseRepository.deleteAll();
         courseEvaluationRepository.deleteAll();
     }
-    
+
     @Test
-    public void run() throws Exception{
-    //given
-    
-    //when
-    
-    //then
-    
+    public void run() throws Exception {
+        //given
+
+        //when
+
+        //then
+
     }
+
     @Test
     public void countScope() {
         //given
         Course byCourseName = courseRepository.findById(courseIdList.get(0)).get();
-        Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(byCourseName.getId());
         //when
+        Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(byCourseName.getId());
+        //then
         assertThat(stringDoubleMap).hasSize(5)
-                //then
-                .contains(entry("1",0.0), entry("2",1.0), entry("3",1.0), entry("4",1.0), entry("5",0.0));
+                .contains(entry("1", 0.0), entry("2", 1.0), entry("3", 1.0), entry("4", 1.0), entry("5", 0.0));
     }
 
     @Test
-    public void findByIDCourseEvaluationDTO() throws Exception{
-    //given
+    public void findByIDCourseEvaluationDTO() throws Exception {
+        //given
         // 페이지
-    PageRequest page = PageRequest.of(0, 4);
-    Page<CourseEvaluationDto> findEvaluation1= courseEvaluationRepository.findByIDCourseEvaluationDTO(courseIdList.get(0), page);
-    //when
+        PageRequest page = PageRequest.of(0, 4);
+        //when
+        Page<CourseEvaluationDto> findEvaluation1 = courseEvaluationRepository.findByIDCourseEvaluationDTO(courseIdList.get(0), page);
+        // then
         assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
         assertThat(findEvaluation1.getContent())
-                .extracting("courseName", "username","scope","comments")
-        //then
+                .extracting("courseName", "username", "scope", "comments")
                 .containsOnly(
-                        tuple("courseNamemanager1","user0" ,2.0,"courseEvaluation0"),
-                        tuple("courseNamemanager1","user2", 3.0,"courseEvaluation1"),
-                        tuple("courseNamemanager1", "user4",4.0,"courseEvaluation2")
+                        tuple("courseNamemanager1", "user0", 2.0, "courseEvaluation0"),
+                        tuple("courseNamemanager1", "user2", 3.0, "courseEvaluation1"),
+                        tuple("courseNamemanager1", "user4", 4.0, "courseEvaluation2")
                 );
     }
 
 
     @Test
-    public void findByReply() throws Exception{
-    //given
-        CourseEvaluation find=courseEvaluationRepository.findByReply(courseEvaluationIdList.get(0));
-    //when
-        assertThat(find).extracting("comments", "replyId")
-    //then
-                .containsOnly(
-                        "reply0",courseEvaluationIdList.get(0)
-                );
-    }
-
-    @Test
-    public void findByUsernameAndCourseIdAndId() throws Exception{
-    //given
-        String username1 ="user0";
-        String username2 ="user9";
-        CourseEvaluation findEvaluation =courseEvaluationRepository.findByUsernameAndCourseIdAndId(username1,courseIdList.get(0),courseEvaluationIdList.get(0));
-        CourseEvaluation findEvaluation2 =courseEvaluationRepository.findByUsernameAndCourseIdAndId(username2,courseIdList.get(0),courseEvaluationIdList.get(0));
-         //when
-        assertThat(findEvaluation).extracting("scope","comments")
-                //then
-                .containsOnly(2.0,"courseEvaluation0");
+    public void findByReply() throws Exception {
+        //given
         //when
+        CourseEvaluation find = courseEvaluationRepository.findByReply(courseEvaluationIdList.get(0));
+        //then
+        assertThat(find).extracting("comments", "replyId")
+                .containsOnly(
+                        "reply0", courseEvaluationIdList.get(0)
+                );
+    }
+
+    @Test
+    public void findByUsernameAndCourseIdAndId() throws Exception {
+        //given
+        String username1 = "user0";
+        String username2 = "user9";
+        //when
+        CourseEvaluation findEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(username1, courseIdList.get(0), courseEvaluationIdList.get(0));
+        CourseEvaluation findEvaluation2 = courseEvaluationRepository.findByUsernameAndCourseIdAndId(username2, courseIdList.get(0), courseEvaluationIdList.get(0));
+        //then
+        assertThat(findEvaluation).extracting("scope", "comments")
+                .containsOnly(2.0, "courseEvaluation0");
         assertThat(findEvaluation2)
-                //then
                 .isNull();
     }
-
 
 
 }

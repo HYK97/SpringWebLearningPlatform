@@ -167,14 +167,12 @@ class CourseEvaluationServiceTest {
 
 
     @Test
-    public void updateEvaluation() throws Exception{
+    public void modifyCourseEvaluation() throws Exception{
     //given
         User user =userRepository.findByUsername("user1");
-    //when
-
-        boolean result = courseEvaluationService.modifyCourseEvaluation(  courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString() );
         CourseEvaluation courseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
-
+    //when
+        boolean result = courseEvaluationService.modifyCourseEvaluation(  courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString() );
         //then
         assertThat(result).isEqualTo(true);
         assertThat(courseEvaluation).extracting("comments","scope")
