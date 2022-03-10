@@ -141,7 +141,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                         .where(courseEvaluation.replyId.eq(id)).fetchOne();
     }
 
-    public CourseEvaluation findByUsernameAndId(String username,Long courseId,Long id) {
+    public CourseEvaluation findByUsernameAndCourseIdAndId(String username, Long courseId, Long id) {
         return select(courseEvaluation)
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.user, user)

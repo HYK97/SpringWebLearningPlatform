@@ -15,5 +15,5 @@ public interface CourseEvaluationRepository extends JpaRepository<CourseEvaluati
     CourseEvaluation findByReply(Long id);
     Long countByUserIdAndCourseId(Long userId, Long courseId);
     CourseEvaluation findByReplyId(Long id);
-    CourseEvaluation findByUsernameAndId(String username,Long courseId,Long id);
+    CourseEvaluation findByUsernameAndCourseIdAndId(String username, Long courseId, Long id);
 }

@@ -7,7 +7,6 @@ import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
 import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -59,7 +58,7 @@ public class CourseEvaluationService {
                         .user(user)
                         .build();
             } else { //일반 수강평일때
-                CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid,null);
+                CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(user.getUsername(), courseLid,null);
                 if (isEmpty(findCourseEvaluation)) {
                     build = CourseEvaluation.builder().course(course)
                             .comments(content)
@@ -80,7 +79,7 @@ public class CourseEvaluationService {
     @Transactional
     public void delete(Long id, User user, Long courseId) {
 
-        CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseId, id); //널값뜨면 잘못된 session으로 인한 삭제 방지
+        CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(user.getUsername(), courseId, id); //널값뜨면 잘못된 session으로 인한 삭제 방지
         if (!isEmpty(findCourseEvaluation.getReplyId())) { //리플일때
             courseEvaluationRepository.deleteById(findCourseEvaluation.getId());
         } else { //일반댓글일때
@@ -99,7 +98,7 @@ public class CourseEvaluationService {
     public boolean modifyCourseEvaluation(String id, String comments, String star, User user, String courseId) {
         Long courseLid = Long.parseLong(courseId);
         Long Lid = Long.parseLong(id);
-        CourseEvaluation courseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid, Lid);
+        CourseEvaluation courseEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(user.getUsername(), courseLid, Lid);
         if (!isEmpty(star)) { //일반수강평
             Double doubleStar = Double.valueOf(star);
             if (!isEmpty(courseEvaluation)) {
