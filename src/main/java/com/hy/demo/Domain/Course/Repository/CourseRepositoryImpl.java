@@ -9,6 +9,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
 import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
@@ -59,6 +61,25 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         ))
                 .from(course)
                 .leftJoin(course.user, user);
+    }
+
+
+    public List<CourseDto> findByRandomId(List<Long> id) {
+        return select(Projections.constructor(CourseDto.class
+                , course.id
+                , course.courseName
+                , user
+                , course.createDate
+                , course.teachName
+                , course.thumbnail
+                , course.courseExplanation
+                , select(courseEvaluation.scope.avg()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
+                , select(courseEvaluation.scope.count()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
+        ))
+                .from(course)
+                .leftJoin(course.user, user)
+                .where(course.id.in(id))
+                .fetch();
     }
 
 
