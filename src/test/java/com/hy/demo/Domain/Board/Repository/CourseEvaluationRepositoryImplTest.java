@@ -28,7 +28,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-
 class CourseEvaluationRepositoryImplTest {
     @Autowired
     private UserRepository userRepository;
@@ -47,119 +46,74 @@ class CourseEvaluationRepositoryImplTest {
 
     @Autowired
     Logger logger;
-
-    private Course course1;
-
-    private Long course1Id;
-    private Long course2Id;
-    private Long courseEvaluation4Id;
-    private Long courseEvaluation1Id;
-    private CourseEvaluation courseEvaluation4;
-
+    
+    private List<Long> userIdList = new ArrayList<Long>();
+    private List<Long> courseIdList = new ArrayList<Long>();
+    private List<Long> courseEvaluationIdList = new ArrayList<Long>();
+    private List<Long> replyIdList = new ArrayList<Long>();
     @BeforeEach
     public void setup(){
+        
+        for (int i = 0; i < 20; i++) { // 유저 및 코스
+            User user;
+            Course course;
+            Long userId;
+            if (i % 2 == 0) {
+                user = User.builder()
+                        .username("user"+i)
+                        .role("ROLE_USER")
+                        .email("user"+i+"@gmail.com")
+                        .password(passwordEncoder.encode("user"+i))
+                        .build();
+                userId = userRepository.save(user).getId();
+                userIdList.add(userId);
+            } else {
+                 user = User.builder()
+                        .username("manager"+i)
+                        .role("ROLE_MANAGER")
+                        .email("manager"+i+"@gmail.com")
+                        .password(passwordEncoder.encode("manager"+i))
+                        .build();
 
-        User user1 = User.builder()
-                .username("user1")
-                .role("ROLE_USER")
-                .email("user@gmail.com")
-                .password(passwordEncoder.encode("user"))
-                .build();
+                course = Course.builder()
+                        .courseName("courseName"+user.getUsername())
+                        .user(user)
+                        .courseExplanation("코스 "+i+"번 입니다.")
+                        .teachName("manager"+i)
+                        .build();
+                userId = userRepository.save(user).getId();
+                userIdList.add(userId);
+                Long courseId= courseRepository.save(course).getId();
+                courseIdList.add(courseId);
+            }
+        }
 
-        User user2 = User.builder()
-                .username("user2")
-                .role("ROLE_USER")
-                .email("user@gmail.com")
-                .password(passwordEncoder.encode("user"))
-                .build();
-
-
-        User manager1 = User.builder()
-                .username("manager1")
-                .role("ROLE_MANAGER")
-                .email("manager@gmail.com")
-                .password(passwordEncoder.encode("manager"))
-                .build();
-        User manager2 = User.builder()
-                .username("manager2")
-                .role("ROLE_MANAGER")
-                .email("manager@gmail.com")
-                .password(passwordEncoder.encode("manager"))
-                .build();
-
-        course1 = Course.builder()
-                .courseName("courseTest1")
-                .user(manager1)
-                .teachName("manager1")
-                .build();
-
-        Course course2 = Course.builder()
-                .courseName("courseTest2")
-                .user(manager1)
-                .teachName("manager1")
-                .build();
-
-        Course course3 = Course.builder()
-                .courseName("courseTest3")
-                .user(manager2)
-                .teachName("manager2")
-                .build();
-        Course course4 = Course.builder()
-                .courseName("courseTest4")
-                .user(manager2)
-                .teachName("manager2")
-                .build();
-
-        CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
-                .user(user1)
-                .scope(3.5)
-                .comments("test1")
-                .course(course1)
-                .build();
-        CourseEvaluation courseEvaluation2 = CourseEvaluation.builder()
-                .user(user2)
-                .scope(4.0)
-                .comments("test2")
-                .course(course1)
-                .build();
-        CourseEvaluation courseEvaluation3 = CourseEvaluation.builder()
-                .user(manager1)
-                .scope(4.5)
-                .comments("test3")
-                .course(course1)
-                .build();
-        courseEvaluation4 = CourseEvaluation.builder()
-                .user(manager2)
-                .scope(1.0)
-                .comments("test4")
-                .course(course2)
-                .build();
-
-
-        userRepository.save(manager1);
-        userRepository.save(manager2);
-        userRepository.save(user1);
-        userRepository.save(user2);
-
-        course1Id = courseRepository.save(course1).getId();
-        course2Id = courseRepository.save(course2).getId();
-        courseRepository.save(course3);
-        courseRepository.save(course4);
-
-        courseEvaluation1Id = courseEvaluationRepository.save(courseEvaluation1).getId();
-        courseEvaluationRepository.save(courseEvaluation2);
-        courseEvaluationRepository.save(courseEvaluation3);
-        courseEvaluation4Id= courseEvaluationRepository.save(courseEvaluation4).getId();
-
-
-        CourseEvaluation reply1 = CourseEvaluation.builder()
-                .user(manager1)
-                .replyId(courseEvaluation4Id)
-                .comments("reply1")
-                .course(course2)
-                .build();
-
-        courseEvaluationRepository.save(reply1);
+        List<User> allUser = userRepository.findByRole("ROLE_USER"); //댓글
+        List<Course> allCourse = courseRepository.findAll();
+        for (Course course : allCourse) {
+            for (int i = 0; i < 3; i++) {
+                CourseEvaluation courseEvaluation = CourseEvaluation.builder()
+                        .user(allUser.get(i))
+                        .scope((double) (i+8/3))
+                        .comments("courseEvaluation"+i)
+                        .course(course)
+                        .build();
+                Long courseEvaluationId = courseEvaluationRepository.save(courseEvaluation).getId();
+                courseEvaluationIdList.add(courseEvaluationId);
+                //reply
+                String teachName = course.getTeachName();
+                User findManger = userRepository.findByUsername(teachName);
+                CourseEvaluation reply = CourseEvaluation.builder()
+                        .user(findManger)
+                        .comments("reply"+i)
+                        .course(course)
+                        .replyId(courseEvaluationId)
+                        .build();
+                Long replyId = courseEvaluationRepository.save(reply).getId();
+                replyIdList.add(replyId);
+            }
+        }
+     
 
     }
     @AfterEach
@@ -168,15 +122,25 @@ class CourseEvaluationRepositoryImplTest {
         courseRepository.deleteAll();
         courseEvaluationRepository.deleteAll();
     }
+    
+    @Test
+    public void run() throws Exception{
+    //given
+    
+    //when
+    
+    //then
+    
+    }
     @Test
     public void countScope() {
         //given
-        Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
+        Course byCourseName = courseRepository.findById(courseIdList.get(0)).get();
         Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(byCourseName.getId());
         //when
         assertThat(stringDoubleMap).hasSize(5)
                 //then
-                .contains(entry("1",0.0), entry("2",0.0), entry("3",0.5), entry("4",2.0), entry("5",0.5));
+                .contains(entry("1",0.0), entry("2",1.0), entry("3",1.0), entry("4",1.0), entry("5",0.0));
     }
 
     @Test
@@ -184,51 +148,48 @@ class CourseEvaluationRepositoryImplTest {
     //given
         // 페이지
     PageRequest page = PageRequest.of(0, 4);
-
+    Page<CourseEvaluationDto> findEvaluation1= courseEvaluationRepository.findByIDCourseEvaluationDTO(courseIdList.get(0), page);
     //when
-        Page<CourseEvaluationDto> findEvaluation1= courseEvaluationRepository.findByIDCourseEvaluationDTO(course1Id, page);
-        Page<CourseEvaluationDto> findEvaluation2= courseEvaluationRepository.findByIDCourseEvaluationDTO(course2Id, page);
-        CourseEvaluation find=courseEvaluationRepository.findByReply(courseEvaluation4.getId());
-
-
-        //then
         assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
-        assertThat(findEvaluation2.getContent().size()).isEqualTo(1);
         assertThat(findEvaluation1.getContent())
                 .extracting("courseName", "username","scope","comments")
+        //then
                 .containsOnly(
-                        tuple("courseTest1","user1" ,3.5,"test1"),
-                        tuple("courseTest1","user2", 4.0,"test2"),
-                        tuple("courseTest1", "manager1",4.5,"test3")
+                        tuple("courseNamemanager1","user0" ,2.0,"courseEvaluation0"),
+                        tuple("courseNamemanager1","user2", 3.0,"courseEvaluation1"),
+                        tuple("courseNamemanager1", "user4",4.0,"courseEvaluation2")
                 );
-        assertThat(findEvaluation2.getContent())
-                .extracting("courseName", "username","scope","comments","reply")
-                .containsOnly(
-                        tuple("courseTest2","manager2" ,1.0,"test4","reply1")
-                );
-
     }
 
 
     @Test
-    public void findByUserNameAndCourseId () throws Exception{
+    public void findByReply() throws Exception{
     //given
-        String username1 ="user1";
-        String username2 ="user3";
+        CourseEvaluation find=courseEvaluationRepository.findByReply(courseEvaluationIdList.get(0));
     //when
-        CourseEvaluation findEvaluation =courseEvaluationRepository.findByUsernameAndId(username1,course1Id,courseEvaluation1Id);
-        CourseEvaluation findEvaluation2 =courseEvaluationRepository.findByUsernameAndId(username2,course1Id,courseEvaluation1Id);
-        //then
-
-        assertThat(findEvaluation).extracting("scope","comments")
-                .containsOnly(3.5,"test1");
-
-        assertThat(findEvaluation2).isNull();
+        assertThat(find).extracting("comments", "replyId")
+    //then
+                .containsOnly(
+                        "reply0",courseEvaluationIdList.get(0)
+                );
     }
 
-
-
-
+    @Test
+    public void findByUsernameAndCourseIdAndId() throws Exception{
+    //given
+        String username1 ="user0";
+        String username2 ="user9";
+        CourseEvaluation findEvaluation =courseEvaluationRepository.findByUsernameAndCourseIdAndId(username1,courseIdList.get(0),courseEvaluationIdList.get(0));
+        CourseEvaluation findEvaluation2 =courseEvaluationRepository.findByUsernameAndCourseIdAndId(username2,courseIdList.get(0),courseEvaluationIdList.get(0));
+         //when
+        assertThat(findEvaluation).extracting("scope","comments")
+                //then
+                .containsOnly(2.0,"courseEvaluation0");
+        //when
+        assertThat(findEvaluation2)
+                //then
+                .isNull();
+    }
 
 
 
