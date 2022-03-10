@@ -7,6 +7,7 @@ import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,6 +160,8 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     private BooleanExpression idEq(Long id) {
         return id != null ? courseEvaluation.id.eq(id) : null;
     }
+
+
 
 
 

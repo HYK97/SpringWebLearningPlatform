@@ -163,7 +163,7 @@ class CourseServiceTest {
     public void detailView() {
         //given
         Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
-        CourseDto courseDto = courseService.detailView(byCourseName.getId());
+        CourseDto courseDto = courseService.findDetailCourse(byCourseName.getId());
         List<Double> doubles=new ArrayList<>();
         doubles.add(16.666666666666664);
         doubles.add(66.66666666666666);

@@ -19,6 +19,14 @@ import javax.transaction.Transactional;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
+/**
+ * service 명명 규칙
+ * select -> find
+ * modifyCourseEvaluation -> modify
+ * insert -> add
+ * delete -> delete
+ * */
+
 @Service
 public class CourseEvaluationService {
     @Autowired
@@ -38,10 +46,8 @@ public class CourseEvaluationService {
 
 
     @Transactional
-    public CourseEvaluation save(String courseId, String content, String star, User user, String replyId) {
+    public CourseEvaluation addCourseEvaluation(String courseId, String content, String star, User user, String replyId) {
         Long courseLid = Long.parseLong(courseId);
-
-
         Course course = courseRepository.findById(courseLid).get();
         if (!isEmpty(course)) { // 해당코스가있을때
             CourseEvaluation build;
@@ -90,7 +96,7 @@ public class CourseEvaluationService {
 
     }
 
-    public boolean update(String id, String comments, String star, User user, String courseId) {
+    public boolean modifyCourseEvaluation(String id, String comments, String star, User user, String courseId) {
         Long courseLid = Long.parseLong(courseId);
         Long Lid = Long.parseLong(id);
         CourseEvaluation courseEvaluation = courseEvaluationRepository.findByUsernameAndId(user.getUsername(), courseLid, Lid);
@@ -116,9 +122,7 @@ public class CourseEvaluationService {
     }
 
     public boolean countByUserAndCourse(String username, String id) {
-
         Long Lid = Long.parseLong(id);
-
         User byUsername = userRepository.findByUsername(username);
         Long aLong = courseEvaluationRepository.countByUserIdAndCourseId(byUsername.getId(), Lid);
         if (aLong == 1) {

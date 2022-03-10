@@ -25,13 +25,12 @@ public class CourseService {
     @Autowired
     private CourseEvaluationRepository courseEvaluationRepository;
 
-    public Page<CourseDto> viewCourse(Pageable pageable) {
-
+    public Page<CourseDto> findCourseList(Pageable pageable) {
         Page<CourseDto> results = courseRepository.findByCourseNameAndUserDTO("", pageable);
         return results;
     }
 
-    public CourseDto detailView(Long id) {
+    public CourseDto findDetailCourse(Long id) {
 
         CourseDto results = courseRepository.findByIdAndUserDTO(id);//
         //별점갯수
@@ -53,13 +52,12 @@ public class CourseService {
     }
 
 
-    public Page<CourseDto> searchCourse(String search, Pageable pageable) {
+    public Page<CourseDto> findSearchCourseList(String search, Pageable pageable) {
         Page<CourseDto> results = courseRepository.findByCourseNameAndUserDTO(search, pageable);
         return results;
     }
 
-    public void createCourse(Course course) {
-
+    public void addCourse(Course course) {
         courseRepository.save(course);
     }
 
