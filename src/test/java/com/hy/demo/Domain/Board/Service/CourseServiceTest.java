@@ -11,13 +11,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.security.SecureRandom;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.contentOf;
@@ -41,6 +44,9 @@ class CourseServiceTest {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    Logger logger;
 
     private Course course1;
 
@@ -162,8 +168,6 @@ class CourseServiceTest {
     @Test
     public void detailView() {
         //given
-        Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
-        CourseDto courseDto = courseService.findDetailCourse(byCourseName.getId());
         List<Double> doubles=new ArrayList<>();
         doubles.add(16.666666666666664);
         doubles.add(66.66666666666666);
@@ -171,11 +175,27 @@ class CourseServiceTest {
         doubles.add(0.0);
         doubles.add(0.0);
         //when
+        Course byCourseName = courseRepository.findByCourseName(course1.getCourseName());
+        CourseDto courseDto = courseService.findDetailCourse(byCourseName.getId());
+        //then
         assertThat(courseDto)
-                //then
                 .extracting("courseName","teachName","scope","starScope","courseExplanation","starPercent")
                 .containsExactly("courseTest1","manager1",4.0,81.5,null,doubles);
 
     }
 
+    @Test
+    public void randomCourseList() throws Exception{
+    //given
+        int amount =2;
+    //when
+        List<CourseDto> courseDto = courseService.randomCourseList(amount);
+        //then
+        assertThat(courseDto.size()).isEqualTo(2);
+
+    }
+
+
 }
+    
+  
