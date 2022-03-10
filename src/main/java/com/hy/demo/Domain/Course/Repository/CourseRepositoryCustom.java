@@ -5,10 +5,12 @@ import com.hy.demo.Domain.Course.Entity.Course;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface CourseRepositoryCustom {
 
     public Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
     public Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable);
-
+    public List<CourseDto> findByRandomId(List<Long> id);
     public CourseDto findByIdAndUserDTO(Long id);
 }
