@@ -111,7 +111,7 @@ public class UserService {
 
         Long Lid= Long.parseLong(course);
         logger.info("idss= " + Lid);
-        CourseDto courseDto = courseService.detailView(Lid);
+        CourseDto courseDto = courseService.findDetailCourse(Lid);
         User findUser = findByUsername(user);
         UserCourse findUserCourse = userCourseRepository.findByUserAndCourse(user, courseDto.returnEntity());
         Map map = new HashMap();

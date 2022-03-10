@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -173,7 +172,7 @@ class CourseEvaluationServiceTest {
         User user =userRepository.findByUsername("user1");
     //when
 
-        boolean result = courseEvaluationService.update(  courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString() );
+        boolean result = courseEvaluationService.modifyCourseEvaluation(  courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString() );
         CourseEvaluation courseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
 
         //then

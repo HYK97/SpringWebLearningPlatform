@@ -53,7 +53,7 @@ public class CourseController {
     @GetMapping( {"/view"})
         public String course(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        Page<CourseDto> courseDtos=courseService.viewCourse(pageable);
+        Page<CourseDto> courseDtos=courseService.findCourseList(pageable);
         pagingDto(model, courseDtos);
         return "/course/view";
     }
@@ -89,7 +89,7 @@ public class CourseController {
 
     public String courseSearch(Model model,String search,@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC)Pageable pageable) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        Page<CourseDto> courseDtos=courseService.searchCourse(search,pageable);
+        Page<CourseDto> courseDtos=courseService.findSearchCourseList(search,pageable);
         pagingDto(model, courseDtos);
 
         return "/course/view";
@@ -115,7 +115,7 @@ public class CourseController {
     @ResponseBody
     public String createEvaluation(String courseId,String content,String star,String replyId ,@AuthenticationPrincipal PrincipalDetails principalDetails){
         try {
-            courseEvaluationService.save(courseId, content, star, principalDetails.getUser(),replyId);
+            courseEvaluationService.addCourseEvaluation(courseId, content, star, principalDetails.getUser(),replyId);
             return "1";
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -129,7 +129,7 @@ public class CourseController {
     @ResponseBody
     public String updateEvaluation(String id,String courseId,String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails){
 
-        boolean update = courseEvaluationService.update(id, content, star, principalDetails.getUser(), courseId);
+        boolean update = courseEvaluationService.modifyCourseEvaluation(id, content, star, principalDetails.getUser(), courseId);
         if (update) {
             return "1";
         } else {
@@ -199,7 +199,7 @@ public class CourseController {
             e.printStackTrace();
             return "/error/error400";
         }
-        courseService.createCourse(course);
+        courseService.addCourse(course);
 
         return "redirect:/course/view";
 
