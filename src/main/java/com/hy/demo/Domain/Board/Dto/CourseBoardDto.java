@@ -6,10 +6,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 
-@Getter
-@Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Data
+@NoArgsConstructor
 public class CourseBoardDto {
 
     private Long id;
@@ -20,11 +18,12 @@ public class CourseBoardDto {
     private String teachName;
     private String courseName;
 
-    public CourseBoardDto(Long id, String title, Long views, Timestamp createDate, String teachName, String courseName) {
+    public CourseBoardDto(Long id, String title, Long views, Timestamp createDate, String contents, String teachName, String courseName) {
         this.id = id;
         this.title = title;
         this.views = views;
         this.createDate = new Date(createDate.getTime());
+        this.contents = contents;
         this.teachName = teachName;
         this.courseName = courseName;
     }
