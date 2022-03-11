@@ -154,17 +154,11 @@ class CourseRepositoryTest {
     @Test
     public void findByRandomId() throws Exception{
     //given
-        List<Long> idList=new ArrayList<>();
-        idList.add(course1Id);
-        idList.add(course2Id);
-        List<CourseDto> findRandomCourse = courseRepository.findByRandomId(idList);
+        int amount =2;
         //when
-        assertThat(findRandomCourse).extracting("courseName","teachName")
-                .containsOnly(
-                        tuple("test1","manager1"),
-                        tuple("test2","manager1")
-                );
+        List<CourseDto> findRandomCourse = courseRepository.findByRandomId(2);
     //then
+        assertThat(findRandomCourse.size()).isEqualTo(2);
     }
 
 }

@@ -57,9 +57,9 @@ class CourseBoardRepositoryImplTest {
     private List<Long> courseEvaluationIdList = new ArrayList<Long>();
     private List<Long> replyIdList = new ArrayList<Long>();
     private List<Long> courseBoardIdList = new ArrayList<Long>();
+
     @BeforeEach
     public void setup() {
-
         for (int i = 0; i < 20; i++) { // 유저 및 코스
             User user;
             Course course;
@@ -154,11 +154,11 @@ class CourseBoardRepositoryImplTest {
         assertThat(findCourseBoard.size()).isEqualTo(5);
         assertThat(findCourseBoard).extracting("title","contents","views")
                 .containsOnly(
-                        tuple("courseName1courseBoardTitle0",null,3L),
-                        tuple("courseName1courseBoardTitle1",null,3L),
-                        tuple("courseName1courseBoardTitle2",null,3L),
-                        tuple("courseName1courseBoardTitle3",null,3L),
-                        tuple("courseName1courseBoardTitle4",null,3L)
+                        tuple("courseName1courseBoardTitle0","courseBoardContents0",3L),
+                        tuple("courseName1courseBoardTitle1","courseBoardContents1",3L),
+                        tuple("courseName1courseBoardTitle2","courseBoardContents2",3L),
+                        tuple("courseName1courseBoardTitle3","courseBoardContents3",3L),
+                        tuple("courseName1courseBoardTitle4","courseBoardContents4",3L)
                 );
 
     }
