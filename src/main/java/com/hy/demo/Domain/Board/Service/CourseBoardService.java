@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.Board.Service;
 
 import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
+import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class CourseBoardService {
 
     public List<CourseBoardDto> findCourseBoardList(Long id) {
         return courseBoardRepository.findByCourseIdNotContents(id);
+    }
+
+    public void save(CourseBoard courseBoard) {
+        courseBoardRepository.save(courseBoard);
     }
 
 
