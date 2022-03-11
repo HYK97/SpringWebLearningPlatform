@@ -55,17 +55,17 @@
                 {{#course}}
                     <div class="col">
                         <div class="card shadow-sm">
-                            {{#thumbnail}}<a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top" width="100%" height="255" src="{{thumbnail}}"></a>
+                            {{#thumbnail}}<a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top" width="100%" height="300px" src="{{thumbnail}}"></a>
 
                             {{/thumbnail}}
 
                             {{^thumbnail}}
                                 <a href="/course/detailcourse?id={{id}}">
-                                <svg class="bd-placeholder-img card-img-top" width="100%" height="255"
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="300px"
                                      xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>썸네일없음</title>
                                     <rect width="100%" height="100%" fill="#55595c"></rect>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">x</text>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">썸네일없음</text>
                                 </svg>
                                 </a>
                             {{/thumbnail}}
