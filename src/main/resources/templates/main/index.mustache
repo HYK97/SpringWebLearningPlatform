@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>main 페이지</title>
     {{>layout/import}}
+    <link href="../assets/dist/css/index.css" rel="stylesheet">
     <script src="../assets/dist/js/index.js"></script>
     <style>
         .bd-placeholder-img {
@@ -35,25 +36,25 @@
     </div>
     <div class="carousel-inner">
         {{#headerView}}
-            <div class="carousel-item">
-                <div class="p-4 p-md-5 mb-4 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-white rounded bg-dark">
+            <div class="carousel-item carousel-item-box ">
+                <div class="p-4 p-md-5 carousel-items  row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-white rounded">
                     <div class="col-md-6 ">
 
 
                         {{#thumbnail}}
                             <a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top"
                                                                           width="100%"
-                                                                          height="255" src="{{thumbnail}}"></a>
+                                                                          height="350px" src="{{thumbnail}}"></a>
 
                         {{/thumbnail}}
 
                         {{^thumbnail}}
                             <a href="/course/detailcourse?id={{id}}">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="255"
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="350px"
                                  xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c"></rect>
-                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">x</text>
+                                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>썸네일없음</title>
+                                <rect width="100%" height="100%" fill="gray"></rect>
+                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">썸네일없음</text>
                             </svg>
                             </a>
                         {{/thumbnail}}

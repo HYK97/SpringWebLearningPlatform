@@ -1,0 +1,10 @@
+.carousel-item-box{
+    background: lightgray;
+}
+.carousel-items {
+    height: 100%;
+    align-items: center;
+    display: flex;
+    margin-top: 0px;
+    margin: 0 20%;
+}
