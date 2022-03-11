@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class CourseService {
@@ -66,23 +64,8 @@ public class CourseService {
 
 
     public List<CourseDto> randomCourseList(int amount) {
-        List<Long> randomId = new ArrayList<Long>();
-        Long id = null;
-        Long count = courseRepository.count();
-        if (amount > count) {
-            throw new IllegalStateException("너무 큰범위");
-        }
-        while (true) {
-            id = ThreadLocalRandom.current().nextLong(1, count+1);
-            boolean contains = randomId.contains(id);
-            if (!contains) {
-                randomId.add(id);
-                if (amount == randomId.size()) {
-                    break;
-                }
-            }
-        }
-        return courseRepository.findByRandomId(randomId);
+
+        return courseRepository.findByRandomId(amount);
     }
 
 }

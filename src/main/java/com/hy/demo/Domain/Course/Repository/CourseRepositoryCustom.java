@@ -11,6 +11,6 @@ public interface CourseRepositoryCustom {
 
     public Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
     public Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable);
-    public List<CourseDto> findByRandomId(List<Long> id);
+    public List<CourseDto> findByRandomId(int amount);
     public CourseDto findByIdAndUserDTO(Long id);
 }

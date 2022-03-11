@@ -5,6 +5,7 @@ import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Entity.QUser;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +65,7 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
     }
 
 
-    public List<CourseDto> findByRandomId(List<Long> id) {
+    public List<CourseDto> findByRandomId(int amount) {
         return select(Projections.constructor(CourseDto.class
                 , course.id
                 , course.courseName
@@ -78,7 +79,8 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         ))
                 .from(course)
                 .leftJoin(course.user, user)
-                .where(course.id.in(id))
+                .orderBy(NumberExpression.random().asc())
+                .limit(amount)
                 .fetch();
     }
 
