@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.Board.Repository;
 
-import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
+import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
+import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
@@ -14,21 +15,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.entry;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class CourseEvaluationRepositoryImplTest {
+class CourseBoardRepositoryImplTest {
+
+
     @Autowired
     private UserRepository userRepository;
 
@@ -37,6 +38,10 @@ class CourseEvaluationRepositoryImplTest {
 
     @Autowired
     private CourseEvaluationRepository courseEvaluationRepository;
+
+    @Autowired
+    private CourseBoardRepository courseBoardRepository;
+
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -51,6 +56,7 @@ class CourseEvaluationRepositoryImplTest {
     private List<Long> courseIdList = new ArrayList<Long>();
     private List<Long> courseEvaluationIdList = new ArrayList<Long>();
     private List<Long> replyIdList = new ArrayList<Long>();
+    private List<Long> courseBoardIdList = new ArrayList<Long>();
     @BeforeEach
     public void setup() {
 
@@ -85,6 +91,18 @@ class CourseEvaluationRepositoryImplTest {
                 userIdList.add(userId);
                 Long courseId = courseRepository.save(course).getId();
                 courseIdList.add(courseId);
+
+                for (int j = 0; j < 5; j++) {
+                CourseBoard courseBoard = CourseBoard.builder()
+                        .course(course)
+                        .title("courseName"+i+"courseBoardTitle"+j)
+                        .contents("courseBoardContents"+j)
+                        .views(3L).build();
+                    Long id = courseBoardRepository.save(courseBoard).getId();
+                    courseBoardIdList.add(id);
+
+                }
+
             }
         }
 
@@ -122,64 +140,26 @@ class CourseEvaluationRepositoryImplTest {
         userRepository.deleteAll();
         courseRepository.deleteAll();
         courseEvaluationRepository.deleteAll();
+        courseBoardRepository.deleteAll();
     }
 
+
     @Test
-    public void countScope() {
-        //given
-        Course byCourseName = courseRepository.findById(courseIdList.get(0)).get();
-        //when
-        Map<String, Double> stringDoubleMap = courseEvaluationRepository.countScope(byCourseName.getId());
+    public void findByCourseIdNotContents() throws Exception{
+    //given
+        Long courseId =courseIdList.get(0);
+    //when
+        List<CourseBoardDto> findCourseBoard = courseBoardRepository.findByCourseIdNotContents(courseId);
         //then
-        assertThat(stringDoubleMap).hasSize(5)
-                .contains(entry("1", 0.0), entry("2", 1.0), entry("3", 1.0), entry("4", 1.0), entry("5", 0.0));
-    }
-
-    @Test
-    public void findByIDCourseEvaluationDTO() throws Exception {
-        //given
-        // 페이지
-        PageRequest page = PageRequest.of(0, 4);
-        //when
-        Page<CourseEvaluationDto> findEvaluation1 = courseEvaluationRepository.findByIDCourseEvaluationDTO(courseIdList.get(0), page);
-        // then
-        assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
-        assertThat(findEvaluation1.getContent())
-                .extracting("courseName", "username", "scope", "comments")
+        assertThat(findCourseBoard.size()).isEqualTo(5);
+        assertThat(findCourseBoard).extracting("title","contents","views")
                 .containsOnly(
-                        tuple("courseNamemanager1", "user0", 2.0, "courseEvaluation0"),
-                        tuple("courseNamemanager1", "user2", 3.0, "courseEvaluation1"),
-                        tuple("courseNamemanager1", "user4", 4.0, "courseEvaluation2")
+                        tuple("courseName1courseBoardTitle0",null,3L),
+                        tuple("courseName1courseBoardTitle1",null,3L),
+                        tuple("courseName1courseBoardTitle2",null,3L),
+                        tuple("courseName1courseBoardTitle3",null,3L),
+                        tuple("courseName1courseBoardTitle4",null,3L)
                 );
+
     }
-
-
-    @Test
-    public void findByReply() throws Exception {
-        //given
-        //when
-        CourseEvaluation find = courseEvaluationRepository.findByReply(courseEvaluationIdList.get(0));
-        //then
-        assertThat(find).extracting("comments", "replyId")
-                .containsOnly(
-                        "reply0", courseEvaluationIdList.get(0)
-                );
-    }
-
-    @Test
-    public void findByUsernameAndCourseIdAndId() throws Exception {
-        //given
-        String username1 = "user0";
-        String username2 = "user9";
-        //when
-        CourseEvaluation findEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(username1, courseIdList.get(0), courseEvaluationIdList.get(0));
-        CourseEvaluation findEvaluation2 = courseEvaluationRepository.findByUsernameAndCourseIdAndId(username2, courseIdList.get(0), courseEvaluationIdList.get(0));
-        //then
-        assertThat(findEvaluation).extracting("scope", "comments")
-                .containsOnly(2.0, "courseEvaluation0");
-        assertThat(findEvaluation2)
-                .isNull();
-    }
-
-
 }
