@@ -1,6 +1,8 @@
 package com.hy.demo.Domain.Board.Controller;
 
 
+import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
+import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Service.CourseBoardService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.Course.Service.ImageService;
@@ -14,27 +16,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-;
+;import java.util.List;
 
 @Controller
 @RequestMapping("/courseBoard/*")
 public class CourseBoardController {
 
     @Autowired
-    private CourseService courseService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ImageService imageService;
-    @Autowired
     private CourseBoardService courseBoardService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping("/{id}")
     @ResponseBody
-    public void viewBoardList(@PathVariable Long id) {
-
-
+    public List<CourseBoardDto> viewBoardList(@PathVariable Long id) {
+       return courseBoardService.findCourseBoardList(id);
+    }
+    @GetMapping("/createCourseBoard")
+    @ResponseBody
+    public void createCourseBoard(CourseBoard courseBoard) {
+        courseBoardService.save(courseBoard);
     }
 
 

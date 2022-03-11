@@ -1,5 +1,8 @@
 package com.hy.demo.Test;
 
+import com.hy.demo.Domain.Board.Entity.CourseBoard;
+import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
+import com.hy.demo.Domain.Board.Service.CourseBoardService;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
@@ -23,7 +26,8 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private CourseEvaluationRepository courseEvaluationRepository;
 
-
+    @Autowired
+    private CourseBoardRepository courseBoardRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -32,49 +36,57 @@ public class PostBean  implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         //테스트유저 junit 돌릴때는 주석처리해야댐
-      /*  for (int i = 0; i < 10; i++) {
-            User user = User.builder()
-                    .username("tuser"+i)
-                    .role("ROLE_USER")
-                    .email("user@gmail.com")
-                    .password(passwordEncoder.encode("user"))
-                    .build();
-
-            User manager = User.builder()
-                    .username("tmanager"+i)
-                    .role("ROLE_MANAGER")
-                    .email("manager@gmail.com")
-                    .password(passwordEncoder.encode("manager"))
-                    .build();
-            userRepository.save(user);
-            userRepository.save(manager);
-
-            Course course = Course.builder()
-                    .courseName("test"+i)
-                    .teachName(user.getUsername())
-                    .courseExplanation("sdasd")
-                    .user(manager)
-                    .build();
-            courseRepository.save(course);
-
-
-                CourseEvaluation courseEvaluations = CourseEvaluation.builder()
-                        .comments("good"+i)
-                        .scope((double) (i/3))
-                        .course(course)
-                        .user(user)
+            for (int i = 0; i < 10; i++) {
+                User user = User.builder()
+                        .username("tuser"+i)
+                        .role("ROLE_USER")
+                        .email("user@gmail.com")
+                        .password(passwordEncoder.encode("user"))
                         .build();
-            Long id = courseEvaluationRepository.save(courseEvaluations).getId();
+
+                User manager = User.builder()
+                        .username("tmanager"+i)
+                        .role("ROLE_MANAGER")
+                        .email("manager@gmail.com")
+                        .password(passwordEncoder.encode("manager"))
+                        .build();
+                userRepository.save(user);
+                userRepository.save(manager);
+
+                Course course = Course.builder()
+                        .courseName("test"+i)
+                        .teachName(user.getUsername())
+                        .courseExplanation("sdasd")
+                        .user(manager)
+                        .build();
+                courseRepository.save(course);
+
+                CourseBoard courseBoard =CourseBoard.builder()
+                        .course(course)
+                        .contents("courseBoardContents"+i)
+                        .views(3L)
+                        .title("courseBoardTitle"+i)
+                        .build();
+                courseBoardRepository.save(courseBoard);
 
 
-            CourseEvaluation reply = CourseEvaluation.builder()
-                    .comments("답글 리플")
-                    .replyId(id)
-                    .course(course)
-                    .user(manager)
-                    .build();
-            courseEvaluationRepository.save(reply);
-        }*/
+                    CourseEvaluation courseEvaluations = CourseEvaluation.builder()
+                            .comments("good"+i)
+                            .scope((double) (i/3))
+                            .course(course)
+                            .user(user)
+                            .build();
+                Long id = courseEvaluationRepository.save(courseEvaluations).getId();
+
+
+                CourseEvaluation reply = CourseEvaluation.builder()
+                        .comments("답글 리플")
+                        .replyId(id)
+                        .course(course)
+                        .user(manager)
+                        .build();
+                courseEvaluationRepository.save(reply);
+            }
 
 
 
