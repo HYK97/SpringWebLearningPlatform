@@ -19,7 +19,7 @@ public class CourseBoard extends BaseEntity {
     private Long id;
     private String title;
     private String contents;
-    private int views;
+    private Long views;
 
     @OneToMany(mappedBy = "courseBoard",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<File> files = new ArrayList<>();
