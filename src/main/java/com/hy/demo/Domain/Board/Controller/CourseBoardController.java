@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,14 +28,18 @@ public class CourseBoardController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+
+
     @GetMapping("/{id}")
-    @ResponseBody
-    public List<CourseBoardDto> viewBoardList(@PathVariable Long id) {
-       return courseBoardService.findCourseBoardList(id);
+    public String viewBoardList(Model model, @PathVariable Long id) {
+        List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
+        model.addAttribute("courseList",courseBoardList);
+        return "/courseboard/view";
     }
     @GetMapping("/createCourseBoard")
     @ResponseBody
     public void createCourseBoard(CourseBoard courseBoard) {
+
         courseBoardService.save(courseBoard);
     }
 
