@@ -172,10 +172,11 @@ class CourseEvaluationServiceTest {
         User user =userRepository.findByUsername("user1");
         CourseEvaluation courseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
     //when
-        boolean result = courseEvaluationService.modifyCourseEvaluation(  courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString() );
+        boolean result = courseEvaluationService.modifyCourseEvaluation(courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString());
+        CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
         //then
         assertThat(result).isEqualTo(true);
-        assertThat(courseEvaluation).extracting("comments","scope")
+        assertThat(findCourseEvaluation).extracting("comments","scope")
                 .containsOnly("updatecomments",4.5);
 
 
