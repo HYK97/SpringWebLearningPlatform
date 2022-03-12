@@ -101,13 +101,13 @@ public class CourseController {
     @PostMapping( {"/application"})
     public String courseSearch(String id,@AuthenticationPrincipal PrincipalDetails principalDetails){
 
+        Long Lid= Long.parseLong(id);
         try {
-            Long Lid= Long.parseLong(id);
             userService.application(Lid, principalDetails.getUser().getUsername());
         } catch (DataIntegrityViolationException e) {
             return  "오류처리";
         }
-        return "redirect:/course/view";
+        return "redirect:/courseboard/"+Lid;
 
     }
 

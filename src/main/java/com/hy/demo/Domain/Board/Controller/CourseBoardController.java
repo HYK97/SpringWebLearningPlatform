@@ -21,7 +21,7 @@ import java.util.List;
 ;
 
 @Controller
-@RequestMapping("/courseBoard/*")
+@RequestMapping("/courseboard/*")
 public class CourseBoardController {
 
     @Autowired
@@ -49,7 +49,7 @@ public class CourseBoardController {
         logger.info("requestURI = " + split[2]);
         model.addObject("id",split[2]);
         model.addObject("joinBtn",true);
-        model.setViewName("redirect:/course/detailcourse?");
+        model.setViewName("redirect:/course/detailcourse");
         return  model;
     }
 
