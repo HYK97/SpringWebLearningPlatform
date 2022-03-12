@@ -90,6 +90,25 @@ const template = '<div>\n' +
 
 $(document).ready(function () {
 
+    const URLSearch = new URLSearchParams(location.search);
+    let checkBtn =URLSearch.get('joinBtn');
+    var popover;
+    if (checkBtn=='true') {
+        $("#joinBtn").toggleClass("emphasized");
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+        var exampleEl = document.getElementById('joinBtn');
+        popover = new bootstrap.Popover(exampleEl);
+        popover.show();
+    }
+
+    $(document).on("click", "body", function () {
+        $("#joinBtn").toggleClass("emphasized");
+        popover.hide();
+    });
+
     var Previous;
     var Next;
     var pageNumber;
@@ -100,8 +119,12 @@ $(document).ready(function () {
 
     if (getId().teachUser == true) {
         $('.review-container').remove();
+
     }
 
+    $(document).on("click", "#joinBtn", function () {
+        $("#applicationCheck").submit();
+    });
 
     paging(0);
 
