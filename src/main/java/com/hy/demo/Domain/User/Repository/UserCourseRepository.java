@@ -5,9 +5,12 @@ import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserCourseRepository extends JpaRepository<UserCourse,Long> {
 
 
-    public UserCourse findByUserAndCourse(User user , Course course);
+    UserCourse findByUserAndCourse(User user , Course course);
+    Optional<UserCourse> findByUserAndCourseId(User user,Long courseId);
 
 }
