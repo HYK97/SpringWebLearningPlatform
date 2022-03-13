@@ -8,6 +8,8 @@ server:
       force: true
 
 spring:
+  mustache:
+    expose-spring-macro-helpers: true
   servlet:
     multipart:
       enabled: true
