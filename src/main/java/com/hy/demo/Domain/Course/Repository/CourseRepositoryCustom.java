@@ -10,7 +10,12 @@ import java.util.List;
 public interface CourseRepositoryCustom {
 
     public Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
+
     public Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable);
+
     public List<CourseDto> findByRandomId(int amount);
+
     public CourseDto findByIdAndUserDTO(Long id);
+
+    Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable);
 }

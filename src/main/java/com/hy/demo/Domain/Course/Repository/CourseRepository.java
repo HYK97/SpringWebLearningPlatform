@@ -8,16 +8,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CourseRepository extends JpaRepository<Course,Long>,CourseRepositoryCustom {
+public interface CourseRepository extends JpaRepository<Course, Long>, CourseRepositoryCustom {
 
     //findBy규칙 -> Username문법
 
 
-
     Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
-    Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable) ;
+
+    Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable);
+
     CourseDto findByIdAndUserDTO(Long id);
+
     Course findByCourseName(String coursename);
+
     public List<CourseDto> findByRandomId(int amount);
+
     void deleteById(Long id);
+
+    Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable);
 }
