@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>강좌</title>
+    {{>layout/import}}
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+{{>layout/header}}
+
+<main>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">생성한 강의 목록</h1>
+                <p>
+                </p>
+                <form method="get" action="/course/search" class="d-flex">
+                    <input class="form-control me-sm-2" type="text" name="search" placeholder="강좌명입력">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <p>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="col-md-2">
+                                    id
+                                </th>
+                                <th class="col-md-6">
+                                    강의명
+                                </th>
+                                <th class="col-md-2">
+                                    강의 생성일
+                                </th>
+                                <th class="col-md-1">
+                                    평균 평점
+                                </th>
+                                <th class="col-md-2">
+                                    학생수
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    TB - Monthly
+                                </td>
+                                <td>
+                                    01/04/2012
+                                </td>
+                                <td>
+                                    Default
+                                </td>
+                                <td>
+                                    Default
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr class="my-4">
+            <div class="col" style=" display: flex; justify-content: center;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+
+                        <li class="page-item disabled" id="previous">
+                            <a class="page-link" href="#" id="previousAtag" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
+                        <li class="page-item" id="next">
+                            <a class="page-link" id="nextAtag" href="#" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+
+</main>
+
+
+
+{{>layout/footer}}
