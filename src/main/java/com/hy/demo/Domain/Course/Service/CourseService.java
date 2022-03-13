@@ -61,6 +61,10 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    public Page<CourseDto> findMyCourseList(String search,Long userId, Pageable pageable) {
+        Page<CourseDto> results = courseRepository.findByUserIdAndCourseName(search,userId, pageable);
+        return results;
+    }
 
 
     public List<CourseDto> randomCourseList(int amount) {
