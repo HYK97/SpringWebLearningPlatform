@@ -31,8 +31,9 @@ const template =' ' +
 
 
 $(document).ready(function(){
-  render(1);
-
+  let courseBoard = getCourseBoard();
+  let index =courseBoard[0].CourseBoardData.id;
+  render(index);
 
 
 
@@ -50,9 +51,10 @@ function render(id) {
   let courseBoard = getCourseBoard();
   $('#content').empty();
   Mustache.parse(template);
+  let content =courseBoard.filter(x => x.CourseBoardData.id === ''+id+'');
   var jsonData = {
-    "data": courseBoard[id - 1]
-  }
+    "data": content[0]
+  };
   var rendered = Mustache.render(template, jsonData);
   $('#result').html(rendered);
 }
