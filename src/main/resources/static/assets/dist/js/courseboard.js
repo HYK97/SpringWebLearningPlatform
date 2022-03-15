@@ -32,9 +32,16 @@ const template =' ' +
 
 $(document).ready(function(){
   let courseBoard = getCourseBoard();
-  let index =courseBoard[0].CourseBoardData.id;
-  render(index);
-  let k=$(".courseboard-href").first().addClass('active');
+  if (courseBoard.length > 0) {
+    $('#viewBox').removeAttr("hidden");
+    let index = courseBoard[0].CourseBoardData.id;
+    render(index);
+    let k = $(".courseboard-href").first().addClass('active');
+  } else {
+
+    alert("생성된 강의 목차가없습니다. 강의 회차를 추가해주세요");
+  }
+
 
 
 
@@ -50,7 +57,7 @@ $(document).ready(function(){
 
   $(document).on("click", "#addBtn", function () {
     $('#viewBox').attr("hidden","hidden");
-    $('#createBox').removeAttr("hidden");;
+    $('#createBox').removeAttr("hidden");
 
   });
 

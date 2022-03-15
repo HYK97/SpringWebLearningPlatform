@@ -27,7 +27,10 @@
     <!-- Custom styles for this template -->
 
     <link href="{{springMacroRequestContext.request.contextPath}}/assets/dist/css/courseboard.css" rel="stylesheet">
-
+    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/summernote/summernote-lite.js"></script>
+    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/summernote/lang/summernote-ko-KR.js"></script>
+    <link rel="stylesheet"
+          href="{{springMacroRequestContext.request.contextPath}}/assets/dist/summernote/summernote-lite.css">
 </head>
 <body>
 
@@ -95,7 +98,7 @@
 
 
         <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ">
-            <div id="viewBox">
+            <div id="viewBox" hidden>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="main-tab" data-bs-toggle="tab" data-bs-target="#main"
@@ -134,36 +137,124 @@
                 </div>
             </div>
             <div id="createBox" hidden>
-                hg
+                <div>
+                    <div class="py-5 text-center">
+                        <h2>강의 회차 생성</h2>
+                        <p class="lead">강의 커리큘럼을 만들어주세요</p>
+                        <p class="lead">동영상의 유튜브에 업로드후에 영상링크로 첨부해주세요!</p>
+
+                    </div>
+
+                    <div class="row g-5 mb-5">
+                        <div class="col-md-7 col-lg-12">
+                            <h4 class="mb-3">강좌 정보 입력</h4>
+                            <form class="needs-validation" method="post" action="/course/create" novalidate
+                                  enctype="multipart/form-data">
+                                <div class="row g-3">
+
+                                    <div class="col-sm-12">
+                                        <label for="courseName" class="form-label">제목</label>
+                                        <input type="text" name="courseName" class="form-control" id="courseName"
+                                               placeholder="ex) 1강 : 영상올리기"
+                                               value="" required>
+                                        <div class="invalid-feedback">
+                                            강의 차수 제목을 입력해주세요
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-sm-12">
+                                        <label for="thumbnail" class="form-label">첨부파일</label>
+                                        <input type="file" name="thumbnail" class="form-control" id="thumbnail"
+                                               placeholder="첨부파일"
+                                               value="" accept="image/*" name="file" onchange="fileCheck(this);"
+                                               required>
+                                    </div>
+
+
+                                    <div class="col-12">
+                                        <label for="summernote" class="form-label">강의 내용</label>
+                                        <textarea class="summernote" id="courseExplanation" name="courseExplanation"
+                                                  required></textarea>
+                                        <div class="invalid-feedback">
+                                            강좌 내용을 입력해주세요
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <hr class="my-4">
+                                <button id="courseBtn" class="w-100 btn btn-primary btn-lg" type="submit">강의 커리큘럼 생성하기
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        function getCourseBoard() {
-            var array = [];
-            {{#courseList}}
-                var CourseBoardData = {
-                    CourseBoardData: {
-                        id: '{{id}}',
-                        title: '{{title}}',
-                        contents: ' {{contents}}',
-                        views: '{{views}}',
-                        createDate: ' {{createDate}}',
-                        teachName: '{{teachName}}',
-                        courseName: ' {{courseName}}'
-                    }
+    $('.summernote').summernote({
+        height: 500,
+        lang: "ko-KR",
+        placeholder: '강의 내용을 입력해주세요 동영상이나 이미지도 첨부가능합니다.',
+        callbacks : {
+            onImageUpload : function(files, editor, welEditable) {
+                for (var i = 0; i < files.length; i++) {
+                    sendFile(files[i], this);
                 }
-                array.push(CourseBoardData);
-            {{/courseList}}
-            return array;
+            }
         }
-    </script>
+    });
+
+    function sendFile(file, el) {
+        var form_data = new FormData();
+        form_data.append('file', file);
+        $.ajax({
+            data : form_data,
+            type : "POST",
+            url : '/image',
+            cache : false,
+            contentType : false,
+            enctype : 'multipart/form-data',
+            processData : false,
+            success : function(url) {
+                $(el).summernote('insertImage', url, function($image) {
+                    $image.css('width', "50%");
+                });
+            }
+        });
+    }
 
 
-    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/courseboard.js"></script>
+    function getCourseBoard() {
+        var array = [];
+        {{#courseList}}
+            var CourseBoardData = {
+                CourseBoardData: {
+                    id: '{{id}}',
+                    title: '{{title}}',
+                    contents: ' {{contents}}',
+                    views: '{{views}}',
+                    createDate: ' {{createDate}}',
+                    teachName: '{{teachName}}',
+                    courseName: ' {{courseName}}'
+                }
+            }
+            array.push(CourseBoardData);
+        {{/courseList}}
+        return array;
+    }
+</script>
+
+
+<script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/courseboard.js"></script>
 
 </body>
 </html>
