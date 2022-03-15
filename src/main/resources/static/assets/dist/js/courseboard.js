@@ -1,6 +1,6 @@
 const template =' ' +
     ' {{#data.CourseBoardData}}' +
-    '<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">\n' +
+    '<main class="col-md-9 ms-sm-auto col-lg-12  px-md-4">\n' +
     '\n' +
     '\n' +
     '                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">\n' +
@@ -34,13 +34,24 @@ $(document).ready(function(){
   let courseBoard = getCourseBoard();
   let index =courseBoard[0].CourseBoardData.id;
   render(index);
-
+  let k=$(".courseboard-href").first().addClass('active');
 
 
 
   $(document).on("click", ".courseboard-href", function () {
+    $('#viewBox').removeAttr("hidden");
+    $('#createBox').attr("hidden","hidden");
     let id = $(this).data('id');
+    $(".courseboard-href").removeClass("active");
+    $(this).addClass('active');
     render(id);
+  });
+
+
+  $(document).on("click", "#addBtn", function () {
+    $('#viewBox').attr("hidden","hidden");
+    $('#createBox').removeAttr("hidden");;
+
   });
 
 
