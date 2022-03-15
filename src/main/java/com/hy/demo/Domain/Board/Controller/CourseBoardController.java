@@ -58,23 +58,36 @@ public class CourseBoardController {
     @GetMapping("/{id}")
     @PreAuthorize("@authorizationChecker.isAccessBoard(#id)")
     public String viewBoardList(Model model, @PathVariable Long id) {
-
         List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
         model.addAttribute("courseList", courseBoardList);
-
         return "/courseboard/view";
     }
 
+    @GetMapping("/BoardManagement/{id}")
+    @PreAuthorize("@authorizationChecker.isManagementBoard(#id)")
+    public String BoardManagement(Model model, @PathVariable Long id) {
+        List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
+        model.addAttribute("courseList", courseBoardList);
+        return "/courseboard/management";
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
-    public ModelAndView handleAccessDeniedException(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String requestURI = request.getRequestURI().trim();
-        String[] split = requestURI.split("/");
-        ModelAndView model = new ModelAndView();
-        logger.info("requestURI = " + split[2]);
-        model.addObject("id", split[2]);
-        model.addObject("joinBtn", true);
-        model.setViewName("redirect:/course/detailcourse");
-        return model;
+    public ModelAndView handleAccessDeniedException(AccessDeniedException e,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (e.getReason().equals("1")) {
+            String requestURI = request.getRequestURI().trim();
+            String[] split = requestURI.split("/");
+            ModelAndView model = new ModelAndView();
+            logger.info("requestURI = " + split[2]);
+            model.addObject("id", split[2]);
+            model.addObject("joinBtn", true);
+            model.setViewName("redirect:/course/detailcourse");
+            return model;
+        } else if (e.getReason().equals("2")) {
+            throw new AccessDeniedException("403 에러");
+        } else {
+            return null;
+        }
+
     }
 
     @GetMapping("/createCourseBoard")
