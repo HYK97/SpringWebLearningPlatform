@@ -21,6 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,22 @@ public class CourseBoardController {
         return "/courseboard/management";
     }
 
+    @PostMapping("/createBoard")
+    @ResponseBody
+    public String createBoard(Model model,String title, String contents,@RequestParam("file") List<MultipartFile> file) {
+
+        logger.info("contents = " + contents);
+        logger.info("title = " + title);
+        for (MultipartFile files : file) {
+            logger.info("file.getName() = " + files.getOriginalFilename());
+        }
+
+        return "1";
+    }
+
+
+
+
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleAccessDeniedException(AccessDeniedException e,HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (e.getReason().equals("1")) {
@@ -89,6 +106,7 @@ public class CourseBoardController {
         }
 
     }
+
 
     @GetMapping("/createCourseBoard")
     @ResponseBody
