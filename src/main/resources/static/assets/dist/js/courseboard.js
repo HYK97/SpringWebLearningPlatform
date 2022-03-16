@@ -1,6 +1,6 @@
 const template =' ' +
     ' {{#data.CourseBoardData}}' +
-    '<main class="col-md-9 ms-sm-auto col-lg-12  px-md-4">\n' +
+    '<main class="col-md-12 ms-sm-auto col-lg-12  px-md-4">\n' +
     '\n' +
     '\n' +
     '                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">\n' +
