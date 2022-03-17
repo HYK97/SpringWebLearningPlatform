@@ -6,9 +6,13 @@ import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Service.CourseBoardService;
 import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Service.CourseService;
+import com.hy.demo.Domain.File.Dto.FileDto;
+import com.hy.demo.Domain.File.Service.FileService;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
+import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +30,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
 import java.util.List;
 
 ;
@@ -44,6 +50,9 @@ public class CourseBoardController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FileService fileService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
@@ -51,7 +60,7 @@ public class CourseBoardController {
     public String myCourseList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         User findUser = userService.findByUsername(principalDetails.getUser());
         Page<CourseDto> myCourseList = courseService.findMyCourseList("", findUser.getId(), pageable);
-        model.addAttribute("courseList",myCourseList);
+        model.addAttribute("courseList", myCourseList);
         return "/courseboard/mycourselist";
     }
 
@@ -69,27 +78,42 @@ public class CourseBoardController {
     public String BoardManagement(Model model, @PathVariable Long id) {
         List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
         model.addAttribute("courseList", courseBoardList);
+        model.addAttribute("courseId",id);
         return "/courseboard/management";
     }
 
-    @PostMapping("/createBoard")
+    @PostMapping("/createBoard/{id}")
     @ResponseBody
-    public String createBoard(Model model,String title, String contents,@RequestParam("file") List<MultipartFile> file) {
-
-        logger.info("contents = " + contents);
-        logger.info("title = " + title);
-        for (MultipartFile files : file) {
-            logger.info("file.getName() = " + files.getOriginalFilename());
+    public String createBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) {
+        List<FileDto> fileDtos = new ArrayList<>();
+        Course findCourse;
+        try {
+            findCourse = courseService.findCourseById(id);
+        } catch (Exception e) {
+            return "3"; //잘못된 courseId
         }
-
-        return "1";
+        CourseBoard courseBoard = CourseBoard.builder()
+                .title(title)
+                .contents(contents)
+                .views(0L)
+                .course(findCourse)
+                .build();
+        if (!ObjectUtils.isEmpty(file)) {
+            try {
+                fileDtos = fileService.localSaveFile(file);
+                logger.info("fileDtos = " + fileDtos.size());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "2"; //파일오류
+            }
+        }
+        courseBoardService.save(courseBoard, fileDtos);
+        return "1";//성공
     }
 
 
-
-
     @ExceptionHandler(AccessDeniedException.class)
-    public ModelAndView handleAccessDeniedException(AccessDeniedException e,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (e.getReason().equals("1")) {
             String requestURI = request.getRequestURI().trim();
             String[] split = requestURI.split("/");
@@ -104,15 +128,6 @@ public class CourseBoardController {
         } else {
             return null;
         }
-
-    }
-
-
-    @GetMapping("/createCourseBoard")
-    @ResponseBody
-    public void createCourseBoard(CourseBoard courseBoard) {
-
-        courseBoardService.save(courseBoard);
     }
 
 

@@ -66,9 +66,13 @@ public class CourseService {
         return results;
     }
 
+    public Course findCourseById(Long id) throws Exception {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new Exception("찾는엔티티없음."));
+        return course;
+    }
 
     public List<CourseDto> randomCourseList(int amount) {
-
         return courseRepository.findByRandomId(amount);
     }
 
