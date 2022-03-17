@@ -2,6 +2,7 @@ package com.hy.demo.Domain.Board.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.File.Entity.File;
 import lombok.*;
 
 import javax.persistence.*;

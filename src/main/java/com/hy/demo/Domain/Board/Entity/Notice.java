@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.Board.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
+import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.*;
 
