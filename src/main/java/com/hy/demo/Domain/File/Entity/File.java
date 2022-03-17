@@ -1,6 +1,7 @@
-package com.hy.demo.Domain.Board.Entity;
+package com.hy.demo.Domain.File.Entity;
 
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
+import com.hy.demo.Domain.Board.Entity.Notice;
 import lombok.*;
 
 import javax.persistence.*;
