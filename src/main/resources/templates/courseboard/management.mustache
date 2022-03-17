@@ -246,7 +246,7 @@
                 CourseBoardData: {
                     id: '{{id}}',
                     title: '{{title}}',
-                    contents: ' {{contents}}',
+                    contents: ' {{{contents}}}',
                     views: '{{views}}',
                     createDate: ' {{createDate}}',
                     teachName: '{{teachName}}',
@@ -257,7 +257,13 @@
         {{/courseList}}
         return array;
     }
+    function getCourseId() {
+
+        var courseId ={{courseId}};
+        return courseId;
+    }
 </script>
+
 
 
 <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/courseboard.js"></script>

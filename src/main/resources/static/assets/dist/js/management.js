@@ -9,13 +9,7 @@ var content_files = new Array();
 
 
 $(document).on("change", "#file", function () {
-    $('#fileChange').empty();
-    fileCount = 0;
-// 해당 숫자를 수정하여 전체 업로드 갯수를 정한다.
-// 파일 고유넘버
-    fileNum = 0;
-// 첨부파일 배열
-    content_files = new Array();
+
 
     var files = $('#file')[0].files;
 
@@ -25,7 +19,6 @@ $(document).on("change", "#file", function () {
     // 파일 개수 확인 및 제한
 
     fileCount = fileCount + filesArr.length;
-
 
     // 각각의 파일 배열담기 및 기타
     filesArr.forEach(function (f) {
@@ -68,11 +61,9 @@ function fileDelete(fileNum){
 
 
 $(document).ready(function(){
-
-
+    var courseId =getCourseId();
     $(document).on("click", "#createBtn", function () {
         var formData = new FormData();
-
 
 
         formData.append('title',$("#title").val() );
@@ -86,12 +77,10 @@ $(document).ready(function(){
             }
         }
 
-
-
         $.ajax({
             type: "post",
             enctype: 'multipart/form-data',
-            url: "/courseboard/createBoard",
+            url: "/courseboard/createBoard/"+courseId,
             data: formData,
             processData: false,
             contentType: false,
