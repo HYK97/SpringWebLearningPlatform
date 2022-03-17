@@ -12,7 +12,7 @@ const template =' ' +
     '                </div>\n' +
     '\n' +
     '                <div class="my-4 w-100" id="content" width="900" height="380">' +
-    '                   {{contents}}                                                            ' +
+    '                   {{{contents}}}                                                            ' +
     '                </div>\n' +
     '\n' +
     '                <h2>Section title</h2>\n' +
