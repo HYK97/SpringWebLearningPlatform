@@ -1,0 +1,47 @@
+package com.hy.demo.Domain.File.Dto;
+
+import com.hy.demo.Domain.Board.Entity.CourseBoard;
+import com.hy.demo.Domain.Board.Entity.Notice;
+import com.hy.demo.Domain.File.Entity.File;
+import lombok.Builder;
+import lombok.Data;
+
+import javax.persistence.*;
+import java.util.List;
+
+
+@Data
+public class FileDto {
+
+    private Long id;
+
+    private Long courseBoardId;
+
+    private Long noticeId;
+
+    private String origFileName;  // 파일 원본명
+
+    private String filePath;  // 파일 저장 경로
+
+    private Long fileSize;
+
+    public FileDto(String origFileName, String filePath, Long fileSize) {
+        this.origFileName = origFileName;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
+
+    public FileDto() {
+    }
+
+    public FileDto(Long id, Long courseBoardId, Long noticeId, String origFileName, String filePath, Long fileSize) {
+        this.id = id;
+        this.courseBoardId = courseBoardId;
+        this.noticeId = noticeId;
+        this.origFileName = origFileName;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
+
+
+}
