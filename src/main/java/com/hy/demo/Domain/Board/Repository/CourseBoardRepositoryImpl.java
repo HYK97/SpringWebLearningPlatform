@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.Board.Repository;
 
 import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
+import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
@@ -18,7 +19,7 @@ public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implem
 
 
     public CourseBoardRepositoryImpl() {
-        super(CourseEvaluation.class);
+        super(CourseBoard.class);
     }
 
 

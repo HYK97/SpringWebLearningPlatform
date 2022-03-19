@@ -43,5 +43,18 @@ public class FileDto {
         this.fileSize = fileSize;
     }
 
+    public FileDto(Long id, Long courseBoardId, String origFileName, String filePath, Long fileSize) {
+        this.id = id;
+        this.courseBoardId = courseBoardId;
+        this.origFileName = origFileName;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
 
+
+    public FileDto(Long id, String origFileName, Long fileSize) {
+        this.id = id;
+        this.origFileName = origFileName;
+        this.fileSize = fileSize;
+    }
 }
