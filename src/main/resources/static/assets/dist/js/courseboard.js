@@ -120,6 +120,12 @@ function navRender(data){
 
 function mainRender(id,data) {
   let courseBoard = data;
+  $(".tab-content .tab-pane").removeClass("active");
+  $(".tab-content .tab-pane").removeClass("show");
+  $(".nav-tabs button").removeClass("active");
+  $(".nav-tabs").children().first().children().addClass("active");
+  $(".tab-content").children().first().addClass("active");
+  $(".tab-content").children().first().addClass("show");
   $('#content').empty();
   let content =courseBoard.filter(x => x.id === id);
   let fileCheck =content[0].files.length == 0 ? null : true;
