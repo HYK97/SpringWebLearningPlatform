@@ -68,17 +68,25 @@ public class CourseBoardController {
     @GetMapping("/{id}")
     @PreAuthorize("@authorizationChecker.isAccessBoard(#id)")
     public String viewBoardList(Model model, @PathVariable Long id) {
-        List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
-        model.addAttribute("courseList", courseBoardList);
+        model.addAttribute("courseId", id);
         return "/courseboard/view";
     }
+
+
+    @GetMapping("/data/{id}")
+    @PreAuthorize("@authorizationChecker.isManagementBoard(#id)")
+    @ResponseBody
+    public  List<CourseBoardDto> Data(@PathVariable Long id) {
+        List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
+
+        return courseBoardList;
+    }
+
 
     @GetMapping("/BoardManagement/{id}")
     @PreAuthorize("@authorizationChecker.isManagementBoard(#id)")
     public String BoardManagement(Model model, @PathVariable Long id) {
-        List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
-        model.addAttribute("courseList", courseBoardList);
-        model.addAttribute("courseId",id);
+        model.addAttribute("courseId", id);
         return "/courseboard/management";
     }
 

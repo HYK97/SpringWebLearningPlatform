@@ -38,8 +38,14 @@ public class CourseBoardService {
     @Autowired
     Logger logger;
 
+    @Transactional
     public List<CourseBoardDto> findCourseBoardList(Long id) {
-        return courseBoardRepository.findByCourseIdNotContents(id);
+        List<CourseBoardDto> courseBoardDtoList = courseBoardRepository.findByCourseIdNotContents(id);
+        for (CourseBoardDto courseBoardDto : courseBoardDtoList) {
+            List<FileDto> findFiles = fileRepository.findFileIdByCourseId(courseBoardDto.getId());
+            courseBoardDto.setFiles(findFiles);
+        }
+        return courseBoardDtoList;
     }
 
     @Transactional

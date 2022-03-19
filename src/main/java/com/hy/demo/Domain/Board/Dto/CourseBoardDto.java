@@ -1,9 +1,11 @@
 package com.hy.demo.Domain.Board.Dto;
 
+import com.hy.demo.Domain.File.Dto.FileDto;
 import lombok.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Data
@@ -17,6 +19,8 @@ public class CourseBoardDto {
     private Date createDate;
     private String teachName;
     private String courseName;
+    private List<FileDto> files;
+
 
     public CourseBoardDto(Long id, String title, Long views, Timestamp createDate, String contents, String teachName, String courseName) {
         this.id = id;
