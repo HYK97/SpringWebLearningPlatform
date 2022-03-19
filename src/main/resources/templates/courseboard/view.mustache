@@ -48,18 +48,10 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse overflow-auto">
             <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
+                <ul class="nav flex-column" id="navResult">
 
-                    {{#courseList}}
-                        <li class="nav-item" s>
-                            <a role="button" class="courseboard-href nav-link active" aria-current="page"
-                               data-id="{{id}}">
-                                {{title}}
-                            </a>
-                        </li>
-                    {{/courseList}}
 
 
                 </ul>
@@ -127,23 +119,10 @@
 
 <script type="text/javascript">
 
-    function getCourseBoard() {
-        var array = [];
-        {{#courseList}}
-            var CourseBoardData = {
-                CourseBoardData: {
-                    id: '{{id}}',
-                    title: '{{title}}',
-                    contents: ' {{{contents}}}',
-                    views: '{{views}}',
-                    createDate: ' {{createDate}}',
-                    teachName: '{{teachName}}',
-                    courseName: ' {{courseName}}'
-                }
-            }
-            array.push(CourseBoardData);
-        {{/courseList}}
-        return array;
+    function getCourseId() {
+
+        var courseId ={{courseId}};
+        return courseId;
     }
 </script>
 
