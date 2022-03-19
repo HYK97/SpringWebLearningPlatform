@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
@@ -40,5 +41,14 @@ public class FileRepositoryImpl extends QueryDsl4RepositorySupport implements Fi
                 .from(file)
                 .where(file.courseBoard.id.eq(courseBoardId))
                 .fetch();
+    }
+
+    @Override
+    public Optional<File> findFetchById(Long fileId) {
+        return Optional.ofNullable(select(file).
+                from(file).where(file.id.eq(fileId))
+                .leftJoin(file.courseBoard,courseBoard)
+                .fetchJoin()
+                .fetchOne());
     }
 }

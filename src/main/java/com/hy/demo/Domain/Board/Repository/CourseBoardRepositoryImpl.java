@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
@@ -44,5 +45,14 @@ public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implem
                 .leftJoin(courseBoard.course,course)
                 .where(courseBoard.course.id.eq(courseId))
                 .fetch();
+    }
+
+    @Override
+    public Optional<List<CourseBoard>> findByCourseId(Long courseId) {
+        return Optional.ofNullable(
+                selectFrom(courseBoard)
+                .where(courseBoard.course.id.eq(courseId))
+                .fetch()
+        );
     }
 }

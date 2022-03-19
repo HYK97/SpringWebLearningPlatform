@@ -30,4 +30,6 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
     void deleteById(Long id);
 
     Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable);
+
+    Optional<Course> findByUserAndCourseId(User findUser,Long courseId);
 }

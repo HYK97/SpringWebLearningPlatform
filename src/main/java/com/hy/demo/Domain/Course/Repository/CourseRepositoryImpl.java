@@ -5,6 +5,7 @@ import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Entity.QUser;
 import com.hy.demo.Domain.User.Entity.QUserCourse;
+import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
@@ -59,6 +61,16 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                         .from(course)
                         .leftJoin(course.user, user)
                         .where(userIdeEq(userId), courseNameContains(courseName))
+        );
+    }
+
+    @Override
+    public Optional<Course> findByUserAndCourseId(User findUser,Long courseId) {
+        return Optional.ofNullable(
+                select(course)
+                .from(course)
+                .where(user.user.eq(findUser).and(course.id.eq(courseId)))
+                .fetchOne()
         );
     }
 
