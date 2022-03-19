@@ -23,7 +23,7 @@ const template =' ' +
                               '  </button>\n' +
                               '  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">\n' +
     '                               {{#data.files}}   ' +
-                              '    <li><a class="dropdown-item" href="#">{{origFileName}} size:{{fileSize}}kb</a><li>\n' +
+                              '    <li><a class="dropdown-item" href="/file/download/{{courseId}}/{{data.id}}/{{id}}">{{origFileName}} size:{{fileSize}}kb</a><li>\n' +
     '                               {{/data.files}}   ' +
 
                               '  </ul>\n' +
@@ -129,9 +129,11 @@ function mainRender(id,data) {
   $('#content').empty();
   let content =courseBoard.filter(x => x.id === id);
   let fileCheck =content[0].files.length == 0 ? null : true;
+
   let jsonData = {
     "data": content[0],
-    "fileCheck": fileCheck
+    "fileCheck": fileCheck,
+    "courseId" :getCourseId(),
   };
   Mustache.parse(template);
   var rendered = Mustache.render(template, jsonData);
