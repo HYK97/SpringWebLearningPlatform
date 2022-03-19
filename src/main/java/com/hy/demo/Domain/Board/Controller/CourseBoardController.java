@@ -74,7 +74,6 @@ public class CourseBoardController {
 
 
     @GetMapping("/data/{id}")
-    @PreAuthorize("@authorizationChecker.isManagementBoard(#id)")
     @ResponseBody
     public  List<CourseBoardDto> Data(@PathVariable Long id) {
         List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
