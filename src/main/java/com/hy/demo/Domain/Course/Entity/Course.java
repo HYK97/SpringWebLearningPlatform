@@ -50,12 +50,29 @@ public class Course extends BaseEntity {
         user.getCourses().add(this);
     }
 
+    public void updateCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public void updateTeachName(String teachName) {
+        this.teachName = teachName;
+    }
+
+    public void updateCourseExplanation(String courseExplanation) {
+        this.courseExplanation = courseExplanation;
+    }
+
+    public void updateThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     public CourseDto returnDto() {
         CourseDto courseDto =new CourseDto();
         courseDto.setCourseName(courseName);
         courseDto.setCourseExplanation(courseExplanation);
         courseDto.setUser(user);
         courseDto.setTeachName(teachName);
+        courseDto.setThumbnail(thumbnail);
         return courseDto;
     }
 
