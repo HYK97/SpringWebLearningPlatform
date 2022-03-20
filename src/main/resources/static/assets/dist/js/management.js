@@ -83,66 +83,67 @@ function fileDelete(fileNum) {
 
 
 $(document).ready(function () {
-    var courseId = getCourseId();
-    $(document).on("click", "#createBtn", function () {
-        var check = formBtn();
-        if (check == 1) {
-            $("#title").focus();
-            return;
-        }
-        let title = $("#title").val();
-        let contents = $("#contents").val();
-        var formData = new FormData();
 
-
-        formData.append('title', title);
-        formData.append('contents', contents);
-
-
-        for (var x = 0; x < content_files.length; x++) {
-            if (!content_files[x].is_delete) {
-                formData.append("file", content_files[x]);
-            }
-        }
-
-        $.ajax({
-            type: "post",
-            enctype: 'multipart/form-data',
-            url: "/courseboard/createBoard/" + courseId,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                if (data == "1") {
-                    alert('등록성공');
-                    courseBoard = getData();
-                    navRender(courseBoard);
-                    $(".courseboard-href").removeClass("active");
-                    $(".courseboard-href").last().trigger("click");
-                    $('#createBox').attr("hidden", "hidden");
-                    $('#viewBox').removeAttr("hidden");
-                    $("form")[0].reset();
-                    $("form").removeClass("was-validated");
-                    $('#fileChange').empty();
-                    $('#contents').summernote('reset');
-
-                } else {
-                    alert('오류');
-                }
-            },
-            error: function (request, error) {
-                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                alert("오류");
-            }
-        });
-
-
-    });
 
 
 
 
 })
+
+$(document).on("click", "#createBtn", function () {
+    var courseId = getCourseId();
+    var check = formBtn('#courseBoardForm');
+    if (check == 1) {
+        $("#title").focus();
+        return;
+    }
+    let title = $("#title").val();
+    let contents = $("#contents").val();
+    var formData = new FormData();
+
+
+    formData.append('title', title);
+    formData.append('contents', contents);
+
+
+    for (var x = 0; x < content_files.length; x++) {
+        if (!content_files[x].is_delete) {
+            formData.append("file", content_files[x]);
+        }
+    }
+
+    $.ajax({
+        type: "post",
+        enctype: 'multipart/form-data',
+        url: "/courseboard/createBoard/" + courseId,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            if (data == "1") {
+                courseBoard = getData();
+                navRender(courseBoard);
+                $(".courseboard-href").removeClass("active");
+                $(".courseboard-href").last().trigger("click");
+                viewBoxShow();
+                $("form")[0].reset();
+                $("form").removeClass("was-validated");
+                $('#fileChange').empty();
+                $('#contents').summernote('reset');
+
+                alert('등록성공');
+            } else {
+                alert('오류');
+            }
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+    });
+
+
+});
 
 
 $(document).on("click", "#deleteBtn", function () {
@@ -162,8 +163,7 @@ $(document).on("click", "#deleteBtn", function () {
                 navRender(courseBoard);
                 $(".courseboard-href").removeClass("active");
                 $(".courseboard-href").first().trigger("click");
-                $('#createBox').attr("hidden", "hidden");
-                $('#viewBox').removeAttr("hidden");
+                viewBoxShow();
                 $('#deleteText').val('');
             } else {
                 alert("error 삭제실패");
@@ -174,7 +174,56 @@ $(document).on("click", "#deleteBtn", function () {
             alert("오류");
         }
     });
+});
 
+
+
+
+    $(document).on("click", "#courseUpdateBtn", function () {
+        var courseId = getCourseId();
+        var check = formBtn('#courseUpdateForm');
+        if (check == 1) {
+            return;
+        }
+
+        let courseName = $("#courseName").val();
+        let teachName = $("#teachName").val();
+        let courseExplanation = $("#courseExplanation").val();
+
+        var formData = new FormData();
+
+
+        formData.append('courseName', courseName);
+        formData.append('teachName', teachName);
+        formData.append('courseExplanation', courseExplanation);
+        formData.append("thumbnail", $("#thumbnail")[0].files[0]);
+
+        $.ajax({
+            type: "post",
+            url: "/course/update/" + courseId,
+            processData: false,
+            contentType: false,
+            async: false,
+            data: formData,
+            success: function (data) {
+                if (data == "1") {
+                    $(".courseboard-href").removeClass("active");
+                    $(".courseboard-href").first().trigger("click");
+                    viewBoxShow();
+                    $("form")[0].reset();
+                    $("form").removeClass("was-validated");
+                    $('#contents').summernote('reset');
+                    viewBoxShow();
+                    alert("업데이트 성공");
+                } else {
+                    alert("업데이트 실패");
+                }
+            },
+            error: function (request, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("오류");
+            }
+        });
 
 });
 
