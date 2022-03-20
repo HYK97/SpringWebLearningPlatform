@@ -26,12 +26,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-;
+;import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Controller
 @RequestMapping("/course/*")
@@ -65,7 +66,7 @@ public class CourseController {
         Map map =userService.findByUserCourse(id,principalDetails.getUser());
         model.addAttribute("course",map.get("course"));
         model.addAttribute("loginUser",principalDetails.getUsername());
-        if (ObjectUtils.isEmpty(map.get("userCourse"))) {
+        if (isEmpty(map.get("userCourse"))) {
             model.addAttribute("applicationCheck", null);
         } else {
               boolean b = courseEvaluationService.countByUserAndCourse(principalDetails.getUsername(), id);
@@ -125,6 +126,16 @@ public class CourseController {
         }
     }
 
+    @GetMapping( {"/courseGetData/{id}"})
+    @ResponseBody
+    public CourseDto courseGetData(@PathVariable Long id) throws Exception {
+        Course findCourse = courseService.findCourseById(id);
+        CourseDto courseDto = findCourse.returnDto();
+        return courseDto;
+    }
+
+
+
     @PostMapping( {"/updateevaluation"})
     @ResponseBody
     public String updateEvaluation(String id,String courseId,String content,String star ,@AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -183,7 +194,7 @@ public class CourseController {
 
 
     @PostMapping( {"/create"})
-    public String testCreate(@AuthenticationPrincipal PrincipalDetails principalDetails,MultipartFile thumbnail,String courseName,String teachName,String courseExplanation) {
+    public String courseCreate(@AuthenticationPrincipal PrincipalDetails principalDetails,MultipartFile thumbnail,String courseName,String teachName,String courseExplanation) {
         Course course = null;
         try {
             SummerNoteImage uploadFile = imageService.store(thumbnail);
@@ -204,6 +215,39 @@ public class CourseController {
         return "redirect:/course/view";
 
     }
+
+    @PostMapping( {"/update/{id}"})
+    @ResponseBody
+    public String courseUpdate(@PathVariable Long id,@RequestParam(value = "thumbnail",required = false) MultipartFile thumbnail,String courseName,String teachName,String courseExplanation) {
+        Course course = null;
+
+        try {
+            course = courseService.findCourseById(id);
+            if (!isEmpty(thumbnail)) {
+                try {
+                    imageService.deleteImage(course);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return "2"; //파일 삭제에러
+                }
+                SummerNoteImage uploadFile = imageService.store(thumbnail);
+                course.updateThumbnail("/image/" + uploadFile.getId());
+            }
+            course.updateCourseExplanation(courseExplanation);
+            course.updateCourseName(courseName);
+            course.updateTeachName(teachName);
+        } catch (Exception e) {
+            //error
+            e.printStackTrace();
+            return "2";
+        }
+        courseService.addCourse(course);
+
+        return "1";
+
+    }
+
+
 
 
 
