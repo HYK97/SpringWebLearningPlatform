@@ -21,7 +21,6 @@ import static com.hy.demo.Domain.File.Entity.QFile.file;
 public class FileRepositoryImpl extends QueryDsl4RepositorySupport implements FileRepositoryCustom {
 
 
-
     public FileRepositoryImpl() {
         super(File.class);
     }
@@ -33,7 +32,7 @@ public class FileRepositoryImpl extends QueryDsl4RepositorySupport implements Fi
 
     @Override
     public List<FileDto> findFileIdByCourseId(Long courseBoardId) {
-       return select(Projections.constructor(FileDto.class,
+        return select(Projections.constructor(FileDto.class,
                 file.id,
                 file.origFileName,
                 file.fileSize
@@ -46,9 +45,20 @@ public class FileRepositoryImpl extends QueryDsl4RepositorySupport implements Fi
     @Override
     public Optional<File> findFetchById(Long fileId) {
         return Optional.ofNullable(select(file).
-                from(file).where(file.id.eq(fileId))
-                .leftJoin(file.courseBoard,courseBoard)
+                from(file)
+                .where(file.id.eq(fileId))
+                .leftJoin(file.courseBoard, courseBoard)
                 .fetchJoin()
                 .fetchOne());
     }
+
+    public Optional<List<File>> findByCourseBoardId(Long courseBoardId) {
+        return Optional.ofNullable(select(file)
+                        .from(file)
+                        .where(file.courseBoard.id.eq(courseBoardId))
+                        .fetch()
+        );
+    }
+
+
 }

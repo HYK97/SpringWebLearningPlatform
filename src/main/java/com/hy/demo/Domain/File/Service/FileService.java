@@ -70,17 +70,33 @@ public class FileService {
         fileRepository.saveAll(files);
     }
 
-    public Map<String,Object> fileDownLoad(Long fileId) throws IOException {
+    public Map<String, Object> fileDownLoad(Long fileId) throws IOException {
 
         com.hy.demo.Domain.File.Entity.File findFile = fileRepository.findById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("찾는파일없음"));
         Path filePath = Paths.get(findFile.getFilePath());
         Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
-        Map map =new HashMap();
-        map.put("resource",resource);
-        map.put("file",new File(findFile.getFilePath()));
-        map.put("fileName",findFile.getOrigFileName());
+        Map map = new HashMap();
+        map.put("resource", resource);
+        map.put("file", new File(findFile.getFilePath()));
+        map.put("fileName", findFile.getOrigFileName());
         return map;
+    }
+
+    public boolean deleteFile(List<com.hy.demo.Domain.File.Entity.File> files) {
+        for (com.hy.demo.Domain.File.Entity.File file : files) {
+            File newFile = new File(file.getFilePath());
+            if (newFile.exists()) {
+                if (newFile.delete()) {
+
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 
