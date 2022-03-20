@@ -140,7 +140,43 @@ $(document).ready(function () {
     });
 
 
+
+
 })
+
+
+$(document).on("click", "#deleteBtn", function () {
+    let deleteText = $("#deleteText").val();
+    if (deleteText!==("삭제하기")) {
+        alert("다시입력해주세요");
+        return;
+    }
+    
+    $.ajax({
+        type: "post",
+        url: "/courseboard/deleteCourseBoard/" + courseBoardId,
+        success: function (data) {
+            if (data == "1") {
+                alert("삭제성공");
+                courseBoard = getData();
+                navRender(courseBoard);
+                $(".courseboard-href").removeClass("active");
+                $(".courseboard-href").first().trigger("click");
+                $('#createBox').attr("hidden", "hidden");
+                $('#viewBox').removeAttr("hidden");
+                $('#deleteText').val('');
+            } else {
+                alert("error 삭제실패");
+            }
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+    });
+
+
+});
 
 
 
