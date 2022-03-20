@@ -121,7 +121,24 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">업데이트</div>
-                    <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">삭제</div>
+                    <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
+                        <div>
+                            <div class="pt-5 pb-3 text-center">
+                                <h2 class=""> 강의를 삭제하시겠습니까?</h2>
+                                <p>강의를 삭제하시려면 아래에 삭제하기를 입력하신후에 버튼을 눌러주세요</p>
+                            </div>
+                            <div class="py-3 d-flex justify-content-center">
+                                <div class="col-md-4 col-lg-2 col-sm-8">
+                                    <input type="text" id="deleteText" class="form-control text-center" placeholder="삭제하기" value="" required>
+                                </div>
+                            </div>
+                            <div class="py-3 d-flex justify-content-center">
+                                <button id="deleteBtn" class="btn btn-danger" type="button" role="tab">삭제하기</button>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
             <div id="createBox" hidden>
@@ -164,9 +181,9 @@
                                         <label for="attachments" class="form-label">첨부파일</label>
                                         <input type="file" class="form-control" id="file"
                                                placeholder="첨부파일"
-                                               value=""  name="file"
+                                               value="" name="file"
                                                multiple="multiple"
-                                               >
+                                        >
                                     </div>
                                     <span>아래에 있는 파일이 첨부됩니다 삭제하실 파일은 - 를 클릭해주세요</span>
 
@@ -195,8 +212,8 @@
         height: 500,
         lang: "ko-KR",
         placeholder: '강의 내용을 입력해주세요 동영상이나 이미지도 첨부가능합니다.',
-        callbacks : {
-            onImageUpload : function(files, editor, welEditable) {
+        callbacks: {
+            onImageUpload: function (files, editor, welEditable) {
                 for (var i = 0; i < files.length; i++) {
                     sendFile(files[i], this);
                 }
@@ -208,21 +225,20 @@
         var form_data = new FormData();
         form_data.append('file', file);
         $.ajax({
-            data : form_data,
-            type : "POST",
-            url : '/image',
-            cache : false,
-            contentType : false,
-            enctype : 'multipart/form-data',
-            processData : false,
-            success : function(url) {
-                $(el).summernote('insertImage', url, function($image) {
+            data: form_data,
+            type: "POST",
+            url: '/image',
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (url) {
+                $(el).summernote('insertImage', url, function ($image) {
                     $image.css('width', "50%");
                 });
             }
         });
     }
-
 
 
     function getCourseId() {

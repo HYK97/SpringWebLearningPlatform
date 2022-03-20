@@ -53,6 +53,7 @@ const templateNav ='' +
 
 
 var courseBoard = getData();
+var courseBoardId;
 $(document).ready(function(){
 
 
@@ -138,5 +139,7 @@ function mainRender(id,data) {
   Mustache.parse(template);
   var rendered = Mustache.render(template, jsonData);
   $('#result').html(rendered);
+  courseBoardId=content[0].id;
 }
+
 
