@@ -75,7 +75,7 @@ public class CourseBoardController {
 
     @GetMapping("/data/{id}")
     @ResponseBody
-    public  List<CourseBoardDto> Data(@PathVariable Long id) {
+    public List<CourseBoardDto> Data(@PathVariable Long id) {
         List<CourseBoardDto> courseBoardList = courseBoardService.findCourseBoardList(id);
 
         return courseBoardList;
@@ -88,6 +88,22 @@ public class CourseBoardController {
         model.addAttribute("courseId", id);
         return "/courseboard/management";
     }
+
+
+    @PostMapping("/deleteCourseBoard/{id}")
+    @ResponseBody
+    public String deleteBoard(@PathVariable Long id) {
+        logger.info("id = " + id);
+        try {
+            courseBoardService.deleteBoardAndFiles(id);
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+            return "2"; //실패
+        }
+
+        return "1"; //성공
+    }
+
 
     @PostMapping("/createBoard/{id}")
     @ResponseBody
@@ -133,7 +149,7 @@ public class CourseBoardController {
         } else if (e.getReason().equals("2")) {
             throw new AccessDeniedException("403 에러");
         } else {
-            return null;
+            throw new AccessDeniedException("403 에러");
         }
     }
 

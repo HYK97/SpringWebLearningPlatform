@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * service 명명 규칙
@@ -32,6 +34,9 @@ public class CourseBoardService {
 
     @Autowired
     private FileRepository fileRepository;
+
+    @Autowired
+    private FileService fileService;
 
 
 
@@ -68,6 +73,19 @@ public class CourseBoardService {
             }
             fileRepository.saveAll(files);
         }
+    }
+
+    public void deleteBoardAndFiles(Long courseBoardId) throws AccessDeniedException {
+        
+        //코스확인
+        CourseBoard courseBoard = courseBoardRepository.findById(courseBoardId)
+                .orElseThrow(() -> new AccessDeniedException("없는코스"));
+        Optional<List<File>> findFiles = fileRepository.findByCourseBoardId(courseBoardId);
+        List<File> files = findFiles.orElseGet(null);
+        if (!ObjectUtils.isEmpty(files)) {
+            fileService.deleteFile(files);
+        }
+        courseBoardRepository.delete(courseBoard);
     }
 
 
