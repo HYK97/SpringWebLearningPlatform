@@ -75,38 +75,8 @@ $(document).ready(function () {
         mainRender(id, courseBoard);
     });
 
-    $(document).on("click", "#addBtn", function () {
-        $(".nav-link").removeClass("active");
-        $(this).addClass('active');
-        createBoxShow();
-    });
-
-    $(document).on("click", "#courseInfoUpdateBtn", function () {
-        var courseId = getCourseId();
-        $(".nav-link").removeClass("active");
-        $(this).addClass('active');
-
-        $.ajax({
-            type: "get",
-            url: "/course/courseGetData/" + courseId,
-            async: false,
-            success: function (data) {
-                $("#courseExplanation").summernote('code', data.courseExplanation);
-                $("#teachName").val(data.teachName);
-                $("#courseName").val(data.courseName);
-                $("#thumbnailImg").attr("src",data.thumbnail);
-            },
-            error: function (request, error) {
-                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                alert("오류");
-            }
-        });
 
 
-        updateBoxShow();
-
-
-    });
 
 })
 
@@ -160,12 +130,9 @@ function navRender(data) {
 
 function mainRender(id, data) {
     let courseBoard = data;
-    $(".tab-content .tab-pane").removeClass("active");
-    $(".tab-content .tab-pane").removeClass("show");
-    $(".nav-tabs button").removeClass("active");
-    $(".nav-tabs").children().first().children().addClass("active");
-    $(".tab-content").children().first().addClass("active");
-    $(".tab-content").children().first().addClass("show");
+    var someTabTriggerEl = document.querySelector('#main-tab');
+    var tab = new bootstrap.Tab(someTabTriggerEl);
+    tab.show();
     $('#content').empty();
     let content = courseBoard.filter(x => x.id === id);
     let fileCheck = content[0].files.length == 0 ? null : true;

@@ -123,7 +123,63 @@
 
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">업데이트</div>
+                    <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">
+                        <div>
+                            <div>
+                                <div class="py-5 text-center">
+                                    <h2>강의 회차 수정</h2>
+                                </div>
+
+                                <div class="row g-5 mb-5">
+                                    <div class="col-md-12 col-lg-12">
+                                        <form id="courseBoardUpdateForm" class="needs-validation">
+                                            <div class="row g-3">
+
+                                                <div class="col-sm-12">
+                                                    <label for="updateTitle" class="form-label">제목</label>
+                                                    <input type="text" name="updateTitle" class="form-control"
+                                                           id="updateTitle"
+                                                           placeholder="ex) 1강 : 영상올리기" required>
+                                                    <div class="invalid-feedback">
+                                                        강의 차수 제목을 입력해주세요.
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-12">
+                                                    <label for="updateContents" class="form-label">강의 내용</label>
+                                                    <textarea class="summernote" id="updateContents" name="contents"
+                                                              required></textarea>
+                                                    <div class="invalid-feedback">
+                                                        강의 내용을 입력해주세요
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12">
+                                                    <label for="updateFile" class="form-label">첨부파일</label>
+                                                    <input type="file" class="form-control" id="updateFile"
+                                                           placeholder="첨부파일"
+                                                           value="" name="updateFile"
+                                                           multiple="multiple">
+                                                </div>
+                                                <span>아래에 있는 파일이 첨부됩니다 삭제하실 파일은 - 를 클릭해주세요</span>
+
+                                                <div id="updateFileChange">
+                                                </div>
+
+                                            </div>
+
+                                            <hr class="my-4">
+                                            <a id="updateCourseBoardBtn" class="w-100 btn btn-primary btn-lg">강의 수정하기
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
                     <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
                         <div>
                             <div class="pt-5 pb-3 text-center">
@@ -152,9 +208,7 @@
                         <h2>강의 회차 생성</h2>
                         <p class="lead">강의 커리큘럼을 만들어주세요</p>
                         <p class="lead">동영상의 유튜브에 업로드후에 영상링크로 첨부해주세요!</p>
-
                     </div>
-
                     <div class="row g-5 mb-5">
                         <div class="col-md-12 col-lg-12">
                             <form id="courseBoardForm" class="needs-validation">
@@ -187,12 +241,9 @@
                                                multiple="multiple">
                                     </div>
                                     <span>아래에 있는 파일이 첨부됩니다 삭제하실 파일은 - 를 클릭해주세요</span>
-
                                     <div id="fileChange">
                                     </div>
-
                                 </div>
-
                                 <hr class="my-4">
                                 <a id="createBtn" class="w-100 btn btn-primary btn-lg">강의 커리큘럼 생성하기
                                 </a>
@@ -235,7 +286,8 @@
 
                                     <div class="col-sm-12 d-flex">
                                         <div class="col-7">
-                                            <label for="thumbnail" class="form-label">썸네일 (변경하실때만 선택해주세요 변경하지 않으시려면 첨부하지 않으시면 됩니다.)</label>
+                                            <label for="thumbnail" class="form-label">썸네일 (변경하실때만 선택해주세요 변경하지 않으시려면 첨부하지
+                                                않으시면 됩니다.)</label>
                                             <div>
                                                 <input type="file" name="thumbnail" class="form-control" id="thumbnail"
                                                        placeholder="썸네일"
@@ -270,6 +322,7 @@
                     </div>
                 </div>
             </div>
+
 
         </div>
     </div>
