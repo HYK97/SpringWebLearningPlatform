@@ -1,10 +1,12 @@
 package com.hy.demo.Domain.Board.Dto;
 
 import com.hy.demo.Domain.File.Dto.FileDto;
+import com.hy.demo.Domain.File.Entity.File;
 import lombok.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,7 +21,7 @@ public class CourseBoardDto {
     private Date createDate;
     private String teachName;
     private String courseName;
-    private List<FileDto> files;
+    private List<FileDto> files= new ArrayList<>();
 
 
     public CourseBoardDto(Long id, String title, Long views, Timestamp createDate, String contents, String teachName, String courseName) {
@@ -31,4 +33,37 @@ public class CourseBoardDto {
         this.teachName = teachName;
         this.courseName = courseName;
     }
+
+    public CourseBoardDto(Long id, String title, String contents, Long views, Timestamp createDate, String teachName, String courseName, List<File> files) {
+        this.id = id;
+        this.title = title;
+        this.contents = contents;
+        this.views = views;
+        this.createDate = new Date(createDate.getTime());
+        this.teachName = teachName;
+        this.courseName = courseName;
+        for (File file : files) {
+            FileDto fileDto = new FileDto();
+            fileDto.setFilePath(file.getFilePath());
+            fileDto.setFileSize(file.getFileSize());
+            fileDto.setOrigFileName(file.getOrigFileName());
+            fileDto.setId(file.getId());
+            this.files.add(fileDto);
+        }
+    }
+
+    public void changeFileDto(List<File> files) {
+        for (File file : files) {
+            FileDto fileDto = new FileDto();
+            fileDto.setFilePath(file.getFilePath());
+            fileDto.setFileSize(file.getFileSize());
+            fileDto.setOrigFileName(file.getOrigFileName());
+            fileDto.setId(file.getId());
+            this.files.add(fileDto);
+        }
+    }
+    public void changeDate(Timestamp createDate) {
+        this.createDate = new Date(createDate.getTime());
+    }
+
 }

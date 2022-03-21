@@ -3,6 +3,7 @@ package com.hy.demo.Domain.Board.Repository;
 import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
+import com.hy.demo.Domain.File.Entity.QFile;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
+import static com.hy.demo.Domain.File.Entity.QFile.*;
 
 
 public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implements CourseBoardRepositoryCustom {
@@ -55,4 +57,16 @@ public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implem
                 .fetch()
         );
     }
+
+    public CourseBoard findByCourseBoardId(Long courseBoardId) {
+        return select(courseBoard)
+                .from(courseBoard)
+                .leftJoin(courseBoard.course,course)
+                .fetchJoin()
+                .leftJoin(courseBoard.files, file)
+                .fetchJoin()
+                .where(courseBoard.id.eq(courseBoardId))
+                .fetchOne();
+    }
+
 }

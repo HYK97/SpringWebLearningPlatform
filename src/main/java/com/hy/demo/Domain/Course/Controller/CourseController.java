@@ -126,9 +126,9 @@ public class CourseController {
         }
     }
 
-    @GetMapping( {"/courseGetData/{id}"})
+    @GetMapping( {"/getCourse/{id}"})
     @ResponseBody
-    public CourseDto courseGetData(@PathVariable Long id) throws Exception {
+    public CourseDto getCourse(@PathVariable Long id) throws Exception {
         Course findCourse = courseService.findCourseById(id);
         CourseDto courseDto = findCourse.returnDto();
         return courseDto;
