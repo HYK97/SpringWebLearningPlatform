@@ -6,6 +6,9 @@ import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
 import com.hy.demo.Domain.Course.Repository.CourseRepository;
+import com.hy.demo.Domain.File.Dto.FileDto;
+import com.hy.demo.Domain.File.Entity.File;
+import com.hy.demo.Domain.File.Repository.FileRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -48,6 +51,9 @@ class CourseBoardRepositoryImplTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     @Autowired
     Logger logger;
@@ -98,9 +104,16 @@ class CourseBoardRepositoryImplTest {
                         .title("courseName"+i+"courseBoardTitle"+j)
                         .contents("courseBoardContents"+j)
                         .views(3L).build();
-                    Long id = courseBoardRepository.save(courseBoard).getId();
-                    courseBoardIdList.add(id);
+                    CourseBoard courseBoardE = courseBoardRepository.save(courseBoard);
+                    courseBoardIdList.add(courseBoardE.getId());
 
+                    File file =File.builder()
+                            .filePath("ss")
+                            .fileSize(2L)
+                            .origFileName("testFile")
+                            .courseBoard(courseBoardE)
+                            .build();
+                    fileRepository.save(file);
                 }
 
             }
@@ -130,6 +143,8 @@ class CourseBoardRepositoryImplTest {
                 Long replyId = courseEvaluationRepository.save(reply).getId();
                 replyIdList.add(replyId);
             }
+
+
         }
 
 
@@ -161,5 +176,21 @@ class CourseBoardRepositoryImplTest {
                         tuple("courseName1courseBoardTitle4","courseBoardContents4",3L)
                 );
 
+    }
+
+
+    @Test
+    public void findByCourseBoardId() throws Exception{
+    //given
+
+    //when
+        CourseBoard findDto = courseBoardRepository.findByCourseBoardId(courseBoardIdList.get(0));
+        CourseBoardDto courseBoardDto = findDto.changeDto();
+        //then
+        List<FileDto> files = courseBoardDto.getFiles();
+        for (FileDto file : files) {
+            logger.info("file.getOrigFileName() = " + file.getOrigFileName());
+        }
+        
     }
 }
