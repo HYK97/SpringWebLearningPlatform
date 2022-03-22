@@ -25,12 +25,14 @@
 function formBtn(form) {
     'use strict'
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll(form)
+    var forms = $(form);
     var check;
+    var checkValidity = forms.find('.summernote').summernote('isEmpty');
     // Loop over them and prevent submission
     Array.prototype.slice.call(forms)
         .forEach(function (form) {
-          if (!form.checkValidity()) {
+          if (!form.checkValidity()||checkValidity) {
+              alert('필드를 모두입력해주세요');
             check = 1;
           } else {
             check= 2;
