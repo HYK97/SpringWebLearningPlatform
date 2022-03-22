@@ -72,7 +72,6 @@ $(document).on("click", "#createBtn", function () {
     var courseId = getCourseId();
     var check = formBtn('#courseBoardForm');
     if (check == 1) {
-        $("#title").focus();
         return;
     }
     let title = $("#title").val();
@@ -101,7 +100,6 @@ $(document).on("click", "#createBtn", function () {
             if (data == "1") {
                 courseBoard = getData();
                 navRender(courseBoard);
-                $(".courseboard-href").removeClass("active");
                 $(".courseboard-href").last().trigger("click");
                 viewBoxShow();
                 $("form")[0].reset();
@@ -180,7 +178,6 @@ $(document).on("click", "#courseUpdateBtn", function () {
         data: formData,
         success: function (data) {
             if (data == "1") {
-                $(".courseboard-href").removeClass("active");
                 $(".courseboard-href").first().trigger("click");
                 viewBoxShow();
                 $("form")[0].reset();
@@ -331,7 +328,7 @@ $(document).on("click", "#addBtn", function () {
 $(document).on("click", "#updateCourseBoardBtn", function () {
     var check = formBtn('#courseBoardUpdateForm');
     if (check == 1) {
-        $("#updateTitle").focus();
+
         return;
     }
     let title = $("#updateTitle").val();
@@ -354,21 +351,22 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
         processData: false,
         contentType: false,
         success: function (data) {
-          /*  if (data == "1") {
+            if (data == "1") {
                 courseBoard = getData();
                 navRender(courseBoard);
-                $(".courseboard-href").removeClass("active");
-                $(".courseboard-href").last().trigger("click");
+                mainRender(courseBoardId, courseBoard)
+                let index = courseBoard.findIndex(f =>f.id ==courseBoardId);
+                $(".courseboard-href").eq(index).trigger("click");
                 viewBoxShow();
-                $("form")[0].reset();
-                $("form").removeClass("was-validated");
-                $('#fileChange').empty();
-                $('#contents').summernote('reset');
+                $("#courseBoardUpdateForm")[0].reset();
+                $("#courseBoardUpdateForm").removeClass("was-validated");
+                $('#updateFileChange').empty();
+                $('#updateContents').summernote('reset');
                 fileReset();
-                alert('등록성공');
+                alert('수정 성공');
             } else {
                 alert('오류');
-            }*/
+            }
         },
         error: function (request, error) {
             alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
