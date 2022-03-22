@@ -1,6 +1,5 @@
 package com.hy.demo.Domain.File.Repository;
 
-import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
 import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Entity.File;
 
@@ -11,4 +10,5 @@ public interface FileRepositoryCustom {
     List<FileDto> findFileIdByCourseId(Long courseBoardId);
     Optional<File> findFetchById(Long fileId);
     Optional<List<File>> findByCourseBoardId(Long courseBoardId);
+    Long deleteByCourseBoardId(Long courseBoardId);
 }

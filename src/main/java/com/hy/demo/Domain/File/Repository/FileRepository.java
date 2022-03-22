@@ -17,4 +17,6 @@ public interface FileRepository extends JpaRepository<File,Long> {
 
     Optional<File> findFetchById(Long fileId);
     Optional<List<File>> findByCourseBoardId(Long courseBoardId);
+
+    Long deleteByCourseBoardId(Long courseBoardId);
 }
