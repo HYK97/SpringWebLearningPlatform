@@ -105,6 +105,31 @@ public class CourseBoardController {
     }
 
 
+
+    @PostMapping("/updateCourseBoard/{id}")
+    @ResponseBody
+    public String updateCourseBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws IOException {
+        //파일 확인
+        try {
+            courseBoardService.updateCourseBoard(id,file,title,contents);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "2"; //실패
+            //실패
+        }
+        return "1"; //성공
+    }
+
+
+    @GetMapping( {"/getCourseBoard/{id}"})
+    @ResponseBody
+    public CourseBoardDto getCourseBoard(@PathVariable Long id) throws Exception {
+        CourseBoardDto findCourseDto = courseBoardService.findCourseBoardByCourseBoardId(id);
+        return findCourseDto;
+    }
+
+
+
     @PostMapping("/createBoard/{id}")
     @ResponseBody
     public String createBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) {
@@ -135,6 +160,8 @@ public class CourseBoardController {
     }
 
 
+
+
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (e.getReason().equals("1")) {
@@ -152,6 +179,8 @@ public class CourseBoardController {
             throw new AccessDeniedException("403 에러");
         }
     }
+
+
 
 
 }
