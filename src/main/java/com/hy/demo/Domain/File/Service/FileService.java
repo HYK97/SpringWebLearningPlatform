@@ -29,7 +29,7 @@ public class FileService {
 
     public List<FileDto> localSaveFile(List<MultipartFile> multipartFile) throws IOException {
         LocalDate now = LocalDate.now();
-        String Path = "resources/upload/" + now;
+        String Path = "resources/upload/" + now+"/";
         File fileDir = new File(Path);
         List<FileDto> files = new ArrayList<>();
         //license 폴더가 없으면 생성
@@ -86,17 +86,30 @@ public class FileService {
     public boolean deleteFile(List<com.hy.demo.Domain.File.Entity.File> files) {
         for (com.hy.demo.Domain.File.Entity.File file : files) {
             File newFile = new File(file.getFilePath());
-            if (newFile.exists()) {
-                if (newFile.delete()) {
-
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
+            if (fileDelete(newFile)) return false;
         }
         return true;
+    }
+    public boolean deleteFileDto(List<FileDto> files) {
+        for (FileDto file : files) {
+            File newFile = new File(file.getFilePath());
+            if (fileDelete(newFile)) return false;
+        }
+        return true;
+    }
+
+
+    private boolean fileDelete(File newFile) {
+        if (newFile.exists()) {
+            if (newFile.delete()) {
+
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
 
