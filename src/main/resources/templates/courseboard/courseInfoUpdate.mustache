@@ -1,0 +1,67 @@
+<div id="updateBox" hidden>
+    <div>
+        <div class="py-5 text-center">
+            <h2>강의 정보 수정</h2>
+        </div>
+        <div class="row g-5 mb-5">
+            <div class="col-md-12 col-lg-12">
+                <form class="needs-validation" id="courseUpdateForm">
+                    <div class="row g-3">
+                        <div class="col-sm-12">
+                            <label for="courseName" class="form-label">강의명</label>
+                            <input type="text" name="courseName" class="form-control" id="courseName"
+                                   placeholder="강의명"
+                                   value="" required>
+                            <div class="invalid-feedback">
+                                강의이름을 입력해 주세요.
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="teachName" class="form-label">강사명</label>
+                            <input type="text" class="form-control" id="teachName" name="teachName"
+                                   placeholder="강사명" required>
+                            <div class="invalid-feedback">
+                                강사이름을 입력해 주세요.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 d-flex">
+                            <div class="col-7">
+                                <label for="thumbnail" class="form-label">썸네일 (변경하실때만 선택해주세요 변경하지 않으시려면 첨부하지
+                                    않으시면 됩니다.)</label>
+                                <div>
+                                    <input type="file" name="thumbnail" class="form-control" id="thumbnail"
+                                           placeholder="썸네일"
+                                           value="" accept="image/*" name="file"
+                                           onchange="fileCheck(this);">
+                                </div>
+                            </div>
+                            <div class="col-1">
+                            </div>
+                            <div class="col-4">
+                                <label for="thumbnailImg" class="form-label">현재 썸네일</label>
+                                <img class=" card-img-top" id="thumbnailImg" width="100px" height="200px"
+                                     src="">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="courseExplanation" class="form-label">강의 설명</label>
+                            <textarea class="summernote" id="courseExplanation" name="courseExplanation"
+                                      required></textarea>
+                            <div class="invalid-feedback">
+                                강의 설명을 입력해주세요
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <hr class="my-4">
+                    <button id="courseUpdateBtn" class="w-100 btn btn-primary btn-lg">강의 업데이트 하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

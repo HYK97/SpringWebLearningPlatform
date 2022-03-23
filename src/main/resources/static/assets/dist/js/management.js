@@ -376,3 +376,8 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
 
 
 });
+
+$(document).on("click",'#statisticsBtn',function () {
+    statisticsBoxShow();
+
+});

@@ -1,0 +1,49 @@
+<div id="createBox" hidden>
+    <div>
+        <div class="py-5 text-center">
+            <h2>강의 회차 생성</h2>
+            <p class="lead">강의 커리큘럼을 만들어주세요</p>
+            <p class="lead">동영상의 유튜브에 업로드후에 영상링크로 첨부해주세요!</p>
+        </div>
+        <div class="row g-5 mb-5">
+            <div class="col-md-12 col-lg-12">
+                <form id="courseBoardForm" class="needs-validation">
+                    <div class="row g-3">
+                        <div class="col-sm-12">
+                            <label for="title" class="form-label">제목</label>
+                            <input type="text" name="title" class="form-control" id="title"
+                                   placeholder="ex) 1강 : 영상올리기" required>
+                            <div class="invalid-feedback">
+                                강의 차수 제목을 입력해주세요.
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12">
+                            <label for="contents" class="form-label">강의 내용</label>
+                            <textarea class="summernote" id="contents" name="contents" required></textarea>
+                            <div class="invalid-feedback">
+                                강의 내용을 입력해주세요
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-12">
+                            <label for="attachments" class="form-label">첨부파일</label>
+                            <input type="file" class="form-control" id="file"
+                                   placeholder="첨부파일"
+                                   value="" name="file"
+                                   multiple="multiple">
+                        </div>
+                        <span>아래에 있는 파일이 첨부됩니다 삭제하실 파일은 - 를 클릭해주세요</span>
+                        <div id="fileChange">
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <button type="button" id="createBtn" class="w-100 btn btn-primary btn-lg">강의 커리큘럼 생성하기
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
