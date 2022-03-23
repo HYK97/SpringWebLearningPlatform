@@ -84,17 +84,28 @@ function viewBoxShow() {
     $('#viewBox').removeAttr("hidden");
     $('#updateBox').attr("hidden", "hidden");
     $('#createBox').attr("hidden", "hidden");
+    $('#statisticsBox').attr("hidden", "hidden");
+
 }
 
 function createBoxShow() {
     $('#createBox').removeAttr("hidden");
     $('#updateBox').attr("hidden", "hidden");
     $('#viewBox').attr("hidden", "hidden");
+    $('#statisticsBox').attr("hidden", "hidden");
 }
 
 function updateBoxShow() {
     $('#updateBox').removeAttr("hidden");
     $('#viewBox').attr("hidden", "hidden");
+    $('#createBox').attr("hidden", "hidden");
+    $('#statisticsBox').attr("hidden", "hidden");
+}
+
+function statisticsBoxShow() {
+    $('#statisticsBox').removeAttr("hidden");
+    $('#viewBox').attr("hidden", "hidden");
+    $('#updateBox').attr("hidden", "hidden");
     $('#createBox').attr("hidden", "hidden");
 }
 
