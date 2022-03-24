@@ -1,10 +1,12 @@
-package com.hy.demo.Domain.Board.Entity;
+package com.hy.demo.Domain.Comments.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
+import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,6 +28,14 @@ public class Comments extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Reply_id")
+    private Comments parent;
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+    private List<Comments> children;
 
     private String comments;
 
