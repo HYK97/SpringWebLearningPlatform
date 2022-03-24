@@ -55,7 +55,10 @@
                 {{#course}}
                     <div class="col">
                         <div class="card shadow-sm">
-                            {{#thumbnail}}<a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top" width="100%" height="300px" src="{{thumbnail}}"></a>
+                            {{#thumbnail}}
+                                <a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top"
+                                                                              width="100%" height="300px"
+                                                                              src="{{thumbnail}}"></a>
 
                             {{/thumbnail}}
 
@@ -75,7 +78,8 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <div class="star-ratings">
-                                            <div id="star" style="width: {{starScope}}%" class="star-ratings-fill space-x-2 text-lg">
+                                            <div id="star" style="width: {{starScope}}%"
+                                                 class="star-ratings-fill space-x-2 text-lg">
                                                 <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                                             </div>
                                             <div class="star-ratings-base space-x-2 text-lg">
