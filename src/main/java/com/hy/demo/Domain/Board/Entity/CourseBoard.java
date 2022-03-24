@@ -2,6 +2,7 @@ package com.hy.demo.Domain.Board.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
+import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Utils.ObjectUtils;
