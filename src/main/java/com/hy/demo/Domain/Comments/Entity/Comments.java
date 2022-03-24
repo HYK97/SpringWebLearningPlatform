@@ -30,7 +30,7 @@ public class Comments extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Reply_id")
+    @JoinColumn(name = "Reply_Group_id")
     private Comments parent;
 
 
