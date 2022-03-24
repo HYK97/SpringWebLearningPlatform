@@ -107,7 +107,7 @@ const template = ' ' +
     '                <h5>댓글</h5>\n' +
     '\n' +
     '                <div class="my-3 col-12 border p-3 border-1">\n' +
-    '                <form id="commentsForm">\n' +
+    '                <form id="commentsForm" onsubmit="return false">\n' +
     '                <input type="text" class="form-control comments" placeholder="댓글을 입력하세요" name="comments">\n' +
     '                </form>\n' +
     '                           <button class="btn btn-secondary mt-3" type="button" id ="commentsCreateBtn">\n' +
@@ -166,7 +166,14 @@ const comments = '' +
     '                </div>\n' +
     '            </div>\n' +
     '            </div>\n' +
+    '                        {{#replyCounts}}\n' +
+    '                        <a class="link-primary" data-page="1" role="button" onclick="getReplyData({{id}},this)" data-bs-toggle="collapse" data-bs-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapseExample">\n' +
+    '                            ▼ {{replyCounts}}\n 개의 댓글 더보기' +
+    '                        </a>\n' +
+    '                        {{/replyCounts}}\n' +
     '            <hr class=" mt-3 mb-2">\n' +
+    '            <div class="collapse" id="collapse{{id}}">\n' +
+    '             </div>\n' +
     ' {{/data}}'
 
 
@@ -288,29 +295,7 @@ function mainRender(id, data) {
     var rendered = Mustache.render(template, jsonData);
     $('#result').html(rendered);
     courseBoardId = content[0].id;
-    commentsRender();
-}
-
-function commentsRender() {
-    $.ajax({
-        type: "get",
-        url: '/comments/getComments/'+courseBoardId,
-        success: function (data) {
-            let jsonData = {
-                "data": data,
-            };
-            Mustache.parse(comments);
-            var rendered = Mustache.render(comments, jsonData);
-            $('#commentsList').html(rendered);
-        },
-        error: function (request, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-            alert("오류");
-        }
-    })
-
-
-
+    commentsRender(1);
 }
 
 
@@ -331,7 +316,7 @@ $(document).on('click','#commentsCreateBtn',function () {
             if (data == "1") {
                 alert("댓글 작성 성공");
                 $("input[name=comments]").val("");
-                commentsRender();
+                commentsRender(1);
             } else {
                 alert("실패");
             }

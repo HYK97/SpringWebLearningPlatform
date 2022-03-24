@@ -17,31 +17,6 @@ $(document).on("change", "#file", function () {
     }
 
 
-    // 각각의 파일 배열담기 및 기타
-    /*for (let i = 0; i < filesArr.length; i++) {
-            if (filesArr[i].size > 10 * 1024 * 1024) {
-                alert(filesArr[i].name+'해당 파일크기가 너무큽니다. 업로드에서 제외됩니다.');
-                filesArr.splice(i);
-                break ;
-            }
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            content_files.push(filesArr[i]);
-            $('#fileChange').append(
-                '<div id="file' + fileNum + '" onclick="fileDelete(\'file' + fileNum + '\')">'
-                + '<font style="font-size:12px">'+(i+1)+ filesArr[i].name + '</font>'
-                + '<svg style="width:20px; height:auto; vertical-align: middle; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mx-1 bi bi-dash-square" viewBox="0 0 16 16">\n' +
-                '  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>\n' +
-                '  <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>\n' +
-                '</svg>'
-                + '<div/>'
-            );
-            fileNum ++;
-        };
-        reader.readAsDataURL(filesArr[i]);
-    }*/
-
-
     filesArr.forEach(function (f, index) {
         if (f.size > 10 * 1024 * 1024) {
             alert(f.name + '해당 파일크기가 너무큽니다. 업로드에서 제외됩니다.');
