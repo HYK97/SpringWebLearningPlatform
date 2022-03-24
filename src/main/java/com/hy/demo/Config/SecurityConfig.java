@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("assets/**").authenticated()
                 .antMatchers("/course**/**").authenticated()
                 .antMatchers("/file/**").authenticated()
+                .antMatchers("/comments/**").authenticated()
                 .anyRequest().permitAll() // 위의 페이지 3개 이외는 아무나 접근하게 해주는 체인.
                 .and() //만약에 권한이 없는 페이지로 들어갈때 로그인페이지로 가게해주는 체인.
                 .formLogin()
