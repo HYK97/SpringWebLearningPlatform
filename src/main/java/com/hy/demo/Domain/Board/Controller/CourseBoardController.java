@@ -56,13 +56,7 @@ public class CourseBoardController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    @GetMapping("/info/mycourselist")
-    public String myCourseList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        User findUser = userService.findByUsername(principalDetails.getUser());
-        Page<CourseDto> myCourseList = courseService.findMyCourseList("", findUser.getId(), pageable);
-        model.addAttribute("courseList", myCourseList);
-        return "/courseboard/mycourselist";
-    }
+
 
 
     @GetMapping("/{id}")
