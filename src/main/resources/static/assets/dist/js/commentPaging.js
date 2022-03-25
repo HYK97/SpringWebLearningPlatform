@@ -225,9 +225,8 @@ $(document).on('click', '.replyCreate', function () {
     let comments = $(this).siblings('form').find('input[name=comments]').val();
     let targetUser = $(this).siblings('form').find('input[name=targetUser]').val();
     let data = '<p style="font-weight: 900;">@' + targetUser + '<p> ' + comments;
-    let collapse = $(this).closest('.collapse');
-    let count = $(this).closest('div.row.my-1').find('.collapse');
-    let parent = $(this).closest('div.row.my-1');
+    let collapse = $(this).closest('div.row.my-1.mainComments').find('.collapse');
+    let parent = $(this).closest('div.row.my-1.mainComments');
     if (comments.length == 0) {
         alert("댓글을 작성후 눌러주세요");
         return;
@@ -246,15 +245,23 @@ $(document).on('click', '.replyCreate', function () {
                     };
                     Mustache.parse(replys);
                     var rendered = Mustache.render(replys, jsonData);
-                if (collapse.length > 0) {
-                    collapse.append(rendered);
-                } else {
+
+                if (collapse.length == 0) { //리플없을때
                     parent.append(rendered);
+                } else { //리플 있을때
+                    if (collapse.hasClass('show') == false) { //리플 안펼쳤을때
+                        parent.append(rendered);
+                    } else { //리플펼쳤을때
+                        let children= collapse.children('.page-link');
+                        if (children.length >0) { //5개 이하일때
+                            let last = collapse.children().last();
+                            last.before (rendered);
+                        }else { //5개 이상일때
+                            collapse.append(rendered);
+                        }
+                    }
                 }
-
                 deleteReplyBox(element);
-
-
             } else {
                 alert("실패");
             }

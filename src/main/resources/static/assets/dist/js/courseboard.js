@@ -125,7 +125,7 @@ const template = ' ' +
 const comments = '' +
     '            <hr class=" mt-3 mb-2">\n' +
     ' {{#data}}' +
-    '        <div class="row my-1 ">\n' +
+    '        <div class="row my-1 mainComments">\n' +
     '            <div >\n' +
     '                <div class="text-break">\n' +
     '                    <div >\n' +
