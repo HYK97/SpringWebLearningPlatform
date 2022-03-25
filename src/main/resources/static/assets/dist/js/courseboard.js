@@ -135,13 +135,13 @@ const comments = '' +
     '                                     class="rounded-circle">\n' +
     '                            </div>\n' +
     '                            <div class="user-field-name">\n' +
-    '                                <div> <p class=" my-3 ">{{username}}</p></div>\n' +
+    '                                <div> <p class=" my-3 username">{{username}}</p></div>\n' +
     '               {{^myCommentsFlag}} ' +
     '                <div class="dropdown dropdown-user text-end" data-user="{{username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item createReply">답글쓰기</a></li>\n' +
+    '                    <li><a class="dropdown-item createReply" data-use="disabled" data-id="{{id}}">답글쓰기</a></li>\n' +
     '                </ul>{{/myCommentsFlag}}\n' +
 
     '               {{#myCommentsFlag}}' +
@@ -149,14 +149,15 @@ const comments = '' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update"  >수정</a></li>\n' +
+    '                    <li><a class="dropdown-item createReply" data-use="disabled" data-id="{{id}}">답글쓰기</a></li>\n' +
+    '                    <li><a class="dropdown-item update"  data-id="{{id}}">수정</a></li>\n' +
     '                    <li><a class="dropdown-item delete" data-id="{{id}}">삭제</a></li>\n' +
     '                </ul>{{/myCommentsFlag}}\n' +
     '            </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
     '                        <p class="text-muted my-2 comments">\n' +
-    '                            {{comments}}\n' +
+    '                            {{{comments}}}\n' +
     '                        </p>\n' +
     '\n' +
     '                        <small class=" my-3 create-date">\n' +
@@ -164,16 +165,18 @@ const comments = '' +
     '                        </small>\n' +
     '                    </div>\n' +
     '                </div>\n' +
-    '            </div>\n' +
-    '            </div>\n' +
     '                        {{#replyCounts}}\n' +
     '                        <a class="link-primary" data-page="1" role="button" onclick="getReplyData({{id}},this)" data-bs-toggle="collapse" data-bs-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapseExample">\n' +
     '                            ▼ {{replyCounts}}\n 개의 댓글 더보기' +
     '                        </a>\n' +
     '                        {{/replyCounts}}\n' +
-    '            <hr class=" mt-3 mb-2">\n' +
+    '            <hr class=" mt-3 mb-2 end">\n' +
+    '                        {{#replyCounts}}\n' +
     '            <div class="collapse" id="collapse{{id}}">\n' +
-    '             </div>\n' +
+    '            </div>\n' +
+    '                        {{/replyCounts}}\n' +
+    '            </div>\n' +
+    '            </div>\n' +
     ' {{/data}}'
 
 
