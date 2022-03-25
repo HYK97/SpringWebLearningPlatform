@@ -29,8 +29,9 @@ public class CommentsDto {
 
     private Date createDate;
 
-
     private Long replyCounts;
+
+    private Long replyId;
 
     public CommentsDto(Long id, String username, String comments, Timestamp createDate) {
         this.id = id;
@@ -47,5 +48,11 @@ public class CommentsDto {
         this.replyCounts =replyCounts;
     }
 
-
+    public CommentsDto(String username,Long id, String comments, Timestamp createDate, Long replyId) {
+        this.username = username;
+        this.id = id;
+        this.comments = comments;
+        this.createDate = new Date(createDate.getTime());
+        this.replyId = replyId;
+    }
 }
