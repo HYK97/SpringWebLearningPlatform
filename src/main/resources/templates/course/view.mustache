@@ -130,12 +130,6 @@
 <script>
     $(document).ready(function () {
 
-        //평점
-
-
-        //생성일
-
-
         Previous ={{Previous}};
         var Next ={{Next}};
         var pageNumber ={{pageNumber}};
@@ -163,6 +157,7 @@
                 }
             }
         } else if (totalElements == 0 && URLSearch.get('search') != null) {
+            location.href = '/course/view';
             alert("검색결과가 없습니다");
         }
         $("#previous").after(html);
