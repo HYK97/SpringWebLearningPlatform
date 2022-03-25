@@ -2,10 +2,12 @@ package com.hy.demo.Domain.Comments.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
+import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -46,6 +48,13 @@ public class Comments extends BaseEntity {
         user.getComments().add(this);
     }
 
+    public CommentsDto changeDto() {
+        CommentsDto commentsDto =new CommentsDto();
+        commentsDto.setComments(this.comments);
+        commentsDto.setCreateDate( new Date(this.getCreateDate().getTime()));
+        commentsDto.setId(this.id);
+        return commentsDto;
+    }
 
 
 }
