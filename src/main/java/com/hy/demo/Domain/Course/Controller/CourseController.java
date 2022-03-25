@@ -278,7 +278,16 @@ public class CourseController {
     public String myCourseList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         User findUser = userService.findByUsername(principalDetails.getUser());
         Page<CourseDto> myCourseList = courseService.findMyCourseList("", findUser.getId(), pageable);
-        model.addAttribute("courseList", myCourseList);
+
+        pagingDto(model, myCourseList);
+        return "/course/mycourselist";
+    }
+
+    @GetMapping("/info/myCourseListSearch")
+    public String myCourseListSearch(Model model,String search,@AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        User findUser = userService.findByUsername(principalDetails.getUser());
+        Page<CourseDto> myCourseList = courseService.findMyCourseList(search, findUser.getId(), pageable);
+        pagingDto(model, myCourseList);
         return "/course/mycourselist";
     }
 
