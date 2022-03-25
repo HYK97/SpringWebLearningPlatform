@@ -9,6 +9,7 @@ import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.Course.Service.ImageService;
+import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
@@ -271,6 +272,14 @@ public class CourseController {
         logger.info("전체페이지 = " + totalPages);
         logger.info("이전페이지있냐 = " + Previous);
         logger.info("다음페이지있냐 = " + Next);
+    }
+
+    @GetMapping("/info/mycourselist")
+    public String myCourseList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        User findUser = userService.findByUsername(principalDetails.getUser());
+        Page<CourseDto> myCourseList = courseService.findMyCourseList("", findUser.getId(), pageable);
+        model.addAttribute("courseList", myCourseList);
+        return "/course/mycourselist";
     }
 
 
