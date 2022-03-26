@@ -130,7 +130,7 @@
 <script>
     $(document).ready(function () {
 
-        Previous ={{Previous}};
+        var Previous ={{Previous}};
         var Next ={{Next}};
         var pageNumber ={{pageNumber}};
         var startPage ={{startPage}};
@@ -138,8 +138,6 @@
         var totalElements ={{totalElements}}
         var preNum = parseInt(pageNumber) - 1;
         var nexNum = parseInt(pageNumber) + 1;
-        var number={{number}};
-        var totalPages ={{totalPages}};
         const URLSearch = new URLSearchParams(location.search);
         var search = URLSearch.get('search');
         var html = "";
