@@ -133,15 +133,18 @@
         Previous ={{Previous}};
         var Next ={{Next}};
         var pageNumber ={{pageNumber}};
+        var startPage ={{startPage}};
+        var endPage ={{endPage}};
         var totalElements ={{totalElements}}
         var preNum = parseInt(pageNumber) - 1;
         var nexNum = parseInt(pageNumber) + 1;
+        var number={{number}};
         var totalPages ={{totalPages}};
         const URLSearch = new URLSearchParams(location.search);
         var search = URLSearch.get('search');
         var html = "";
         if (totalElements != 0) {
-            for (var num = 1; num <= totalPages; num++) {
+            for (var num = startPage; num <= endPage; num++) {
                 if (num == pageNumber) {
                     if (URLSearch.get('search') != null) {
                         html += '<li class="page-item active"><a class="page-link" href="/course/search?search=' + search + '&page=' + num + '">' + num + '</a></li>';
