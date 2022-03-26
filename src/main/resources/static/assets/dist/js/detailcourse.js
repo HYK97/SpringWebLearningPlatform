@@ -102,6 +102,8 @@ $(document).ready(function () {
     var preNum;
     var nexNum;
     var totalPages;
+    var startPage;
+    var endPage;
 
     if (getId().teachUser == true) {
         $('.review-container').remove();
@@ -236,17 +238,19 @@ $(document).ready(function () {
 
 
                 //페이징
-                pageNumber = data.CourseEvaluationDto.pageable.pageNumber + 1;
+                pageNumber = data.CourseEvaluationDto.pageable.pageNumber;
                 totalPages = data.CourseEvaluationDto.totalPages;
+                startPage = Math.floor(pageNumber/10)*10 + 1;
+                endPage = startPage + 9 < totalPages ? startPage + 9 : totalPages;
+                pageNumber++;
                 totalElements = data.totalElements
                 preNum = parseInt(pageNumber) - 1;
                 nexNum = parseInt(pageNumber) + 1;
                 Previous = pageNumber != 1 ? true : false;
-                Next = totalPages > pageNumber ? true : false;
+                Next = totalPages != pageNumber ? true : false;
                 var html = "";
 
-                for (var num = 1; num <= totalPages; num++) {
-                    var onclick = 'page(' + num + ')';
+                for (var num = startPage; num <= endPage; num++) {
                     if (num == pageNumber) {
                         html += '<li class="page-item active"><a class="page-link page">' + num + '</a></li>';
                     } else {

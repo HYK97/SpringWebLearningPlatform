@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 ;import static com.hy.demo.Utils.ObjectUtils.isEmpty;
+import static java.lang.Math.floor;
 
 @Controller
 @RequestMapping("/course/*")
@@ -259,19 +260,17 @@ public class CourseController {
         boolean Previous = courseDtos.hasPrevious();
         boolean Next = courseDtos.hasNext();
         long totalElements = courseDtos.getTotalElements();
-
+        double startPage =floor(pageNumber/10)*10 + 1;
+        double endPage =startPage + 9 < totalPages ? startPage + 9 : totalPages;
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("course", content);
         model.addAttribute("pageNumber", pageNumber + 1);
-        model.addAttribute("totalPages", totalPages);
         model.addAttribute("Previous", Previous);
         model.addAttribute("Next", Next);
         model.addAttribute("totalElements", totalElements);
 
-        logger.info("1현재페이지 = " + pageNumber);
-        logger.info("콘텐츠갯수 = " + totalElements);
-        logger.info("전체페이지 = " + totalPages);
-        logger.info("이전페이지있냐 = " + Previous);
-        logger.info("다음페이지있냐 = " + Next);
+
     }
 
     @GetMapping("/info/mycourselist")
