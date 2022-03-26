@@ -5,6 +5,8 @@ let preNum = 0;
 let nexNum = 0;
 let Previous = null;
 let Next = null;
+let startPage;
+let endPage;
 
 
 const replys = '' +
@@ -69,8 +71,11 @@ function commentsRender(page) {
                 "data": data.content,
             };
             //페이징
-            pageNumber = data.pageable.pageNumber + 1;
+            pageNumber = data.pageable.pageNumber;
             totalPages = data.totalPages;
+            startPage = Math.floor(pageNumber/10)*10 + 1;
+            endPage = startPage + 9 < totalPages ? startPage + 9 : totalPages;
+            pageNumber++;
             totalElements = data.totalElements;
             preNum = parseInt(pageNumber) - 1;
             nexNum = parseInt(pageNumber) + 1;
@@ -78,8 +83,7 @@ function commentsRender(page) {
             Next = totalPages > pageNumber ? true : false;
             var html = "";
 
-            for (var num = 1; num <= totalPages; num++) {
-                var onclick = 'commentsRender(' + num + ')';
+            for (var num = startPage; num <= endPage; num++) {
                 if (num == pageNumber) {
                     html += '<li class="page-item active"><a class="page-link page">' + num + '</a></li>';
                 } else {

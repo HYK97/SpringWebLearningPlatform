@@ -262,14 +262,10 @@ public class CourseController {
         long totalElements = courseDtos.getTotalElements();
         double startPage =floor(pageNumber/10)*10 + 1;
         double endPage =startPage + 9 < totalPages ? startPage + 9 : totalPages;
-        int number = courseDtos.getContent().size();
-
         model.addAttribute("startPage", startPage);
-        model.addAttribute("number", number);
         model.addAttribute("endPage", endPage);
         model.addAttribute("course", content);
         model.addAttribute("pageNumber", pageNumber + 1);
-        model.addAttribute("totalPages", totalPages);
         model.addAttribute("Previous", Previous);
         model.addAttribute("Next", Next);
         model.addAttribute("totalElements", totalElements);
