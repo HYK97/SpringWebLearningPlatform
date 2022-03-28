@@ -150,7 +150,7 @@ const comments = '' +
     '                </a>\n' +
     '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
     '                    <li><a class="dropdown-item createReply" data-use="disabled" data-id="{{id}}">답글쓰기</a></li>\n' +
-    '                    <li><a class="dropdown-item update"  data-id="{{id}}">수정</a></li>\n' +
+    '                    <li><a class="dropdown-item update" data-use="disabled"  data-id="{{id}}">수정</a></li>\n' +
     '                    <li><a class="dropdown-item delete" data-id="{{id}}">삭제</a></li>\n' +
     '                </ul>{{/myCommentsFlag}}\n' +
     '            </div>\n' +
@@ -302,18 +302,17 @@ function mainRender(id, data) {
 }
 
 
-
-$(document).on('click','#commentsCreateBtn',function () {
+$(document).on('click', '#commentsCreateBtn', function () {
     let comments = $("input[name=comments]").val();
-    if(comments.length == 0) {
+    if (comments.length == 0) {
         alert("댓글을 작성후 눌러주세요");
         return;
     }
     $.ajax({
         type: "post",
         url: "/comments/create/" + courseBoardId,
-        data : {
-            comments : comments
+        data: {
+            comments: comments
         },
         success: function (data) {
             if (data == "1") {
@@ -330,5 +329,105 @@ $(document).on('click','#commentsCreateBtn',function () {
         }
     });
 
-})
+});
 
+
+$(document).on('click', '.update', function () {
+    let textBreak = $(this).closest('.text-break');
+    if ($(this).data('use') == 'disabled') {
+        let id = $(this).data('id');
+        let textBox = textBreak.find('.comments');
+        let contents = textBox.text().trim();
+        $(this).data('use', 'able');
+        const form = '<div class="updateReplyBox">\n' +
+            '                <form class="updateReplyForm" onsubmit="return false">\n' +
+            '                <input type="text" class="form-control updateComments" placeholder="댓글을 입력하세요" name="comments" value="' + contents + '">\n' +
+            '                </form>\n' +
+            '                           <button class="btn btn-secondary mt-3 replyUpdate" type="button"  data-id="' + id + '">\n' +
+            '                                     댓글수정\n' +
+            '                            </button>\n' +
+            '                           <button class="btn btn-secondary mt-3 replyUpdateCancel" data-comments="' + contents + '"  type="button" >\n' +
+            '                                     취소\n' +
+            '                            </button>\n' +
+            '                </div>';
+
+        textBox.after(form);
+        textBox.remove();
+    } else {
+        let updateComments = textBreak.find('.updateComments');
+        updateComments.focus();
+
+    }
+});
+
+$(document).on('click', '.replyUpdateCancel', function () {
+    let update = $(this).closest('.text-break').find('.update');
+    let updateReplyBox = $(this).closest('.updateReplyBox');
+    let comments = $(this).data('comments');
+    update.data('use', 'disabled');
+    const html = '<p class="text-muted my-2 comments">' + comments + ' </p>';
+    updateReplyBox.after(html);
+    updateReplyBox.remove();
+});
+
+
+$(document).on('click', '.replyUpdate', function () {
+    let form=$(this).siblings('.updateReplyForm');
+    let update = $(this).closest('.text-break').find('.update');
+    let updateReplyBox = $(this).closest('.updateReplyBox');
+    let user = $(this).closest('.text-break').find('.userTag');
+    let comments
+    if (user.length == 0) {
+        comments = form.find('.updateComments').val();
+    } else {
+        comments ='<p class="userTag" style="font-weight: 900;">' + user.text() + '</p> ' +'<p class="text-muted my-2 comments">'+ form.find('.updateComments').val()+'</p>'
+    }
+    let id =$(this).data('id');
+    $.ajax({
+        url: '/comments/updateReply/'+id,
+        method: 'POST',
+        data: {'comments': comments},
+        success: function (data) {
+            if (data != null) {
+                const html = '<p class="text-muted my-2 comments">' + data.comments + ' </p>';
+                updateReplyBox.after(html);
+                updateReplyBox.remove();
+                user.remove();
+                update.data('use', 'disabled');
+            } else {
+                alert("실패");
+                history.go(0);
+            }
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+
+    })
+
+
+
+});
+
+$(document).on('click', '.delete', function () {
+    let content = $(this).closest('div.row.my-1');
+    let id =$(this).data('id');
+    $.ajax({
+        url: '/comments/deleteReply/'+id,
+        method: 'POST',
+        success: function (data) {
+            if (data == "1") {
+                alert("삭제성공");
+                content.remove();
+            } else {
+                alert("실패");
+                history.go(0);
+            }
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+    })
+});

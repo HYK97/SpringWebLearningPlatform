@@ -36,7 +36,7 @@ public class Comments extends BaseEntity {
     private Comments parent;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comments> children;
 
     private String comments;
@@ -54,6 +54,9 @@ public class Comments extends BaseEntity {
         commentsDto.setCreateDate( new Date(this.getCreateDate().getTime()));
         commentsDto.setId(this.id);
         return commentsDto;
+    }
+    public void updateComments(String comments) {
+        this.comments = comments;
     }
 
 

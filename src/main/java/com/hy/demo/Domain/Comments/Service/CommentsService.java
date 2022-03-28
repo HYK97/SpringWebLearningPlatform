@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 /**
@@ -54,6 +55,16 @@ public class CommentsService {
         commentsRepository.save(comment);
     }
 
+
+    public CommentsDto updateComments(Long commentsId, String comments, User user) throws AccessDeniedException {
+        Comments findComments = commentsRepository.findByIdAndUser(commentsId, user.getUsername()).orElseThrow(() -> new AccessDeniedException("권한없음"));
+        findComments.updateComments(comments);
+        Comments comment = commentsRepository.save(findComments);
+        return comment.changeDto();
+
+    }
+
+
     public CommentsDto createReply(Long commentsId, Long courseId, String comments, User user) {
         CourseBoard courseBoard = courseBoardRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("찾는 courseBoard없음"));
@@ -90,6 +101,11 @@ public class CommentsService {
     public Page<CommentsDto> findReplyListByCommentsId(Long commentsId, Pageable pageable) {
         Page<CommentsDto> replyByIds = commentsRepository.findReplyByIds(commentsId, pageable);
         return replyByIds;
+    }
+
+    public void deleteReply(Long commentsId,User user) throws AccessDeniedException {
+        Comments findComments = commentsRepository.findByIdAndUser(commentsId, user.getUsername()).orElseThrow(() -> new AccessDeniedException("권한없음"));
+        commentsRepository.delete(findComments);
     }
 
 

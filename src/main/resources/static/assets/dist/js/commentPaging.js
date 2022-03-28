@@ -36,16 +36,13 @@ const replys = '' +
     '                </a>\n' +
     '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
     '                    <li><a class="dropdown-item createReply" data-use="disabled" data-id="{{replyId}}">답글쓰기</a></li>\n' +
-    '                    <li><a class="dropdown-item update"  data-id="{{replyId}}">수정</a></li>\n' +
-    '                    <li><a class="dropdown-item delete" data-id="{{replyId}}">삭제</a></li>\n' +
+    '                    <li><a class="dropdown-item update" data-use="disabled"  data-id="{{id}}">수정</a></li>\n' +
+    '                    <li><a class="dropdown-item delete" data-id="{{id}}">삭제</a></li>\n' +
     '                </ul>{{/myCommentsFlag}}\n' +
     '            </div>\n' +
     '                            </div>\n' +
     '                        </div>\n' +
-    '                        <p class="text-muted my-2 comments">\n' +
     '                            {{{comments}}}\n' +
-    '                        </p>\n' +
-    '\n' +
     '                        <small class=" my-3 create-date">\n' +
     '                            {{createDate}}\n' +
     '                        </small>\n' +
@@ -228,7 +225,7 @@ $(document).on('click', '.replyCreate', function () {
     let element= $(this);
     let comments = $(this).siblings('form').find('input[name=comments]').val();
     let targetUser = $(this).siblings('form').find('input[name=targetUser]').val();
-    let data = '<p style="font-weight: 900;">@' + targetUser + '<p> ' + comments;
+    let data = '<p class="userTag" style="font-weight: 900;">@' + targetUser + '</p> ' +'<p class="text-muted my-2 comments">'+ comments+'</p>';
     let collapse = $(this).closest('div.row.my-1.mainComments').find('.collapse');
     let parent = $(this).closest('div.row.my-1.mainComments');
     if (comments.length == 0) {
