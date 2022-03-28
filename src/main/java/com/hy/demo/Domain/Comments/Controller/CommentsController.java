@@ -91,6 +91,36 @@ public class CommentsController {
     }
 
 
+    @PostMapping( {"/updateReply/{commentsId}"})
+    @ResponseBody
+    public CommentsDto updateReply(@PathVariable Long commentsId,String comments,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        CommentsDto reply;
+        try {
+            reply = commentsService.updateComments(commentsId, comments, user);
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return reply;
+    }
+
+
+    @PostMapping( {"/deleteReply/{commentsId}"})
+    @ResponseBody
+    public String deleteReply(@PathVariable Long commentsId,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        try {
+            commentsService.deleteReply(commentsId, user);
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+            return "0";
+        }
+        return "1";
+    }
+
+
+
     @GetMapping( {"/getComments/{id}"})
     @ResponseBody
     public Page<CommentsDto> getComments(@PathVariable Long id,@AuthenticationPrincipal PrincipalDetails principalDetails,@PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {

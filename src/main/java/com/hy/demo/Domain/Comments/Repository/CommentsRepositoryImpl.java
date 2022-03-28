@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.Optional;
 
 import static com.hy.demo.Domain.Comments.Entity.QComments.comments1;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
@@ -60,6 +60,14 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
         ) )
                 .from(comments1)
                 .where(comments1.parent.id.eq(id)));
+    }
+
+    public Optional<Comments> findByIdAndUser(Long id, String username) {
+        return Optional.ofNullable(select(comments1)
+                .from(comments1)
+                .leftJoin(comments1.user, user)
+                .where(comments1.id.eq(id).and(comments1.user.username.eq(username))).fetchOne());
+
     }
 
 }
