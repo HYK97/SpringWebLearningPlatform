@@ -354,12 +354,9 @@ $(document).on('click', '.update', function () {
         textBox.after(form);
         textBox.remove();
     } else {
+        let updateComments = textBreak.find('.updateComments');
+        updateComments.focus();
 
-        let updateReplyBox = textBreak.find('.updateReplyBox');
-        let comments = updateReplyBox.find('.replyUpdateCancel').data('comments');
-        $(this).data('use', 'disabled');
-        updateReplyBox.after('<p class="text-muted my-2 comments">' + comments + ' </p>');
-        updateReplyBox.remove();
     }
 });
 
