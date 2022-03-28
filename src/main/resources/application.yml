@@ -47,27 +47,27 @@ spring:
       client:
         registration:
           google:
-            client-id: # 클라이언트Id
-            client-secret: # key
+            client-id:
+            client-secret:
             scope:
             - email
             - profile
 
           facebook:
-            client-id: # 클라이언트Id
-            client-secret: # key
+            client-id:
+            client-secret:
             scope:
               - email
               - public_profile
 
           naver:
-            client-id: # 클라이언트Id
-            client-secret: # key
+            client-id:
+            client-secret:
             scope:
               - name
               - email
             client-name: Naver
-            authorization-grant-type: authorization_code
+            authorization-grant-type:
             redirect-uri: http://localhost:8080/login/oauth2/code/naver #응답받을주소 설정 네이버는 provider가 제공이 안되기 때문에 써줘야함.
 
         provider:
