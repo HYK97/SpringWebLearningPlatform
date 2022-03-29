@@ -1,0 +1,24 @@
+.list-item {
+    position: relative;
+    padding: 0.5rem 1rem;
+    color: #212529;
+    text-decoration: none;
+}
+.none-active {
+    color: #212529;
+    text-decoration:none;
+}
+.list-item:hover {
+    background-color: #fff;
+    --bs-text-opacity: 1;
+    color: royalblue;
+}
+.active {
+    background-color: #fff;
+    --bs-text-opacity: 1;
+}
+
+.text-blue {
+    color: royalblue;
+}
+
