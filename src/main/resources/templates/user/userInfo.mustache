@@ -66,51 +66,24 @@
             </div>
 
 
+
             <div class="col-md-3 col-lg-3 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-primary">프로필 사진</span>
-                    <span class="badge bg-primary rounded-pill">3</span>
                 </h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Product name</h6>
-                            <small class="text-muted">Brief description</small>
-                        </div>
-                        <span class="text-muted">$12</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Second product</h6>
-                            <small class="text-muted">Brief description</small>
-                        </div>
-                        <span class="text-muted">$8</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Third item</h6>
-                            <small class="text-muted">Brief description</small>
-                        </div>
-                        <span class="text-muted">$5</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between bg-light">
-                        <div class="text-success">
-                            <h6 class="my-0">Promo code</h6>
-                            <small>EXAMPLECODE</small>
-                        </div>
-                        <span class="text-success">−$5</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Total (USD)</span>
-                        <strong>$20</strong>
-                    </li>
-                </ul>
 
-                <form class="card p-2">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Promo code">
-                        <button type="submit" class="btn btn-secondary">Redeem</button>
-                    </div>
+                <div>
+                    <img src="https://github.com/mdo.png" alt="mdo" width="100%"  class="rounded-circle">
+                </div>
+
+
+                <form class="d-flex justify-content-end" >
+
+                    <button type="button" class="btn btn-secondary">
+                        <i class="bi bi-pencil"></i>
+                        변경
+                    </button>
+
                 </form>
             </div>
 
@@ -118,34 +91,27 @@
                 <h4 class="mb-3">나의 Profile</h4>
                 <form class="needs-validation" novalidate="">
                     <div class="row g-3">
-
+{{#user}}
                         <div class="col-12">
                             <label for="lastName" class="form-label">id</label>
-                            <input type="text" class="form-control" id="username" value="" disabled>
+                            <input type="text" class="form-control" id="username" value="{{username}}" disabled>
                         </div>
 
                         <div class="col-12">
                             <label for="email" class="form-label">이메일</label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" value="{{email}}" required>
                             <div class="invalid-feedback">
                                 이메일 형식이 틀립니다.
                             </div>
                         </div>
 
-                        <div class="col-12">
-                            <label for="address" class="form-label">비밀번호</label>
-                            <input type="text" class="form-control" id="password" placeholder="Password" required>
-                            <div class="invalid-feedback">
-                                비밀번호를 입력해주세요
-                            </div>
-                        </div>
-
+{{/user}}
 
                     </div>
 
                     <hr class="my-4">
 
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">회원 정보 변경</button>
+                    <button class="w-100 btn btn-primary btn-lg" id="userInfoChangeBtn" type="button">회원 정보 변경</button>
                 </form>
             </div>
         </div>

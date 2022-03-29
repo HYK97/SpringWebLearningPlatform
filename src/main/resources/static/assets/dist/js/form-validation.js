@@ -12,6 +12,7 @@
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
+
                 }
 
                 form.classList.add('was-validated')
@@ -40,6 +41,25 @@ function formBtn(form) {
             form.classList.add('was-validated');
         })
   return check;
+}
+
+
+function checkForm(form) {
+    'use strict'
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = $(form);
+    var check;
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            if (!form.checkValidity()) {
+                check = 1;
+            } else {
+                check= 2;
+            }
+            form.classList.add('was-validated');
+        })
+    return check;
 }
 
 
