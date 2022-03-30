@@ -60,10 +60,10 @@ public class UserController {
 
     @PostMapping("passwordChange")
     @ResponseBody
-    public String passwordChange(@AuthenticationPrincipal PrincipalDetails principalDetails, String nowPassword) {
+    public String passwordChange(@AuthenticationPrincipal PrincipalDetails principalDetails, String nowPassword,String newPassword) {
 
         try {
-            userService.passwordUpdate(principalDetails.getUser(), nowPassword);
+            userService.passwordUpdate(principalDetails.getUser(), nowPassword,newPassword);
         } catch (EntityNotFoundException e) {
             return "3";
         } catch (AccessDeniedException e) {
