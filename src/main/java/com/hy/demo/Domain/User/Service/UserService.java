@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -29,12 +30,15 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     UserCourseRepository userCourseRepository;
 
-
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     CourseRepository courseRepository;
@@ -152,12 +156,15 @@ public class UserService {
     }
 
 
-    public UserDto passwordUpdate(User user,String password){
+    public UserDto passwordUpdate(User user,String password,String newPassword){
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
-        if (!password.equals(findUser.getPassword())) {
+
+
+
+        if (!bCryptPasswordEncoder.matches(password,findUser.getPassword())) {
             throw new AccessDeniedException("권한없음");
         }
-        findUser.updatePassword(password);
+        findUser.updatePassword(bCryptPasswordEncoder.encode(newPassword));
         User updateUser = userRepository.save(findUser);
         return updateUser.changeDto();
 
