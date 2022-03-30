@@ -2,7 +2,8 @@ package com.hy.demo.Test;
 
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
-import com.hy.demo.Domain.Board.Service.CourseBoardService;
+import com.hy.demo.Domain.Comments.Entity.Comments;
+import com.hy.demo.Domain.Comments.Repository.CommentsRepository;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
@@ -30,12 +31,17 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
     private CourseEvaluationRepository courseEvaluationRepository;
 
     @Autowired
+    private CommentsRepository commentsRepository;
+
+    @Autowired
     private CourseBoardRepository courseBoardRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    List<Course> courseList= new ArrayList<>();
+    List<Course> courseList = new ArrayList<>();
+    List<CourseBoard> courseBoard = new ArrayList<>();
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         //테스트유저 junit 돌릴때는 주석처리해야댐
@@ -101,9 +107,77 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
             }
 
 
-
         }
 
 
+/////////////////////////////////////////////////////////////////////////
+ /*           User manager = User.builder()
+                    .username("tmanager")
+                    .role("ROLE_MANAGER")
+                    .email("manager@gmail.com")
+                    .password(passwordEncoder.encode("manager"))
+                    .build();
+                userRepository.save(manager);
+        for (int i = 0; i < 125; i++) {
+
+
+
+
+                Course course = Course.builder()
+                        .courseName("test" + i)
+                        .teachName(manager.getUsername())
+                        .courseExplanation("sdasd")
+                        .user(manager)
+                        .build();
+                courseRepository.save(course);
+                courseList.add(course);
+
+
+
+
+                CourseBoard courseBoards = CourseBoard.builder()
+                            .course(course)
+                            .contents("courseBoardContents" + i)
+                            .views(3L)
+                            .title("courseBoardTitle" + i)
+                            .build();
+                CourseBoard save = courseBoardRepository.save(courseBoards);
+                courseBoard.add(save);
+
+
+
+            }
+        for (Course course : courseList) {
+            for (int i = 0; i < 125; i++) {
+
+                CourseEvaluation courseEvaluations = CourseEvaluation.builder()
+                        .comments("good" + i)
+                        .scope((double) (i / 3))
+                        .course(course)
+                        .user(manager)
+                        .build();
+                Long id = courseEvaluationRepository.save(courseEvaluations).getId();
+            }
+        }
+
+        for (CourseBoard course : courseBoard) {
+            for (int i = 0; i < 125; i++) {
+                Comments comments = Comments.builder()
+                        .user(manager)
+                        .courseBoard(course)
+                        .comments("comments"+i)
+                        .build();
+
+                commentsRepository.save(comments);
+            }
+
+
+        }
+*/
+
+
+
+
     }
+
 }
