@@ -1,22 +1,19 @@
 package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
-import com.hy.demo.Domain.User.Entity.User;
-import com.hy.demo.Domain.User.Repository.UserRepository;
+import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityNotFoundException;
 
 @Controller
 @RequestMapping("/user/*")
@@ -27,25 +24,59 @@ public class UserController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @ResponseBody
-    @Transactional
+
     @GetMapping("info")
-    public String user(@AuthenticationPrincipal PrincipalDetails principalDetails,Authentication authentication) {
+    public String info(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+        UserDto userInfo;
+        try {
+            userInfo = userService.findUserInfo(principalDetails.getUser());
 
-        PrincipalDetails principalDetails1= (PrincipalDetails) authentication.getPrincipal();
-        logger.info("principalDetails1.getUser().getUsername() = " + principalDetails1.getUser().getUsername());
-        logger.info("authentication = " + principalDetails1.getUser().getRole());
-        logger.info("principalDetails.getUsername() = " + principalDetails.getUsername());
+        } catch (EntityNotFoundException e) {
+            return "403";
+        }
+        model.addAttribute("user", userInfo);
+        return "/user/userInfo";
+    }
 
-        logger.info("principalDetails.getUser().getRole() = " + principalDetails.getUser().getRole());
-        return "user";
+    @PostMapping("update")
+    @ResponseBody
+    public UserDto update(@AuthenticationPrincipal PrincipalDetails principalDetails, String email) {
+        UserDto userDto;
+        try {
+            userDto = userService.userUpdate(principalDetails.getUser(), email);
+
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+
+        return userDto;
+    }
+
+    @GetMapping("security")
+    public String security(@AuthenticationPrincipal PrincipalDetails principalDetails, Authentication authentication) {
+
+        return "/user/userSecurity";
+    }
+
+    @PostMapping("passwordChange")
+    @ResponseBody
+    public String passwordChange(@AuthenticationPrincipal PrincipalDetails principalDetails, String nowPassword,String newPassword) {
+
+        try {
+            userService.passwordUpdate(principalDetails.getUser(), nowPassword,newPassword);
+        } catch (EntityNotFoundException e) {
+            return "3";
+        } catch (AccessDeniedException e) {
+            return "2";
+        }
+        return "1";
     }
 
     @ResponseBody
     @PostMapping("role")
     public String session(Authentication authentication) {
 
-        return ((PrincipalDetails)authentication.getPrincipal()).getUser().getRole();
+        return ((PrincipalDetails) authentication.getPrincipal()).getUser().getRole();
     }
 
 
@@ -63,24 +94,4 @@ public class UserController {
     }
 
 
-
-
-
- /*   @Secured("ROLE_ADMIN")
-    @ResponseBody
-    @GetMapping("/info")
-    public String info(){
-
-        return "개인정보";
-
-    }
-
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    @ResponseBody
-    @GetMapping("/data")
-    public String data(){
-
-        return "개인정보";
-
-    }*/
 }
