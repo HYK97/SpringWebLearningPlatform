@@ -5,6 +5,7 @@ import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Board.Entity.Notice;
+import com.hy.demo.Domain.User.Dto.UserDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -56,4 +57,25 @@ public class User extends BaseEntity {
                 ", providerId='" + providerId + '\'' +
                 '}';
     }
+
+    public UserDto changeDto() {
+        UserDto userdto= new UserDto();
+        userdto.setEmail(this.email);
+        userdto.setPassword(this.password);
+        userdto.setId(this.id);
+        userdto.setProvider(this.provider);
+        userdto.setRole(this.role);
+        userdto.setProviderId(this.providerId);
+        userdto.setUsername(this.username);
+        return userdto;
+    }
+    public void updateEmail(String email) {
+        this.email= email;
+    }
+
+    public void updatePassword(String password) {
+        this.password= password;
+    }
+
+
 }
