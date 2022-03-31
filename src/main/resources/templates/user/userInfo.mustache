@@ -9,6 +9,7 @@
     {{>layout/import}}
     <link href="{{springMacroRequestContext.request.contextPath}}/assets/dist/css/user.info.css" rel="stylesheet">
     <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/userinfo.js"></script>
+    <link rel="stylesheet" href="{{springMacroRequestContext.request.contextPath}}/assets/dist/css/cropper.css">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -23,6 +24,16 @@
                 font-size: 3.5rem;
             }
         }
+        img {
+            max-width: 100%;
+        }
+
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 50%;
+        }
+
+
     </style>
 
 
@@ -77,14 +88,14 @@
                 </div>
 
 
-                <form class="d-flex justify-content-end" >
 
-                    <button type="button" class="btn btn-secondary">
+                    <input id="photoBtn" type="file" style="visibility: hidden;">
+                    <button type="button" onClick="onClickUpload()" class="btn btn-secondary">
                         <i class="bi bi-pencil"></i>
                         변경
                     </button>
 
-                </form>
+
             </div>
 
             <div class="col-md-5 col-lg-7">
@@ -119,6 +130,30 @@
 
 
 </div>
+
+<div id="cropperModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="photo_them">
+                <div class="them_img">
+                    <img id="image" src="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://fengyuanchen.github.io/cropper/js/cropper.js"></script>
+<script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/userProfileCropper.js"></script>
 
 <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/form-validation.js"></script>
 </body>
