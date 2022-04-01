@@ -26,6 +26,7 @@ public class User extends BaseEntity {
     private String password;
     private String email;
     private String role; //ROLE_USER, ROLE_ADMIN
+    private String profileImage;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Course> courses = new ArrayList<>();
@@ -67,6 +68,7 @@ public class User extends BaseEntity {
         userdto.setRole(this.role);
         userdto.setProviderId(this.providerId);
         userdto.setUsername(this.username);
+        userdto.setProfileImage(this.profileImage);
         return userdto;
     }
     public void updateEmail(String email) {
@@ -75,6 +77,10 @@ public class User extends BaseEntity {
 
     public void updatePassword(String password) {
         this.password= password;
+    }
+
+    public void updateProfileImage(String profileImage) {
+        this.profileImage=profileImage;
     }
 
 
