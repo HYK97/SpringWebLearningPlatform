@@ -1,12 +1,16 @@
 package com.hy.demo.Domain.Course.Controller;
 
+import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Service.ImageService;
+import com.hy.demo.Domain.User.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -20,12 +24,14 @@ public class ImageController {
 
     @Autowired
     ImageService imageService;
+    @Autowired
+    UserService userService;
 
     @Autowired
     ResourceLoader resourceLoader;
 
     @PostMapping("/image")
-    public ResponseEntity<?> imageUpload( MultipartFile file) {
+    public ResponseEntity<?> imageUpload(MultipartFile file) {
         try {
             SummerNoteImage uploadFile = imageService.store(file);
             return ResponseEntity.ok().body("/image/" + uploadFile.getId());
@@ -34,6 +40,20 @@ public class ImageController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PostMapping("/profileUpdate")
+    @ResponseBody
+    public String profileUpdate(MultipartFile file, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        try {
+            SummerNoteImage uploadFile = imageService.store(file);
+            userService.updateUserProfileImage("/image/" + uploadFile.getId(),principalDetails.getUser());
+            return"/image/" + uploadFile.getId();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     @GetMapping("/image/{fileId}")
     public ResponseEntity<?> serveFile(@PathVariable Long fileId){
