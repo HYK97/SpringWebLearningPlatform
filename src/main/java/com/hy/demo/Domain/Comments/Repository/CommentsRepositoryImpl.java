@@ -19,7 +19,6 @@ import static com.hy.demo.Domain.User.Entity.QUser.user;
 public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implements CommentsRepositoryCustom {
 
 
-
     public CommentsRepositoryImpl() {
         super(Comments.class);
     }
@@ -39,27 +38,29 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
                                 user.username,
                                 comments1.comments,
                                 comments1.createDate,
-                                select(reply.count()).from(reply).where(comments1.id.eq(reply.parent.id))
-                        ) )
+                                select(reply.count()).from(reply).where(comments1.id.eq(reply.parent.id)),
+                                user.profileImage
+                        ))
                                 .from(comments1)
-                                .leftJoin(comments1.user,user)
+                                .leftJoin(comments1.user, user)
                                 .where(comments1.courseBoard.id.eq(courseBoardId), comments1.parent.isNull())
-                                );
+                );
 
     }
 
 
     public Page<CommentsDto> findReplyByIds(Long id, Pageable pageable) {
-        return    applyPagination(pageable, query ->
+        return applyPagination(pageable, query ->
                 query.select(Projections.constructor(CommentsDto.class,
-                user.username,
-                comments1.id,
-                comments1.comments,
-                comments1.createDate,
-                comments1.parent.id
-        ) )
-                .from(comments1)
-                .where(comments1.parent.id.eq(id)));
+                        user.username,
+                        comments1.id,
+                        comments1.comments,
+                        comments1.createDate,
+                        comments1.parent.id,
+                        user.profileImage
+                ))
+                        .from(comments1)
+                        .where(comments1.parent.id.eq(id)));
     }
 
     public Optional<Comments> findByIdAndUser(Long id, String username) {
