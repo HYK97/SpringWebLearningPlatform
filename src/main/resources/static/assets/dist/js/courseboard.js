@@ -218,6 +218,10 @@ $(document).ready(function () {
         $(".nav-link").removeClass("active");
         $(this).addClass('active');
         mainRender(id, courseBoard);
+        $.ajax({
+            type: "post",
+            url: "/courseboard/viewPlus/" + courseBoardId
+        });
     });
 
 

@@ -43,6 +43,10 @@ public class CourseBoard extends BaseEntity {
         course.getCourseBoards().add(this);
     }
 
+    public void viewPlus() {
+        this.views++;
+    }
+
     public CourseBoardDto changeDto() {
         CourseBoardDto courseBoardDto = new CourseBoardDto();
         courseBoardDto.setCourseName(this.course.getCourseName());

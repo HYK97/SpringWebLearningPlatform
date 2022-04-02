@@ -130,6 +130,11 @@ public class CourseBoardService {
         return findCourseBoard.changeDto();
     }
 
+    public void viewPlus(Long id){
+        CourseBoard courseBoard = courseBoardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("찾는엔티티 없음"));
+        courseBoard.viewPlus();
+        courseBoardRepository.save(courseBoard);
+    }
 
     @Transactional
     public void save(CourseBoard courseBoard, List<FileDto> fileDto) {

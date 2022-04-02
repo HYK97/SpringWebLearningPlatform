@@ -66,6 +66,12 @@ public class CourseBoardController {
         return "/courseboard/view";
     }
 
+    @PostMapping("/viewPlus/{id}")
+    @ResponseBody
+    public void viewPlus(Model model, @PathVariable Long id) {
+        courseBoardService.viewPlus(id);
+    }
+
 
     @GetMapping("/data/{id}")
     @ResponseBody
