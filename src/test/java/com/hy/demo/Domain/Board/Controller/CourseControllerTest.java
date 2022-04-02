@@ -77,7 +77,7 @@ class CourseControllerTest {
 
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
 
         mvc = MockMvcBuilders
                 .webAppContextSetup(this.context)
@@ -150,13 +150,13 @@ class CourseControllerTest {
         courseEvaluationRepository.save(courseEvaluation3);
 
     }
+
     @AfterEach
-    public void after(){
+    public void after() {
         userRepository.deleteAll();
         courseRepository.deleteAll();
         courseEvaluationRepository.deleteAll();
     }
-
 
 
     @Test
@@ -164,11 +164,11 @@ class CourseControllerTest {
     public void viewAccessSuccessTest() throws Exception {
         //given
 
-        PageRequest page = PageRequest.of(0,9 );
-        List<CourseDto> findDto=courseRepository.findByCourseNameAndUserDTO("",page).getContent();
-        List<CourseDto> sortDto=new ArrayList<>();
+        PageRequest page = PageRequest.of(0, 9);
+        List<CourseDto> findDto = courseRepository.findByCourseNameAndUserDTO("", page).getContent();
+        List<CourseDto> sortDto = new ArrayList<>();
         ListIterator li = findDto.listIterator(findDto.size());
-        while(li.hasPrevious()) {
+        while (li.hasPrevious()) {
             sortDto.add((CourseDto) li.previous());
         }
         //웹에서는 역으로나오기떄문에 바꿔줘야함.
@@ -177,13 +177,13 @@ class CourseControllerTest {
                 .andDo(print())
                 // then
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("totalPages",1))
-                .andExpect(model().attribute("Previous",false))
-                .andExpect(model().attribute("Next",false))
-                .andExpect(model().attribute("totalElements",2L))
-                .andExpect(model().attribute("course",sortDto));
+                .andExpect(model().attribute("Previous", false))
+                .andExpect(model().attribute("Next", false))
+                .andExpect(model().attribute("totalElements", 2L))
+                .andExpect(model().attribute("course", sortDto));
         // then
     }
+
     @Test
     @WithAnonymousUser
     public void viewAccessFailTest() throws Exception {
@@ -201,22 +201,20 @@ class CourseControllerTest {
     @WithMockUser
     public void viewSearchSuccessTest() throws Exception {
         //given
-        PageRequest page = PageRequest.of(0,9 );
-        List<CourseDto> findDto=courseRepository.findByCourseNameAndUserDTO("2",page).getContent();
+        PageRequest page = PageRequest.of(0, 9);
+        List<CourseDto> findDto = courseRepository.findByCourseNameAndUserDTO("2", page).getContent();
 
         // when
-        mvc.perform(get("/course/search").param("search","2"))
+        mvc.perform(get("/course/search").param("search", "2"))
                 .andDo(print())
                 // then
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("totalPages",1))
-                .andExpect(model().attribute("Previous",false))
-                .andExpect(model().attribute("Next",false))
-                .andExpect(model().attribute("totalElements",1L))
-                .andExpect(model().attribute("course",findDto));
+                .andExpect(model().attribute("Previous", false))
+                .andExpect(model().attribute("Next", false))
+                .andExpect(model().attribute("totalElements", 1L))
+                .andExpect(model().attribute("course", findDto));
 
     }
-
 
 
 }
