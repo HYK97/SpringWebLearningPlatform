@@ -26,9 +26,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var path = window.location.pathname;
-        path = 'ul a[href="'+path+'"]';
+        path = '.nav a[href="'+path+'"]';
         $(path).attr('class','nav-link px-2 link-secondary');
-
     });
 </script>
 <header class="navbar sticky-top p-3 mb-3 border-bottom" style="background-color: white">
@@ -51,7 +50,7 @@
 
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    <img id="header-profileImage" src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                     <li><a class="dropdown-item" href="/user/info">내정보</a></li>

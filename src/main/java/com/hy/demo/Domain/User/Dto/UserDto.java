@@ -23,4 +23,5 @@ public class UserDto {
     private String role;
     private String provider;
     private String providerId;
+    private String profileImage;
 }
