@@ -2,6 +2,7 @@ package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Dto.UserDto;
+import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -38,6 +42,7 @@ public class UserController {
         return "/user/userInfo";
     }
 
+
     @PostMapping("update")
     @ResponseBody
     public UserDto update(@AuthenticationPrincipal PrincipalDetails principalDetails, String email) {
@@ -58,25 +63,31 @@ public class UserController {
         return "/user/userSecurity";
     }
 
+    @PostMapping("getUser")
+    @ResponseBody
+    public UserDto getProfileImage(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User findUser;
+        try {
+            findUser = userService.findProfileImageByUser(principalDetails.getUser());
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+        return findUser.changeDto();
+    }
+
+
     @PostMapping("passwordChange")
     @ResponseBody
-    public String passwordChange(@AuthenticationPrincipal PrincipalDetails principalDetails, String nowPassword,String newPassword) {
+    public String passwordChange(@AuthenticationPrincipal PrincipalDetails principalDetails, String nowPassword, String newPassword) {
 
         try {
-            userService.passwordUpdate(principalDetails.getUser(), nowPassword,newPassword);
+            userService.passwordUpdate(principalDetails.getUser(), nowPassword, newPassword);
         } catch (EntityNotFoundException e) {
             return "3";
         } catch (AccessDeniedException e) {
             return "2";
         }
         return "1";
-    }
-
-    @ResponseBody
-    @PostMapping("role")
-    public String session(Authentication authentication) {
-
-        return ((PrincipalDetails) authentication.getPrincipal()).getUser().getRole();
     }
 
 
