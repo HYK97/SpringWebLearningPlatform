@@ -9,7 +9,6 @@ import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,8 +111,19 @@ public class UserService {
     }
 
 
-    public Map findByUserCourse(String course, User user) {
+    public User findProfileImageByUser(User user) {
+        User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("이미지없음"));
 
+        return findUser;
+    }
+
+    public void updateUserProfileImage(String profileImage, User user) {
+        User findUser = userRepository.findByUsername(user.getUsername());
+        findUser.updateProfileImage(profileImage);
+        userRepository.save(findUser);
+    }
+
+    public Map findByUserCourse(String course, User user) {
         Long Lid = Long.parseLong(course);
         logger.info("idss= " + Lid);
         CourseDto courseDto = courseService.findDetailCourse(Lid);
@@ -133,7 +143,6 @@ public class UserService {
     }
 
 
-
     public void application(Long id, String usernames) {
 
 
@@ -147,7 +156,7 @@ public class UserService {
 
     }
 
-    public UserDto userUpdate(User user,String email){
+    public UserDto userUpdate(User user, String email) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
         findUser.updateEmail(email);
         User updateUser = userRepository.save(findUser);
@@ -156,12 +165,11 @@ public class UserService {
     }
 
 
-    public UserDto passwordUpdate(User user,String password,String newPassword){
+    public UserDto passwordUpdate(User user, String password, String newPassword) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
 
 
-
-        if (!bCryptPasswordEncoder.matches(password,findUser.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(password, findUser.getPassword())) {
             throw new AccessDeniedException("권한없음");
         }
         findUser.updatePassword(bCryptPasswordEncoder.encode(newPassword));
