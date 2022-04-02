@@ -2,32 +2,35 @@ var cropper;
 $(function () {
 
 
-    $('#complete').on('click', function () {
-        $('.them_img').append('<div class="result_box"><img id="result" src=""></div>');
+    $('#saveProfileBtn').on('click', function () {
+
         var image = $('#image');
-        var result = $('#result');
+
         var canvas;
         if ($('input[type="file"]').val() != "") {
             canvas = image.cropper('getCroppedCanvas', {
-                width: 500,
-                height: 500
+                width: 300,
+                height: 300
             });
-            result.attr('src', canvas.toDataURL("image/jpg"));
 
             canvas.toBlob(function (blob) {
                 var formData = new FormData();
-
-                $.ajax('보낼곳 url', {
+                formData.append('file', blob, 'profile.jpg');
+                $.ajax('/profileUpdate', {
                     method: 'POST',
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function () {
-                        alert('업로드 성공');
+                    success: function (data) {
+                        if (data != null) {
+                            $('#profileImage').attr('src', data);
+                            $('#cropperModal').modal("hide"); //닫기
+                        } else {
+                            alert('업로드 실패');
+                        }
                     },
                     error: function () {
                         alert('업로드 실패');
-                        $('.result_box').remove()
                     },
                 });
             })
@@ -43,7 +46,6 @@ function onClickUpload() {
     let myInput = $("#photoBtn");
     $("#photoBtn").val('');
     myInput.trigger('click');
-
 }
 
 $('.modal-close').on('click', function () {
@@ -59,9 +61,7 @@ $('#photoBtn').on('change', function () {
     if (imgFile.match(fileForm)) {
         var reader = new FileReader();
         reader.onload = function () {
-
             image.attr("src", event.target.result);
-
             cropper = image.cropper({
                 dragMode: 'move',
                 viewMode: 1,
@@ -69,8 +69,6 @@ $('#photoBtn').on('change', function () {
                 minContainerWidth: 470,
                 minContainerHeight: 500
             });
-
-
         };
         reader.readAsDataURL(event.target.files[0]);
         $('#cropperModal').modal("show");
