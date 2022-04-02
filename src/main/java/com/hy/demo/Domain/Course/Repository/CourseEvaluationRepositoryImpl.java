@@ -7,7 +7,6 @@ import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,10 @@ import java.util.Map;
 
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
 import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
-import static com.hy.demo.Domain.User.Entity.QUser.*;
+import static com.hy.demo.Domain.User.Entity.QUser.user;
 
 
-public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport implements CourseEvaluationRepositoryCustom  {
-
+public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport implements CourseEvaluationRepositoryCustom {
 
 
     public CourseEvaluationRepositoryImpl() {
@@ -36,50 +34,50 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     Logger logger;
 
 
-    public Map<String, Double> countScope(Long id){
-        JPAQueryFactory queryFactory=getQueryFactory();
-         List<Tuple> fetch = queryFactory.select(courseEvaluation.scope, courseEvaluation.scope.count())
+    public Map<String, Double> countScope(Long id) {
+        JPAQueryFactory queryFactory = getQueryFactory();
+        List<Tuple> fetch = queryFactory.select(courseEvaluation.scope, courseEvaluation.scope.count())
                 .from(courseEvaluation)
                 .where(course.id.eq(id).and(courseEvaluation.scope.isNotNull()))
                 .groupBy(courseEvaluation.scope)
                 .fetch();
-        Map<Double,Long> map = new HashMap();
+        Map<Double, Long> map = new HashMap();
         for (Tuple tuple : fetch) {
-            System.out.println("tuple.get(courseEvaluation.course),tuple.get(courseEvaluation.scope.count() = " + tuple.get(courseEvaluation.scope)+ tuple.get(courseEvaluation.scope.count()));
-            map.put(tuple.get(courseEvaluation.scope),tuple.get(courseEvaluation.scope.count()));
+            System.out.println("tuple.get(courseEvaluation.course),tuple.get(courseEvaluation.scope.count() = " + tuple.get(courseEvaluation.scope) + tuple.get(courseEvaluation.scope.count()));
+            map.put(tuple.get(courseEvaluation.scope), tuple.get(courseEvaluation.scope.count()));
         }
         Double one = 0.0;
         Double two = 0.0;
-        Double three= 0.0;
-        Double four= 0.0;
-        Double five= 0.0;
+        Double three = 0.0;
+        Double four = 0.0;
+        Double five = 0.0;
 
-        for( Double key : map.keySet() ){
+        for (Double key : map.keySet()) {
             for (int i = 0; i < map.get(key); i++) {
-                if (String.format("%.1f", key).charAt(2)=='5') {//x.5 일때
-                    int scope=(int)(key  % 10);
-                    switch (scope){
+                if (String.format("%.1f", key).charAt(2) == '5') {//x.5 일때
+                    int scope = (int) (key % 10);
+                    switch (scope) {
                         case 0:
-                            one+=1.0;
+                            one += 1.0;
                             break;
                         case 1:
-                            one+=0.5;
-                            two+=0.5;
+                            one += 0.5;
+                            two += 0.5;
                             break;
                         case 2:
-                            two+=0.5;
-                            three+=0.5;
+                            two += 0.5;
+                            three += 0.5;
                             break;
                         case 3:
-                            three+=0.5;
-                            four+=0.5;
+                            three += 0.5;
+                            four += 0.5;
                             break;
                         case 4:
-                            four+=0.5;
-                            five+=0.5;
+                            four += 0.5;
+                            five += 0.5;
                             break;
                         case 5:
-                            five+=0.5f;
+                            five += 0.5f;
                             break;
                     }
                 } else {
@@ -100,12 +98,12 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
 
         }
-        Map<String, Double> list =new HashMap<>();
-        list.put("5",five);
-        list.put("4",four);
-        list.put("3",three);
-        list.put("2",two);
-        list.put("1",one);
+        Map<String, Double> list = new HashMap<>();
+        list.put("5", five);
+        list.put("4", four);
+        list.put("3", three);
+        list.put("2", two);
+        list.put("1", one);
         return list;
     }
 
@@ -124,12 +122,13 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                         , reply.comments
                         , reply.createDate
                         , reply.id
+                        , courseEvaluation.user.profileImage
                 ))
                         .from(courseEvaluation)
                         .leftJoin(courseEvaluation.course, course)
                         .leftJoin(reply)
                         .on(courseEvaluation.id.eq(reply.replyId))
-                            .where(courseEvaluation.course.id.eq(courseId).and(courseEvaluation.scope.isNotNull()))
+                        .where(courseEvaluation.course.id.eq(courseId).and(courseEvaluation.scope.isNotNull()))
         );
 
     }
@@ -137,8 +136,8 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
     public CourseEvaluation findByReply(Long id) {
         return select(courseEvaluation)
-                        .from(courseEvaluation)
-                        .where(courseEvaluation.replyId.eq(id)).fetchOne();
+                .from(courseEvaluation)
+                .where(courseEvaluation.replyId.eq(id)).fetchOne();
     }
 
     public CourseEvaluation findByUsernameAndCourseIdAndId(String username, Long courseId, Long id) {
@@ -154,16 +153,14 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     private BooleanExpression usernameEq(String username) {
         return username != null ? courseEvaluation.user.username.eq(username) : null;
     }
+
     private BooleanExpression courseIdEq(Long courseId) {
         return courseId != null ? courseEvaluation.course.id.eq(courseId) : null;
     }
+
     private BooleanExpression idEq(Long id) {
         return id != null ? courseEvaluation.id.eq(id) : null;
     }
-
-
-
-
 
 
 }

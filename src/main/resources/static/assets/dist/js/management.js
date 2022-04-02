@@ -39,7 +39,17 @@ function fileDelete(fileNum) {
 
 
 $(document).ready(function () {
+    if (courseBoard.length > 0) {
+        $('#viewBox').removeAttr("hidden");
+        let index = courseBoard[0].id;
+        navRender(courseBoard);
+        mainRender(index, courseBoard);
+        $(".courseboard-href").first().addClass('active');
+    } else {
 
+        alert("생성된 강의 목차가없습니다. 강의 회차를 추가해주세요");
+        createBoxShow();
+    }
 
 })
 

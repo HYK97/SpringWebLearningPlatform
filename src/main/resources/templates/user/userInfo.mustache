@@ -9,6 +9,7 @@
     {{>layout/import}}
     <link href="{{springMacroRequestContext.request.contextPath}}/assets/dist/css/user.info.css" rel="stylesheet">
     <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/userinfo.js"></script>
+    <link rel="stylesheet" href="{{springMacroRequestContext.request.contextPath}}/assets/dist/css/cropper.css">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -23,6 +24,13 @@
                 font-size: 3.5rem;
             }
         }
+
+
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 50%;
+        }
+
     </style>
 
 
@@ -45,7 +53,7 @@
                 </h4>
                 <ul class="list-group mb-3">
                     <li class="list-item d-flex lh-sm user active">
-                        <a  class="none-active text-blue">
+                        <a class="none-active text-blue">
                             <div class="text-break d-flex">
                                 <i class="menu-icon bi bi-person-circle"></i>
                                 <h6 class="my-0">유저 정보</h6>
@@ -53,7 +61,7 @@
                         </a>
                     </li>
                     <li class="list-item d-flex lh-sm security">
-                        <a  class="none-active">
+                        <a class="none-active">
                             <div class="text-break d-flex">
                                 <i class=" menu-icon bi bi-key-fill"></i>
                                 <h6 class="my-0">계정 보안</h6>
@@ -66,46 +74,53 @@
             </div>
 
 
-
             <div class="col-md-3 col-lg-3 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-primary">프로필 사진</span>
                 </h4>
 
-                <div>
-                    <img src="https://github.com/mdo.png" alt="mdo" width="100%"  class="rounded-circle">
-                </div>
+                {{#user}}
+                    <div>
+                        {{#profileImage}}
+                            <img id="profileImage" src="{{profileImage}}" alt="mdo" width="100%"
+                                 class="rounded-circle">
+                        {{/profileImage}}
+                        {{^profileImage}}
+                            <img id="profileImage" src="https://github.com/mdo.png" alt="mdo" width="100%"
+                                 class="rounded-circle">
+                        {{/profileImage}}
+                    </div>
+                {{/user}}
+
+                <input id="photoBtn" name="file" type="file" accept="image/*" style="visibility: hidden;">
+                <button type="button" onClick="onClickUpload()" class="btn btn-secondary">
+                    <i class="bi bi-pencil"></i>
+                    변경
+                </button>
 
 
-                <form class="d-flex justify-content-end" >
-
-                    <button type="button" class="btn btn-secondary">
-                        <i class="bi bi-pencil"></i>
-                        변경
-                    </button>
-
-                </form>
             </div>
 
             <div class="col-md-5 col-lg-7">
                 <h4 class="mb-3">나의 Profile</h4>
                 <form class="needs-validation" novalidate="">
                     <div class="row g-3">
-{{#user}}
-                        <div class="col-12">
-                            <label for="lastName" class="form-label">id</label>
-                            <input type="text" class="form-control" id="username" value="{{username}}" disabled>
-                        </div>
-
-                        <div class="col-12">
-                            <label for="email" class="form-label">이메일</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" value="{{email}}" required>
-                            <div class="invalid-feedback">
-                                이메일 형식이 틀립니다.
+                        {{#user}}
+                            <div class="col-12">
+                                <label for="lastName" class="form-label">id</label>
+                                <input type="text" class="form-control" id="username" value="{{username}}" disabled>
                             </div>
-                        </div>
 
-{{/user}}
+                            <div class="col-12">
+                                <label for="email" class="form-label">이메일</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="you@example.com" value="{{email}}" required>
+                                <div class="invalid-feedback">
+                                    이메일 형식이 틀립니다.
+                                </div>
+                            </div>
+
+                        {{/user}}
 
                     </div>
 
@@ -119,6 +134,34 @@
 
 
 </div>
+
+<div class="modal fade" id="cropperModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="modal-close btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="photo_them">
+                    <div class="them_img">
+                        <img id="image" src="">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" id="saveProfileBtn">프로필 사진 변경</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://fengyuanchen.github.io/cropper/js/cropper.js"></script>
+<script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/userProfileCropper.js"></script>
 
 <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/form-validation.js"></script>
 </body>

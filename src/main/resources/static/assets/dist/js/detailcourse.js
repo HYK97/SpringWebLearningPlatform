@@ -6,8 +6,14 @@ const template = '<div>\n' +
     '                    <div >\n' +
     '                        <div class="user-field">\n' +
     '                            <div class="mx-2">\n' +
+    '                            {{#profileImage}}\n' +
+    '                                <img src="{{profileImage}}" alt="mdo" width="32" height="32"\n' +
+    '                                     class="rounded-circle">\n' +
+    '                            {{/profileImage}}\n' +
+    '                            {{^profileImage}}\n' +
     '                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"\n' +
     '                                     class="rounded-circle">\n' +
+    '                            {{/profileImage}}\n' +
     '                            </div>\n' +
     '                            <div class="user-field-name">\n' +
     '                                <div> <p class=" my-3 ">{{username}}</p></div>\n' +

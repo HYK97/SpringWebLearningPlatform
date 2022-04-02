@@ -86,6 +86,7 @@ public class CommentsService {
         commentsDto.setMyCommentsFlag(1);
         commentsDto.setReplyId(comment.getId());
         commentsDto.setUsername(findUser.getUsername());
+        commentsDto.setProfileImage(findUser.getProfileImage());
         return commentsDto;
     }
 
@@ -103,7 +104,7 @@ public class CommentsService {
         return replyByIds;
     }
 
-    public void deleteReply(Long commentsId,User user) throws AccessDeniedException {
+    public void deleteReply(Long commentsId, User user) throws AccessDeniedException {
         Comments findComments = commentsRepository.findByIdAndUser(commentsId, user.getUsername()).orElseThrow(() -> new AccessDeniedException("권한없음"));
         commentsRepository.delete(findComments);
     }

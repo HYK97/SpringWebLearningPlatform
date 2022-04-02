@@ -131,8 +131,14 @@ const comments = '' +
     '                    <div >\n' +
     '                        <div class="user-field">\n' +
     '                            <div class="mx-2">\n' +
+    '                            {{#profileImage}}\n' +
+    '                                <img src="{{profileImage}}" alt="mdo" width="32" height="32"\n' +
+    '                                     class="rounded-circle">\n' +
+    '                            {{/profileImage}}\n' +
+    '                            {{^profileImage}}\n' +
     '                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"\n' +
     '                                     class="rounded-circle">\n' +
+    '                            {{/profileImage}}\n' +
     '                            </div>\n' +
     '                            <div class="user-field-name">\n' +
     '                                <div> <p class=" my-3 username">{{username}}</p></div>\n' +
@@ -202,9 +208,7 @@ $(document).ready(function () {
         mainRender(index, courseBoard);
         $(".courseboard-href").first().addClass('active');
     } else {
-
-        alert("생성된 강의 목차가없습니다. 강의 회차를 추가해주세요");
-        createBoxShow();
+        alert("아직 생성된 목차가 없습니다.");
     }
 
 

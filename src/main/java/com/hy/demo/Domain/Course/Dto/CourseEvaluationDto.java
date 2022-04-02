@@ -35,10 +35,10 @@ public class CourseEvaluationDto {
 
     private Date replyCreateDate;
 
+    private String profileImage;
 
 
-
-    public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments, Timestamp createDate, String reply,Timestamp replyCreateDate,Long replyId) {
+    public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments, Timestamp createDate, String reply, Timestamp replyCreateDate, Long replyId, String profileImage) {
         this.id = id;
         this.courseName = courseName;
         this.username = username;
@@ -47,24 +47,26 @@ public class CourseEvaluationDto {
         this.scope = scope;
         this.comments = comments;
         if (!ObjectUtils.isEmpty(scope)) {
-            this.scope = (Math.round(scope*10)/10.0);
-            this.starScope =this.scope*20;
-            this.starScope +=1.5;
+            this.scope = (Math.round(scope * 10) / 10.0);
+            this.starScope = this.scope * 20;
+            this.starScope += 1.5;
         } else {
             this.scope = 0.0;
-            this.starScope =0.0;
+            this.starScope = 0.0;
         }
 
-        this.createDate =new Date(createDate.getTime());
-        this.reply =reply;
+        this.createDate = new Date(createDate.getTime());
+        this.reply = reply;
         if (!ObjectUtils.isEmpty(replyCreateDate)) {
             this.replyCreateDate = new Date(replyCreateDate.getTime());
-        }else
-            this.replyCreateDate=null;
+        } else
+            this.replyCreateDate = null;
 
         this.replyId = replyId;
+        this.profileImage = profileImage;
 
     }
+
     public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments) {
         this.id = id;
         this.courseName = courseName;
@@ -73,12 +75,12 @@ public class CourseEvaluationDto {
         this.userID = userID;
         this.scope = scope;
         if (!ObjectUtils.isEmpty(scope)) {
-            this.scope = (Math.round(scope*10)/10.0);
-            this.starScope =this.scope*20;
-            this.starScope +=1.5;
+            this.scope = (Math.round(scope * 10) / 10.0);
+            this.starScope = this.scope * 20;
+            this.starScope += 1.5;
         } else {
             this.scope = 0.0;
-            this.starScope =0.0;
+            this.starScope = 0.0;
         }
         this.comments = comments;
     }
