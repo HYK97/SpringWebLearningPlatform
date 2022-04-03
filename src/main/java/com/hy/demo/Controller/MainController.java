@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ import java.util.List;
 public class MainController {
 
 
-
     @Autowired
     private CourseService courseService;
 
@@ -31,11 +29,11 @@ public class MainController {
     public String index(Model model) {
 
 
-        List < CourseDto > headerView = courseService.randomCourseList(5);
-        model.addAttribute("headerView",headerView);
+        List<CourseDto> headerView = courseService.randomCourseList(5);
+        model.addAttribute("headerView", headerView);
         model.addAttribute("headerViewSize", new ArrayList<>(Arrays.asList(new String[]{"0", "1", "2", "3", "4"})));
 
-        return "/main/index";
+        return "main/index";
     }
 
 }

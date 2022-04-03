@@ -1,10 +1,8 @@
 package com.hy.demo.Domain.Course.Repository;
 
-import com.hy.demo.Domain.Board.Entity.QCourseBoard;
 import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Entity.QUser;
-import com.hy.demo.Domain.User.Entity.QUserCourse;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
@@ -19,12 +17,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
 import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
-import static com.hy.demo.Domain.User.Entity.QUserCourse.*;
-import static com.querydsl.core.types.ExpressionUtils.count;
+import static com.hy.demo.Domain.User.Entity.QUserCourse.userCourse;
 
 
 public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements CourseRepositoryCustom {
@@ -65,12 +61,12 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
     }
 
     @Override
-    public Optional<Course> findByUserAndCourseId(User findUser,Long courseId) {
+    public Optional<Course> findByUserAndCourseId(User findUser, Long courseId) {
         return Optional.ofNullable(
                 select(course)
-                .from(course)
-                .where(user.user.eq(findUser).and(course.id.eq(courseId)))
-                .fetchOne()
+                        .from(course)
+                        .where(user.user.eq(findUser).and(course.id.eq(courseId)))
+                        .fetchOne()
         );
     }
 
@@ -107,7 +103,10 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         return getSelectConstructorCourseDto()
                 .from(course)
                 .leftJoin(course.user, user)
+                //h2
                 .orderBy(NumberExpression.random().asc())
+                //mysql
+                //.orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(amount)
                 .fetch();
     }
