@@ -1,27 +1,19 @@
 package com.hy.demo.Domain.Board.Controller;
 
 
-import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Service.CourseBoardService;
-import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Service.FileService;
-import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,14 +48,11 @@ public class CourseBoardController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-
-
-
     @GetMapping("/{id}")
     @PreAuthorize("@authorizationChecker.isAccessBoard(#id)")
     public String viewBoardList(Model model, @PathVariable Long id) {
         model.addAttribute("courseId", id);
-        return "/courseboard/view";
+        return "courseboard/view";
     }
 
     @PostMapping("/viewPlus/{id}")
@@ -86,7 +75,7 @@ public class CourseBoardController {
     @PreAuthorize("@authorizationChecker.isManagementBoard(#id)")
     public String BoardManagement(Model model, @PathVariable Long id) {
         model.addAttribute("courseId", id);
-        return "/courseboard/management";
+        return "courseboard/management";
     }
 
 
@@ -105,13 +94,12 @@ public class CourseBoardController {
     }
 
 
-
     @PostMapping("/updateCourseBoard/{id}")
     @ResponseBody
     public String updateCourseBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws IOException {
         //파일 확인
         try {
-            courseBoardService.updateCourseBoard(id,file,title,contents);
+            courseBoardService.updateCourseBoard(id, file, title, contents);
         } catch (Exception e) {
             e.printStackTrace();
             return "2"; //실패
@@ -121,13 +109,12 @@ public class CourseBoardController {
     }
 
 
-    @GetMapping( {"/getCourseBoard/{id}"})
+    @GetMapping({"/getCourseBoard/{id}"})
     @ResponseBody
     public CourseBoardDto getCourseBoard(@PathVariable Long id) throws Exception {
         CourseBoardDto findCourseDto = courseBoardService.findCourseBoardByCourseBoardId(id);
         return findCourseDto;
     }
-
 
 
     @PostMapping("/createBoard/{id}")
@@ -160,8 +147,6 @@ public class CourseBoardController {
     }
 
 
-
-
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (e.getReason().equals("1")) {
@@ -179,8 +164,6 @@ public class CourseBoardController {
             throw new AccessDeniedException("403 에러");
         }
     }
-
-
 
 
 }

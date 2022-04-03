@@ -59,7 +59,7 @@ public class CourseController {
 
         Page<CourseDto> courseDtos = courseService.findCourseList(pageable);
         pagingDto(model, courseDtos);
-        return "/course/view";
+        return "course/view";
     }
 
 
@@ -82,7 +82,7 @@ public class CourseController {
 
             model.addAttribute("applicationCheck", 1);
         }
-        return "/course/detailcourse";
+        return "course/detailcourse";
     }
 
 
@@ -93,7 +93,7 @@ public class CourseController {
         Page<CourseDto> courseDtos = courseService.findSearchCourseList(search, pageable);
         pagingDto(model, courseDtos);
 
-        return "/course/view";
+        return "course/view";
 
     }
 
@@ -181,7 +181,7 @@ public class CourseController {
     @GetMapping({"/createview"})
     public String createView(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        return "/course/createview";
+        return "course/createview";
     }
 
 
@@ -200,7 +200,7 @@ public class CourseController {
         } catch (Exception e) {
             //error
             e.printStackTrace();
-            return "/error/error400";
+            return "error/error400";
         }
         courseService.addCourse(course);
 
@@ -266,7 +266,7 @@ public class CourseController {
         Page<CourseDto> myCourseList = courseService.findMyCourseList("", findUser.getId(), pageable);
 
         pagingDto(model, myCourseList);
-        return "/course/mycourselist";
+        return "course/mycourselist";
     }
 
     @GetMapping("/info/myCourseListSearch")
@@ -274,7 +274,7 @@ public class CourseController {
         User findUser = userService.findByUsername(principalDetails.getUser());
         Page<CourseDto> myCourseList = courseService.findMyCourseList(search, findUser.getId(), pageable);
         pagingDto(model, myCourseList);
-        return "/course/mycourselist";
+        return "course/mycourselist";
     }
 
 
