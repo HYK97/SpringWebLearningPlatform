@@ -14,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.nio.file.AccessDeniedException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
-import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -130,7 +130,7 @@ public class CourseBoardService {
         return findCourseBoard.changeDto();
     }
 
-    public void viewPlus(Long id){
+    public void viewPlus(Long id) {
         CourseBoard courseBoard = courseBoardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("찾는엔티티 없음"));
         courseBoard.viewPlus();
         courseBoardRepository.save(courseBoard);
@@ -192,6 +192,11 @@ public class CourseBoardService {
             }
             fileRepository.saveAll(files);
         }
+    }
+
+    public Long countAllView(Long courseId) {
+
+        return courseBoardRepository.countViewByCourseId(courseId);
     }
 
 
