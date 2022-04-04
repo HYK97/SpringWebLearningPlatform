@@ -24,7 +24,7 @@ import static com.hy.demo.Utils.ObjectUtils.isEmpty;
  * modifyCourseEvaluation -> modify
  * insert -> add
  * delete -> delete
- * */
+ */
 
 @Service
 public class CourseEvaluationService {
@@ -58,7 +58,7 @@ public class CourseEvaluationService {
                         .user(user)
                         .build();
             } else { //일반 수강평일때
-                CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(user.getUsername(), courseLid,null);
+                CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(user.getUsername(), courseLid, null);
                 if (isEmpty(findCourseEvaluation)) {
                     build = CourseEvaluation.builder().course(course)
                             .comments(content)
@@ -131,5 +131,8 @@ public class CourseEvaluationService {
         }
     }
 
+    public Double avgDateScope(Long courseId, String date) {
+        return courseEvaluationRepository.findDateScopeByCourseId(courseId, date);
+    }
 
 }

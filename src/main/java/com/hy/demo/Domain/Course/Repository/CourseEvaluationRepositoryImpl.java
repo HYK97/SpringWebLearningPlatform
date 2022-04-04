@@ -3,6 +3,7 @@ package com.hy.demo.Domain.Course.Repository;
 import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Entity.QCourseEvaluation;
+import com.hy.demo.Utils.DateFormater;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -162,5 +163,14 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return id != null ? courseEvaluation.id.eq(id) : null;
     }
 
+    public Double findDateScopeByCourseId(Long courseId, String date) {
+
+        DateFormater localDateParser = new DateFormater(date, "d");
+        return select(courseEvaluation.scope.avg())
+                .from(courseEvaluation)
+                .leftJoin(courseEvaluation.course, course)
+                .where(courseEvaluation.createDate.goe(course.createDate).and(courseEvaluation.createDate.loe(localDateParser.endDate())).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .fetchOne();
+    }
 
 }

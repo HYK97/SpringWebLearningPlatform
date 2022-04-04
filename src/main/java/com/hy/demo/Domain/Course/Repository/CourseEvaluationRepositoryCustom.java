@@ -9,7 +9,12 @@ import java.util.Map;
 
 public interface CourseEvaluationRepositoryCustom {
     Map<String, Double> countScope(Long id);
+
     CourseEvaluation findByReply(Long id);
+
     Page<CourseEvaluationDto> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable);
+
     CourseEvaluation findByUsernameAndCourseIdAndId(String username, Long courseId, Long id);
+
+    Double findDateScopeByCourseId(Long courseId, String date);
 }
