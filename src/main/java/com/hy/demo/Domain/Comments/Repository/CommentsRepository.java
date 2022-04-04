@@ -8,8 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface CommentsRepository extends JpaRepository<Comments, Long>,CommentsRepositoryCustom{
+public interface CommentsRepository extends JpaRepository<Comments, Long>, CommentsRepositoryCustom {
     Page<CommentsDto> findByCourseBoardId(Long courseBoardId, Pageable pageable);
+
     Page<CommentsDto> findReplyByIds(Long id, Pageable pageable);
+
     Optional<Comments> findByIdAndUser(Long id, String username);
+
+    Long countDateCommentCountByCourseId(Long courseId, String date);
 }

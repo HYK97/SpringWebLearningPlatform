@@ -109,5 +109,7 @@ public class CommentsService {
         commentsRepository.delete(findComments);
     }
 
-
+    public Long countDateCommentCount(Long courseId, String date) {
+        return commentsRepository.countDateCommentCountByCourseId(courseId, date);
+    }
 }

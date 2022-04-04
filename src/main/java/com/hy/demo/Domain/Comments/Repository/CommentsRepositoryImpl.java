@@ -3,6 +3,7 @@ package com.hy.demo.Domain.Comments.Repository;
 import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Comments.Entity.QComments;
+import com.hy.demo.Utils.DateFormater;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
 import org.slf4j.Logger;
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
+import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Comments.Entity.QComments.comments1;
+import static com.hy.demo.Domain.Course.Entity.QCourse.course;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
 
 
@@ -69,6 +72,17 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
                 .leftJoin(comments1.user, user)
                 .where(comments1.id.eq(id).and(comments1.user.username.eq(username))).fetchOne());
 
+    }
+
+    public Long countDateCommentCountByCourseId(Long courseId, String date) {
+
+        DateFormater localDateParser = new DateFormater(date, "d");
+        return select(comments1.count())
+                .from(comments1)
+                .leftJoin(comments1.courseBoard, courseBoard)
+                .leftJoin(courseBoard.course, course)
+                .where(course.id.eq(courseId).and(comments1.createDate.between(localDateParser.startDate(), localDateParser.endDate())))
+                .fetchOne();
     }
 
 }
