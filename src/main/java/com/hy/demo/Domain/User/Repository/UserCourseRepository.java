@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserCourseRepository extends JpaRepository<UserCourse,Long> {
+public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
 
 
-    UserCourse findByUserAndCourse(User user , Course course);
-    Optional<UserCourse> findByUserAndCourseId(User user,Long courseId);
+    UserCourse findByUserAndCourse(User user, Course course);
+
+    Optional<UserCourse> findByUserAndCourseId(User user, Long courseId);
+
+    Long countDateRegisteredUserCountByCourseId(Long courseId, String date);
 
 }
