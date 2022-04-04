@@ -178,4 +178,13 @@ public class UserService {
 
     }
 
+
+    public Long countDateRegisteredUserCount(Long courseId, String date) {
+
+
+        return userCourseRepository.countDateRegisteredUserCountByCourseId(courseId, date);
+
+    }
+
+
 }
