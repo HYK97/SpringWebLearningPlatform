@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public interface CommentsRepositoryCustom {
     Page<CommentsDto> findByCourseBoardId(Long courseBoardId, Pageable pageable);
+
     Page<CommentsDto> findReplyByIds(Long id, Pageable pageable);
+
+    Long countDateCommentCountByCourseId(Long courseId, String date);
+
     Optional<Comments> findByIdAndUser(Long id, String username);
 }
