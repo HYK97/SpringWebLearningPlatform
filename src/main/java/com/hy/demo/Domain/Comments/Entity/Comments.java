@@ -38,7 +38,7 @@ public class Comments extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comments> children;
-
+    @Column(length = 100000000)
     private String comments;
 
     public void addComments(CourseBoard courseBoard, User user) {
