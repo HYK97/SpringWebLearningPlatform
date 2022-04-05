@@ -5,6 +5,7 @@ import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
@@ -15,5 +16,9 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
     Optional<UserCourse> findByUserAndCourseId(User user, Long courseId);
 
     Long countDateRegisteredUserCountByCourseId(Long courseId, String date);
+
+    Map countMonthlyRegisteredUserByCourseId(Long courseId, String date);
+
+    Map countThisYearToMonthlyRegisteredUserByCourseId(Long courseId, String date);
 
 }
