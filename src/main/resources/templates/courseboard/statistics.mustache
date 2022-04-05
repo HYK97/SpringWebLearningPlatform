@@ -86,10 +86,13 @@
                     <div class="card-body">
                         <h6 class="mb-0 ">수강중인 학생수</h6>
                         <hr class="dark horizontal">
-                        <div class="d-flex ">
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">년도별</button>
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">월별</button>
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">일별</button>
+                        <div id="userBtn" class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" value="year"name="user" id="yearUser" autocomplete="off" checked="">
+                            <label class="btn btn-outline-secondary" for="yearUser">년도별</label>
+                            <input type="radio" class="btn-check" value="month" name="user" id="monthUser" autocomplete="off" checked="">
+                            <label class="btn btn-outline-secondary" for="monthUser">월별</label>
+                            <input type="radio" class="btn-check" value="day" name="user" id="dayUser" autocomplete="off" checked="checked">
+                            <label class="btn btn-outline-secondary" for="dayUser">일별</label>
                         </div>
                     </div>
                 </div>
@@ -107,10 +110,13 @@
                     <div class="card-body">
                         <h6 class="mb-0 "> 평균 별점 </h6>
                         <hr class="dark horizontal">
-                        <div class="d-flex ">
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">년도별</button>
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">월별</button>
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">일별</button>
+                        <div id="scopeBtn" class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" value="year"name="scope" id="yearScope" autocomplete="off" checked="">
+                            <label class="btn btn-outline-secondary" for="yearScope">년도별</label>
+                            <input type="radio" class="btn-check" value="month" name="scope" id="monthScope" autocomplete="off" checked="">
+                            <label class="btn btn-outline-secondary" for="monthScope">월별</label>
+                            <input type="radio" class="btn-check" value="day" name="scope" id="dayScope" autocomplete="off" checked="checked">
+                            <label class="btn btn-outline-secondary" for="dayScope">일별</label>
                         </div>
                     </div>
                 </div>
@@ -128,10 +134,13 @@
                     <div class="card-body">
                         <h6 class="mb-0 "> 댓글수 </h6>
                         <hr class="dark horizontal">
-                        <div class="d-flex ">
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">년도별</button>
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">월별</button>
-                            <button class="btn btn-secondary my-2 my-sm-0 mx-2">일별</button>
+                        <div id="commentsBtn" class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" value="year"name="comments" id="yearComments" autocomplete="off" checked="">
+                            <label class="btn btn-outline-secondary" for="yearComments">년도별</label>
+                            <input type="radio" class="btn-check" value="month" name="comments" id="monthComments" autocomplete="off" checked="">
+                            <label class="btn btn-outline-secondary" for="monthComments">월별</label>
+                            <input type="radio" class="btn-check" value="day" name="comments" id="dayComments" autocomplete="off" checked="checked">
+                            <label class="btn btn-outline-secondary" for="dayComments">일별</label>
                         </div>
                     </div>
                 </div>
