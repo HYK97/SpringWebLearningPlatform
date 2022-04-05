@@ -180,11 +180,15 @@ public class UserService {
 
 
     public Long countDateRegisteredUserCount(Long courseId, String date) {
-
-
         return userCourseRepository.countDateRegisteredUserCountByCourseId(courseId, date);
-
     }
 
+    public Map countMonthlyRegisteredUser(Long courseId, String date) {
+        return userCourseRepository.countMonthlyRegisteredUserByCourseId(courseId, date);
+    }
+
+    public Map countThisYearToMonthlyRegisteredUser(Long courseId, String date) {
+        return userCourseRepository.countThisYearToMonthlyRegisteredUserByCourseId(courseId, date);
+    }
 
 }
