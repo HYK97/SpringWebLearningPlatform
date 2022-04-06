@@ -23,5 +23,12 @@ public interface CourseEvaluationRepository extends JpaRepository<CourseEvaluati
 
     CourseEvaluation findByUsernameAndCourseIdAndId(String username, Long courseId, Long id);
 
-    Double findDateScopeByCourseId(Long courseId, String date);
+    Double findDateScopeAvgByCourseId(Long courseId, String date);
+
+    Map findMonthlyToDayScopeAvgByCourseId(Long courseId, String date);
+
+    Map findThisYearToMonthlyScopeAvgByCourseId(Long courseId, String date);
+
+    Map findTenYearToYearScopeAvgByCourseId(Long courseId, String date);
+
 }

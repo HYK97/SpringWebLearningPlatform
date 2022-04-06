@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Map;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
@@ -132,7 +133,19 @@ public class CourseEvaluationService {
     }
 
     public Double avgDateScope(Long courseId, String date) {
-        return courseEvaluationRepository.findDateScopeByCourseId(courseId, date);
+        return courseEvaluationRepository.findDateScopeAvgByCourseId(courseId, date);
+    }
+
+    public Map monthlyToDayScopeAvg(Long courseId, String date) {
+        return courseEvaluationRepository.findMonthlyToDayScopeAvgByCourseId(courseId, date);
+    }
+
+    public Map thisYearToMonthlyScopeAvg(Long courseId, String date) {
+        return courseEvaluationRepository.findThisYearToMonthlyScopeAvgByCourseId(courseId, date);
+    }
+
+    public Map tenYearToYearScopeAvg(Long courseId, String date) {
+        return courseEvaluationRepository.findTenYearToYearScopeAvgByCourseId(courseId, date);
     }
 
 }
