@@ -8,6 +8,8 @@ import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -163,7 +166,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return id != null ? courseEvaluation.id.eq(id) : null;
     }
 
-    public Double findDateScopeByCourseId(Long courseId, String date) {
+    public Double findDateScopeAvgByCourseId(Long courseId, String date) {
 
         DateFormater localDateParser = new DateFormater(date);
         return select(courseEvaluation.scope.avg())
@@ -172,5 +175,117 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                 .where(courseEvaluation.createDate.goe(course.createDate).and(courseEvaluation.createDate.loe(localDateParser.endDate())).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
                 .fetchOne();
     }
+
+
+    public Map findMonthlyToDayScopeAvgByCourseId(Long courseId, String date) {
+        DateFormater localDateParser = new DateFormater(date);
+        JPAQueryFactory queryFactory = getQueryFactory();
+        List<Tuple> fetch = queryFactory
+                .select(courseEvaluation.scope.avg(), dayFormat)
+                .from(courseEvaluation)
+                .leftJoin(courseEvaluation.course, course)
+                .where(courseEvaluation.createDate.between(localDateParser.startMonth(), localDateParser.endMonth()).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .groupBy(dayFormat)
+                .having()
+                .orderBy(dayFormat.asc())
+                .fetch();
+        Map<String, Double> map = new LinkedHashMap<>();
+        for (int i = 1; i <= localDateParser.endDay(); i++) {
+            map.put(localDateParser.getYear() + "-" + localDateParser.getMonth() + "-" + String.format("%02d", i), 0.0);
+        }
+        for (String key : map.keySet()) {
+            for (Tuple tuple : fetch) {
+                if (key.equals(tuple.get(dayFormat))) {
+                    map.replace(key, tuple.get(courseEvaluation.scope.avg()));
+                }
+            }
+        }
+        return map;
+    }
+
+
+    public Map findThisYearToMonthlyScopeAvgByCourseId(Long courseId, String date) {
+        DateFormater localDateParser = new DateFormater(date);
+        JPAQueryFactory queryFactory = getQueryFactory();
+        List<Tuple> fetch = queryFactory
+                .select(courseEvaluation.scope.avg(), monthFormat)
+                .from(courseEvaluation)
+                .leftJoin(courseEvaluation.course, course)
+                .where(courseEvaluation.createDate.between(localDateParser.thisYearStart(), localDateParser.thisYearEnd()).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .groupBy(monthFormat)
+                .orderBy(monthFormat.asc())
+                .fetch();
+        Map<String, Double> map = new LinkedHashMap<>();
+        for (int i = 1; i <= 12; i++) {
+            map.put(localDateParser.getYear() + "-" + String.format("%02d", i), 0.0);
+        }
+
+        for (String key : map.keySet()) {
+            for (Tuple tuple : fetch) {
+                if (key.equals(tuple.get(monthFormat))) {
+                    map.replace(key, tuple.get(courseEvaluation.scope.avg()));
+                }
+            }
+        }
+
+        return map;
+
+    }
+
+    public Map findTenYearToYearScopeAvgByCourseId(Long courseId, String date) {
+        DateFormater localDateParser = new DateFormater(date);
+        JPAQueryFactory queryFactory = getQueryFactory();
+        List<Tuple> fetch = queryFactory.select(courseEvaluation.scope.avg(), yearFormat)
+                .from(courseEvaluation)
+                .leftJoin(courseEvaluation.course, course)
+                .where(courseEvaluation.createDate.between(localDateParser.tenYearAgo(), localDateParser.thisYearEnd()).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .groupBy(yearFormat)
+                .orderBy(yearFormat.asc())
+                .fetch();
+
+        Map<String, Double> map = new LinkedHashMap<>();
+        for (int i = localDateParser.getYear() - 10; i <= localDateParser.getYear(); i++) {
+            map.put(String.format("%04d", i), 0.0);
+        }
+
+        for (String key : map.keySet()) {
+            for (Tuple tuple : fetch) {
+                if (key.equals(tuple.get(yearFormat))) {
+                    map.replace(key, tuple.get(courseEvaluation.scope.avg()));
+                }
+            }
+        }
+
+        return map;
+
+    }
+
+    //h2
+    StringTemplate dayFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM-dd')"
+            , courseEvaluation.createDate);
+
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM')"
+            , courseEvaluation.createDate);
+
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y')"
+            , courseEvaluation.createDate);
+
+    //mysql
+  /* StringTemplate dayFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            , courseEvaluation.createDate);
+
+
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            , courseEvaluation.createDate);
+
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, 'Y')"
+            , courseEvaluation.createDate);*/
+
 
 }
