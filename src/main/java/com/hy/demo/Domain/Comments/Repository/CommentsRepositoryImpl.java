@@ -76,7 +76,7 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
 
     public Long countDateCommentCountByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date, "d");
+        DateFormater localDateParser = new DateFormater(date);
         return select(comments1.count())
                 .from(comments1)
                 .leftJoin(comments1.courseBoard, courseBoard)

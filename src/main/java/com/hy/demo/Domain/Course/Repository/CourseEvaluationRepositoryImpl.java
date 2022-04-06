@@ -165,7 +165,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
     public Double findDateScopeByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date, "d");
+        DateFormater localDateParser = new DateFormater(date);
         return select(courseEvaluation.scope.avg())
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.course, course)
