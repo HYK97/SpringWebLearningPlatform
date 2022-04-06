@@ -26,7 +26,7 @@ function getDashboardData() {
             var commentPercent = data.todayComment - data.yesterdayComment
             $("#todayUser").text(data.todayRegisteredUser);
             drawChart1(data.DailyForAMonthUser);
-            drawChart2();
+            drawChart2(data.DailyForAMonthScope);
             drawChart3();
 
             $("#todayScope").text(data.todayScope);
@@ -57,6 +57,18 @@ $(document).on('change', 'input[name="user"]',function () {
 })
 
 
+$(document).on('change', 'input[name="scope"]',function () {
+    let check=$('input[name="scope"]:checked').val();
+    if (check == 'day') {
+        chart2DataUpdate('scopeDayChart');
+    }else if (check == 'month') {
+        chart2DataUpdate('scopeMonthChart');
+    } else {
+        chart2DataUpdate('scopeYearChart');
+    }
+})
+
+
 function chart1DataUpdate(queryString) {
     $.ajax({
         url: '/courseboard/'+queryString+'/' + getCourseId(),
@@ -64,6 +76,21 @@ function chart1DataUpdate(queryString) {
         async: false,
         success: function (data) {
             drawChart1(data);
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+    });
+}
+
+function chart2DataUpdate(queryString) {
+    $.ajax({
+        url: '/courseboard/'+queryString+'/' + getCourseId(),
+        type: 'post',
+        async: false,
+        success: function (data) {
+            drawChart2(data);
         },
         error: function (request, error) {
             alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -168,7 +195,7 @@ function drawChart1(data) {
     });
 }
 
-function drawChart2() {
+function drawChart2(data) {
     var ctx2 = document.getElementById("chart-line").getContext("2d");
     if (chart2 != null) {
         window.chart2.destroy();
@@ -176,7 +203,7 @@ function drawChart2() {
     chart2 = new Chart(ctx2, {
         type: "line",
         data: {
-            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            labels: Object.keys(data),
             datasets: [{
                 label: "Mobile apps",
                 tension: 0,
@@ -189,7 +216,7 @@ function drawChart2() {
                 borderWidth: 4,
                 backgroundColor: "transparent",
                 fill: true,
-                data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+                data: Object.values(data),
                 maxBarThickness: 6
 
             }],
