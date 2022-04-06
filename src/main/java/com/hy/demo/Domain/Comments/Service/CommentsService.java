@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.nio.file.AccessDeniedException;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -112,4 +113,16 @@ public class CommentsService {
     public Long countDateCommentCount(Long courseId, String date) {
         return commentsRepository.countDateCommentCountByCourseId(courseId, date);
     }
+    public Map monthlyToDayComments(Long courseId, String date) {
+        return commentsRepository.countMonthlyToDayCommentsByCourseId(courseId, date);
+    }
+    public Map thisYearToMonthlyComments(Long courseId, String date) {
+        return commentsRepository.countThisYearToMonthlyCommentsByCourseId(courseId, date);
+    }
+    public Map tenYearToYearComments(Long courseId, String date) {
+        return commentsRepository.countTenYearToYearCommentsByCourseId(courseId, date);
+    }
+
+
+
 }
