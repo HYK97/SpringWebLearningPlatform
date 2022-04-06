@@ -183,12 +183,15 @@ public class UserService {
         return userCourseRepository.countDateRegisteredUserCountByCourseId(courseId, date);
     }
 
-    public Map countMonthlyRegisteredUser(Long courseId, String date) {
-        return userCourseRepository.countMonthlyRegisteredUserByCourseId(courseId, date);
+    public Map countMonthlyToDayRegisteredUser(Long courseId, String date) {
+        return userCourseRepository.countMonthlyToDayRegisteredUserByCourseId(courseId, date);
     }
 
     public Map countThisYearToMonthlyRegisteredUser(Long courseId, String date) {
         return userCourseRepository.countThisYearToMonthlyRegisteredUserByCourseId(courseId, date);
+    }
+    public Map countTenYearToYearRegisteredUser(Long courseId, String date) {
+        return userCourseRepository.countTenYearToYearRegisteredUserByCourseId(courseId, date);
     }
 
 }

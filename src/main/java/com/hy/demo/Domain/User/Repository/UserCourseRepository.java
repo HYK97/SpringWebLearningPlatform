@@ -17,8 +17,10 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
 
     Long countDateRegisteredUserCountByCourseId(Long courseId, String date);
 
-    Map countMonthlyRegisteredUserByCourseId(Long courseId, String date);
+    Map countMonthlyToDayRegisteredUserByCourseId(Long courseId, String date);
 
     Map countThisYearToMonthlyRegisteredUserByCourseId(Long courseId, String date);
+
+    Map countTenYearToYearRegisteredUserByCourseId(Long courseId, String date);
 
 }
