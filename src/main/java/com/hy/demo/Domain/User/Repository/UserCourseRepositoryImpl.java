@@ -4,7 +4,6 @@ import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Utils.DateFormater;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,7 +32,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     public Long countDateRegisteredUserCountByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date, "d");
+        DateFormater localDateParser = new DateFormater(date);
         return select(userCourse.user.count())
                 .from(userCourse)
                 .where(userCourse.createDate.between(localDateParser.startDate(), localDateParser.endDate()).and(course.id.eq(courseId)))
@@ -41,13 +40,13 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
     }
 
 
-    public Map countMonthlyRegisteredUserByCourseId(Long courseId, String date) {
+    public Map countMonthlyToDayRegisteredUserByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date, "d");
+        DateFormater localDateParser = new DateFormater(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(dayFormat.count(), dayFormat)
                 .from(userCourse)
-                .where(userCourse.createDate.between(localDateParser.startMonth(), localDateParser.endMonth()).and(course.id.eq(courseId)))
+                .where(userCourse.createDate.between(localDateParser.startMonth(), localDateParser.endMonth()).and(userCourse.course.id.eq(courseId)))
                 .groupBy(dayFormat)
                 .orderBy(dayFormat.asc())
                 .fetch();
@@ -62,30 +61,33 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
                 }
             }
         }
-
         return map;
 
     }
 
 
     public Map countThisYearToMonthlyRegisteredUserByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date, "d");
+        DateFormater localDateParser = new DateFormater(date);
         JPAQueryFactory queryFactory = getQueryFactory();
-        List<Tuple> fetch = queryFactory.select(monthFormat.count(), monthFormat)
+        List<Tuple> fetch = queryFactory.select(
+                monthFormat.count(),
+                monthFormat
+        )
                 .from(userCourse)
-                .where(userCourse.createDate.between(localDateParser.thisYearStart(), localDateParser.thisYearEnd()).and(course.id.eq(courseId)))
+                .where(userCourse.createDate.between(localDateParser.thisYearStart(), localDateParser.thisYearEnd())
+                        .and(userCourse.course.id.eq(courseId)))
                 .groupBy(monthFormat)
                 .orderBy(monthFormat.asc())
                 .fetch();
+
         Map<String, Long> map = new LinkedHashMap<>();
         for (int i = 1; i <= 12; i++) {
-            map.put(localDateParser.getYear() + "-" + String.format("%02d", i), 0L);
+            map.put(localDateParser.getYear() + "-" + String.format("%02d", i) , 0L);
         }
+
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
                 if (key.equals(tuple.get(monthFormat))) {
-                    logger.info("tuple = " + tuple);
-                    logger.info("key = " + key);
                     map.replace(key, tuple.get(monthFormat.count()));
                 }
             }
@@ -95,23 +97,57 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     }
 
+    public Map countTenYearToYearRegisteredUserByCourseId(Long courseId, String date) {
+        DateFormater localDateParser = new DateFormater(date);
+        JPAQueryFactory queryFactory = getQueryFactory();
+        List<Tuple> fetch = queryFactory.select(
+                yearFormat.count(),
+                yearFormat
+        )
+                .from(userCourse)
+                .where(userCourse.createDate.between(localDateParser.tenYearAgo(), localDateParser.thisYearEnd())
+                        .and(userCourse.course.id.eq(courseId)))
+                .groupBy(yearFormat)
+                .orderBy(yearFormat.asc())
+                .fetch();
+
+        Map<String, Long> map = new LinkedHashMap<>();
+        for (int i = localDateParser.getYear()-10; i <= localDateParser.getYear(); i++) {
+            map.put(String.format("%04d", i) , 0L);
+        }
+
+        for (String key : map.keySet()) {
+            for (Tuple tuple : fetch) {
+                if (key.equals(tuple.get(yearFormat))) {
+                    map.replace(key, tuple.get(yearFormat.count()));
+                }
+            }
+        }
+
+        return map;
+
+    }
+
+
+
 
     //h2
     StringTemplate dayFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, {1})"
-            , userCourse.createDate
-            , ConstantImpl.create("Y-MM-dd"));
+            "FORMATDATETIME({0}, 'Y-MM-dd')"
+            , userCourse.createDate);
 
     StringTemplate monthFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, {1})"
-            , userCourse.createDate
-            , ConstantImpl.create("Y-MM"));
+            "FORMATDATETIME({0}, 'Y-MM')"
+            , userCourse.createDate);
+
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y')"
+            , userCourse.createDate);
 
     //mysql
    /* StringTemplate dayFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, {1})"
-            , userCourse.createDate
-            , ConstantImpl.create("%Y-%m-%d"));*/
+            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            , userCourse.createDate);*/
 
 
 }
