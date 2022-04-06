@@ -4,10 +4,13 @@ package com.hy.demo.Domain.Board.Controller;
 import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Service.CourseBoardService;
+import com.hy.demo.Domain.Comments.Service.CommentsService;
 import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Service.FileService;
+import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
@@ -24,8 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 ;
 
@@ -36,11 +43,19 @@ public class CourseBoardController {
     @Autowired
     private CourseBoardService courseBoardService;
 
+
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private CommentsService commentsService;
+
+    @Autowired
+    private CourseEvaluationService courseEvaluationService;
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserCourseRepository userRepository;
 
     @Autowired
     private FileService fileService;
@@ -107,6 +122,82 @@ public class CourseBoardController {
         }
         return "1"; //성공
     }
+
+    @PostMapping("/getDashBoard/{id}")
+    @ResponseBody
+    public Map getDashBoard(@PathVariable Long id) throws IOException {
+        Map map = new HashMap();
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        String yesterday = now.minusDays(1).format(formatter);
+
+        //어제오늘 유저수
+        Long todayRegisteredUser = userService.countDateRegisteredUserCount(id, today);
+        Long yesterdayRegisteredUser = userService.countDateRegisteredUserCount(id, yesterday);
+        map.put("todayRegisteredUser", todayRegisteredUser);
+        map.put("yesterdayRegisteredUser", yesterdayRegisteredUser);
+
+        //어제오늘 별점수
+        Double todayScope = courseEvaluationService.avgDateScope(id, today);
+        Double yesterdayScope = courseEvaluationService.avgDateScope(id, yesterday);
+        map.put("todayScope", Double.parseDouble(String.format("%.1f", todayScope == null ? 0 : todayScope)));
+        map.put("yesterdayScope", Double.parseDouble(String.format("%.1f", yesterdayScope == null ? 0 : yesterdayScope)));
+
+        //어제오늘 댓글수
+        Long todayComment = commentsService.countDateCommentCount(id, today);
+        Long yesterdayComment = commentsService.countDateCommentCount(id, yesterday);
+        map.put("todayComment", todayComment);
+        map.put("yesterdayComment", yesterdayComment);
+
+        //강의 총 view 수
+        Long allView = courseBoardService.countAllView(id);
+        map.put("allView", allView);
+
+        //1달 집계데이터
+        Map DailyForAMonthUser = userService.countMonthlyToDayRegisteredUser(id, today);
+        map.put("DailyForAMonthUser", DailyForAMonthUser);
+
+
+        return map;
+    }
+
+
+    @PostMapping("/userDayChart/{id}")
+    @ResponseBody
+    public Map userDayChart(@PathVariable Long id){
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = userService.countMonthlyToDayRegisteredUser(id, today);
+        return DailyForAMonthUser;
+    }
+
+
+    @PostMapping("/userMonthChart/{id}")
+    @ResponseBody
+    public Map userMonthChart(@PathVariable Long id){
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = userService.countThisYearToMonthlyRegisteredUser(id, today);
+        return DailyForAMonthUser;
+    }
+
+    @PostMapping("/userYearChart/{id}")
+    @ResponseBody
+    public Map userYearChart(@PathVariable Long id){
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = userService.countTenYearToYearRegisteredUser(id, today);
+        return DailyForAMonthUser;
+    }
+
+
 
 
     @GetMapping({"/getCourseBoard/{id}"})
