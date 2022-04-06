@@ -12,9 +12,7 @@ $(document).on("click", '#statisticsBtn', function () {
         time: 500
     });
 
-    drawChart1();
-    drawChart2();
-    drawChart3();
+
 });
 
 function getDashboardData() {
@@ -27,8 +25,9 @@ function getDashboardData() {
             var scopePercent =  data.todayScope-data.yesterdayScope;
             var commentPercent = data.todayComment - data.yesterdayComment
             $("#todayUser").text(data.todayRegisteredUser);
-
-
+            drawChart1(data.DailyForAMonthUser);
+            drawChart2();
+            drawChart3();
 
             $("#todayScope").text(data.todayScope);
             $("#todayComment").text(data.todayComment);
@@ -46,7 +45,41 @@ function getDashboardData() {
     });
 }
 
-function drawChart1() {
+$(document).on('change', 'input[name="user"]',function () {
+  let check=$('input[name="user"]:checked').val();
+    if (check == 'day') {
+        chart1DataUpdate('userDayChart');
+    }else if (check == 'month') {
+        chart1DataUpdate('userMonthChart');
+    } else {
+        chart1DataUpdate('userYearChart');
+    }
+})
+
+
+function chart1DataUpdate(queryString) {
+    $.ajax({
+        url: '/courseboard/'+queryString+'/' + getCourseId(),
+        type: 'post',
+        async: false,
+        success: function (data) {
+            drawChart1(data);
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+    });
+}
+
+
+
+
+
+
+
+
+function drawChart1(data) {
     var ctx = document.getElementById("chart-bars").getContext("2d");
     if (chart1 != null) {
         window.chart1.destroy();
@@ -54,9 +87,9 @@ function drawChart1() {
     chart1 = new Chart(ctx, {
         type: "line",
         data: {
-            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            labels: Object.keys(data),
             datasets: [{
-                label: "Mobile apps",
+                label: "수강생 수",
                 tension: 0,
                 borderWidth: 0,
                 pointRadius: 5,
@@ -66,7 +99,7 @@ function drawChart1() {
                 borderWidth: 4,
                 backgroundColor: "transparent",
                 fill: true,
-                data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                data: Object.values(data),
                 maxBarThickness: 6
 
             }],
