@@ -27,7 +27,7 @@ function getDashboardData() {
             $("#todayUser").text(data.todayRegisteredUser);
             drawChart1(data.DailyForAMonthUser);
             drawChart2(data.DailyForAMonthScope);
-            drawChart3();
+            drawChart3(data.DailyForAMonthComments);
 
             $("#todayScope").text(data.todayScope);
             $("#todayComment").text(data.todayComment);
@@ -68,6 +68,17 @@ $(document).on('change', 'input[name="scope"]',function () {
     }
 })
 
+$(document).on('change', 'input[name="comments"]',function () {
+    let check=$('input[name="comments"]:checked').val();
+    if (check == 'day') {
+        chart3DataUpdate('commentsDayChart');
+    }else if (check == 'month') {
+        chart3DataUpdate('commentsMonthChart');
+    } else {
+        chart3DataUpdate('commentsYearChart');
+    }
+})
+
 
 function chart1DataUpdate(queryString) {
     $.ajax({
@@ -99,6 +110,21 @@ function chart2DataUpdate(queryString) {
     });
 }
 
+function chart3DataUpdate(queryString) {
+    $.ajax({
+        url: '/courseboard/'+queryString+'/' + getCourseId(),
+        type: 'post',
+        async: false,
+        success: function (data) {
+            drawChart3(data);
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+    });
+}
+
 
 
 
@@ -112,7 +138,7 @@ function drawChart1(data) {
         window.chart1.destroy();
     }
     chart1 = new Chart(ctx, {
-        type: "line",
+        type: "bar",
         data: {
             labels: Object.keys(data),
             datasets: [{
@@ -201,7 +227,7 @@ function drawChart2(data) {
         window.chart2.destroy();
     }
     chart2 = new Chart(ctx2, {
-        type: "line",
+        type: "bar",
         data: {
             labels: Object.keys(data),
             datasets: [{
@@ -286,7 +312,7 @@ function drawChart2(data) {
 
 }
 
-function drawChart3() {
+function drawChart3(data) {
     var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
 
     if (chart3 != null) {
@@ -295,9 +321,9 @@ function drawChart3() {
 
 
     chart3 = new Chart(ctx3, {
-        type: "line",
+        type: "bar",
         data: {
-            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            labels: Object.keys(data),
             datasets: [{
                 label: "Mobile apps",
                 tension: 0,
@@ -309,7 +335,7 @@ function drawChart3() {
                 borderWidth: 4,
                 backgroundColor: "transparent",
                 fill: true,
-                data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                data: Object.values(data),
                 maxBarThickness: 6
 
             }],
