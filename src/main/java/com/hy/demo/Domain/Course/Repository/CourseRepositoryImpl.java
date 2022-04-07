@@ -79,7 +79,7 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
     }
 
 
-    public Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable) {
+    public Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable) {
         return applyPagination(pageable, query ->
                 getCourseDtoJPAQuery()
                         .where(course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
@@ -123,6 +123,13 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                 , select(courseEvaluation.scope.avg()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
                 , select(courseEvaluation.scope.count()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
         ));
+    }
+
+    public Page<CourseDto> findCourseByCourseNameAndUsername(String courseName, Pageable pageable) {
+        return applyPagination(pageable, query ->
+                getCourseDtoJPAQuery()
+                        .where(course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
+        );
     }
 
 
