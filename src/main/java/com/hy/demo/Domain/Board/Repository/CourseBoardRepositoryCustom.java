@@ -14,4 +14,7 @@ public interface CourseBoardRepositoryCustom {
     CourseBoard findByCourseBoardId(Long courseBoardId);
 
     Long countViewByCourseId(Long courseId);
+
+    public List<CourseBoardDto> findRankViewByCourseId(Long courseId);
+
 }

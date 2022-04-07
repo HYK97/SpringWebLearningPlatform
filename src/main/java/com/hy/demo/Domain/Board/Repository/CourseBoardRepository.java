@@ -18,4 +18,7 @@ public interface CourseBoardRepository extends JpaRepository<CourseBoard, Long>,
     CourseBoard findByCourseBoardId(Long courseBoardId);
 
     Long countViewByCourseId(Long courseId);
+
+    public List<CourseBoardDto> findRankViewByCourseId(Long courseId);
+
 }
