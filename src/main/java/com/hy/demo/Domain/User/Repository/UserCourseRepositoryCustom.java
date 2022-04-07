@@ -11,4 +11,5 @@ public interface UserCourseRepositoryCustom {
 
     Map countTenYearToYearRegisteredUserByCourseId(Long courseId, String date);
 
+    void nativeQuery(Long courseId);
 }

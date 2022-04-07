@@ -10,6 +10,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +84,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
         Map<String, Long> map = new LinkedHashMap<>();
         for (int i = 1; i <= 12; i++) {
-            map.put(localDateParser.getYear() + "-" + String.format("%02d", i) , 0L);
+            map.put(localDateParser.getYear() + "-" + String.format("%02d", i), 0L);
         }
 
         for (String key : map.keySet()) {
@@ -112,8 +114,8 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
                 .fetch();
 
         Map<String, Long> map = new LinkedHashMap<>();
-        for (int i = localDateParser.getYear()-10; i <= localDateParser.getYear(); i++) {
-            map.put(String.format("%04d", i) , 0L);
+        for (int i = localDateParser.getYear() - 10; i <= localDateParser.getYear(); i++) {
+            map.put(String.format("%04d", i), 0L);
         }
 
         for (String key : map.keySet()) {
@@ -128,7 +130,59 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     }
 
+    // TODO 누적쿼리 만들기
 
+    /**
+     * 참고 쿼리
+     * 4월 누적통계
+     * <p>
+     * SELECT *
+     * from
+     * (select
+     * FORMATDATETIME(u2.create_date,
+     * 'Y-MM-dd')  as create_date,
+     * (select
+     * count(*)
+     * from
+     * USER_COURSE u1
+     * where
+     * FORMATDATETIME(u1.create_date,'Y-MM-dd') between FORMATDATETIME(c.create_date,'Y-MM-dd')  and FORMATDATETIME(u2.create_date,'Y-MM-dd')
+     * and u1.course_id =10) as counts
+     * from
+     * USER_COURSE u2
+     * left join
+     * course c
+     * on u2.course_id =c.course_id
+     * )
+     * where CREATE_DATE between  FORMATDATETIME('2022-04-01','Y-MM-dd')  and FORMATDATETIME('2022-04-22','Y-MM-dd')
+     * group by
+     * create_date
+     * order by
+     * create_date asc;
+     */
+    public void nativeQuery(Long courseId) {
+        EntityManager em = getEntityManager();
+        Query nativeQuery = em.createNativeQuery("" +
+                "select * from(" +
+                "select " +
+                "FORMATDATETIME(u2.create_date,'Y-MM')  as create_date, " +
+                "(select count(*)  " +
+                "from  " +
+                "USER_COURSE u1 " +
+                "      where FORMATDATETIME(u1.create_date,'Y-MM') between FORMATDATETIME(c.create_date,'Y-MM')  and FORMATDATETIME(u2.create_date,'Y-MM') and u1.course_id =?) as counts " +
+                "from USER_COURSE u2 " +
+                "left join course c " +
+                "on u2.course_id =c.course_id)" +
+                "group by create_date " +
+                "order by create_date asc; ")
+                .setParameter(1, courseId);
+
+        List<Object[]> resultList = nativeQuery.getResultList();
+        for (Object[] row : resultList) {
+            logger.info("id = " + row[0]);
+            logger.info("age = " + row[1]);
+        }
+    }
 
 
     //h2
@@ -145,8 +199,17 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
             , userCourse.createDate);
 
     //mysql
-   /* StringTemplate dayFormat = Expressions.stringTemplate(
+  /*  StringTemplate dayFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y-%m-%d')"
+            , userCourse.createDate);
+
+
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m')"
+            , userCourse.createDate);
+
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y')"
             , userCourse.createDate);*/
 
 
