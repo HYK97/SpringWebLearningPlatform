@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
+import static com.hy.demo.Domain.Comments.Entity.QComments.comments1;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
 import static com.hy.demo.Domain.File.Entity.QFile.file;
 
@@ -43,6 +44,7 @@ public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implem
                 .fetch();
     }
 
+
     @Override
     public Optional<List<CourseBoard>> findByCourseId(Long courseId) {
         return Optional.ofNullable(
@@ -70,5 +72,23 @@ public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implem
                 .where(course.id.eq(courseId))
                 .fetchOne();
     }
+
+
+    public List<CourseBoardDto> findRankViewByCourseId(Long courseId) {
+        return select(Projections.constructor(CourseBoardDto.class,
+                courseBoard.id,
+                courseBoard.title,
+                courseBoard.views,
+                comments1.count()
+        ))
+                .from(courseBoard)
+                .leftJoin(courseBoard.course, course)
+                .leftJoin(courseBoard.comments, comments1)
+                .where(courseBoard.course.id.eq(courseId))
+                .groupBy(courseBoard)
+                .orderBy(comments1.count().asc())
+                .fetch();
+    }
+
 
 }

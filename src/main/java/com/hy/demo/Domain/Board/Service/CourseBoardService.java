@@ -199,5 +199,9 @@ public class CourseBoardService {
         return courseBoardRepository.countViewByCourseId(courseId);
     }
 
+    public List<CourseBoardDto> rankView(Long courseId) {
+        return courseBoardRepository.findRankViewByCourseId(courseId);
+    }
+
 
 }
