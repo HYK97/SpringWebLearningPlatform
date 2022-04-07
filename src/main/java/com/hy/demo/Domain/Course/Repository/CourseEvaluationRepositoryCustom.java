@@ -9,7 +9,20 @@ import java.util.Map;
 
 public interface CourseEvaluationRepositoryCustom {
     Map<String, Double> countScope(Long id);
+
     CourseEvaluation findByReply(Long id);
+
     Page<CourseEvaluationDto> findByIDCourseEvaluationDTO(Long courseId, Pageable pageable);
+
     CourseEvaluation findByUsernameAndCourseIdAndId(String username, Long courseId, Long id);
+
+    Double findDateScopeAvgByCourseId(Long courseId, String date);
+
+    Map findMonthlyToDayScopeAvgByCourseId(Long courseId, String date);
+
+    Map findThisYearToMonthlyScopeAvgByCourseId(Long courseId, String date);
+
+    Map findTenYearToYearScopeAvgByCourseId(Long courseId, String date);
+
+
 }

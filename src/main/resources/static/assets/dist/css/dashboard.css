@@ -1,0 +1,101 @@
+.bg-gradient-dark {
+    background-image: linear-gradient(195deg, #42424a 0%, #191919 100%)!important;
+}
+
+.shadow-dark {
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(64, 64, 64, 0.4) !important;
+}
+.border-radius-lg {
+    border-radius: 0.5rem;
+}
+h4 {
+    font-size: calc(1.275rem + .3vw);
+    font-weight:900;
+}
+
+
+.bg-transparent {
+    background-color: transparent !important;
+}
+.p-0 {
+    padding: 0 !important;
+}
+
+.mt-n4 {
+    margin-top: -1.5rem !important;
+}
+
+h6 {
+    font-weight: 600;
+}
+.icon-white{
+  font-size: 2rem; color: white;
+}
+.bg-gradient-primary {
+    background-image: linear-gradient(195deg, #EC407A 0%, #D81B60 100%);
+}
+
+.shadow-primary {
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4) !important;
+}
+
+.bg-gradient-info {
+    background-image: linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+}
+.bg-gradient-success {
+    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
+}
+.shadow-success {
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4) !important;
+}
+
+.icon-lg {
+    width: 64px;
+    height: 64px;
+}
+.border-radius-xl {
+    border-radius: 0.75rem;
+}
+ .icon-shape {
+     width: 48px!important;
+     height: 48px!important;
+     background-position: center center;
+     border-radius: 0.5rem;
+ }
+
+ .bg-gradient-dark {
+     background-image: linear-gradient(195deg, rgb(66, 66, 74) 0%, rgb(25, 25, 25) 100%);
+ }
+
+ .shadow-dark {
+     box-shadow: rgba(0, 0, 0, 0.14) 0px 4px 20px 0px, rgba(64, 64, 64, 0.4) 0px 7px 10px -5px !important;
+ }
+
+ .text-center {
+     text-align: center !important;
+ }
+
+ .mt-n4 {
+     margin-top: -1.5rem !important;
+ }
+
+ .position-absolute {
+     position: absolute !important;
+ }
+
+ .icon {
+     fill: currentcolor;
+     stroke: none;
+ }
+
+ .icon-lg {
+     height: 1.6em;
+     width: 1.6em;
+ }
+
+ .icon {
+     display: inline-block;
+     color: rgb(17, 17, 17);
+     height: 1em;
+     width: 1em;
+ }

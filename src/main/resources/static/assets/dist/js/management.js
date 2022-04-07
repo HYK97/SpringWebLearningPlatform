@@ -37,8 +37,20 @@ function fileDelete(fileNum) {
     console.log(content_files);
 }
 
-
+var viewSize=1;
 $(document).ready(function () {
+    var listeners = window.matchMedia("screen and (min-width: 768px)");
+    if (!listeners.matches) {
+        viewSize = 0;
+    }
+    listeners.addListener(function (e) {
+        if (e.matches) {
+            viewSize=1;//pc
+        } else {
+            viewSize=0;//모바일
+        }
+    });
+
     if (courseBoard.length > 0) {
         $('#viewBox').removeAttr("hidden");
         let index = courseBoard[0].id;
@@ -214,11 +226,11 @@ $(document).on("click", "#courseInfoUpdateBtn", function () {
         }
     });
     updateBoxShow();
+    toggleBtn();
 });
 
 
 $(document).on("click", "#update-tab", function () {
-
 
 
     $.ajax({
@@ -231,7 +243,7 @@ $(document).on("click", "#update-tab", function () {
             $("#updateContents").summernote('code', data.contents);
             var array = new Array();
             data.files.forEach(function (f) {
-                var size="1".repeat(f.fileSize)
+                var size = "1".repeat(f.fileSize)
                 var file = new File([size], f.origFileName, {type: "image/png", lastModified: new Date().getTime()});
                 array.push(file);
             });
@@ -307,6 +319,7 @@ $(document).on("click", "#addBtn", function () {
     $('#contents').summernote('reset');
 
     createBoxShow();
+    toggleBtn();
 });
 
 
@@ -340,7 +353,7 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
                 courseBoard = getData();
                 navRender(courseBoard);
                 mainRender(courseBoardId, courseBoard)
-                let index = courseBoard.findIndex(f =>f.id ==courseBoardId);
+                let index = courseBoard.findIndex(f => f.id == courseBoardId);
                 $(".courseboard-href").eq(index).trigger("click");
                 viewBoxShow();
                 $("#courseBoardUpdateForm")[0].reset();
@@ -362,7 +375,18 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
 
 });
 
-$(document).on("click",'#statisticsBtn',function () {
-    statisticsBoxShow();
 
+
+
+$(document).on("click", '#statisticsBtn', function () {
+    $(".nav-link").removeClass("active");
+    $(this).addClass('active');
+    statisticsBoxShow();
+    toggleBtn();
 });
+
+function toggleBtn() {
+    if (viewSize == 0) {
+        $('.navbar-toggler').trigger('click');
+    }
+}

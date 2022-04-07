@@ -198,7 +198,20 @@ const templateNav = '' +
 
 var courseBoard = getData();
 var courseBoardId;
+var viewSize=1;
 $(document).ready(function () {
+
+    var listeners = window.matchMedia("screen and (min-width: 768px)");
+        if (!listeners.matches) {
+            viewSize = 0;
+        }
+    listeners.addListener(function (e) {
+            if (e.matches) {
+                viewSize=1;//pc
+            } else {
+                viewSize=0;//모바일
+            }
+        });
 
 
     if (courseBoard.length > 0) {
@@ -222,6 +235,9 @@ $(document).ready(function () {
             type: "post",
             url: "/courseboard/viewPlus/" + courseBoardId
         });
+        if (viewSize == 0) {
+            $('.navbar-toggler').trigger('click');
+        }
     });
 
 
@@ -380,7 +396,7 @@ $(document).on('click', '.replyUpdateCancel', function () {
 
 
 $(document).on('click', '.replyUpdate', function () {
-    let form=$(this).siblings('.updateReplyForm');
+    let form = $(this).siblings('.updateReplyForm');
     let update = $(this).closest('.text-break').find('.update');
     let updateReplyBox = $(this).closest('.updateReplyBox');
     let user = $(this).closest('.text-break').find('.userTag');
@@ -388,11 +404,11 @@ $(document).on('click', '.replyUpdate', function () {
     if (user.length == 0) {
         comments = form.find('.updateComments').val();
     } else {
-        comments ='<p class="userTag" style="font-weight: 900;">' + user.text() + '</p> ' +'<p class="text-muted my-2 comments">'+ form.find('.updateComments').val()+'</p>'
+        comments = '<p class="userTag" style="font-weight: 900;">' + user.text() + '</p> ' + '<p class="text-muted my-2 comments">' + form.find('.updateComments').val() + '</p>'
     }
-    let id =$(this).data('id');
+    let id = $(this).data('id');
     $.ajax({
-        url: '/comments/updateReply/'+id,
+        url: '/comments/updateReply/' + id,
         method: 'POST',
         data: {'comments': comments},
         success: function (data) {
@@ -415,14 +431,13 @@ $(document).on('click', '.replyUpdate', function () {
     })
 
 
-
 });
 
 $(document).on('click', '.delete', function () {
     let content = $(this).closest('div.row.my-1');
-    let id =$(this).data('id');
+    let id = $(this).data('id');
     $.ajax({
-        url: '/comments/deleteReply/'+id,
+        url: '/comments/deleteReply/' + id,
         method: 'POST',
         success: function (data) {
             if (data == "1") {

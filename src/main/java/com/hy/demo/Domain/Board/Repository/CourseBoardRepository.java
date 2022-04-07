@@ -12,6 +12,13 @@ public interface CourseBoardRepository extends JpaRepository<CourseBoard, Long>,
     public List<CourseBoardDto> findByCourseIdNotContents(Long courseId);
 
     Optional<List<CourseBoard>> findByCourseId(Long courseId);
+
     Optional<CourseBoard> findById(Long courseBoardId);
+
     CourseBoard findByCourseBoardId(Long courseBoardId);
+
+    Long countViewByCourseId(Long courseId);
+
+    public List<CourseBoardDto> findRankViewByCourseId(Long courseId);
+
 }

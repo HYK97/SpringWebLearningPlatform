@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Map;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
@@ -24,7 +25,7 @@ import static com.hy.demo.Utils.ObjectUtils.isEmpty;
  * modifyCourseEvaluation -> modify
  * insert -> add
  * delete -> delete
- * */
+ */
 
 @Service
 public class CourseEvaluationService {
@@ -58,7 +59,7 @@ public class CourseEvaluationService {
                         .user(user)
                         .build();
             } else { //일반 수강평일때
-                CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(user.getUsername(), courseLid,null);
+                CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findByUsernameAndCourseIdAndId(user.getUsername(), courseLid, null);
                 if (isEmpty(findCourseEvaluation)) {
                     build = CourseEvaluation.builder().course(course)
                             .comments(content)
@@ -131,5 +132,20 @@ public class CourseEvaluationService {
         }
     }
 
+    public Double avgDateScope(Long courseId, String date) {
+        return courseEvaluationRepository.findDateScopeAvgByCourseId(courseId, date);
+    }
+
+    public Map monthlyToDayScopeAvg(Long courseId, String date) {
+        return courseEvaluationRepository.findMonthlyToDayScopeAvgByCourseId(courseId, date);
+    }
+
+    public Map thisYearToMonthlyScopeAvg(Long courseId, String date) {
+        return courseEvaluationRepository.findThisYearToMonthlyScopeAvgByCourseId(courseId, date);
+    }
+
+    public Map tenYearToYearScopeAvg(Long courseId, String date) {
+        return courseEvaluationRepository.findTenYearToYearScopeAvgByCourseId(courseId, date);
+    }
 
 }
