@@ -23,4 +23,7 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
 
     Map countTenYearToYearRegisteredUserByCourseId(Long courseId, String date);
 
+    void nativeQuery(Long courseId);
+
+
 }
