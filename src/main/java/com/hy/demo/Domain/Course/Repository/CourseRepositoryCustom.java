@@ -22,4 +22,7 @@ public interface CourseRepositoryCustom {
     Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable);
 
     Optional<Course> findByUserAndCourseId(User findUser, Long courseId);
+
+    Page<CourseDto> findCourseDtoByCourseNameAndUserId(String courseName, Pageable pageable, Long userId);
+
 }

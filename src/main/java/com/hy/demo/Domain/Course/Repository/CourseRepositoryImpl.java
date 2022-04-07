@@ -74,6 +74,10 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         return userId != null ? course.user.id.eq(userId) : null;
     }
 
+    private BooleanExpression userCourseUserIdEq(Long userId) {
+        return userId != null ? userCourse.user.id.eq(userId) : null;
+    }
+
     private BooleanExpression courseNameContains(String courseName) {
         return courseName != null ? course.courseName.contains(courseName) : null;
     }
@@ -83,6 +87,16 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         return applyPagination(pageable, query ->
                 getCourseDtoJPAQuery()
                         .where(course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
+        );
+    }
+
+    public Page<CourseDto> findCourseDtoByCourseNameAndUserId(String courseName, Pageable pageable, Long userId) {
+        return applyPagination(pageable, query ->
+                getSelectConstructorCourseDto()
+                        .from(userCourse)
+                        .leftJoin(userCourse.course, course)
+                        .leftJoin(course.user, user)
+                        .where(userCourseUserIdEq(userId), course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
         );
     }
 
