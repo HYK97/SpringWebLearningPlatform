@@ -38,32 +38,30 @@
         {{#headerView}}
             <div class="carousel-item carousel-item-box ">
                 <div class="p-4 p-md-5 carousel-items  row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-white rounded">
-                    <div class="col-md-6 ">
-
-
+                    <div class="col-md-6 d-flex justify-content-end ">
                         {{#thumbnail}}
                             <a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top"
-                                                                          width="100%"
-                                                                          height="350px" src="{{thumbnail}}"></a>
+                                                                          style="width:50rem ; height:350px"
+                                                                          src="{{thumbnail}}"></a>
 
                         {{/thumbnail}}
 
                         {{^thumbnail}}
                             <a href="/course/detailcourse?id={{id}}">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="350px"
+                            <svg class="bd-placeholder-img card-img-top" width="50rem" height="350px"
                                  xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
                                  preserveAspectRatio="xMidYMid slice" focusable="false"><title>썸네일없음</title>
-                                <rect width="100%" height="100%" fill="gray"></rect>
+                                <rect width="50rem" height="100%" fill="gray"></rect>
                                 <text x="50%" y="50%" fill="#eceeef" dy=".3em">썸네일없음</text>
                             </svg>
                             </a>
                         {{/thumbnail}}
 
                     </div>
-                    <div class="col-md-6 ">
-                        <h1 class="display-4 fst-italic my-4">{{courseName}}</h1>
-                        <p class="lead my-3">강사명 : {{teachName}}({{user.username}})</p>
-                        <p class="lead mb-0">
+                    <div class="col-md-6 info">
+                        <h1 class="sm-mg display-4 fst-italic my-4">{{courseName}}</h1>
+                        <p class="sm-mg lead my-3">강사명 : {{teachName}}({{user.username}})</p>
+                        <p class="sm-mg  lead mb-0">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <div class="star-ratings">
@@ -79,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p id="date" class="text-muted my-3 ">
+                        <p id="date" class=" sm-mg text-muted my-3 ">
                             강좌 생성일 : {{createDate}}
                         </p>
                     </div>

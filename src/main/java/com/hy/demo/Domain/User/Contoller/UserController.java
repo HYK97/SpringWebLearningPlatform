@@ -39,7 +39,7 @@ public class UserController {
             return "403";
         }
         model.addAttribute("user", userInfo);
-        return "/user/userInfo";
+        return "user/userInfo";
     }
 
 
@@ -60,7 +60,7 @@ public class UserController {
     @GetMapping("security")
     public String security(@AuthenticationPrincipal PrincipalDetails principalDetails, Authentication authentication) {
 
-        return "/user/userSecurity";
+        return "user/userSecurity";
     }
 
     @PostMapping("getUser")

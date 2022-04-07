@@ -25,6 +25,7 @@ public class CourseBoard extends BaseEntity {
     @Column(name = "CourseBoard_id")
     private Long id;
     private String title;
+    @Column(length = 100000000)
     private String contents;
     private Long views;
 

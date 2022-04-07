@@ -53,10 +53,20 @@ $('.modal-close').on('click', function () {
 });
 
 $('#photoBtn').on('change', function () {
-    $('.them_img').empty().append('<img id="image" src="">');
+    $('.them_img').empty().append('<img id="image" src="" style="height: auto; width: 100%">');
     var image = $('#image');
     var imgFile = $('#photoBtn').val();
     var fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+    var width =$( window ).width();
+    var height;
+    if (width < 530) {
+        width = $(window).width() - 50;
+        height = 400;
+    }
+    else{
+        width =470;
+        height =500;
+    }
 
     if (imgFile.match(fileForm)) {
         var reader = new FileReader();
@@ -66,8 +76,11 @@ $('#photoBtn').on('change', function () {
                 dragMode: 'move',
                 viewMode: 1,
                 aspectRatio: 1,
-                minContainerWidth: 470,
-                minContainerHeight: 500
+                autoCropArea: 1,
+                maxContainerWidth: width,
+                maxContainerHeight: height,
+                minContainerWidth: width,
+                minContainerHeight: height
             });
         };
         reader.readAsDataURL(event.target.files[0]);
