@@ -1,6 +1,31 @@
 var chart1 = null;
 var chart2 = null;
 var chart3 = null;
+
+const rankView =
+    '                           {{#data}}\n' +
+    '                              <tr>\n' +
+    '                                    <td>\n' +
+    '                                        <div class="d-flex px-2 py-1">\n' +
+    '                                          \n' +
+    '                                            <div class="d-flex flex-column justify-content-center">\n' +
+    '                                                <h6 class="mb-0 text-sm">{{id}}</h6>\n' +
+    '                                            </div>\n' +
+    '                                        </div>\n' +
+    '                                    </td>\n' +
+    '                                    <td>\n' +
+    '                                        <div class="avatar-group mt-2">\n' +
+    '                                            <p>{{title}}</p>\n' +
+    '                                        </div>\n' +
+    '                                    </td>\n' +
+    '                                    <td class="align-middle text-center text-sm">\n' +
+    '                                        <span class="text-xs font-weight-bold">{{views}}</span>\n' +
+    '                                    </td>\n' +
+    '                                    <td class="align-middle  text-center text-sm">\n' +
+    '                                        <span class="text-xs font-weight-bold">{{commentsCount}} </span>\n' +
+    '                                    </td>\n' +
+    '                                 </tr>  ' +
+    '                                 {{/data}}'
 $(document).on("click", '#statisticsBtn', function () {
     $("#percentUser").empty();
     $("#percentScope").empty();
@@ -21,6 +46,7 @@ function getDashboardData() {
         type: 'post',
         async: false,
         success: function (data) {
+            $('#resultRank').empty();
             var userPercent = data.todayRegisteredUser - data.yesterdayRegisteredUser;
             var scopePercent =  data.todayScope-data.yesterdayScope;
             var commentPercent = data.todayComment - data.yesterdayComment
@@ -28,15 +54,21 @@ function getDashboardData() {
             drawChart1(data.DailyForAMonthUser);
             drawChart2(data.DailyForAMonthScope);
             drawChart3(data.DailyForAMonthComments);
-
             $("#todayScope").text(data.todayScope);
             $("#todayComment").text(data.todayComment);
             $("#allView").text(data.allView);
-
-
             userPercent >= 0 ? $("#percentUser").append('어제대비 <span class="text-success text-sm font-weight-bolder">+' + userPercent + '명 </span>') : $("#percentUser").append('어제 대비 <span class="text-danger text-sm font-weight-bolder">' + userPercent + '명 </span>')
             scopePercent >= 0 ? $("#percentScope").append('어제대비 <span class="text-success text-sm font-weight-bolder">' + scopePercent.toFixed(1) + ' 점 증가 </span>') : $("#percentScope").append('어제 대비 <span class="text-danger text-sm font-weight-bolder">"' + scopePercent.toFixed(1) + '"점 감소 </span>')
             commentPercent >= 0 ? $("#percentComment").append('어제대비 <span class="text-success text-sm font-weight-bolder">+' + commentPercent + '개 </span>') : $("#percentComment").append('어제 대비 <span class="text-danger text-sm font-weight-bolder">' + commentPercent + '개 </span>')
+
+            let jsonData = {
+                "data": data.RankingView
+            };
+
+            Mustache.parse(rankView);
+            var rendered = Mustache.render(rankView, jsonData);
+            $('#resultRank').html(rendered);
+
         },
         error: function (request, error) {
             alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
