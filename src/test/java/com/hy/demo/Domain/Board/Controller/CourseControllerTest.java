@@ -165,7 +165,7 @@ class CourseControllerTest {
         //given
 
         PageRequest page = PageRequest.of(0, 9);
-        List<CourseDto> findDto = courseRepository.findByCourseNameAndUserDTO("", page).getContent();
+        List<CourseDto> findDto = courseRepository.findCourseDtoByCourseName("", page).getContent();
         List<CourseDto> sortDto = new ArrayList<>();
         ListIterator li = findDto.listIterator(findDto.size());
         while (li.hasPrevious()) {
@@ -202,7 +202,7 @@ class CourseControllerTest {
     public void viewSearchSuccessTest() throws Exception {
         //given
         PageRequest page = PageRequest.of(0, 9);
-        List<CourseDto> findDto = courseRepository.findByCourseNameAndUserDTO("2", page).getContent();
+        List<CourseDto> findDto = courseRepository.findCourseDtoByCourseName("2", page).getContent();
 
         // when
         mvc.perform(get("/course/search").param("search", "2"))

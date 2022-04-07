@@ -17,7 +17,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
 
     Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
 
-    Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable);
+    Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable);
 
     CourseDto findByIdAndUserDTO(Long id);
 
@@ -25,11 +25,11 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
 
     public List<CourseDto> findByRandomId(int amount);
 
-    Optional<Course> findByUserAndId(User user,Long id);
+    Optional<Course> findByUserAndId(User user, Long id);
 
     void deleteById(Long id);
 
     Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable);
 
-    Optional<Course> findByUserAndCourseId(User findUser,Long courseId);
+    Optional<Course> findByUserAndCourseId(User findUser, Long courseId);
 }
