@@ -3,7 +3,7 @@ package com.hy.demo.Domain.Course.Repository;
 import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Entity.QCourseEvaluation;
-import com.hy.demo.Utils.DateFormater;
+import com.hy.demo.Utils.DateFormatter;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -168,7 +168,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
     public Double findDateScopeAvgByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         return select(courseEvaluation.scope.avg())
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.course, course)
@@ -178,7 +178,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
 
     public Map findMonthlyToDayScopeAvgByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
                 .select(courseEvaluation.scope.avg(), dayFormat)
@@ -205,7 +205,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
 
     public Map findThisYearToMonthlyScopeAvgByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
                 .select(courseEvaluation.scope.avg(), monthFormat)
@@ -233,7 +233,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     }
 
     public Map findTenYearToYearScopeAvgByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(courseEvaluation.scope.avg(), yearFormat)
                 .from(courseEvaluation)
