@@ -43,9 +43,9 @@ public class CourseBoardController {
     @Autowired
     private CourseBoardService courseBoardService;
 
-
     @Autowired
     private CourseService courseService;
+
     @Autowired
     private CommentsService commentsService;
 
@@ -54,8 +54,6 @@ public class CourseBoardController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserCourseRepository userRepository;
 
     @Autowired
     private FileService fileService;
@@ -154,18 +152,35 @@ public class CourseBoardController {
         Long allView = courseBoardService.countAllView(id);
         map.put("allView", allView);
 
-        //1달 집계데이터
+        //1달 가입자 집계
         Map DailyForAMonthUser = userService.countMonthlyToDayRegisteredUser(id, today);
         map.put("DailyForAMonthUser", DailyForAMonthUser);
+
+        //1달 별점 집계
+        Map DailyForAMonthScope = courseEvaluationService.monthlyToDayScopeAvg(id, yesterday);
+        map.put("DailyForAMonthScope", DailyForAMonthScope);
+
+        //1달 댓글집계
+        Map DailyForAMonthComments = commentsService.monthlyToDayComments(id, yesterday);
+        map.put("DailyForAMonthComments", DailyForAMonthComments);
+
+        //courseBoard 랭킹뷰
+
+        List<CourseBoardDto> courseBoardDtos = courseBoardService.rankView(id);
+        map.put("RankingView", courseBoardDtos);
 
 
         return map;
     }
 
 
+    /**
+     * UserRegistered
+     */
+
     @PostMapping("/userDayChart/{id}")
     @ResponseBody
-    public Map userDayChart(@PathVariable Long id){
+    public Map userDayChart(@PathVariable Long id) {
 
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -177,7 +192,7 @@ public class CourseBoardController {
 
     @PostMapping("/userMonthChart/{id}")
     @ResponseBody
-    public Map userMonthChart(@PathVariable Long id){
+    public Map userMonthChart(@PathVariable Long id) {
 
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -188,7 +203,7 @@ public class CourseBoardController {
 
     @PostMapping("/userYearChart/{id}")
     @ResponseBody
-    public Map userYearChart(@PathVariable Long id){
+    public Map userYearChart(@PathVariable Long id) {
 
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -198,6 +213,80 @@ public class CourseBoardController {
     }
 
 
+    /**
+     * Scope
+     */
+
+    @PostMapping("/scopeDayChart/{id}")
+    @ResponseBody
+    public Map scopeDayChart(@PathVariable Long id) {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = courseEvaluationService.monthlyToDayScopeAvg(id, today);
+        return DailyForAMonthUser;
+    }
+
+    @PostMapping("/scopeMonthChart/{id}")
+    @ResponseBody
+    public Map scopeMonthChart(@PathVariable Long id) {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = courseEvaluationService.thisYearToMonthlyScopeAvg(id, today);
+        return DailyForAMonthUser;
+    }
+
+    @PostMapping("/scopeYearChart/{id}")
+    @ResponseBody
+    public Map scopeYearChart(@PathVariable Long id) {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = courseEvaluationService.tenYearToYearScopeAvg(id, today);
+        return DailyForAMonthUser;
+    }
+
+
+    /**
+     * comments
+     */
+
+    @PostMapping("/commentsDayChart/{id}")
+    @ResponseBody
+    public Map commentsDayChart(@PathVariable Long id) {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = commentsService.monthlyToDayComments(id, today);
+        return DailyForAMonthUser;
+    }
+
+    @PostMapping("/commentsMonthChart/{id}")
+    @ResponseBody
+    public Map commentsMonthChart(@PathVariable Long id) {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = commentsService.thisYearToMonthlyComments(id, today);
+        return DailyForAMonthUser;
+    }
+
+    @PostMapping("/commentsYearChart/{id}")
+    @ResponseBody
+    public Map commentsYearChart(@PathVariable Long id) {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = now.format(formatter);
+        Map DailyForAMonthUser = commentsService.tenYearToYearComments(id, today);
+        return DailyForAMonthUser;
+    }
 
 
     @GetMapping({"/getCourseBoard/{id}"})
