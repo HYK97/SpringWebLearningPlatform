@@ -3,7 +3,7 @@ package com.hy.demo.Domain.Comments.Repository;
 import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Comments.Entity.QComments;
-import com.hy.demo.Utils.DateFormater;
+import com.hy.demo.Utils.DateFormatter;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -23,7 +23,6 @@ import java.util.Optional;
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Comments.Entity.QComments.comments1;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
-import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
 
 
@@ -84,7 +83,7 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
 
     public Long countDateCommentCountByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         return select(comments1.count())
                 .from(comments1)
                 .leftJoin(comments1.courseBoard, courseBoard)
@@ -101,7 +100,7 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
 
 
     public Map countMonthlyToDayCommentsByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
                 .select(comments1.count(), dayFormat)
@@ -129,7 +128,7 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
 
 
     public Map countThisYearToMonthlyCommentsByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
                 .select(comments1.count(), monthFormat)
@@ -158,7 +157,7 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
     }
 
     public Map countTenYearToYearCommentsByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(comments1.count(), yearFormat)
                 .from(comments1)

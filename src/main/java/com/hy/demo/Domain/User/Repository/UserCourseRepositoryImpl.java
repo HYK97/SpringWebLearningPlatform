@@ -1,7 +1,7 @@
 package com.hy.demo.Domain.User.Repository;
 
 import com.hy.demo.Domain.User.Entity.UserCourse;
-import com.hy.demo.Utils.DateFormater;
+import com.hy.demo.Utils.DateFormatter;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Expressions;
@@ -34,7 +34,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     public Long countDateRegisteredUserCountByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         return select(userCourse.user.count())
                 .from(userCourse)
                 .where(userCourse.createDate.between(localDateParser.startDate(), localDateParser.endDate()).and(course.id.eq(courseId)))
@@ -44,7 +44,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     public Map countMonthlyToDayRegisteredUserByCourseId(Long courseId, String date) {
 
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(dayFormat.count(), dayFormat)
                 .from(userCourse)
@@ -69,7 +69,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
 
     public Map countThisYearToMonthlyRegisteredUserByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(
                 monthFormat.count(),
@@ -100,7 +100,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
     }
 
     public Map countTenYearToYearRegisteredUserByCourseId(Long courseId, String date) {
-        DateFormater localDateParser = new DateFormater(date);
+        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(
                 yearFormat.count(),

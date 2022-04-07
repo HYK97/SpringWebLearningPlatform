@@ -9,10 +9,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-public class DateFormater {
+public class DateFormatter {
     private LocalDate searchDate;
 
-    public DateFormater(String currentDate) {
+    public DateFormatter(String currentDate) {
 
         this.searchDate = LocalDate.parse(currentDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -45,7 +45,7 @@ public class DateFormater {
     }
 
     public Timestamp tenYearAgo() {
-        return Timestamp.valueOf(LocalDateTime.of(this.searchDate.getYear() - 10, 1, 1, 0, 0, 0));
+        return Timestamp.valueOf(LocalDateTime.of(this.searchDate.minusYears(10).getYear(), 1, 1, 0, 0, 0));
     }
 
 
