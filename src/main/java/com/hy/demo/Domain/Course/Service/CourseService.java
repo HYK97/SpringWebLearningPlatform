@@ -40,10 +40,11 @@ public class CourseService {
     }
 
 
-    public Page<CourseDto> findCourseList(Pageable pageable) {
-        Page<CourseDto> results = courseRepository.findCourseDtoByCourseName("", pageable);
+    public Page<CourseDto> findCourseList(Pageable pageable, String search) {
+        Page<CourseDto> results = courseRepository.findCourseDtoByCourseName(search, pageable);
         return results;
     }
+
 
     public CourseDto findDetailCourse(Long id) {
 
@@ -66,11 +67,6 @@ public class CourseService {
         return results;
     }
 
-
-    public Page<CourseDto> findSearchCourseList(String search, Pageable pageable) {
-        Page<CourseDto> results = courseRepository.findCourseDtoByCourseName(search, pageable);
-        return results;
-    }
 
     public void addCourse(Course course) {
         courseRepository.save(course);
