@@ -10,7 +10,7 @@ $(document).ready(function() {
                     $('#manager').remove();
                 } else {
                     $('#user').after('<li><a id="manager" class="dropdown-item" href="/course/createview">강의 생성</a></li>');
-                    $('#user').after('<li><a id="manager" class="dropdown-item" href="/course/info/mycourselist">강의 관리</a></li>');
+                    $('#user').after('<li><a id="manager" class="dropdown-item" href="/course/info/myCourseList">강의 관리</a></li>');
                 }
                 if (data.profileImage != null) {
                     $("#header-profileImage").attr('src',data.profileImage);

@@ -35,7 +35,7 @@
                 <h1 class="fw-light">생성한 강의 목록</h1>
                 <p>
                 </p>
-                <form method="get" action="/course/info/myCourseListSearch" class="d-flex">
+                <form method="get" action="/course/info/myCourseList" class="d-flex">
                     <input class="form-control me-sm-2" type="text" name="search" placeholder="강좌명입력">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 </form>
@@ -143,20 +143,20 @@
             for (var num = startPage; num <= endPage; num++) {
                 if (num == pageNumber) {
                     if (URLSearch.get('search') != null) {
-                        html += '<li class="page-item active"><a class="page-link" href="/course/info/myCourseListSearch?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item active"><a class="page-link" href="/course/info/myCourseList?search=' + search + '&page=' + num + '">' + num + '</a></li>';
                     } else {
-                        html += '<li class="page-item active"><a class="page-link" href="/course/info/mycourselist?page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item active"><a class="page-link" href="/course/info/myCourseList?page=' + num + '">' + num + '</a></li>';
                     }
                 } else {
                     if (URLSearch.get('search') != null) {
-                        html += '<li class="page-item"><a class="page-link" href="/course/info/myCourseListSearch?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item"><a class="page-link" href="/course/info/myCourseList?search=' + search + '&page=' + num + '">' + num + '</a></li>';
                     } else {
-                        html += '<li class="page-item"><a class="page-link" href="/course/info/mycourselist?page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item"><a class="page-link" href="/course/info/myCourseList?page=' + num + '">' + num + '</a></li>';
                     }
                 }
             }
         } else if (totalElements == 0 && URLSearch.get('search') != null) {
-            location.href = '/course/info/mycourselist';
+            location.href = '/course/info/myCourseList';
             alert("검색결과가 없습니다");
         }
         $("#previous").after(html);
@@ -165,9 +165,9 @@
             $("#previous").removeClass("disabled");
             if (URLSearch.get('search') != null) {
 
-                $("#previousAtag").attr("href", '/course/info/myCourseListSearch?search=' + search + '&page=' + preNum);
+                $("#previousAtag").attr("href", '/course/info/myCourseList?search=' + search + '&page=' + preNum);
             } else {
-                $("#previousAtag").attr("href", '/course/info/mycourselist?page=' + preNum);
+                $("#previousAtag").attr("href", '/course/info/myCourseList?page=' + preNum);
             }
         } else {
             $("#previous").addClass("disabled");
@@ -177,9 +177,9 @@
         if (Next) {
             $("#next").removeClass("disabled");
             if (URLSearch.get('search') != null) {
-                $("#nextAtag").attr("href", '/course/info/myCourseListSearch?search=' + search + '&page=' + nexNum);
+                $("#nextAtag").attr("href", '/course/info/myCourseList?search=' + search + '&page=' + nexNum);
             } else {
-                $("#nextAtag").attr("href", '/course/info/mycourselist?page=' + nexNum);
+                $("#nextAtag").attr("href", '/course/info/myCourseList?page=' + nexNum);
             }
         } else {
             $("#next").addClass("disabled");
