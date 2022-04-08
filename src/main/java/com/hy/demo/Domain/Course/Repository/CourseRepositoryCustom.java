@@ -13,7 +13,7 @@ public interface CourseRepositoryCustom {
 
     public Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
 
-    public Page<CourseDto> findByCourseNameAndUserDTO(String courseName, Pageable pageable);
+    Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable);
 
     public List<CourseDto> findByRandomId(int amount);
 
@@ -21,5 +21,8 @@ public interface CourseRepositoryCustom {
 
     Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable);
 
-    Optional<Course> findByUserAndCourseId(User findUser,Long courseId);
+    Optional<Course> findByUserAndCourseId(User findUser, Long courseId);
+
+    Page<CourseDto> findCourseDtoByCourseNameAndUserId(String courseName, Pageable pageable, Long userId);
+
 }

@@ -86,7 +86,7 @@ public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implem
                 .leftJoin(courseBoard.comments, comments1)
                 .where(courseBoard.course.id.eq(courseId))
                 .groupBy(courseBoard)
-                .orderBy(comments1.count().asc())
+                .orderBy(comments1.count().desc())
                 .fetch();
     }
 

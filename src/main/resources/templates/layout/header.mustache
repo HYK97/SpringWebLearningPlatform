@@ -44,8 +44,8 @@
 
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            <form method="get" action="/course/view" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                <input class="form-control me-sm-2" type="search" name="search" placeholder="강의 검색" aria-label="Search">
             </form>
 
             <div class="dropdown text-end">
@@ -54,7 +54,7 @@
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                     <li><a class="dropdown-item" href="/user/info">내정보</a></li>
-                    <li><a id="user" class="dropdown-item" href="#">수강중인 강의</a></li>
+                    <li><a id="user" class="dropdown-item" href="/course/myCourseView">수강중인 강의</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
                 </ul>
