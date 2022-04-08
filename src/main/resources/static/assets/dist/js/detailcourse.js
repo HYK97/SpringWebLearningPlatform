@@ -380,10 +380,13 @@ function joinPopOver() { //팝오버
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
             return new bootstrap.Popover(popoverTriggerEl)
         })
-        var exampleEl = document.getElementById('joinBtn');
-        popover = new bootstrap.Popover(exampleEl);
-        popover.show();
-        trigger = false;
+        var btn = document.getElementById('joinBtn');
+        if (btn != null) {
+
+            popover = new bootstrap.Popover(btn);
+            popover.show();
+            trigger = false;
+        }
     }
     $(document).on("click", "body", function () {
         if (checkBtn == 'true' && trigger == false) {
