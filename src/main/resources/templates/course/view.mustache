@@ -38,7 +38,7 @@
                 <p class="lead text-muted">원하는 기술을 배우고 업그레이드 하세요.</p>
                 <p>
                 </p>
-                <form method="get" action="/course/search" class="d-flex">
+                <form method="get" action="/course/view" class="d-flex">
                     <input class="form-control me-sm-2" type="text" name="search" placeholder="강좌명이나 강사명을 검색해주세요!">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 </form>
@@ -145,13 +145,13 @@
             for (var num = startPage; num <= endPage; num++) {
                 if (num == pageNumber) {
                     if (URLSearch.get('search') != null) {
-                        html += '<li class="page-item active"><a class="page-link" href="/course/search?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item active"><a class="page-link" href="/course/view?search=' + search + '&page=' + num + '">' + num + '</a></li>';
                     } else {
                         html += '<li class="page-item active"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
                     }
                 } else {
                     if (URLSearch.get('search') != null) {
-                        html += '<li class="page-item"><a class="page-link" href="/course/search?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item"><a class="page-link" href="/course/view?search=' + search + '&page=' + num + '">' + num + '</a></li>';
                     } else {
                         html += '<li class="page-item"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
                     }
@@ -167,7 +167,7 @@
             $("#previous").removeClass("disabled");
             if (URLSearch.get('search') != null) {
 
-                $("#previousAtag").attr("href", '/course/search?search=' + search + '&page=' + preNum);
+                $("#previousAtag").attr("href", '/course/view?search=' + search + '&page=' + preNum);
             } else {
                 $("#previousAtag").attr("href", '/course/view?page=' + preNum);
             }
@@ -181,7 +181,7 @@
         if (Next) {
             $("#next").removeClass("disabled");
             if (URLSearch.get('search') != null) {
-                $("#nextAtag").attr("href", '/course/search?search=' + search + '&page=' + nexNum);
+                $("#nextAtag").attr("href", '/course/view?search=' + search + '&page=' + nexNum);
             } else {
                 $("#nextAtag").attr("href", '/course/view?page=' + nexNum);
             }
