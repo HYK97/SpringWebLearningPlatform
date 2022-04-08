@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,13 +56,12 @@ public class CourseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping({"/view"})
-    public String course(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public String course(@RequestParam(defaultValue = "") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        Page<CourseDto> courseDtos = courseService.findCourseList(pageable);
+        Page<CourseDto> courseDtos = courseService.findCourseList(pageable, search);
         pagingDto(model, courseDtos);
         return "course/view";
     }
-
 
     @GetMapping({"/detailcourse"})
     public String detailcourse(String id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -86,20 +86,8 @@ public class CourseController {
     }
 
 
-    @GetMapping({"/search"})
-
-    public String courseSearch(Model model, String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-
-        Page<CourseDto> courseDtos = courseService.findSearchCourseList(search, pageable);
-        pagingDto(model, courseDtos);
-
-        return "course/view";
-
-    }
-
-
     @PostMapping({"/application"})
-    public String courseSearch(String id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String application(String id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         Long Lid = Long.parseLong(id);
         try {
@@ -260,23 +248,28 @@ public class CourseController {
 
     }
 
-    @GetMapping("/info/mycourselist")
-    public String myCourseList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        User findUser = userService.findByUsername(principalDetails.getUser());
-        Page<CourseDto> myCourseList = courseService.findMyCourseList("", findUser.getId(), pageable);
-
-        pagingDto(model, myCourseList);
-        return "course/mycourselist";
-    }
-
-    @GetMapping("/info/myCourseListSearch")
-    public String myCourseListSearch(Model model, String search, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/info/myCourseList")
+    public String myCourseList(Model model, @RequestParam(defaultValue = "") String search, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         User findUser = userService.findByUsername(principalDetails.getUser());
         Page<CourseDto> myCourseList = courseService.findMyCourseList(search, findUser.getId(), pageable);
+
         pagingDto(model, myCourseList);
-        return "course/mycourselist";
+        return "course/myCreateCourse";
     }
 
+
+    @GetMapping({"/myCourseView"})
+    public String myCourseView(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(defaultValue = "") String search) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        User user = principalDetails.getUser();
+        Page<CourseDto> courseDtos;
+        try {
+            courseDtos = courseService.findMyCourseList(pageable, user, search);
+        } catch (AccessDeniedException e) {
+            return "error403";
+        }
+        pagingDto(model, courseDtos);
+        return "course/myCourseView";
+    }
 
 }
 

@@ -34,11 +34,10 @@
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">새로운 강의를 찾아보세요!</h1>
-                <p class="lead text-muted">원하는 기술을 배우고 업그레이드 하세요.</p>
+                <h1 class="fw-light">나의 수강 목록</h1>
                 <p>
                 </p>
-                <form method="get" action="/course/view" class="d-flex">
+                <form method="get" action="/course/myCourseView" class="d-flex">
                     <input class="form-control me-sm-2" type="text" name="search" placeholder="강좌명이나 강사명을 검색해주세요!">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 </form>
@@ -59,7 +58,6 @@
                                 <a href="/course/detailcourse?id={{id}}"><img class="bd-placeholder-img card-img-top"
                                                                               width="100%" height="300px"
                                                                               src="{{thumbnail}}"></a>
-
                             {{/thumbnail}}
 
                             {{^thumbnail}}
@@ -145,20 +143,20 @@
             for (var num = startPage; num <= endPage; num++) {
                 if (num == pageNumber) {
                     if (URLSearch.get('search') != null) {
-                        html += '<li class="page-item active"><a class="page-link" href="/course/view?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item active"><a class="page-link" href="/course/myCourseView?search=' + search + '&page=' + num + '">' + num + '</a></li>';
                     } else {
-                        html += '<li class="page-item active"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item active"><a class="page-link" href="/course/myCourseView?page=' + num + '">' + num + '</a></li>';
                     }
                 } else {
                     if (URLSearch.get('search') != null) {
-                        html += '<li class="page-item"><a class="page-link" href="/course/view?search=' + search + '&page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item"><a class="page-link" href="/course/myCourseView?search=' + search + '&page=' + num + '">' + num + '</a></li>';
                     } else {
-                        html += '<li class="page-item"><a class="page-link" href="/course/view?page=' + num + '">' + num + '</a></li>';
+                        html += '<li class="page-item"><a class="page-link" href="/course/myCourseView?page=' + num + '">' + num + '</a></li>';
                     }
                 }
             }
         } else if (totalElements == 0 && URLSearch.get('search') != null) {
-            location.href = '/course/view';
+            location.href = '/course/myCourseView';
             alert("검색결과가 없습니다");
         }
         $("#previous").after(html);
@@ -167,9 +165,9 @@
             $("#previous").removeClass("disabled");
             if (URLSearch.get('search') != null) {
 
-                $("#previousAtag").attr("href", '/course/view?search=' + search + '&page=' + preNum);
+                $("#previousAtag").attr("href", '/course/myCourseView?search=' + search + '&page=' + preNum);
             } else {
-                $("#previousAtag").attr("href", '/course/view?page=' + preNum);
+                $("#previousAtag").attr("href", '/course/myCourseView?page=' + preNum);
             }
         } else {
             $("#previous").addClass("disabled");
@@ -181,9 +179,9 @@
         if (Next) {
             $("#next").removeClass("disabled");
             if (URLSearch.get('search') != null) {
-                $("#nextAtag").attr("href", '/course/view?search=' + search + '&page=' + nexNum);
+                $("#nextAtag").attr("href", '/course/myCourseView?search=' + search + '&page=' + nexNum);
             } else {
-                $("#nextAtag").attr("href", '/course/view?page=' + nexNum);
+                $("#nextAtag").attr("href", '/course/myCourseView?page=' + nexNum);
             }
         } else {
             $("#next").addClass("disabled");

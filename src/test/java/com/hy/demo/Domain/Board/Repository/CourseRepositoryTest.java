@@ -1,13 +1,12 @@
 package com.hy.demo.Domain.Board.Repository;
 
 import com.hy.demo.Domain.Course.Dto.CourseDto;
-import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,12 +20,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.assertj.core.groups.Tuple.tuple;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -55,8 +52,9 @@ class CourseRepositoryTest {
     Long course1Id;
     Long course2Id;
     Long managerId1;
+
     @BeforeEach
-    public void setup(){
+    public void setup() {
 
 
         User manager1 = User.builder()
@@ -88,7 +86,6 @@ class CourseRepositoryTest {
                 .build();
 
 
-
         Course course1 = Course.builder()
                 .courseName("test1")
                 .user(manager1)
@@ -112,21 +109,20 @@ class CourseRepositoryTest {
                 .teachName("manager2")
                 .build();
 
-        UserCourse userCourse1=UserCourse.builder()
+        UserCourse userCourse1 = UserCourse.builder()
                 .course(course1)
                 .user(user1)
                 .build();
 
-        UserCourse userCourse2=UserCourse.builder()
+        UserCourse userCourse2 = UserCourse.builder()
                 .course(course1)
                 .user(user2)
                 .build();
 
-        UserCourse userCourse3=UserCourse.builder()
+        UserCourse userCourse3 = UserCourse.builder()
                 .course(course2)
                 .user(user1)
                 .build();
-
 
 
         managerId1 = userRepository.save(manager1).getId();
@@ -144,8 +140,9 @@ class CourseRepositoryTest {
         userCourseRepository.save(userCourse3);
 
     }
+
     @AfterEach
-    public void after(){
+    public void after() {
         userRepository.deleteAll();
         courseRepository.deleteAll();
     }
@@ -154,21 +151,21 @@ class CourseRepositoryTest {
     public void searchCourse() {
         //when
         //강좌명으로검색
-        AssertCourse(0,3,"test",3,"User","username",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
-        AssertCourse(0,2,"test",2,"User","username",new String[] {"manager1","manager1"},"courseName",new String[] {"test1","test2"});
-        AssertCourse(0,3,"english",1,"User","username",new String[] {"manager2"},"courseName",new String[] {"english"});
-        AssertCourse(0,3,"false",0,"User","username",new String[]{},"courseName",new String[]{});
-        AssertCourse(0,3,"",3,"User","username",new String[] {"manager1","manager1","manager2"},"courseName",new String[] {"test1","test2","test3"});
+        AssertCourse(0, 3, "test", 3, "User", "username", new String[]{"manager1", "manager1", "manager2"}, "courseName", new String[]{"test1", "test2", "test3"});
+        AssertCourse(0, 2, "test", 2, "User", "username", new String[]{"manager1", "manager1"}, "courseName", new String[]{"test1", "test2"});
+        AssertCourse(0, 3, "english", 1, "User", "username", new String[]{"manager2"}, "courseName", new String[]{"english"});
+        AssertCourse(0, 3, "false", 0, "User", "username", new String[]{}, "courseName", new String[]{});
+        AssertCourse(0, 3, "", 3, "User", "username", new String[]{"manager1", "manager1", "manager2"}, "courseName", new String[]{"test1", "test2", "test3"});
 
         //강사명으로 검색
-        AssertCourse(0,3,"manager2",2,"teachName","",new String[]{"manager2","manager2"},"courseName",new String[]{"english","test3"});
-        AssertCourse(0,3,"manager1",2,"teachName","",new String[]{"manager1","manager1"},"courseName",new String[]{"test1","test2"});
+        AssertCourse(0, 3, "manager2", 2, "teachName", "", new String[]{"manager2", "manager2"}, "courseName", new String[]{"english", "test3"});
+        AssertCourse(0, 3, "manager1", 2, "teachName", "", new String[]{"manager1", "manager1"}, "courseName", new String[]{"test1", "test2"});
     }
 
-    private void AssertCourse(int page,int size,String courseName,int resultSize,String extracting1,String extracting2,String []contains1,String extracting3,String []contains2) {
-       //given
+    private void AssertCourse(int page, int size, String courseName, int resultSize, String extracting1, String extracting2, String[] contains1, String extracting3, String[] contains2) {
+        //given
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<CourseDto> findCourse = courseRepository.findByCourseNameAndUserDTO(courseName, pageRequest);
+        Page<CourseDto> findCourse = courseRepository.findCourseDtoByCourseName(courseName, pageRequest);
         //then
         assertThat(findCourse.getContent().size()).isEqualTo(resultSize);
         if (extracting2.equals("")) {
@@ -189,37 +186,37 @@ class CourseRepositoryTest {
 
     @Test
     public void count() throws Exception {
-    //given
+        //given
         Long count = courseRepository.count();
         //when
         assertThat(count)
-            //then
-            .isEqualTo(4);
+                //then
+                .isEqualTo(4);
     }
-    
+
     @Test
-    public void findByRandomId() throws Exception{
-    //given
-        int amount =2;
+    public void findByRandomId() throws Exception {
+        //given
+        int amount = 2;
         //when
         List<CourseDto> findRandomCourse = courseRepository.findByRandomId(2);
-    //then
+        //then
         assertThat(findRandomCourse.size()).isEqualTo(2);
     }
 
     @Test
-    public void findByUserIdAndCourseName() throws Exception{
-    //given
+    public void findByUserIdAndCourseName() throws Exception {
+        //given
         PageRequest pageRequest = PageRequest.of(0, 4);
-    //when
+        //when
         Page<CourseDto> CourseDto = courseRepository.findByUserIdAndCourseName(null, managerId1, pageRequest);
         List<CourseDto> content = CourseDto.getContent();
         //then
         assertThat(content.size()).isEqualTo(2);
-        assertThat(content).extracting("courseName","teachName","userJoinCount")
+        assertThat(content).extracting("courseName", "teachName", "userJoinCount")
                 .containsOnly(
-                        tuple("test1","manager1",2L),
-                        tuple("test2","manager1",1L)
+                        tuple("test1", "manager1", 2L),
+                        tuple("test2", "manager1", 1L)
                 );
 
     }
