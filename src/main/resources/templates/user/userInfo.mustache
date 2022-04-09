@@ -120,6 +120,15 @@
                                 </div>
                             </div>
 
+                            <div class="col-12">
+                                <label for="selfIntroduction" class="form-label">이메일</label>
+                                <input type="text" class="form-control" id="selfIntroduction" name="selfIntroduction"
+                                       placeholder="자기소개" value="{{#selfIntroduction}}{{selfIntroduction}}{{/selfIntroduction}}{{^selfIntroduction}}{{/selfIntroduction}}" required>
+                                <div class="invalid-feedback">
+                                    내용을 입력해주세요
+                                </div>
+                            </div>
+
                         {{/user}}
 
                     </div>
