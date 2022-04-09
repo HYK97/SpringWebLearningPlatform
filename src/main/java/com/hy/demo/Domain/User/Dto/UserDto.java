@@ -24,4 +24,5 @@ public class UserDto {
     private String provider;
     private String providerId;
     private String profileImage;
+    private String selfIntroduction;
 }
