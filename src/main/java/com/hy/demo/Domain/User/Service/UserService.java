@@ -138,6 +138,8 @@ public class UserService {
 
     public UserDto findUserInfo(User user) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
+
+        logger.info("findUser.changeDto().toString() = " + findUser.changeDto().toString());
         return findUser.changeDto();
 
     }
@@ -156,9 +158,10 @@ public class UserService {
 
     }
 
-    public UserDto userUpdate(User user, String email) {
+    public UserDto userUpdate(User user, UserDto update) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
-        findUser.updateEmail(email);
+        findUser.updateEmail(update.getEmail());
+        findUser.updateSelfIntroduction(update.getSelfIntroduction());
         User updateUser = userRepository.save(findUser);
         return updateUser.changeDto();
 
