@@ -1,10 +1,13 @@
 package com.hy.demo.Domain.User.Repository;
 
+import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Utils.DateFormatter;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
+import static com.hy.demo.Domain.User.Entity.QUser.user;
 import static com.hy.demo.Domain.User.Entity.QUserCourse.userCourse;
 
 
@@ -199,7 +203,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
             , userCourse.createDate);
 
     //mysql
-  /*  StringTemplate dayFormat = Expressions.stringTemplate(
+  /*  StringTemplate dayCOURSE Format = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y-%m-%d')"
             , userCourse.createDate);
 
@@ -211,6 +215,29 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
     StringTemplate yearFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y')"
             , userCourse.createDate);*/
+
+
+
+    //수강자수 가장 많이 보유한 강사순
+    public List<UserDto> findRankRandomUserById(int amount) {
+        return select(Projections.constructor(UserDto.class,
+                user.id,
+                user.username,
+                user.profileImage,
+                user.selfIntroduction
+        ))
+                .from(userCourse)
+                .leftJoin(userCourse.course,course)
+                .leftJoin(course.user,user)
+                //h2
+                .groupBy(user.id)
+                .orderBy(user.id.count().desc(), NumberExpression.random().desc())
+                //mysql
+                //.orderBy(user.id.count().desc(),Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                .limit(amount)
+                .fetch();
+    }
+
 
 
 }
