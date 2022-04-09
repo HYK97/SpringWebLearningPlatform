@@ -1,5 +1,8 @@
 package com.hy.demo.Domain.User.Repository;
 
+import com.hy.demo.Domain.User.Dto.UserDto;
+
+import java.util.List;
 import java.util.Map;
 
 public interface UserCourseRepositoryCustom {
@@ -12,4 +15,6 @@ public interface UserCourseRepositoryCustom {
     Map countTenYearToYearRegisteredUserByCourseId(Long courseId, String date);
 
     void nativeQuery(Long courseId);
+
+    List<UserDto> findRankRandomUserById(int amount);
 }
