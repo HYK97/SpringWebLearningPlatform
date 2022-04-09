@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -138,6 +139,8 @@ public class UserService {
 
     public UserDto findUserInfo(User user) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
+
+        logger.info("findUser.changeDto().toString() = " + findUser.changeDto().toString());
         return findUser.changeDto();
 
     }
@@ -156,9 +159,10 @@ public class UserService {
 
     }
 
-    public UserDto userUpdate(User user, String email) {
+    public UserDto userUpdate(User user, UserDto update) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
-        findUser.updateEmail(email);
+        findUser.updateEmail(update.getEmail());
+        findUser.updateSelfIntroduction(update.getSelfIntroduction());
         User updateUser = userRepository.save(findUser);
         return updateUser.changeDto();
 
@@ -190,8 +194,23 @@ public class UserService {
     public Map countThisYearToMonthlyRegisteredUser(Long courseId, String date) {
         return userCourseRepository.countThisYearToMonthlyRegisteredUserByCourseId(courseId, date);
     }
+
     public Map countTenYearToYearRegisteredUser(Long courseId, String date) {
         return userCourseRepository.countTenYearToYearRegisteredUserByCourseId(courseId, date);
     }
+
+    public List<UserDto> RankRandomUser(int amount) {
+
+        return userCourseRepository.findRankRandomUserById(amount);
+
+    }
+
+
+    public List<UserDto> rankRandomUser(int amount) {
+
+        return userCourseRepository.findRankRandomUserById(amount);
+
+    }
+
 
 }
