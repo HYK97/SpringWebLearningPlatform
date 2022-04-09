@@ -206,4 +206,11 @@ public class UserService {
     }
 
 
+    public List<UserDto> rankRandomUser(int amount) {
+
+        return userCourseRepository.findRankRandomUserById(amount);
+
+    }
+
+
 }
