@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -193,8 +194,16 @@ public class UserService {
     public Map countThisYearToMonthlyRegisteredUser(Long courseId, String date) {
         return userCourseRepository.countThisYearToMonthlyRegisteredUserByCourseId(courseId, date);
     }
+
     public Map countTenYearToYearRegisteredUser(Long courseId, String date) {
         return userCourseRepository.countTenYearToYearRegisteredUserByCourseId(courseId, date);
     }
+
+    public List<UserDto> RankRandomUser(int amount) {
+
+        return userCourseRepository.findRankRandomUserById(amount);
+
+    }
+
 
 }
