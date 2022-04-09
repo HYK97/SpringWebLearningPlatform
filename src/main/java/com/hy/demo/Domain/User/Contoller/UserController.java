@@ -45,10 +45,10 @@ public class UserController {
 
     @PostMapping("update")
     @ResponseBody
-    public UserDto update(@AuthenticationPrincipal PrincipalDetails principalDetails, String email) {
+    public UserDto update(@AuthenticationPrincipal PrincipalDetails principalDetails, UserDto user) {
         UserDto userDto;
         try {
-            userDto = userService.userUpdate(principalDetails.getUser(), email);
+            userDto = userService.userUpdate(principalDetails.getUser(), user);
 
         } catch (EntityNotFoundException e) {
             return null;
