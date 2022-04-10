@@ -28,19 +28,20 @@ public class User extends BaseEntity {
     private String role; //ROLE_USER, ROLE_ADMIN
     private String profileImage;
     private String selfIntroduction;
+    private String nickname;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Course> courses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCourse> userCourses = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comments> comments = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notice> notices = new ArrayList<>();
 
     // 구글,페이스북,카카오등으로 가입됬을때
@@ -61,7 +62,7 @@ public class User extends BaseEntity {
     }
 
     public UserDto changeDto() {
-        UserDto userdto= new UserDto();
+        UserDto userdto = new UserDto();
         userdto.setEmail(this.email);
         userdto.setPassword(this.password);
         userdto.setId(this.id);
@@ -71,23 +72,27 @@ public class User extends BaseEntity {
         userdto.setUsername(this.username);
         userdto.setProfileImage(this.profileImage);
         userdto.setSelfIntroduction(this.selfIntroduction);
+        userdto.setNickname(this.nickname);
         return userdto;
     }
+
     public void updateEmail(String email) {
-        this.email= email;
+        this.email = email;
     }
 
     public void updatePassword(String password) {
-        this.password= password;
+        this.password = password;
     }
 
     public void updateProfileImage(String profileImage) {
-        this.profileImage=profileImage;
+        this.profileImage = profileImage;
     }
 
-    public void updateSelfIntroduction(String selfIntroduction){
+    public void updateSelfIntroduction(String selfIntroduction) {
         this.selfIntroduction = selfIntroduction;
     }
 
-
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
