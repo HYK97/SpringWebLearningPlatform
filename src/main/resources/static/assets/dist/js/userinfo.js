@@ -23,6 +23,8 @@ $(document).on('click', '#userInfoChangeBtn', function () {
         success : function(data){
             if (data != null) {
                 $('#email').val(data.email);
+                $('#nickname').val(data.nickname);
+                $('#selfIntroduction').val(data.selfIntroduction);
                 alert("변경 완료");
             } else {
                 alert("실패");
