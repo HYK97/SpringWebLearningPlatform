@@ -111,6 +111,17 @@
                                 <input type="text" class="form-control" id="username" value="{{username}}" disabled>
                             </div>
 
+
+                            <div class="col-12">
+                                <label for="nickname" class="form-label">닉네임</label>
+                                <input type="text" class="form-control" id="nickname" name="nickname"
+                                       placeholder="닉네임" value="{{#nickname}}{{nickname}}{{/nickname}}{{^nickname}}{{/nickname}}" required>
+                                <div class="invalid-feedback">
+                                    내용을 입력해주세요
+                                </div>
+                            </div>
+
+
                             <div class="col-12">
                                 <label for="email" class="form-label">이메일</label>
                                 <input type="email" class="form-control" id="email" name="email"
@@ -120,14 +131,17 @@
                                 </div>
                             </div>
 
+
                             <div class="col-12">
-                                <label for="selfIntroduction" class="form-label">이메일</label>
+                                <label for="selfIntroduction" class="form-label">자기소개</label>
                                 <input type="text" class="form-control" id="selfIntroduction" name="selfIntroduction"
-                                       placeholder="자기소개" value="{{#selfIntroduction}}{{selfIntroduction}}{{/selfIntroduction}}{{^selfIntroduction}}{{/selfIntroduction}}" required>
+                                       placeholder="프로필 소개" value="{{#selfIntroduction}}{{selfIntroduction}}{{/selfIntroduction}}{{^selfIntroduction}}{{/selfIntroduction}}" required>
                                 <div class="invalid-feedback">
                                     내용을 입력해주세요
                                 </div>
                             </div>
+
+
 
                         {{/user}}
 

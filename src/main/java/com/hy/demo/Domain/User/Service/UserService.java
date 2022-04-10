@@ -165,6 +165,7 @@ public class UserService {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
         findUser.updateEmail(update.getEmail());
         findUser.updateSelfIntroduction(update.getSelfIntroduction());
+        findUser.updateNickname(update.getNickname());
         User updateUser = userRepository.save(findUser);
         return updateUser.changeDto();
 
