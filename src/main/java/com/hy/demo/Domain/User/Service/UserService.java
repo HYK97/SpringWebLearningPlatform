@@ -78,6 +78,8 @@ public class UserService {
                         .role(user.getRole())
                         .provider(provider.getProvider())
                         .providerId(provider.getProviderId())
+                        .selfIntroduction(user.getSelfIntroduction())
+                        .nickname(user.getNickname())
                         .build();
                 logger.info("user.getPassword() = " + user2.getPassword());
 
