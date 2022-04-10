@@ -78,6 +78,8 @@ public class UserService {
                         .role(user.getRole())
                         .provider(provider.getProvider())
                         .providerId(provider.getProviderId())
+                        .selfIntroduction(user.getSelfIntroduction())
+                        .nickname(user.getNickname())
                         .build();
                 logger.info("user.getPassword() = " + user2.getPassword());
 
@@ -163,6 +165,7 @@ public class UserService {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
         findUser.updateEmail(update.getEmail());
         findUser.updateSelfIntroduction(update.getSelfIntroduction());
+        findUser.updateNickname(update.getNickname());
         User updateUser = userRepository.save(findUser);
         return updateUser.changeDto();
 

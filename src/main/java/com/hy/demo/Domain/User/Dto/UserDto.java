@@ -25,11 +25,13 @@ public class UserDto {
     private String providerId;
     private String profileImage;
     private String selfIntroduction;
+    private String nickname;
 
-    public UserDto(Long id, String username, String profileImage, String selfIntroduction) {
+    public UserDto(Long id, String username, String profileImage, String selfIntroduction,String nickname) {
         this.id = id;
         this.username = username;
         this.profileImage = profileImage;
         this.selfIntroduction = selfIntroduction;
+        this.nickname =nickname;
     }
 }
