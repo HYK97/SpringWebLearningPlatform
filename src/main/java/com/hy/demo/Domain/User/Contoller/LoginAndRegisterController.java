@@ -127,7 +127,7 @@ public class LoginAndRegisterController {
 
     @PostMapping("/join")
     public @ResponseBody
-    String join(Authentication authentication, User user, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletResponse response) {//setter 를 쓰지않기위해선 이렇게해야된다.
+    String join(Authentication authentication, User user, @AuthenticationPrincipal PrincipalDetails principalDetails) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
 
         logger.info("user.toString() = " + user.toString());

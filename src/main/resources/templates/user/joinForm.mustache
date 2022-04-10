@@ -36,18 +36,28 @@
         <h1 class="h3 mb-3 fw-normal">회원가입</h1>
 
         <div class="form-floating">
-            <input type="text" name="username" class="form-control" id="id" placeholder="ID">
-            <label for="floatingInput">ID</label>
+            <input type="text" name="username" class="form-control" id="username" placeholder="ID">
+            <label for="username">ID</label>
         </div>
 
         <div class="form-floating">
             <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-            <label for="floatingPassword">Password</label>
+            <label for="password">비밀번호</label>
         </div>
 
         <div class="form-floating">
             <input type="email" name="email" class="form-control" id="email" placeholder="example@gmail.com">
-            <label for="floatingPassword">email</label>
+            <label for="email">이메일</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" name="nickname" class="form-control" id="nickname" placeholder="사용하실 닉네임을 입력해주세요">
+            <label for="nickname">닉네임</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" name="selfIntroduction" class="form-control" id="selfIntroduction" placeholder="자신의 소개를 간단하게 입력해주세요">
+            <label for="selfIntroduction">자기소개</label>
         </div>
 
         <div class="checkbox mb-3">
@@ -78,7 +88,7 @@
 
     });
 
-    $('#btn').click(function(event){
+    $('#btn').click(function(){
 
         var queryString = $("form[name=joinForm]").serialize() ;
         if (joinCheck() == 1) {
@@ -108,9 +118,9 @@
 
     var emailTest = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     function joinCheck(){
-        if($('#id').val() == ''){
+        if($('#username').val() == ''){
             alert('아이디를 입력하세요');
-            $('#id').focus();
+            $('#username').focus();
             return;
         }else if($('#password').val() == ''){
             alert('비밀번호를 입력하세요');
@@ -122,6 +132,14 @@
             return;
         }else if(!emailTest.test($('#email').val())){
             alert("유효하지않은 이메일입니다.");
+            $('#email').focus();
+            return;
+        }else if($('#nickname').val() == ''){
+            alert('닉네임을 입력하세요');
+            $('#password').focus();
+            return;
+        }else if($('#selfIntroduction').val() == ''){
+            alert('자기소개를 입력하세요');
             $('#email').focus();
             return;
         }else{
@@ -137,15 +155,15 @@
             email='{{email}}';
         {{/user}}
         if(!username==""&&!email=="") {
-            $('#id').val(username);
-            $('#id').attr('disabled','disabled');
+            $('#username').val(username);
+            $('#username').attr('disabled','disabled');
             $('#password').val("Password");
             $('#password').attr('disabled','disabled');
             $('#email').val(email);
             $('#email').attr('disabled','disabled');
         }else {
 
-            $('#id').val("");
+            $('#username').val("");
             $('#password').val("");
             $('#email').val("");
         }
