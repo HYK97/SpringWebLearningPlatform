@@ -56,7 +56,8 @@
         </div>
 
         <div class="form-floating">
-            <input type="text" name="selfIntroduction" class="form-control" id="selfIntroduction" placeholder="자신의 소개를 간단하게 입력해주세요">
+            <input type="text" name="selfIntroduction" class="form-control" id="selfIntroduction"
+                   placeholder="자신의 소개를 간단하게 입력해주세요">
             <label for="selfIntroduction">자기소개</label>
         </div>
 
@@ -69,18 +70,17 @@
             </label>
         </div>
 
-        <button type="button"  id="btn"  class="w-50 btn btn-lg btn-primary">회원가입</button>
+        <button type="button" id="btn" class="w-50 btn btn-lg btn-primary">회원가입</button>
 
     </form>
-    <input id="check"type="hidden" value="0">
+    <input id="check" type="hidden" value="0">
 
 
 </main>
 <script>
 
 
-
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
         var check;
@@ -88,94 +88,91 @@
 
     });
 
-    $('#btn').click(function(){
+    $('#btn').click(function () {
 
-        var queryString = $("form[name=joinForm]").serialize() ;
+        var queryString = $("form[name=joinForm]").serialize();
         if (joinCheck() == 1) {
-        $.ajax({
-            type : "post",
-            url : "/join",
-            data : queryString,
-            cache : false,
-            success : function(data){
-                if (data == "false") {
-                    alert("이미 id가 존재합니다.");
-                } else {
-                    alert("회원가입을 환영합니다.");
-                    $('#check').val("1");
-                    location.replace(data);
-                }
+            $.ajax({
+                type: "post",
+                url: "/join",
+                data: queryString,
+                cache: false,
+                success: function (data) {
+                    if (data == "1") {
+                        alert("이미 id가 존재합니다.");
+                    } else if (data == "2") {
+                        alert("이미 닉네임이 존재합니다");
+                    } else {
+                        alert("회원가입을 환영합니다.");
+                        $('#check').val("1");
+                        location.replace(data);
+                    }
 
-            },
-            error:function(request, error) {
-                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                alert("회원가입실패");
-            }
-        });
+                },
+                error: function (request, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    alert("회원가입실패");
+                }
+            });
 
         }
     });
 
     var emailTest = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    function joinCheck(){
-        if($('#username').val() == ''){
+
+    function joinCheck() {
+        if ($('#username').val() == '') {
             alert('아이디를 입력하세요');
             $('#username').focus();
             return;
-        }else if($('#password').val() == ''){
+        } else if ($('#password').val() == '') {
             alert('비밀번호를 입력하세요');
             $('#password').focus();
             return;
-        }else if($('#email').val() == ''){
+        } else if ($('#email').val() == '') {
             alert('이메일을 입력하세요');
             $('#email').focus();
             return;
-        }else if(!emailTest.test($('#email').val())){
+        } else if (!emailTest.test($('#email').val())) {
             alert("유효하지않은 이메일입니다.");
             $('#email').focus();
             return;
-        }else if($('#nickname').val() == ''){
+        } else if ($('#nickname').val() == '') {
             alert('닉네임을 입력하세요');
             $('#password').focus();
             return;
-        }else if($('#selfIntroduction').val() == ''){
+        } else if ($('#selfIntroduction').val() == '') {
             alert('자기소개를 입력하세요');
             $('#email').focus();
             return;
-        }else{
+        } else {
             return 1;
         }
     };
 
     function autoForm() {
-        var username="";
-        var email="";
+        var username = "";
+        var email = "";
         {{#user}}
-            username='{{username}}';
-            email='{{email}}';
+            username = '{{username}}';
+            email = '{{email}}';
         {{/user}}
-        if(!username==""&&!email=="") {
+        if (!username == "" && !email == "") {
             $('#username').val(username);
-            $('#username').attr('disabled','disabled');
+            $('#username').attr('disabled', 'disabled');
             $('#password').val("Password");
-            $('#password').attr('disabled','disabled');
+            $('#password').attr('disabled', 'disabled');
             $('#email').val(email);
-            $('#email').attr('disabled','disabled');
-        }else {
-
+            $('#email').attr('disabled', 'disabled');
+        } else {
             $('#username').val("");
             $('#password').val("");
             $('#email').val("");
         }
-
-         check=$('#check').val();
     }
 
 
-
 </script>
-
-
 
 
 </body>

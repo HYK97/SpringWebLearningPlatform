@@ -13,10 +13,13 @@ import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static org.springframework.data.util.Optionals.ifPresentOrElse;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -51,46 +54,35 @@ public class UserService {
 
 
     @Transactional
-    public boolean register(User user, User provider) {
-        User byUsername;
-        boolean empty;
-        if (provider == null) {
-            byUsername = userRepository.findByUsername(user.getUsername());
-            empty = ObjectUtils.isEmpty(byUsername);
-            if (empty) { // 회원없을시
-                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-                logger.info("user.getPassword() = " + user.getPassword());
-                userRepository.save(user);
-                return true;
-            } else {   //회원있을시에
-                return false;
-            }
+    public void register(User user, User provider) throws DuplicateKeyException {
+        User byUsername = userRepository.findByUsername(user.getUsername());
+        boolean empty = ObjectUtils.isEmpty(byUsername);
+        Long count = userRepository.countByNickname(user.getNickname());
 
-        } else {
-            byUsername = userRepository.findByUsername(user.getUsername());
-            empty = ObjectUtils.isEmpty(byUsername);
-            if (empty) { // 회원없을시
-
-                User user2 = User.builder()
-                        .username(provider.getUsername())
-                        .password(provider.getPassword())
-                        .email(provider.getEmail())
-                        .role(user.getRole())
-                        .provider(provider.getProvider())
-                        .providerId(provider.getProviderId())
-                        .selfIntroduction(user.getSelfIntroduction())
-                        .nickname(user.getNickname())
-                        .build();
-                logger.info("user.getPassword() = " + user2.getPassword());
-
-                userRepository.save(user2);
-                return true;
-            } else {   //회원있을시에
-                return false;
-            }
-
+        if (count != 0) {
+            throw new DuplicateKeyException("닉네임");
         }
-
+        if (!empty) {
+            throw new DuplicateKeyException("아이디");
+        }
+        if (provider == null) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            logger.info("user.getPassword() = " + user.getPassword());
+            userRepository.save(user);
+        } else {
+            User user2 = User.builder()
+                    .username(provider.getUsername())
+                    .password(provider.getPassword())
+                    .email(provider.getEmail())
+                    .role(user.getRole())
+                    .provider(provider.getProvider())
+                    .providerId(provider.getProviderId())
+                    .selfIntroduction(user.getSelfIntroduction())
+                    .nickname(user.getNickname())
+                    .build();
+            logger.info("user.getPassword() = " + user2.getPassword());
+            userRepository.save(user2);
+        }
 
     }
 
@@ -163,12 +155,15 @@ public class UserService {
 
     public UserDto userUpdate(User user, UserDto update) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
+        Long count = userRepository.countByNicknameIsAndUsernameIsNot(update.getNickname(), user.getUsername());
+        if (count != 0) {
+            throw new EntityNotFoundException("닉네임중복");
+        }
         findUser.updateEmail(update.getEmail());
         findUser.updateSelfIntroduction(update.getSelfIntroduction());
         findUser.updateNickname(update.getNickname());
         User updateUser = userRepository.save(findUser);
         return updateUser.changeDto();
-
     }
 
 
