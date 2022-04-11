@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-md-6 info">
                         <h1 class="sm-mg display-4 fst-italic my-4">{{courseName}}</h1>
-                        <p class="sm-mg lead my-3">강사명 : {{teachName}}({{user.username}})</p>
+                        <p class="sm-mg lead my-3">강사명 : {{user.nickname}}({{user.username}})</p>
                         <p class="sm-mg  lead mb-0">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
@@ -118,7 +118,7 @@
                 {{#profileImage}}
                     <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="{{profileImage}}" >
                 {{/profileImage}}
-                <h2>{{username}}</h2>
+                <h2>{{nickname}}</h2>
                 {{#selfIntroduction}}
                     <p>{{selfIntroduction}}</p>
                 {{/selfIntroduction}}

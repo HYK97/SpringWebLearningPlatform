@@ -50,7 +50,6 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                 , course.id
                 , course.courseName
                 , course.createDate
-                , course.teachName
                 , select(courseEvaluation.scope.avg().as("scope")).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
                 , select(userCourse.course.count().as("userJoinCount")).from(userCourse).where(userCourse.course.id.eq(course.id)).groupBy(userCourse.course.id)
                 ))
@@ -131,7 +130,6 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                 , course.courseName
                 , user
                 , course.createDate
-                , course.teachName
                 , course.thumbnail
                 , course.courseExplanation
                 , select(courseEvaluation.scope.avg()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)

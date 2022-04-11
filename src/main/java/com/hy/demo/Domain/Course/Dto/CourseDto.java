@@ -40,6 +40,7 @@ public class CourseDto {
 
     private Long userJoinCount;
 
+
     public Course returnEntity() {
         return Course.builder()
                 .courseExplanation(this.courseExplanation)
@@ -50,15 +51,14 @@ public class CourseDto {
     }
 
     public void setUser(User user) {
-        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole());
+        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole(), user.getNickname());
     }
 
-    public CourseDto(Long id, String courseName, User user, Timestamp createDate, String teachName, String thumbnail, String courseExplanation, Double scope, Long reviewCount) {
+    public CourseDto(Long id, String courseName, User user, Timestamp createDate, String thumbnail, String courseExplanation, Double scope, Long reviewCount) {
         this.id = id;
         this.courseName = courseName;
-        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole());
+        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole(),user.getNickname());
         this.createDate = new Date(createDate.getTime());
-        this.teachName = teachName;
         this.thumbnail = thumbnail;
         this.courseExplanation = courseExplanation;
         if (!ObjectUtils.isEmpty(scope)) {
@@ -72,11 +72,10 @@ public class CourseDto {
         this.reviewCount = reviewCount;
     }
 
-    public CourseDto(Long id, String courseName, Timestamp createDate, String teachName, Double scope, Long userJoinCount) {
+    public CourseDto(Long id, String courseName, Timestamp createDate, Double scope, Long userJoinCount) {
         this.id = id;
         this.courseName = courseName;
         this.createDate = new Date(createDate.getTime());
-        this.teachName = teachName;
         if (!ObjectUtils.isEmpty(scope)) {
             this.scope = (Math.round(scope * 10) / 10.0);
         } else {
