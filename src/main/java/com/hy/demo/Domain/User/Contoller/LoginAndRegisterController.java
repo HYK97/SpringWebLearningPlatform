@@ -6,6 +6,7 @@ import com.hy.demo.Domain.User.Service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -135,15 +136,30 @@ public class LoginAndRegisterController {
         if (!isEmpty(principalDetails)) {
             provider = principalDetails.getUser();
             principalDetails.setFlag(true);
-            if (userService.register(user, provider)) {
-                updateOAuth(authentication);
-                return "main/index";
+            try {
+                userService.register(user, provider);
+            } catch (DuplicateKeyException e) {
+                String cause = e.getMessage();
+                if (cause.equals("아이디")) {
+                    return "1";
+                } else {
+                    return "2";
+                }
             }
-            return "false";
-
+            updateOAuth(authentication);
+            return "main/index";
         } else {
-            return userService.register(user, provider) ? "loginForm" : "false";
-
+            try {
+                userService.register(user, provider);
+            } catch (DuplicateKeyException e) {
+                String cause = e.getMessage();
+                if (cause.equals("아이디")) {
+                    return "1";
+                } else {
+                    return "2";
+                }
+            }
+            return "loginForm";
         }
     }
 
