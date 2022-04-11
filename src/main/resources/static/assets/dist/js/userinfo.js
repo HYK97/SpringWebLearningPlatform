@@ -21,13 +21,13 @@ $(document).on('click', '#userInfoChangeBtn', function () {
         data : data,
         url : "/user/update",
         success : function(data){
-            if (data != null) {
+            if (data != "") {
                 $('#email').val(data.email);
                 $('#nickname').val(data.nickname);
                 $('#selfIntroduction').val(data.selfIntroduction);
                 alert("변경 완료");
             } else {
-                alert("실패");
+                alert("닉네임 중복 혹은 권한없는 오류입니다.");
             }
         },
         error:function(request, error) {

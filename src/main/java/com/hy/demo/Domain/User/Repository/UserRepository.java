@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByUsername(String username);
     void deleteById(Long id);
     List<User> findByRole(String role);
+    Long countByNickname(String nickname);
+    Long countByNicknameIsAndUsernameIsNot(String nickname,String username);
 }

@@ -224,7 +224,8 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
                 user.id,
                 user.username,
                 user.profileImage,
-                user.selfIntroduction
+                user.selfIntroduction,
+                user.nickname
         ))
                 .from(userCourse)
                 .leftJoin(userCourse.course,course)
