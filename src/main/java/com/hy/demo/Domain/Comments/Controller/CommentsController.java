@@ -128,7 +128,7 @@ public class CommentsController {
         Page<CommentsDto> commentsList;
         try {
             commentsList = commentsService.findCommentsListByCourseId(id,pageable);
-            commentsList.stream().filter(f->f.getUsername().equals(username)).forEach(f->f.setMyCommentsFlag(1));
+            commentsList.stream().filter(f->f.getUser().getUsername().equals(username)).forEach(f->f.setMyCommentsFlag(1));
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
@@ -143,7 +143,7 @@ public class CommentsController {
         Page<CommentsDto> replyList;
         try {
             replyList = commentsService.findReplyListByCommentsId(id,pageable);
-            replyList.stream().filter(f->f.getUsername().equals(username)).forEach(f->f.setMyCommentsFlag(1));
+            replyList.stream().filter(f->f.getUser().getUsername().equals(username)).forEach(f->f.setMyCommentsFlag(1));
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
