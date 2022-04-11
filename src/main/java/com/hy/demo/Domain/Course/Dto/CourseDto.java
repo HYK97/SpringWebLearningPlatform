@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.Course.Dto;
 
 import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.*;
@@ -18,7 +19,7 @@ public class CourseDto {
 
     private String courseName;
 
-    private CourseUser user;
+    private UserDto user;
 
     private String teachName;
 
@@ -51,13 +52,13 @@ public class CourseDto {
     }
 
     public void setUser(User user) {
-        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole(), user.getNickname());
+        this.user = user.changeDto();
     }
 
     public CourseDto(Long id, String courseName, User user, Timestamp createDate, String thumbnail, String courseExplanation, Double scope, Long reviewCount) {
         this.id = id;
         this.courseName = courseName;
-        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole(),user.getNickname());
+        this.user = user.changeDto();
         this.createDate = new Date(createDate.getTime());
         this.thumbnail = thumbnail;
         this.courseExplanation = courseExplanation;
