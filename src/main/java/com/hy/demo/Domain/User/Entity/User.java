@@ -64,10 +64,6 @@ public class User extends BaseEntity {
     public UserDto changeDto() {
         UserDto userdto = new UserDto();
         userdto.setEmail(this.email);
-        userdto.setId(this.id);
-        userdto.setProvider(this.provider);
-        userdto.setRole(this.role);
-        userdto.setProviderId(this.providerId);
         userdto.setUsername(this.username);
         userdto.setProfileImage(this.profileImage);
         userdto.setSelfIntroduction(this.selfIntroduction);
