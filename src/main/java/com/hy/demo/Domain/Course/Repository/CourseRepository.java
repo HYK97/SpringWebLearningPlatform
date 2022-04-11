@@ -15,13 +15,12 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
     //findBy규칙 -> Username문법
 
 
-    Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
 
     Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable);
 
     CourseDto findByIdAndUserDTO(Long id);
 
-    Course findByCourseName(String courseName);
+    Course findByCourseName(String search);
 
     public List<CourseDto> findByRandomId(int amount);
 
@@ -29,9 +28,9 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
 
     void deleteById(Long id);
 
-    Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable);
+    Page<CourseDto> findByUserIdAndCourseName(String search, Long userId, Pageable pageable);
 
     Optional<Course> findByUserAndCourseId(User findUser, Long courseId);
 
-    Page<CourseDto> findCourseDtoByCourseNameAndUserId(String courseName, Pageable pageable, Long userId);
+    Page<CourseDto> findCourseDtoByCourseNameAndUserId(String search, Pageable pageable, Long userId);
 }
