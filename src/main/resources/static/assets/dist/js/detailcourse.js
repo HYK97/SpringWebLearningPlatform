@@ -6,20 +6,20 @@ const template = '<div>\n' +
     '                    <div >\n' +
     '                        <div class="user-field">\n' +
     '                            <div class="mx-2">\n' +
-    '                            {{#profileImage}}\n' +
-    '                                <img src="{{profileImage}}" alt="mdo" width="32" height="32"\n' +
+    '                            {{#user.profileImage}}\n' +
+    '                                <img src="{{user.profileImage}}" alt="mdo" width="32" height="32"\n' +
     '                                     class="rounded-circle">\n' +
-    '                            {{/profileImage}}\n' +
-    '                            {{^profileImage}}\n' +
+    '                            {{/user.profileImage}}\n' +
+    '                            {{^user.profileImage}}\n' +
     '                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"\n' +
     '                                     class="rounded-circle">\n' +
-    '                            {{/profileImage}}\n' +
+    '                            {{/user.profileImage}}\n' +
     '                            </div>\n' +
     '                            <div class="user-field-name">\n' +
-    '                                <div> <p class=" my-3 ">{{username}}</p></div>\n' +
+    '                                <div> <p class=" my-3 ">{{user.nickname}}</p></div>\n' +
 
     '               {{#teachUser}}{{^reply}} ' +
-    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
+    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{user.username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
@@ -27,7 +27,7 @@ const template = '<div>\n' +
     '                </ul>{{/reply}}{{/teachUser}}\n' +
 
     '               {{^teachUser}}' +
-    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
+    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{user.username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
@@ -97,7 +97,6 @@ const template = '<div>\n' +
 $(document).ready(function () {
 
 
-
     joinPopOver();
 
 
@@ -151,16 +150,16 @@ $(document).ready(function () {
 
 
 // 수정
-    let modalId ;
+    let modalId;
     $(document).on("click", ".update", function (e) {
         let scope = String($(this).data('scope'));
-        let id=$(this).data('id');
-        let comments =$(this).data('comments');
-        let target=$(this).data('bs-target');
-        modalId=target;
-        if (scope !=null) {
-            if(scope.indexOf('.')== -1) {
-                scope=scope+'.0';
+        let id = $(this).data('id');
+        let comments = $(this).data('comments');
+        let target = $(this).data('bs-target');
+        modalId = target;
+        if (scope != null) {
+            if (scope.indexOf('.') == -1) {
+                scope = scope + '.0';
             }
             $(target).find("input:radio[name='star']:radio[value='" + scope + "']").prop('checked', true); // 선택하기
         }
@@ -169,24 +168,24 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".createReply", function (e) {
-        let id=$(this).data('id');
-        let target=$(this).data('bs-target');
-        modalId=target;
+        let id = $(this).data('id');
+        let target = $(this).data('bs-target');
+        modalId = target;
         $(target).find('#replyId').val(id);
     });
 
 
     $(document).on("click", ".modalBtn", function () {
-        if (!starFormCheck(modalId+" form")) {
+        if (!starFormCheck(modalId + " form")) {
             if (modalId == "replyUpdate") {
                 alert("답글을 입력해주세요");
-            }else{
+            } else {
                 alert("별점과 수강평을 입력해주세요");
             }
             return;
         }
 
-        var queryString = $(modalId+" form").serialize();
+        var queryString = $(modalId + " form").serialize();
         $.ajax({
             type: "post",
             url: "/course/updateevaluation",
@@ -194,7 +193,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data == "1") {
                     $(modalId).modal('hide');
-                     paging();
+                    paging();
                     alert("수정성공");
                 } else {
                     alert("실패");
@@ -207,8 +206,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
 
 
     //페이징 및 댓글데이터 불러오기
@@ -246,7 +243,7 @@ $(document).ready(function () {
                 //페이징
                 pageNumber = data.CourseEvaluationDto.pageable.pageNumber;
                 totalPages = data.CourseEvaluationDto.totalPages;
-                startPage = Math.floor(pageNumber/10)*10 + 1;
+                startPage = Math.floor(pageNumber / 10) * 10 + 1;
                 endPage = startPage + 9 < totalPages ? startPage + 9 : totalPages;
                 pageNumber++;
                 totalElements = data.totalElements
@@ -335,8 +332,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
 
 
     //수강평쓰기 버튼클릭

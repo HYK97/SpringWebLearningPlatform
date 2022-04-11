@@ -117,16 +117,14 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                 query.select(Projections.constructor(CourseEvaluationDto.class
                         , courseEvaluation.id
                         , courseEvaluation.course.courseName
-                        , courseEvaluation.user.username
+                        , courseEvaluation.user
                         , courseEvaluation.course.id
-                        , courseEvaluation.user.id
                         , courseEvaluation.scope
                         , courseEvaluation.comments
                         , courseEvaluation.createDate
                         , reply.comments
                         , reply.createDate
                         , reply.id
-                        , courseEvaluation.user.profileImage
                 ))
                         .from(courseEvaluation)
                         .leftJoin(courseEvaluation.course, course)
