@@ -1,5 +1,7 @@
 package com.hy.demo.Domain.Comments.Dto;
 
+import com.hy.demo.Domain.User.Dto.UserDto;
+import com.hy.demo.Domain.User.Entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,8 +15,6 @@ public class CommentsDto {
 
     private Long id;
 
-    private String username;
-
     private String comments;
 
     private Integer myCommentsFlag = null;
@@ -25,24 +25,22 @@ public class CommentsDto {
 
     private Long replyId;
 
-    private String profileImage;
+    private UserDto user;
 
 
-    public CommentsDto(Long id, String username, String comments, Timestamp createDate, Long replyCounts, String profileImage) {
+    public CommentsDto(Long id, User user, String comments, Timestamp createDate, Long replyCounts) {
         this.id = id;
-        this.username = username;
+        this.user = user.changeDto();
         this.comments = comments;
         this.createDate = new Date(createDate.getTime());
         this.replyCounts = replyCounts;
-        this.profileImage = profileImage;
     }
 
-    public CommentsDto(String username, Long id, String comments, Timestamp createDate, Long replyId, String profileImage) {
-        this.username = username;
+    public CommentsDto(Long id, String comments, Timestamp createDate, Long replyId, User user) {
         this.id = id;
         this.comments = comments;
         this.createDate = new Date(createDate.getTime());
         this.replyId = replyId;
-        this.profileImage = profileImage;
+        this.user = user.changeDto();
     }
 }

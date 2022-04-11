@@ -45,11 +45,10 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
                 applyPagination(pageable, query ->
                         query.select(Projections.constructor(CommentsDto.class,
                                 comments1.id,
-                                user.username,
+                                user,
                                 comments1.comments,
                                 comments1.createDate,
-                                select(reply.count()).from(reply).where(comments1.id.eq(reply.parent.id)),
-                                user.profileImage
+                                select(reply.count()).from(reply).where(comments1.id.eq(reply.parent.id))
                         ))
                                 .from(comments1)
                                 .leftJoin(comments1.user, user)
@@ -62,12 +61,11 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
     public Page<CommentsDto> findReplyByIds(Long id, Pageable pageable) {
         return applyPagination(pageable, query ->
                 query.select(Projections.constructor(CommentsDto.class,
-                        user.username,
                         comments1.id,
                         comments1.comments,
                         comments1.createDate,
                         comments1.parent.id,
-                        user.profileImage
+                        user
                 ))
                         .from(comments1)
                         .where(comments1.parent.id.eq(id)));
