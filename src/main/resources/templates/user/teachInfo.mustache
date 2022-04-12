@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>강좌</title>
+    {{>layout/import}}
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+{{>layout/header}}
+
+
+<main>
+    <section class="py-2 container">
+
+        <div class="row py-lg-2">
+
+            <div class="col-lg-2 col-md-6 col-sm-6 col-xs-8 mx-auto my-auto" >
+                {{#user}}
+                    <div>
+                        {{#profileImage}}
+                            <img id="profileImage" src="{{profileImage}}" alt="mdo" width="100%"
+                                 class="rounded-circle">
+                        {{/profileImage}}
+                        {{^profileImage}}
+                            <img id="profileImage" src="https://github.com/mdo.png" alt="mdo" width="100%"
+                                 class="rounded-circle">
+                        {{/profileImage}}
+                    </div>
+                {{/user}}
+            </div>
+        <div class="col-lg-8 col-md-8 mx-3">
+            {{#user}}
+                <h3 class="fw-light">강사 소개</h3>
+                <br>
+                <p class="lead text-muted">강사명 : {{nickname}}({{username}})</p>
+                <p class="lead text-muted">이메일 : <a href="mailto:{{email}}">{{email}}</a></p>
+                <br>
+                <h3 class="fw-light">소개말</h3>
+                <br>
+                <p class="lead text-muted">{{selfIntroduction}}</p>
+
+            </div>
+            {{/user}}
+        </div>
+    </section>
+    <hr class="my-4">
+
+    <div class="album py-5">
+        <div class="container col-lg-8 col-sm-12">
+            <h1 class="fw-light">관련 강의</h1>
+            <div class="row py-lg-5" id = "addBtn">
+                <!-- <div class="col-lg-2 col-md-2 mx-auto">
+
+                 </div>
+
+                 <div class="col-lg-10 col-md-10 mx-auto">-->
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id ="resultBox">
+                    {{#course}}
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                {{#thumbnail}}
+                                    <a href="/course/detailcourse?id={{id}}"><img
+                                        class="bd-placeholder-img card-img-top"
+                                        width="100%" height="300px"
+                                        src="{{thumbnail}}"></a>
+
+                                {{/thumbnail}}
+
+                                {{^thumbnail}}
+                                    <a href="/course/detailcourse?id={{id}}">
+                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="300px"
+                                         xmlns="http://www.w3.org/2000/svg" role="img"
+                                         aria-label="Placeholder: Thumbnail"
+                                         preserveAspectRatio="xMidYMid slice" focusable="false"><title>
+                                        썸네일없음</title>
+                                        <rect width="100%" height="100%" fill="#55595c"></rect>
+                                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">썸네일없음</text>
+                                    </svg>
+                                    </a>
+                                {{/thumbnail}}
+                                <div class="card-body">
+                                    <h5 class="card-text">{{courseName}}</h5>
+                                    <p class="card-text">강사명 : {{user.nickname}}({{user.username}})</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <div class="star-ratings">
+                                                <div id="star" style="width: {{starScope}}%"
+                                                     class="star-ratings-fill space-x-2 text-lg">
+                                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                                </div>
+                                                <div class="star-ratings-base space-x-2 text-lg">
+                                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                                </div>
+                                            </div>
+                                            <div class="star-ratings">
+                                                <small id="scope" class="text-muted">({{scope}})</small>
+                                            </div>
+                                        </div>
+                                        <small id="date" class="text-muted mt-1 ">
+                                            강좌 생성일 : {{createDate}}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{/course}}
+                </div>
+
+
+
+
+
+            </div>
+            <!--  </div>-->
+
+        </div>
+
+    </div>
+</main>
+
+<script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/teachInfo.js"></script>
+<script>
+    const user ='{{user.username}}';
+    let pageNumber ='{{pageNumber}}';
+    let nexNum = parseInt(pageNumber) + 1;
+    let totalPages;
+    let Next ={{Next}};
+
+    $(document).ready(function () {
+        if (Next) {
+            $('#addBtn').append(addTemplate);
+        } else {
+            $('#moreBtn').remove();
+        }
+    });
+
+
+
+</script>
+
+
+{{>layout/footer}}

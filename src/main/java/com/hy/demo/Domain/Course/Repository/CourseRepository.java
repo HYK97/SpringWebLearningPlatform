@@ -15,7 +15,6 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
     //findBy규칙 -> Username문법
 
 
-
     Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable);
 
     CourseDto findByIdAndUserDTO(Long id);
@@ -33,4 +32,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
     Optional<Course> findByUserAndCourseId(User findUser, Long courseId);
 
     Page<CourseDto> findCourseDtoByCourseNameAndUserId(String search, Pageable pageable, Long userId);
+
+    Page<CourseDto> findCourseDtoByUsername(String username, Pageable pageable);
+
 }

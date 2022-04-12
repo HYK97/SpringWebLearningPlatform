@@ -101,8 +101,8 @@ public class UserService {
         }
     }
 
-    public User findByUsername(User user) {
-        return userRepository.findByUsername(user.getUsername());
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
 
@@ -122,7 +122,7 @@ public class UserService {
         Long Lid = Long.parseLong(course);
         logger.info("idss= " + Lid);
         CourseDto courseDto = courseService.findDetailCourse(Lid);
-        User findUser = findByUsername(user);
+        User findUser = findByUsername(user.getUsername());
         UserCourse findUserCourse = userCourseRepository.findByUserAndCourse(findUser, courseDto.returnEntity());
         Map map = new HashMap();
         map.put("course", courseDto);
@@ -131,8 +131,8 @@ public class UserService {
 
     }
 
-    public UserDto findUserInfo(User user) {
-        User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("권한없음"));
+    public UserDto findUserInfo(String username) {
+        User findUser = Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException("권한없음"));
 
         logger.info("findUser.changeDto().toString() = " + findUser.changeDto().toString());
         return findUser.changeDto();
