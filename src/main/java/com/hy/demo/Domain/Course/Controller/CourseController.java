@@ -248,7 +248,7 @@ public class CourseController {
 
     @GetMapping("/info/myCourseList")
     public String myCourseList(Model model, @RequestParam(defaultValue = "") String search, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        User findUser = userService.findByUsername(principalDetails.getUser());
+        User findUser = userService.findByUsername(principalDetails.getUsername());
         Page<CourseDto> myCourseList = courseService.findMyCourseList(search, findUser.getId(), pageable);
 
         pagingDto(model, myCourseList);
