@@ -2,7 +2,6 @@ package com.hy.demo.Domain.Course.Repository;
 
 import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.Course.Entity.Course;
-import com.hy.demo.Domain.User.Entity.QUser;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
@@ -32,7 +31,6 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
     public CourseRepositoryImpl() {
         super(Course.class);
     }
-
 
 
     public Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable) {
@@ -79,13 +77,21 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         );
     }
 
+    public Page<CourseDto> findCourseDtoByUsername(String username, Pageable pageable) {
+        return applyPagination(pageable, query ->
+                getCourseDtoJPAQuery()
+                        .where(user.username.eq(username))
+        );
+    }
+
+
     public Page<CourseDto> findCourseDtoByCourseNameAndUserId(String search, Pageable pageable, Long userId) {
         return applyPagination(pageable, query ->
                 getSelectConstructorCourseDto()
                         .from(userCourse)
                         .leftJoin(userCourse.course, course)
                         .leftJoin(course.user, user)
-                        .where(userCourseUserIdEq(userId),course.courseName.contains(search).or(user.nickname.eq(search)).or(user.username.eq(search)))
+                        .where(userCourseUserIdEq(userId), course.courseName.contains(search).or(user.nickname.eq(search)).or(user.username.eq(search)))
         );
     }
 
