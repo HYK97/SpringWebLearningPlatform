@@ -131,19 +131,19 @@ const comments = '' +
     '                    <div >\n' +
     '                        <div class="user-field">\n' +
     '                            <div class="mx-2">\n' +
-    '                            {{#profileImage}}\n' +
-    '                                <img src="{{profileImage}}" alt="mdo" width="32" height="32"\n' +
+    '                            {{#user.profileImage}}\n' +
+    '                                <img src="{{user.profileImage}}" alt="mdo" width="32" height="32"\n' +
     '                                     class="rounded-circle">\n' +
-    '                            {{/profileImage}}\n' +
-    '                            {{^profileImage}}\n' +
+    '                            {{/user.profileImage}}\n' +
+    '                            {{^user.profileImage}}\n' +
     '                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"\n' +
     '                                     class="rounded-circle">\n' +
-    '                            {{/profileImage}}\n' +
+    '                            {{/user.profileImage}}\n' +
     '                            </div>\n' +
     '                            <div class="user-field-name">\n' +
-    '                                <div> <p class=" my-3 username">{{username}}</p></div>\n' +
+    '                                <div> <p class=" my-3 username ">{{user.nickname}}</p></div>\n' +
     '               {{^myCommentsFlag}} ' +
-    '                <div class="dropdown dropdown-user text-end" data-user="{{username}}">\n' +
+    '                <div class="dropdown dropdown-user text-end" data-user="{{user.username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
@@ -151,7 +151,7 @@ const comments = '' +
     '                </ul>{{/myCommentsFlag}}\n' +
 
     '               {{#myCommentsFlag}}' +
-    '                <div class="dropdown dropdown-user text-end"  data-user="{{username}}">\n' +
+    '                <div class="dropdown dropdown-user text-end"  data-user="{{user.username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
     '                </a>\n' +
     '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface CourseRepositoryCustom {
 
-    public Page<Course> findByCourseNameAndUser(String CourseName, Pageable pageable);
+
 
     Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable);
 

@@ -33,16 +33,6 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         super(Course.class);
     }
 
-    public Page<Course> findByCourseNameAndUser(String courseName, Pageable pageable) {
-
-        return applyPagination(pageable, query ->
-                query.select(course)
-                        .from(course)
-                        .leftJoin(course.user, QUser.user)
-                        .fetchJoin()
-                        .where(course.courseName.contains(courseName))
-        );
-    }
 
 
     public Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable) {
@@ -50,7 +40,6 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                 , course.id
                 , course.courseName
                 , course.createDate
-                , course.teachName
                 , select(courseEvaluation.scope.avg().as("scope")).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
                 , select(userCourse.course.count().as("userJoinCount")).from(userCourse).where(userCourse.course.id.eq(course.id)).groupBy(userCourse.course.id)
                 ))
@@ -83,20 +72,20 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
     }
 
 
-    public Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable) {
+    public Page<CourseDto> findCourseDtoByCourseName(String search, Pageable pageable) {
         return applyPagination(pageable, query ->
                 getCourseDtoJPAQuery()
-                        .where(course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
+                        .where(course.courseName.contains(search).or(user.nickname.eq(search)).or(user.username.eq(search)))
         );
     }
 
-    public Page<CourseDto> findCourseDtoByCourseNameAndUserId(String courseName, Pageable pageable, Long userId) {
+    public Page<CourseDto> findCourseDtoByCourseNameAndUserId(String search, Pageable pageable, Long userId) {
         return applyPagination(pageable, query ->
                 getSelectConstructorCourseDto()
                         .from(userCourse)
                         .leftJoin(userCourse.course, course)
                         .leftJoin(course.user, user)
-                        .where(userCourseUserIdEq(userId), course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
+                        .where(userCourseUserIdEq(userId),course.courseName.contains(search).or(user.nickname.eq(search)).or(user.username.eq(search)))
         );
     }
 
@@ -131,7 +120,6 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                 , course.courseName
                 , user
                 , course.createDate
-                , course.teachName
                 , course.thumbnail
                 , course.courseExplanation
                 , select(courseEvaluation.scope.avg()).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
@@ -139,10 +127,10 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         ));
     }
 
-    public Page<CourseDto> findCourseByCourseNameAndUsername(String courseName, Pageable pageable) {
+    public Page<CourseDto> findCourseByCourseNameAndUsername(String search, Pageable pageable) {
         return applyPagination(pageable, query ->
                 getCourseDtoJPAQuery()
-                        .where(course.courseName.contains(courseName).or(course.teachName.contains(courseName)))
+                        .where(course.courseName.contains(search).or(user.nickname.eq(search)).or(user.username.eq(search)))
         );
     }
 

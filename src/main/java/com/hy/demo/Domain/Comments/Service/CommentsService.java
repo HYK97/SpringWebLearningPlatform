@@ -5,6 +5,7 @@ import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
 import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Comments.Repository.CommentsRepository;
+import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.slf4j.Logger;
@@ -76,6 +77,11 @@ public class CommentsService {
         Comments comment = commentsRepository.findById(commentsId)
                 .orElseThrow(() -> new EntityNotFoundException("찾는 댓글없음"));
 
+
+        UserDto userDto = new UserDto();
+        userDto.setUsername(findUser.getUsername());
+        userDto.setNickname(findUser.getNickname());
+        userDto.setProfileImage(findUser.getProfileImage());
         Comments reply = Comments.builder()
                 .parent(comment)
                 .comments(comments)
@@ -86,8 +92,7 @@ public class CommentsService {
         CommentsDto commentsDto = replyEntity.changeDto();
         commentsDto.setMyCommentsFlag(1);
         commentsDto.setReplyId(comment.getId());
-        commentsDto.setUsername(findUser.getUsername());
-        commentsDto.setProfileImage(findUser.getProfileImage());
+        commentsDto.setUser(userDto);
         return commentsDto;
     }
 

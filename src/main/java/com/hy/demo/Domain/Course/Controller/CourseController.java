@@ -174,7 +174,7 @@ public class CourseController {
 
 
     @PostMapping({"/create"})
-    public String courseCreate(@AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile thumbnail, String courseName, String teachName, String courseExplanation) {
+    public String courseCreate(@AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile thumbnail, String courseName, String courseExplanation) {
         Course course = null;
         try {
             SummerNoteImage uploadFile = imageService.store(thumbnail);
@@ -182,7 +182,6 @@ public class CourseController {
                     .courseExplanation(courseExplanation)
                     .courseName(courseName)
                     .user(principalDetails.getUser())
-                    .teachName(teachName)
                     .thumbnail("/image/" + uploadFile.getId())
                     .build();
         } catch (Exception e) {
@@ -198,7 +197,7 @@ public class CourseController {
 
     @PostMapping({"/update/{id}"})
     @ResponseBody
-    public String courseUpdate(@PathVariable Long id, @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail, String courseName, String teachName, String courseExplanation) {
+    public String courseUpdate(@PathVariable Long id, @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail, String courseName, String courseExplanation) {
         Course course = null;
 
         try {
@@ -215,7 +214,6 @@ public class CourseController {
             }
             course.updateCourseExplanation(courseExplanation);
             course.updateCourseName(courseName);
-            course.updateTeachName(teachName);
         } catch (Exception e) {
             //error
             e.printStackTrace();

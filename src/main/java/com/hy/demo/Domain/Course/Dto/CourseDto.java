@@ -1,6 +1,7 @@
 package com.hy.demo.Domain.Course.Dto;
 
 import com.hy.demo.Domain.Course.Entity.Course;
+import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.*;
@@ -18,9 +19,8 @@ public class CourseDto {
 
     private String courseName;
 
-    private CourseUser user;
+    private UserDto user;
 
-    private String teachName;
 
     private String thumbnail;
 
@@ -40,25 +40,24 @@ public class CourseDto {
 
     private Long userJoinCount;
 
+
     public Course returnEntity() {
         return Course.builder()
                 .courseExplanation(this.courseExplanation)
                 .thumbnail(this.thumbnail)
                 .id(this.id)
-                .teachName(this.teachName)
                 .build();
     }
 
     public void setUser(User user) {
-        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole());
+        this.user = user.changeDto();
     }
 
-    public CourseDto(Long id, String courseName, User user, Timestamp createDate, String teachName, String thumbnail, String courseExplanation, Double scope, Long reviewCount) {
+    public CourseDto(Long id, String courseName, User user, Timestamp createDate, String thumbnail, String courseExplanation, Double scope, Long reviewCount) {
         this.id = id;
         this.courseName = courseName;
-        this.user = new CourseUser(user.getUsername(), user.getEmail(), user.getRole());
+        this.user = user.changeDto();
         this.createDate = new Date(createDate.getTime());
-        this.teachName = teachName;
         this.thumbnail = thumbnail;
         this.courseExplanation = courseExplanation;
         if (!ObjectUtils.isEmpty(scope)) {
@@ -72,11 +71,10 @@ public class CourseDto {
         this.reviewCount = reviewCount;
     }
 
-    public CourseDto(Long id, String courseName, Timestamp createDate, String teachName, Double scope, Long userJoinCount) {
+    public CourseDto(Long id, String courseName, Timestamp createDate, Double scope, Long userJoinCount) {
         this.id = id;
         this.courseName = courseName;
         this.createDate = new Date(createDate.getTime());
-        this.teachName = teachName;
         if (!ObjectUtils.isEmpty(scope)) {
             this.scope = (Math.round(scope * 10) / 10.0);
         } else {
