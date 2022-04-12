@@ -10,7 +10,7 @@
 }
 @media (max-width: 576px) {
     .card-img-top {
-        height:200px;
+        height:200px!important;
 
     }
     .carousel-items {
