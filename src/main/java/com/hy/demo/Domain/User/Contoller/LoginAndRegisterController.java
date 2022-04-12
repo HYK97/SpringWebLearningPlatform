@@ -115,7 +115,7 @@ public class LoginAndRegisterController {
 
     //세션 업데이트
     private void updateOAuth(Authentication authentication) {
-        User findUser = userService.findByUsername(((PrincipalDetails) authentication.getPrincipal()).getUser());
+        User findUser = userService.findByUsername(((PrincipalDetails) authentication.getPrincipal()).getUsername());
         PrincipalDetails newPrincipal = new PrincipalDetails(findUser, false);
         UsernamePasswordAuthenticationToken newAuth =
                 new UsernamePasswordAuthenticationToken(newPrincipal,

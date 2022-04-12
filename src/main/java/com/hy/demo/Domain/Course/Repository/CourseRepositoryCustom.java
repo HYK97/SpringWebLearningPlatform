@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface CourseRepositoryCustom {
 
 
-
     Page<CourseDto> findCourseDtoByCourseName(String courseName, Pageable pageable);
 
     public List<CourseDto> findByRandomId(int amount);
@@ -24,5 +23,7 @@ public interface CourseRepositoryCustom {
     Optional<Course> findByUserAndCourseId(User findUser, Long courseId);
 
     Page<CourseDto> findCourseDtoByCourseNameAndUserId(String courseName, Pageable pageable, Long userId);
+
+    Page<CourseDto> findCourseDtoByUsername(String username, Pageable pageable);
 
 }

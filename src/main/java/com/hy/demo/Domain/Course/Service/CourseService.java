@@ -46,6 +46,12 @@ public class CourseService {
     }
 
 
+    public Page<CourseDto> findByAuthorName(Pageable pageable, String authorName) {
+        Page<CourseDto> results = courseRepository.findCourseDtoByUsername(authorName, pageable);
+        return results;
+    }
+
+
     public CourseDto findDetailCourse(Long id) {
 
         CourseDto results = courseRepository.findByIdAndUserDTO(id);//
