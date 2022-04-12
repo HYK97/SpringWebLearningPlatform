@@ -8,14 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -33,8 +29,7 @@ public class UserController {
     public String info(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         UserDto userInfo;
         try {
-            userInfo = userService.findUserInfo(principalDetails.getUser());
-
+            userInfo = userService.findUserInfo(principalDetails.getUsername());
         } catch (EntityNotFoundException e) {
             return "403";
         }
@@ -58,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("security")
-    public String security(@AuthenticationPrincipal PrincipalDetails principalDetails, Authentication authentication) {
+    public String security() {
 
         return "user/userSecurity";
     }

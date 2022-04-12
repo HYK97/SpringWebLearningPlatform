@@ -50,7 +50,7 @@ public class ImageController {
     @ResponseBody
     public String profileUpdate(MultipartFile file, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         try {
-            User findUser = userService.findByUsername(principalDetails.getUser());
+            User findUser = userService.findByUsername(principalDetails.getUsername());
             imageService.deleteImage(findUser.getProfileImage());
             SummerNoteImage uploadFile = imageService.store(file);
             userService.updateUserProfileImage("/image/" + uploadFile.getId(), principalDetails.getUser());
