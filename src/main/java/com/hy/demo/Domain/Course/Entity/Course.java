@@ -25,7 +25,6 @@ public class Course extends BaseEntity {
 
     private String courseName;
 
-    private String teachName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_id")
@@ -54,9 +53,7 @@ public class Course extends BaseEntity {
         this.courseName = courseName;
     }
 
-    public void updateTeachName(String teachName) {
-        this.teachName = teachName;
-    }
+
 
     public void updateCourseExplanation(String courseExplanation) {
         this.courseExplanation = courseExplanation;
@@ -71,7 +68,6 @@ public class Course extends BaseEntity {
         courseDto.setCourseName(courseName);
         courseDto.setCourseExplanation(courseExplanation);
         courseDto.setUser(user);
-        courseDto.setTeachName(teachName);
         courseDto.setThumbnail(thumbnail);
         return courseDto;
     }

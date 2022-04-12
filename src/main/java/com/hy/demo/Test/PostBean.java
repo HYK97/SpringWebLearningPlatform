@@ -67,7 +67,7 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
                     .username("tmanager" + i)
                     .role("ROLE_MANAGER")
                     .email("manager@gmail.com")
-                    .nickname("nick"+i)
+                    .nickname("mnick"+i)
                     .selfIntroduction("hi"+i)
                     .password(passwordEncoder.encode("manager"))
                     .build();
@@ -82,7 +82,6 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
         for (User user : users) {
             Course course = Course.builder()
                     .courseName("test" + index)
-                    .teachName(user.getUsername())
                     .courseExplanation("sdasd")
                     .user(user)
                     .build();

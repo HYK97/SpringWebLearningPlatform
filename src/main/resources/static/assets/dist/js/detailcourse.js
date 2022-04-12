@@ -66,7 +66,7 @@ const template = '<div>\n' +
     '            {{#reply}}\n' +
     '                <div class="reply-box  text-break">\n' +
     '                            <div class="user-field-name">\n' +
-    '                                <div> <p class=" my-3"> 강사 ' + getId().teachName + '님의 답글</p></div>\n' +
+    '                                <div> <p class=" my-3"> 강사 ' + getId().teachNickname + '님의 답글</p></div>\n' +
     '                   {{#teachUser}}\n' +
     '                                <div class="dropdown text-end">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +

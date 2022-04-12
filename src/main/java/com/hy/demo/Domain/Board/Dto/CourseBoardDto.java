@@ -20,29 +20,26 @@ public class CourseBoardDto {
     private String contents;
     private Long views;
     private Date createDate;
-    private String teachName;
     private String courseName;
     private List<FileDto> files = new ArrayList<>();
     private Long commentsCount;
 
 
-    public CourseBoardDto(Long id, String title, Long views, Timestamp createDate, String contents, String teachName, String courseName) {
+    public CourseBoardDto(Long id, String title, Long views, Timestamp createDate, String contents, String courseName) {
         this.id = id;
         this.title = title;
         this.views = views;
         this.createDate = new Date(createDate.getTime());
         this.contents = contents;
-        this.teachName = teachName;
         this.courseName = courseName;
     }
 
-    public CourseBoardDto(Long id, String title, String contents, Long views, Timestamp createDate, String teachName, String courseName, List<File> files) {
+    public CourseBoardDto(Long id, String title, String contents, Long views, Timestamp createDate, String courseName, List<File> files) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.views = views;
         this.createDate = new Date(createDate.getTime());
-        this.teachName = teachName;
         this.courseName = courseName;
         for (File file : files) {
             FileDto fileDto = new FileDto();
