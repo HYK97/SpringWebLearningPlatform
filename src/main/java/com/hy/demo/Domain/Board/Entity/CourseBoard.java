@@ -58,7 +58,6 @@ public class CourseBoard extends BaseEntity {
         courseBoardDto.setContents(this.contents);
         courseBoardDto.changeDate(this.getCreateDate());
         courseBoardDto.setId(this.id);
-        courseBoardDto.setTeachName(this.course.getTeachName());
         courseBoardDto.setViews(this.views);
         return courseBoardDto;
     }

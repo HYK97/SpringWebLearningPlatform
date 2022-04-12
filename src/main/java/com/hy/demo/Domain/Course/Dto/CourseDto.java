@@ -21,7 +21,6 @@ public class CourseDto {
 
     private UserDto user;
 
-    private String teachName;
 
     private String thumbnail;
 
@@ -47,7 +46,6 @@ public class CourseDto {
                 .courseExplanation(this.courseExplanation)
                 .thumbnail(this.thumbnail)
                 .id(this.id)
-                .teachName(this.teachName)
                 .build();
     }
 

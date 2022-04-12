@@ -326,7 +326,7 @@
         function getId() {
             let course = {
                 id: {{id}},
-                teachName: '{{user.nickname}}',
+                teachNickname: '{{user.nickname}}',
                 teachUser : '{{user.username}}'==('{{loginUser}}') ? true : '',
                 loginUser : '{{loginUser}}',
                 applicationCheck : {{^applicationCheck}}''{{/applicationCheck}} {{#applicationCheck}}'{{applicationCheck}}' {{/applicationCheck}}
