@@ -36,7 +36,6 @@ public class CourseBoardRepositoryImpl extends QueryDsl4RepositorySupport implem
                 courseBoard.views,
                 courseBoard.createDate,
                 courseBoard.contents,
-                course.teachName,
                 course.courseName))
                 .from(courseBoard)
                 .leftJoin(courseBoard.course, course)

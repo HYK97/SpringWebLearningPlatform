@@ -157,12 +157,10 @@ $(document).on("click", "#courseUpdateBtn", function () {
         return;
     }
     let courseName = $("#courseName").val();
-    let teachName = $("#teachName").val();
     let courseExplanation = $("#courseExplanation").val();
     var formData = new FormData();
 
     formData.append('courseName', courseName);
-    formData.append('teachName', teachName);
     formData.append('courseExplanation', courseExplanation);
     formData.append("thumbnail", $("#thumbnail")[0].files[0]);
 
@@ -216,7 +214,6 @@ $(document).on("click", "#courseInfoUpdateBtn", function () {
         async: false,
         success: function (data) {
             $("#courseExplanation").summernote('code', data.courseExplanation);
-            $("#teachName").val(data.teachName);
             $("#courseName").val(data.courseName);
             $("#thumbnailImg").attr("src", data.thumbnail);
         },

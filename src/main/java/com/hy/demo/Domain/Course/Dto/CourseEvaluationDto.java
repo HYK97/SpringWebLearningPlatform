@@ -1,5 +1,7 @@
 package com.hy.demo.Domain.Course.Dto;
 
+import com.hy.demo.Domain.User.Dto.UserDto;
+import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.Data;
 import lombok.ToString;
@@ -15,11 +17,7 @@ public class CourseEvaluationDto {
 
     private String courseName;
 
-    private String username;
-
     private Long courseID;
-
-    private Long userID;
 
     private Double scope;
 
@@ -35,15 +33,14 @@ public class CourseEvaluationDto {
 
     private Date replyCreateDate;
 
-    private String profileImage;
 
+    private UserDto user;
 
-    public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments, Timestamp createDate, String reply, Timestamp replyCreateDate, Long replyId, String profileImage) {
+    public CourseEvaluationDto(Long id, String courseName, User user, Long courseID, Double scope, String comments, Timestamp createDate, String reply, Timestamp replyCreateDate, Long replyId) {
         this.id = id;
         this.courseName = courseName;
-        this.username = username;
+        this.user = user.changeDto();
         this.courseID = courseID;
-        this.userID = userID;
         this.scope = scope;
         this.comments = comments;
         if (!ObjectUtils.isEmpty(scope)) {
@@ -63,25 +60,7 @@ public class CourseEvaluationDto {
             this.replyCreateDate = null;
 
         this.replyId = replyId;
-        this.profileImage = profileImage;
 
     }
 
-    public CourseEvaluationDto(Long id, String courseName, String username, Long courseID, Long userID, Double scope, String comments) {
-        this.id = id;
-        this.courseName = courseName;
-        this.username = username;
-        this.courseID = courseID;
-        this.userID = userID;
-        this.scope = scope;
-        if (!ObjectUtils.isEmpty(scope)) {
-            this.scope = (Math.round(scope * 10) / 10.0);
-            this.starScope = this.scope * 20;
-            this.starScope += 1.5;
-        } else {
-            this.scope = 0.0;
-            this.starScope = 0.0;
-        }
-        this.comments = comments;
-    }
 }
