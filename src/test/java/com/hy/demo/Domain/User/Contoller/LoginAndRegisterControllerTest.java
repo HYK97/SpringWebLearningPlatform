@@ -55,6 +55,7 @@ class LoginAndRegisterControllerTest {
                 .username("test")
                 .email("test@com")
                 .role("ROLE_USER")
+                .nickname("11")
                 .password("password").build()).getId();
     }
     @AfterTransaction
@@ -139,7 +140,7 @@ class LoginAndRegisterControllerTest {
                 // then
                 .andExpect(handler().methodName("loginForm"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/user/loginForm"));
+                .andExpect(view().name("user/loginForm"));
     }
 
     @Test
@@ -150,7 +151,7 @@ class LoginAndRegisterControllerTest {
                 // then
                 .andExpect(handler().methodName("joinForm"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/user/joinForm"));
+                .andExpect(view().name("user/joinForm"));
 
     }
 
@@ -167,7 +168,7 @@ class LoginAndRegisterControllerTest {
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("/main/index"));
+                .andExpect(content().string("main/index"));
         // then
 
     }
@@ -178,15 +179,16 @@ class LoginAndRegisterControllerTest {
 
         // when
         mvc.perform(post("/join")
-                .param("username","normal")
+                .param("username","abc")
                 .param("password","test")
                 .param("email","test@gmail.com")
-                .param("role","ROLE_USER"))
+                .param("role","ROLE_USER")
+                .param("nickname","asc"))
                 // then
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("/loginForm"));
+                .andExpect(content().string("loginForm"));
 
 
     }
@@ -201,14 +203,31 @@ class LoginAndRegisterControllerTest {
                 .param("username","test")
                 .param("password","test")
                 .param("email","test@gmail.com")
-                .param("role","ROLE_USER"))
+                .param("role","ROLE_USER")
+                .param("nickname","asd"))
                 // then
                 .andDo(print())
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("false"));
+                .andExpect(content().string("1"));
+    }
 
-
+    @Test
+    public void joinDuplicationNicknamePost() throws Exception {
+        //given
+        //기존의 post 회원 아이디랑 같은 아이디로 회원가입시도
+        // when
+        mvc.perform(post("/join")
+                .param("username","dd")
+                .param("password","test")
+                .param("email","test@gmail.com")
+                .param("role","ROLE_USER")
+                .param("nickname","11"))
+                // then
+                .andDo(print())
+                .andExpect(handler().methodName("join"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("2"));
     }
 
 

@@ -102,7 +102,7 @@ class MainControllerTest {
                 .andDo(print())
         // then
                 .andExpect(status().isOk())
-                .andExpect(view().name("/main/index"));
+                .andExpect(view().name("main/index"));
     }
 
     @Test

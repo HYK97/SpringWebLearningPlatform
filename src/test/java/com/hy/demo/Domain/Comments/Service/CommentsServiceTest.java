@@ -98,7 +98,6 @@ class CommentsServiceTest {
                         .courseName("courseName" + user.getUsername())
                         .user(user)
                         .courseExplanation("코스 " + i + "번 입니다.")
-                        .teachName("manager" + i)
                         .build();
                 userId = userRepository.save(user).getId();
                 userIdList.add(userId);
@@ -158,7 +157,7 @@ class CommentsServiceTest {
         //then
 
 
-        assertThat(content).extracting("id","username","comments","replyCounts")
+        assertThat(content).extracting("id","user.username","comments","replyCounts")
                 .containsOnly(
                         tuple(1L,"manager1","testComment0",7L),
                         tuple(9L,"manager1","testComment1",7L),
