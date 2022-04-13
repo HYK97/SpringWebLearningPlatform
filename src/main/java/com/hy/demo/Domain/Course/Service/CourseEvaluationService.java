@@ -147,5 +147,8 @@ public class CourseEvaluationService {
     public Map tenYearToYearScopeAvg(Long courseId, String date) {
         return courseEvaluationRepository.findTenYearToYearScopeAvgByCourseId(courseId, date);
     }
+    public Double findAvgScopeByCourseId(Long courseId) {
+        return courseEvaluationRepository.findAvgScopeByCourseId(courseId);
+    }
 
 }

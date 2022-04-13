@@ -93,4 +93,15 @@ public class CourseService {
         return courseRepository.findByRandomId(amount);
     }
 
+    public List<CourseDto> findRankingScopeAvgCourse(int amount) {
+        return courseRepository.findOrderByScopeAvgCourse(amount);
+    }
+    public List<CourseDto> findRankingEvaluationCountCourse(int amount) {
+        return courseRepository.findOrderByEvaluationCountCourse(amount);
+    }
+    public List<CourseDto> findRankingUserCourseCountCourse(int amount) {
+        return courseRepository.findOrderByUserCourse(amount);
+    }
+
+
 }
