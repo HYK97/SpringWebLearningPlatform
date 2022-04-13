@@ -1,6 +1,7 @@
 package com.hy.demo.Controller;
 
 import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Service.UserService;
@@ -27,6 +28,8 @@ public class MainController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CourseEvaluationService courseEvaluationService;
 
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -36,9 +39,17 @@ public class MainController {
 
         List<UserDto> userList = userService.rankRandomUser(3);
         List<CourseDto> headerView = courseService.randomCourseList(5);
+        List<CourseDto> firstCourse = courseService.findRankingScopeAvgCourse(1);
+        List<CourseDto> secondCourse = courseService.findRankingEvaluationCountCourse(1);
+        List<CourseDto> thirdCourse = courseService.findRankingUserCourseCountCourse(1);// 쿼리 분리
+        Double avgScopeByCourseId = courseEvaluationService.findAvgScopeByCourseId(thirdCourse.get(0).getId());
+        thirdCourse.get(0).updateScope(avgScopeByCourseId);
         model.addAttribute("headerView", headerView);
         model.addAttribute("headerViewSize", new ArrayList<>(Arrays.asList(new String[]{"0", "1", "2", "3", "4"})));
         model.addAttribute("userList", userList);
+        model.addAttribute("firstCourse", firstCourse);
+        model.addAttribute("secondCourse", secondCourse);
+        model.addAttribute("thirdCourse", thirdCourse);
 
         return "main/index";
     }

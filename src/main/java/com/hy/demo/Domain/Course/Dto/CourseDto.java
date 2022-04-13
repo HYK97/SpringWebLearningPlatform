@@ -53,6 +53,12 @@ public class CourseDto {
         this.user = user.changeDto();
     }
 
+    public void updateScope(Double scope) {
+        this.scope = (Math.round(scope * 10) / 10.0);
+        this.starScope = this.scope * 20;
+        this.starScope += 1.5;
+    }
+
     public CourseDto(Long id, String courseName, User user, Timestamp createDate, String thumbnail, String courseExplanation, Double scope, Long reviewCount) {
         this.id = id;
         this.courseName = courseName;
@@ -82,6 +88,23 @@ public class CourseDto {
         }
         this.userJoinCount = userJoinCount;
     }
+
+    public CourseDto(Long id,String courseName, User user, String thumbnail, Double scope) {
+        this.id = id;
+        this.courseName=courseName;
+        this.thumbnail = thumbnail;
+        this.user = user.changeDto();
+        this.scope = (Math.round(scope * 10) / 10.0);
+        this.starScope = this.scope * 20;
+        this.starScope += 1.5;
+    }
+    public CourseDto(Long id,String courseName, User user, String thumbnail) {
+        this.id = id;
+        this.courseName=courseName;
+        this.thumbnail = thumbnail;
+        this.user = user.changeDto();
+    }
+
 
 
 }
