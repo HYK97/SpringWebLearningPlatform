@@ -9,8 +9,8 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     <!-- Bootstrap core CSS -->
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    {{>layout/import}}
 
     <style>
         .bd-placeholder-img {
@@ -36,7 +36,8 @@
 
 <main class="form-signin">
     <form name="loginForm">
-        <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+
+        <i class="bi bi-book mb-4" style="font-size: 60px;   background:  linear-gradient( to right, purple, plum );color: transparent; -webkit-background-clip: text;"></i>
         <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
         <div class="form-floating">

@@ -49,7 +49,7 @@ public class UserController {
 
 
     @GetMapping("userDetailInfo/{username}")
-    public String userDetailInfo(@PathVariable String username, Model model, @PageableDefault(size = 3, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String userDetailInfo(@PathVariable String username, Model model, @PageableDefault(size = 6, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         User userInfo;
         try {
             userInfo = userService.findByUsername(username);
