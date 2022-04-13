@@ -31,4 +31,6 @@ public interface CourseEvaluationRepository extends JpaRepository<CourseEvaluati
 
     Map findTenYearToYearScopeAvgByCourseId(Long courseId, String date);
 
+    Double findAvgScopeByCourseId(Long courseId);
+
 }

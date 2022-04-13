@@ -140,6 +140,45 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
         );
     }
 
+    public List<CourseDto> findOrderByScopeAvgCourse(int limit) {
+        return  getRankEvaluationSelection()
+                .orderBy(courseEvaluation.scope.avg().desc())
+                .limit(limit)
+                .fetch();
+    }
+    public List<CourseDto> findOrderByEvaluationCountCourse(int limit) {
+        return  getRankEvaluationSelection()
+                .orderBy(courseEvaluation.count().desc())
+                .limit(limit)
+                .fetch();
+    }
 
+    private JPAQuery<CourseDto> getRankEvaluationSelection() {
+        return select((Projections.constructor(CourseDto.class,
+                course.id
+                , course.courseName
+                , user
+                , course.thumbnail
+                , courseEvaluation.scope.avg())))
+                .from(course)
+                .leftJoin(course.courseEvaluations, courseEvaluation)
+                .leftJoin(course.user, user)
+                .groupBy(course.id);
+    }
+
+    public List<CourseDto> findOrderByUserCourse(int limit) {
+        return select((Projections.constructor(CourseDto.class,
+                course.id
+                , course.courseName
+                , user
+                , course.thumbnail)))
+                .from(course)
+                .leftJoin(course.userCourses, userCourse)
+                .leftJoin(course.user, user)
+                .groupBy(userCourse.course.id)
+                .orderBy(userCourse.course.id.count().desc())
+                .limit(limit)
+                .fetch();
+    }
 }
 
