@@ -128,6 +128,17 @@ public class UserController {
         return "1";
     }
 
+    @PostMapping("courseWithdrawal/{courseId}")
+    @ResponseBody
+    public String courseWithdrawal(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long courseId) {
+        try {
+            userService.courseWithdrawal(principalDetails.getUsername(), courseId);
+        } catch (AccessDeniedException e) {
+            return "0"; //삭제실패
+        }
+        return "1"; //삭제성공
+    }
+
 
     //테스트용
     @ResponseBody
