@@ -257,6 +257,11 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return map;
 
     }
+    public Double findAvgScopeByCourseId(Long courseId) {
+        return select(courseEvaluation.scope.avg()).from(courseEvaluation).
+                where(courseEvaluation.course.id.eq(courseId)).fetchOne();
+    }
+
 
     //h2
     StringTemplate dayFormat = Expressions.stringTemplate(
@@ -284,6 +289,8 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     StringTemplate yearFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, 'Y')"
             , courseEvaluation.createDate);*/
+
+
 
 
 }

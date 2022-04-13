@@ -24,5 +24,7 @@ public interface CourseEvaluationRepositoryCustom {
 
     Map findTenYearToYearScopeAvgByCourseId(Long courseId, String date);
 
+    Double findAvgScopeByCourseId(Long courseId);
+
 
 }

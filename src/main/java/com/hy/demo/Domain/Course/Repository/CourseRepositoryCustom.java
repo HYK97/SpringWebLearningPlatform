@@ -26,4 +26,11 @@ public interface CourseRepositoryCustom {
 
     Page<CourseDto> findCourseDtoByUsername(String username, Pageable pageable);
 
+    List<CourseDto> findOrderByScopeAvgCourse(int limit);
+
+    List<CourseDto> findOrderByEvaluationCountCourse(int limit);
+
+    List<CourseDto> findOrderByUserCourse(int limit);
+
+
 }
