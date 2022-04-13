@@ -79,7 +79,6 @@ class CourseEvaluationRepositoryImplTest {
                         .courseName("courseName" + user.getUsername())
                         .user(user)
                         .courseExplanation("코스 " + i + "번 입니다.")
-                        .teachName("manager" + i)
                         .build();
                 userId = userRepository.save(user).getId();
                 userIdList.add(userId);
@@ -101,7 +100,7 @@ class CourseEvaluationRepositoryImplTest {
                 Long courseEvaluationId = courseEvaluationRepository.save(courseEvaluation).getId();
                 courseEvaluationIdList.add(courseEvaluationId);
                 //reply
-                String teachName = course.getTeachName();
+                String teachName = allUser.get(i).getUsername();
                 User findManger = userRepository.findByUsername(teachName);
                 CourseEvaluation reply = CourseEvaluation.builder()
                         .user(findManger)
@@ -145,7 +144,7 @@ class CourseEvaluationRepositoryImplTest {
         // then
         assertThat(findEvaluation1.getContent().size()).isEqualTo(3);
         assertThat(findEvaluation1.getContent())
-                .extracting("courseName", "username", "scope", "comments")
+                .extracting("courseName", "user.username", "scope", "comments")
                 .containsOnly(
                         tuple("courseNamemanager1", "user0", 2.0, "courseEvaluation0"),
                         tuple("courseNamemanager1", "user2", 3.0, "courseEvaluation1"),

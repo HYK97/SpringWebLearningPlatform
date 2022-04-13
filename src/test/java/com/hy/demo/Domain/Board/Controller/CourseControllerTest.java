@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -58,6 +59,9 @@ class CourseControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    Logger logger;
+
     private Long testCode;
 
     private MockMvc mvc;
@@ -88,6 +92,7 @@ class CourseControllerTest {
                 .username("user")
                 .role("ROLE_USER")
                 .email("user@gmail.com")
+                .nickname("nick1")
                 .password(passwordEncoder.encode("user"))
                 .build();
 
@@ -95,6 +100,7 @@ class CourseControllerTest {
                 .username("manager")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
+                .nickname("nick2")
                 .password(passwordEncoder.encode("manager"))
                 .build();
 
@@ -102,18 +108,17 @@ class CourseControllerTest {
                 .username("manager2")
                 .role("ROLE_MANAGER")
                 .email("manager@gmail.com")
+                .nickname("nick3")
                 .password(passwordEncoder.encode("manager"))
                 .build();
 
         course = Course.builder()
                 .courseName("1")
-                .teachName("tmt")
                 .courseExplanation("sdasd")
                 .user(manager)
                 .build();
         course2 = Course.builder()
                 .courseName("2")
-                .teachName("ffaa")
                 .courseExplanation("ffaa")
                 .user(manager2)
                 .build();
@@ -171,6 +176,7 @@ class CourseControllerTest {
         while (li.hasPrevious()) {
             sortDto.add((CourseDto) li.previous());
         }
+
         //웹에서는 역으로나오기떄문에 바꿔줘야함.
         // when
         mvc.perform(get("/course/view"))
@@ -205,7 +211,7 @@ class CourseControllerTest {
         List<CourseDto> findDto = courseRepository.findCourseDtoByCourseName("2", page).getContent();
 
         // when
-        mvc.perform(get("/course/search").param("search", "2"))
+        mvc.perform(get("/course/view").param("search", "2"))
                 .andDo(print())
                 // then
                 .andExpect(status().isOk())

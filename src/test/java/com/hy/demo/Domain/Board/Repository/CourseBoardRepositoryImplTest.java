@@ -91,7 +91,6 @@ class CourseBoardRepositoryImplTest {
                         .courseName("courseName" + user.getUsername())
                         .user(user)
                         .courseExplanation("코스 " + i + "번 입니다.")
-                        .teachName("manager" + i)
                         .build();
                 userId = userRepository.save(user).getId();
                 userIdList.add(userId);
@@ -132,7 +131,7 @@ class CourseBoardRepositoryImplTest {
                 Long courseEvaluationId = courseEvaluationRepository.save(courseEvaluation).getId();
                 courseEvaluationIdList.add(courseEvaluationId);
                 //reply
-                String teachName = course.getTeachName();
+                String teachName = allUser.get(i).getUsername();
                 User findManger = userRepository.findByUsername(teachName);
                 CourseEvaluation reply = CourseEvaluation.builder()
                         .user(findManger)

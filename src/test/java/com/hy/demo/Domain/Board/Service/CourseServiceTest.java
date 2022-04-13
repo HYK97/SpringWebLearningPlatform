@@ -88,24 +88,20 @@ class CourseServiceTest {
         course1 = Course.builder()
                 .courseName("courseTest1")
                 .user(manager1)
-                .teachName("manager1")
                 .build();
 
         Course course2 = Course.builder()
                 .courseName("courseTest2")
                 .user(manager1)
-                .teachName("manager1")
                 .build();
 
         Course course3 = Course.builder()
                 .courseName("courseTest3")
                 .user(manager2)
-                .teachName("manager2")
                 .build();
         Course course4 = Course.builder()
                 .courseName("courseTest4")
                 .user(manager2)
-                .teachName("manager2")
                 .build();
 
         CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
@@ -179,7 +175,7 @@ class CourseServiceTest {
         CourseDto courseDto = courseService.findDetailCourse(byCourseName.getId());
         //then
         assertThat(courseDto)
-                .extracting("courseName","teachName","scope","starScope","courseExplanation","starPercent")
+                .extracting("courseName","user.username","scope","starScope","courseExplanation","starPercent")
                 .containsExactly("courseTest1","manager1",4.0,81.5,null,doubles);
 
     }

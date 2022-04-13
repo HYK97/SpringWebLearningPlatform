@@ -85,24 +85,20 @@ class CourseEvaluationServiceTest {
         course1 = Course.builder()
                 .courseName("courseTest1")
                 .user(manager1)
-                .teachName("manager1")
                 .build();
 
         Course course2 = Course.builder()
                 .courseName("courseTest2")
                 .user(manager1)
-                .teachName("manager1")
                 .build();
 
         Course course3 = Course.builder()
                 .courseName("courseTest3")
                 .user(manager2)
-                .teachName("manager2")
                 .build();
         Course course4 = Course.builder()
                 .courseName("courseTest4")
                 .user(manager2)
-                .teachName("manager2")
                 .build();
 
         CourseEvaluation courseEvaluation1 = CourseEvaluation.builder()
