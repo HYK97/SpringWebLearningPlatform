@@ -51,8 +51,46 @@
                     </div>
 
                     <hr class="my-4">
-                    <button id="courseUpdateBtn" type="button" class="w-100 btn btn-primary btn-lg">강의 업데이트 하기</button>
+                    <div class="d-flex">
+                        <button id="courseUpdateBtn" type="button" class="w-100 btn btn-primary btn-lg">강의 업데이트 하기
+                        </button>
+                        <button id="deleteModalB" type="button" class="w-100 btn btn-danger btn-lg">강의 삭제하기</button>
+                    </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title" id="exampleModalLabel">강의 삭제하기</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <div class="pt-5 pb-3 text-center">
+                        <h2 class="">강의를 삭제하시겠습니까??</h2>
+                        <p>강의 회차를 삭제하시려면 아래에 문장을 입력하신후에 버튼을 눌러주세요</p>
+                        <p id="confirm"></p>
+                    </div>
+                    <div class="py-3 d-flex justify-content-center">
+                            <div class="mb-3">
+                                <input class="form-control" id="deleteConfirm" placeholder=""></input>
+                                <div id="feedback" class="invalid-feedback">잘못입력하셨습니다 다시입력해주세요</div>
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary deleteUserCourseBtn">삭제하기</button>
             </div>
         </div>
     </div>
