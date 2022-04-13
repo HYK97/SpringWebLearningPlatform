@@ -60,7 +60,9 @@
                     </div>
                     <div class="col-md-6 info">
                         <h1 class="sm-mg display-4 fst-italic my-4">{{courseName}}</h1>
-                        <p class="sm-mg lead my-3">강사명 : <a class="link-secondary" href="/user/userDetailInfo/{{user.username}}">{{user.nickname}}({{user.username}})</a></p>
+                        <p class="sm-mg lead my-3">강사명 : <a class="link-secondary"
+                                                            href="/user/userDetailInfo/{{user.username}}">{{user.nickname}}
+                            ({{user.username}})</a></p>
                         <p class="sm-mg  lead mb-0">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
@@ -97,36 +99,43 @@
 </div>
 
 
-<!-- Marketing messaging and featurettes
-================================================== -->
-<!-- Wrap the rest of the page in another container to center all the content. -->
-
 <div class="container marketing">
 
-    <!-- Three columns of text below the carousel -->
+    <div class="row">
+        <div class="col-lg-4 col-mg-4 col-xs-12 col-sm-12 d-flex justify-content-center my-3">
+            <h2 class="fw-light my-2">추천강사</h2>
+        </div>
+        <div class="col-lg-4 col-mg-4 col-xs-12">
+
+        </div>
+        <div class="col-lg-4 col-mg-4 col-xs-12">
+
+        </div>
+    </div>
+
     <div class="row">
         {{#userList}}
             <div class="col-lg-4">
-            {{^profileImage}}
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
-                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140"
-                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#777"/>
-                    <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-                </svg>
+                {{^profileImage}}
+                    <svg class="bd-placeholder-img rounded-circle my-3" width="140" height="140"
+                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140"
+                         preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#777"/>
+                        <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+                    </svg>
                 {{/profileImage}}
                 {{#profileImage}}
-                    <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="{{profileImage}}" >
+                    <img class="bd-placeholder-img rounded-circle my-3" width="140" height="140" src="{{profileImage}}">
                 {{/profileImage}}
-                <h2>{{nickname}}</h2>
+                <h2 class="my-3">{{nickname}}</h2>
                 {{#selfIntroduction}}
-                    <p>{{selfIntroduction}}</p>
+                    <p class="my-3">{{selfIntroduction}}</p>
                 {{/selfIntroduction}}
                 {{^selfIntroduction}}
-                    <p>자기소개 없음</p>
+                    <p class="my-3">자기소개 없음</p>
                 {{/selfIntroduction}}
 
-                <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+                <p> <a class="btn btn-secondary my-3" href="/user/userDetailInfo/{{username}}">>> 관련 강의</a></p>
             </div><!-- /.col-lg-4 -->
         {{/userList}}
     </div><!-- /.row -->
