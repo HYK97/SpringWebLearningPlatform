@@ -4,6 +4,7 @@ import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Community.Dto.CommunityDto;
 import com.hy.demo.Domain.Community.Entity.Community;
 import com.hy.demo.Domain.Community.Entity.QCommunity;
+import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -25,7 +26,7 @@ public class CommunityRepositoryImpl extends QueryDsl4RepositorySupport implemen
         super(Community.class);
     }
 
-    public Page<CommunityDto> findByCourseIdAndSearch(Long courseId, Pageable pageable,String search) {
+    public Page<CommunityDto> findByCourseIdAndSearch(Long courseId, Pageable pageable, String search, String username) {
         return applyPagination(pageable, query ->
                 query.select(Projections.constructor(CommunityDto.class,
                         community.id,
@@ -36,12 +37,15 @@ public class CommunityRepositoryImpl extends QueryDsl4RepositorySupport implemen
                 ))
                         .from(community)
                         .leftJoin(community.user, user)
-                        .where(community.course.id.eq(courseId),searchContains(search))
+                        .where(community.course.id.eq(courseId),searchContains(search),usernameEq(username))
         );
     }
 
     private BooleanExpression searchContains(String search) {
         return search != null ? community.title.contains(search).or(community.contents.contains(search)) : null;
+    }
+    private BooleanExpression usernameEq(String username) {
+        return username != null ? community.user.username.eq(username) : null;
     }
 
 
