@@ -29,4 +29,6 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
 
     List<UserDto> findRankRandomUserById(int amount);
 
+    Long deleteByCourseIdAndUserId(Long courseId, Long userId);
+
 }
