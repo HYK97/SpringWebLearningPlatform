@@ -215,8 +215,10 @@
                         location.href = '/course/myCourseView?search='+search+'&page='+refreshPage;
                     }else if(search != null && refreshPage == null) {
                         location.href = '/course/myCourseView?search='+search;
-                    }else if(search == null && refreshPage != null) {
-                        location.href = '/course/myCourseView?page='+refreshPage;
+                    }else if (search == null && refreshPage != null) {
+                        location.href = '/course/myCourseView?page=' + refreshPage;
+                    } else {
+                        location.href = '/course/myCourseView';
                     }
                 } else {
                     alert("수강취소 실패");
