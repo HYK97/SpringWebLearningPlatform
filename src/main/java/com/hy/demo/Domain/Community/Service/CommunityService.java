@@ -110,6 +110,10 @@ public class CommunityService {
         }
     }
 
+    public CommunityDto findCommunity(Long communityId) {
+        return communityRepository.findDtoById(communityId);
+    }
+
 
 
 
