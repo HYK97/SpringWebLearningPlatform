@@ -6,6 +6,8 @@ var fileNum = 0;
 // 첨부파일 배열
 var content_files = new Array();
 
+let courseName;
+
 
 $(document).on("change", "#file", function () {
 
@@ -215,6 +217,8 @@ $(document).on("click", "#courseInfoUpdateBtn", function () {
         success: function (data) {
             $("#courseExplanation").summernote('code', data.courseExplanation);
             $("#courseName").val(data.courseName);
+            courseName=data.courseName;
+
             $("#thumbnailImg").attr("src", data.thumbnail);
         },
         error: function (request, error) {
@@ -381,9 +385,50 @@ $(document).on("click", '#statisticsBtn', function () {
     statisticsBoxShow();
     toggleBtn();
 });
+$(document).on("click", '#deleteModalB', function () {
+    $("#confirm").text(courseName+"삭제하기");
+    $("#deleteConfirm").attr("placeholder",courseName+"삭제하기");
+
+
+    $("#deleteModal").modal('show');
+});
 
 function toggleBtn() {
     if (viewSize == 0) {
         $('.navbar-toggler').trigger('click');
     }
 }
+
+
+
+$(document).on("click", '.deleteUserCourseBtn', function () {
+    let text = $("#deleteConfirm").val();
+    if (text == courseName + "삭제하기") {
+        $.ajax({
+            url: '/course/deleteCourse/'+getCourseId(),
+            type: 'post',
+            async: false,
+            success: function (data) {
+                if (data == "1") {
+                    alert("삭제성공");
+                    location.href = '/main/index';
+                } else {
+                    $('#feedback').css('display', 'none');
+                    $('#deleteConfirm').removeClass('fail-input');
+                    $("#deleteModal").modal('hide');
+                    alert("삭제실패");
+                }
+
+            },
+            error: function (request, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                alert("오류");
+            }
+        })
+
+    } else {
+
+        $('#feedback').css('display', 'block');
+        $('#deleteConfirm').addClass('fail-input');
+    }
+});

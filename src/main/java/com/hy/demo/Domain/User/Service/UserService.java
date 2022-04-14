@@ -205,8 +205,17 @@ public class UserService {
 
 
     public List<UserDto> rankRandomUser(int amount) {
-
         return userCourseRepository.findRankRandomUserById(amount);
+    }
+
+    @Transactional
+    public void courseWithdrawal(String username, Long courseId) {
+        User findUser = userRepository.findByUsername(username);
+
+        Long result = userCourseRepository.deleteByCourseIdAndUserId(courseId, findUser.getId());
+        if (result == 0L) {
+            throw new AccessDeniedException("권한없음");
+        }
 
     }
 

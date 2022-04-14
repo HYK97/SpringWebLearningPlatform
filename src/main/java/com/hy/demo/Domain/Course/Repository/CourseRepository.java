@@ -41,4 +41,6 @@ public interface CourseRepository extends JpaRepository<Course, Long>, CourseRep
 
     List<CourseDto> findOrderByUserCourse(int limit);
 
+    Long deleteByIdAndUserId(Long id, Long userId);
+
 }

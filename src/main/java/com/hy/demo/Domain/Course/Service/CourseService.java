@@ -1,5 +1,6 @@
 package com.hy.demo.Domain.Course.Service;
 
+import com.hy.demo.Domain.Board.Service.CourseBoardService;
 import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
@@ -13,10 +14,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Service
 public class CourseService {
@@ -26,6 +31,12 @@ public class CourseService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CourseBoardService courseBoardService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     Logger logger;
@@ -96,12 +107,35 @@ public class CourseService {
     public List<CourseDto> findRankingScopeAvgCourse(int amount) {
         return courseRepository.findOrderByScopeAvgCourse(amount);
     }
+
     public List<CourseDto> findRankingEvaluationCountCourse(int amount) {
         return courseRepository.findOrderByEvaluationCountCourse(amount);
     }
+
     public List<CourseDto> findRankingUserCourseCountCourse(int amount) {
         return courseRepository.findOrderByUserCourse(amount);
     }
 
 
+    @Transactional
+    public void deleteCourse(Long courseId, String username) throws FileNotFoundException {
+        User findUser = userRepository.findByUsername(username);
+        courseBoardService.courseBoardFileDelete(courseId);
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new AccessDeniedException("권한없음"));
+        if (!isEmpty(course.getThumbnail())) {
+            try {
+                imageService.deleteImage(course.getThumbnail());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                throw new FileNotFoundException("사진 삭제 에러");
+            }
+
+            Long result = courseRepository.deleteByIdAndUserId(courseId, findUser.getId());
+            if (result == 0L) {
+                throw new AccessDeniedException("권한없음");
+            }
+        }
+
+
+    }
 }

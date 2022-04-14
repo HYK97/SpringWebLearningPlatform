@@ -269,5 +269,22 @@ public class CourseController {
         return "course/myCourseView";
     }
 
+
+    @PostMapping({"/deleteCourse/{courseId}"})
+    @ResponseBody
+    public String deleteCourse(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long courseId) {
+        try {
+            courseService.deleteCourse(courseId, principalDetails.getUsername());
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+            return "0"; //삭제실패
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return "2"; //썸네일 삭제 실패
+        }
+        return "1"; //삭제성공
+
+    }
+
 }
 
