@@ -159,7 +159,6 @@ public class CourseBoardService {
     }
 
     public void deleteBoardAndFiles(Long courseBoardId) throws AccessDeniedException {
-
         //코스확인
         CourseBoard courseBoard = courseBoardRepository.findById(courseBoardId)
                 .orElseThrow(() -> new AccessDeniedException("없는코스"));
@@ -201,6 +200,17 @@ public class CourseBoardService {
 
     public List<CourseBoardDto> rankView(Long courseId) {
         return courseBoardRepository.findRankViewByCourseId(courseId);
+    }
+
+    public void courseBoardFileDelete(Long courseId) {
+        List<CourseBoard> courseBoard = courseBoardRepository.findByCourseId(courseId).orElseThrow(() -> new EntityNotFoundException("회차 없음"));
+        for (CourseBoard board : courseBoard) {
+            Optional<List<File>> findFiles = fileRepository.findByCourseBoardId(board.getId());
+            List<File> files = findFiles.orElseGet(null);
+            if (!isEmpty(files)) {
+                fileService.deleteFile(files);
+            }
+        }
     }
 
 
