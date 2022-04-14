@@ -16,4 +16,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long>, Com
     Optional<Community> findByIdAndUserId(Long id,Long userId);
 
     Long deleteByIdAndUserId(Long id, Long userId);
+
+    CommunityDto findDtoById(Long courseId);
 }

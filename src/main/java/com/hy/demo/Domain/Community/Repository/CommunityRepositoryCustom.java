@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable;
 public interface CommunityRepositoryCustom {
 
     Page<CommunityDto> findByCourseIdAndSearch(Long courseId, Pageable pageable, String search, String username);
+    CommunityDto findDtoById(Long courseId);
 }
