@@ -1,7 +1,7 @@
-package com.hy.demo.Domain.Board.Entity;
+package com.hy.demo.Domain.Community.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
-import com.hy.demo.Domain.File.Entity.File;
+import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.*;
 
@@ -14,10 +14,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Notice extends BaseEntity {
+public class Community extends BaseEntity {
 
     @Id
-    @Column(name = "Notice_id")
+    @Column(name = "Community_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,16 +25,17 @@ public class Notice extends BaseEntity {
     @JoinColumn(name = "User_id")
     private User user;
 
-    @OneToMany(mappedBy = "notice",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<File> file=new ArrayList<>();
+    private String title;
 
-    private String Contents;
+    private String contents;
 
-    private int view;
+    @OneToMany(mappedBy = "courseBoard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comments> comments = new ArrayList<>();
 
     public void addNotice(User user) {
-        this.user=user;
-        user.getNotices().add(this);
+        this.user = user;
+        user.getCommunity().add(this);
     }
+
 
 }
