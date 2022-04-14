@@ -5,6 +5,7 @@ import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Service.UserService;
+import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,14 +43,16 @@ public class MainController {
         List<CourseDto> firstCourse = courseService.findRankingScopeAvgCourse(1);
         List<CourseDto> secondCourse = courseService.findRankingEvaluationCountCourse(1);
         List<CourseDto> thirdCourse = courseService.findRankingUserCourseCountCourse(1);// 쿼리 분리
-        Double avgScopeByCourseId = courseEvaluationService.findAvgScopeByCourseId(thirdCourse.get(0).getId());
-        thirdCourse.get(0).updateScope(avgScopeByCourseId);
+        if (!ObjectUtils.isEmpty(thirdCourse)) {
+            Double avgScopeByCourseId = courseEvaluationService.findAvgScopeByCourseId(thirdCourse.get(0).getId());
+            thirdCourse.get(0).updateScope(avgScopeByCourseId);
+            model.addAttribute("thirdCourse", thirdCourse);
+        }
         model.addAttribute("headerView", headerView);
         model.addAttribute("headerViewSize", new ArrayList<>(Arrays.asList(new String[]{"0", "1", "2", "3", "4"})));
         model.addAttribute("userList", userList);
         model.addAttribute("firstCourse", firstCourse);
         model.addAttribute("secondCourse", secondCourse);
-        model.addAttribute("thirdCourse", thirdCourse);
 
         return "main/index";
     }
