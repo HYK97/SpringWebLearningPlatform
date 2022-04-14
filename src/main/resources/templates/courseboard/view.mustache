@@ -27,6 +27,7 @@
     <!-- Custom styles for this template -->
 
     <link href="{{springMacroRequestContext.request.contextPath}}/assets/dist/css/courseboard.css" rel="stylesheet">
+    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/community.js"></script>
 
 </head>
 <body>
@@ -63,29 +64,29 @@
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            QnA
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" id="communityTab">
                             <span data-feather="file-text"></span>
                             커뮤니티
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" id="myCommunityListTab">
+                            <span data-feather="file-text"></span>
+                            내가 작성한 글
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
+        <div id="viewBox" hidden>
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ">
+                <div id="result">
 
-        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ">
-            <div id="result">
-
+                </div>
+                {{>courseboard/paging}}
             </div>
-
-            {{>courseboard/paging}}
         </div>
+        {{>courseboard/community}}
     </div>
 </div>
 
