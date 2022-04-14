@@ -114,6 +114,13 @@ class CommunityRepositoryImplTest {
                 .user(manager1)
                 .title("re3")
                 .build();
+
+        Community community6 = Community.builder()
+                .course(course2)
+                .contents("re4")
+                .user(manager2)
+                .title("re4")
+                .build();
         userRepository.save(manager1);
         userRepository.save(manager2);
         courseId1=courseRepository.save(course1).getId();
@@ -123,6 +130,7 @@ class CommunityRepositoryImplTest {
         communityRepository.save(community3);
         communityRepository.save(community4);
         communityRepository.save(community5);
+        communityRepository.save(community6);
 
     }
 
@@ -139,13 +147,16 @@ class CommunityRepositoryImplTest {
         //given
         PageRequest pageRequest = PageRequest.of(0, 10);
         //when
-        Page<CommunityDto> CommunityDto = communityRepository.findByCourseIdAndSearch(courseId1, pageRequest, "re");
-        Page<CommunityDto> CommunityDto2 = communityRepository.findByCourseIdAndSearch(courseId2, pageRequest, "");
+        Page<CommunityDto> CommunityDto = communityRepository.findByCourseIdAndSearch(courseId1, pageRequest, "re",null);
+        Page<CommunityDto> CommunityDto2 = communityRepository.findByCourseIdAndSearch(courseId2, pageRequest, "",null);
+        Page<CommunityDto> CommunityDto3 = communityRepository.findByCourseIdAndSearch(courseId2, pageRequest, "","manager2");
         List<CommunityDto> content = CommunityDto.getContent();
         List<CommunityDto> content2 = CommunityDto2.getContent();
+        List<CommunityDto> content3 = CommunityDto3.getContent();
         //then
         assertThat(content.size()).isEqualTo(1);
-        assertThat(content2.size()).isEqualTo(2);
+        assertThat(content2.size()).isEqualTo(3);
+        assertThat(content3.size()).isEqualTo(2);
         assertThat(content).extracting("title", "user.username","contents")
                 .containsOnly(
                         tuple("re1", "manager2","re1")
@@ -153,10 +164,18 @@ class CommunityRepositoryImplTest {
         assertThat(content2).extracting("title", "user.username","contents")
                 .containsOnly(
                         tuple("re2", "manager2","re2"),
-                        tuple("re3", "manager1","re3")
+                        tuple("re3", "manager1","re3"),
+                        tuple("re4", "manager2","re4")
                 );
-
+        assertThat(content3).extracting("title", "user.username","contents")
+                .containsOnly(
+                        tuple("re2", "manager2","re2"),
+                        tuple("re4", "manager2","re4")
+                );
     }
+
+
+
 
 
 
