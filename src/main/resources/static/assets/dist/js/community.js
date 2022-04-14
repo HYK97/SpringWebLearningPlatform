@@ -7,6 +7,7 @@ let PreviousCommunity = null;
 let NextCommunity = null;
 let startPageCommunity;
 let endPageCommunity;
+let searchKeyword;
 
 
 const table = ' {{#data}}\n' +
@@ -28,32 +29,48 @@ const table = ' {{#data}}\n' +
     '       {{/data}}'
 
 
-
-
 $(document).on('click', '#communityTab', function () {
+    $(".nav-link").removeClass("active");
+    $(this).addClass('active');
     renderCommunityList(0);
-
+    communityBoxShow();
 });
 $(document).on('click', '#previousCommunityAtag', function () {
-    renderCommunityList(preNumCommunity);
+
+    renderCommunityList(preNumCommunity, searchKeyword);
 
 });
 $(document).on('click', '#nextCommunityAtag', function () {
-    if(this)
-    renderCommunityList(nexNumCommunity);
+
+    renderCommunityList(nexNumCommunity, searchKeyword);
 });
 
+$(document).on('click', '#myCommunityListTab', function () {
+    $(".nav-link").removeClass("active");
+    $(this).addClass('active');
 
+});
+$(document).on('click', '#communitySearchBtn', function () {
+    let search = $('#communitySearchInput').val();
+    renderCommunityList(0, search);
+});
 
+$(document).on("keyup", '#communitySearchInput', function (key) {
+    if (key.keyCode == 13) {
+        let search = $('#communitySearchInput').val();
+        renderCommunityList(0, search);
+    }
+});
 
-function renderCommunityList(page) {
+function renderCommunityList(page, search = "") {
     let courseId = getCourseId();
+    searchKeyword = search;
     $.ajax({
         type: "post",
         url: "/community/getCommunityList/" + courseId,
         data: {
             page: page,
-            search: ""
+            search: search
         },
         success: function (data) {
             if (data != null) {
@@ -77,9 +94,9 @@ function renderCommunityList(page) {
 
                 for (var num = startPageCommunity; num <= endPageCommunity; num++) {
                     if (num == pageNumberCommunity) {
-                        html += '<li class="page-item active"><a class="page-link pages" onclick="renderCommunityList(' + num + ')">' + num + '</a></li>';
+                        html += '<li class="page-item active"><a class="page-link pages" onclick="renderCommunityList(' + num + ',' + 'searchKeyword' + ')">' + num + '</a></li>';
                     } else {
-                        html += '<li class="page-item"><a class="page-link pages" onclick="renderCommunityList(' + num + ')">' + num + '</a></li>';
+                        html += '<li class="page-item"><a class="page-link pages" onclick="renderCommunityList(' + num + ',' + 'searchKeyword' + ')">' + num + '</a></li>';
                     }
                 }
                 $("#previousCommunity").after(html);
@@ -96,7 +113,6 @@ function renderCommunityList(page) {
                 Mustache.parse(table);
                 var rendered = Mustache.render(table, jsonData);
                 $('#tableResult').html(rendered);
-                communityBoxShow();
             }
         },
         error: function (request, error) {
