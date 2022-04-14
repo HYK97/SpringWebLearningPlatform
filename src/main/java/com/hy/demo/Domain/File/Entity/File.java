@@ -1,7 +1,6 @@
 package com.hy.demo.Domain.File.Entity;
 
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
-import com.hy.demo.Domain.Board.Entity.Notice;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,13 +18,8 @@ public class File {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name ="CourseBoard_id")
+    @JoinColumn(name = "CourseBoard_id")
     private CourseBoard courseBoard;
-
-
-    @ManyToOne
-    @JoinColumn(name ="Notice_id")
-    private Notice notice;
 
 
     @Column(nullable = false)
@@ -37,10 +31,8 @@ public class File {
     private Long fileSize;
 
 
-    public void addFile(CourseBoard courseBoard, Notice notice) {
-        this.courseBoard =courseBoard;
-        this.notice=notice;
-        notice.getFile().add(this);
+    public void addFile(CourseBoard courseBoard) {
+        this.courseBoard = courseBoard;
         courseBoard.getFiles().add(this);
     }
 

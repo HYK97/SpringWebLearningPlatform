@@ -3,6 +3,7 @@ package com.hy.demo.Domain.Comments.Entity;
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Comments.Dto.CommentsDto;
+import com.hy.demo.Domain.Community.Entity.Community;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.*;
 
@@ -18,7 +19,7 @@ import java.util.List;
 public class Comments extends BaseEntity {
 
     @Id // primary key
-    @Column(name="Comments_id")
+    @Column(name = "Comments_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -26,6 +27,12 @@ public class Comments extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CourseBoard_id")
     private CourseBoard courseBoard;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Community_id")
+    private Community community;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_id")
@@ -36,25 +43,26 @@ public class Comments extends BaseEntity {
     private Comments parent;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comments> children;
     @Column(length = 100000000)
     private String comments;
 
     public void addComments(CourseBoard courseBoard, User user) {
-        this.courseBoard =courseBoard;
-        this.user=user;
+        this.courseBoard = courseBoard;
+        this.user = user;
         courseBoard.getComments().add(this);
         user.getComments().add(this);
     }
 
     public CommentsDto changeDto() {
-        CommentsDto commentsDto =new CommentsDto();
+        CommentsDto commentsDto = new CommentsDto();
         commentsDto.setComments(this.comments);
-        commentsDto.setCreateDate( new Date(this.getCreateDate().getTime()));
+        commentsDto.setCreateDate(new Date(this.getCreateDate().getTime()));
         commentsDto.setId(this.id);
         return commentsDto;
     }
+
     public void updateComments(String comments) {
         this.comments = comments;
     }

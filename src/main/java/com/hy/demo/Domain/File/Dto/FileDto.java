@@ -1,13 +1,6 @@
 package com.hy.demo.Domain.File.Dto;
 
-import com.hy.demo.Domain.Board.Entity.CourseBoard;
-import com.hy.demo.Domain.Board.Entity.Notice;
-import com.hy.demo.Domain.File.Entity.File;
-import lombok.Builder;
 import lombok.Data;
-
-import javax.persistence.*;
-import java.util.List;
 
 
 @Data
