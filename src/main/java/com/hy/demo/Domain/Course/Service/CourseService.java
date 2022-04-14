@@ -130,10 +130,10 @@ public class CourseService {
                 throw new FileNotFoundException("사진 삭제 에러");
             }
 
-            Long result = courseRepository.deleteByIdAndUserId(courseId, findUser.getId());
-            if (result == 0L) {
-                throw new AccessDeniedException("권한없음");
-            }
+        }
+        Long result = courseRepository.deleteByIdAndUserId(courseId, findUser.getId());
+        if (result == 0L) {
+            throw new AccessDeniedException("권한없음");
         }
 
 
