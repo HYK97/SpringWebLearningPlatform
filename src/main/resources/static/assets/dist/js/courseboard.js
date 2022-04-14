@@ -188,7 +188,7 @@ const comments = '' +
 
 const templateNav = '' +
     '{{#data}}' +
-    ' <li class="nav-item" s>\n' +
+    ' <li class="nav-item">\n' +
     '                            <a role="button" class="courseboard-href nav-link" aria-current="page" data-id="{{id}}">\n' +
     '                                {{title}}\n' +
     '                            </a>\n' +
