@@ -2,6 +2,7 @@ package com.hy.demo.Domain.Community.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Comments.Entity.Comments;
+import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.*;
 
@@ -29,7 +30,11 @@ public class Community extends BaseEntity {
 
     private String contents;
 
-    @OneToMany(mappedBy = "courseBoard", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Course_id")
+    private Course course;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comments> comments = new ArrayList<>();
 
     public void addNotice(User user) {

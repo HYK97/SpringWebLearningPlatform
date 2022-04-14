@@ -2,6 +2,7 @@ package com.hy.demo.Domain.Course.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
+import com.hy.demo.Domain.Community.Entity.Community;
 import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
@@ -42,6 +43,9 @@ public class Course extends BaseEntity {
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CourseBoard> courseBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Community> community = new ArrayList<>();
 
     //코스 저장될때 유저의 리스트에도 저장되게함
     public void addCourse(User user) {
