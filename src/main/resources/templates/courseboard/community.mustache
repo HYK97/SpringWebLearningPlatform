@@ -1,0 +1,71 @@
+<div id="communityBox" hidden>
+    <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ">
+        <section class="py-5 text-center">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="fw-light">커뮤니티 검색</h1>
+                    <p>
+                    </p>
+                    <form class="d-flex">
+                        <input class="form-control me-sm-2" type="text" name="search" placeholder="검색">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    <p>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="album py-5 bg-light">
+            <div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="col-md-2">
+                                        글번호
+                                    </th>
+                                    <th class="col-md-6">
+                                        제목
+                                    </th>
+                                    <th class="col-md-2">
+                                        유저명
+                                    </th>
+                                    <th class="col-md-1">
+                                        작성일
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableResult">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr class="my-4">
+                <div class="col" style=" display: flex; justify-content: center;">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+
+                            <li class="page-item disabled" id="previousCommunity">
+                                <a class="page-link" id="previousCommunityAtag" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li class="page-item" id="nextCommunity">
+                                <a class="page-link" id="nextCommunityAtag" aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

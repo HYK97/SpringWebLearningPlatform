@@ -248,6 +248,7 @@ function viewBoxShow() {
     $('#updateBox').attr("hidden", "hidden");
     $('#createBox').attr("hidden", "hidden");
     $('#statisticsBox').attr("hidden", "hidden");
+    $('#communityBox').attr("hidden", "hidden");
 
 }
 
@@ -256,6 +257,7 @@ function createBoxShow() {
     $('#updateBox').attr("hidden", "hidden");
     $('#viewBox').attr("hidden", "hidden");
     $('#statisticsBox').attr("hidden", "hidden");
+    $('#communityBox').attr("hidden", "hidden");
 }
 
 function updateBoxShow() {
@@ -263,6 +265,7 @@ function updateBoxShow() {
     $('#viewBox').attr("hidden", "hidden");
     $('#createBox').attr("hidden", "hidden");
     $('#statisticsBox').attr("hidden", "hidden");
+    $('#communityBox').attr("hidden", "hidden");
 }
 
 function statisticsBoxShow() {
@@ -270,6 +273,15 @@ function statisticsBoxShow() {
     $('#viewBox').attr("hidden", "hidden");
     $('#updateBox').attr("hidden", "hidden");
     $('#createBox').attr("hidden", "hidden");
+    $('#communityBox').attr("hidden", "hidden");
+}
+
+function communityBoxShow() {
+    $('#communityBox').removeAttr("hidden");
+    $('#viewBox').attr("hidden", "hidden");
+    $('#updateBox').attr("hidden", "hidden");
+    $('#createBox').attr("hidden", "hidden");
+    $('#statisticsBox').attr("hidden", "hidden");
 }
 
 
