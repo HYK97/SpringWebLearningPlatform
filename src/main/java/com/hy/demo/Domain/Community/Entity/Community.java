@@ -2,11 +2,13 @@ package com.hy.demo.Domain.Community.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Comments.Entity.Comments;
+import com.hy.demo.Domain.Community.Dto.CommunityDto;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,20 @@ public class Community extends BaseEntity {
     public void addNotice(User user) {
         this.user = user;
         user.getCommunity().add(this);
+    }
+
+    public void updateCommunity(Community community) {
+        this.title = community.getTitle();
+        this.contents = community.getContents();
+    }
+
+    public CommunityDto changeDto() {
+        CommunityDto communityDto = new CommunityDto();
+        communityDto.setId(this.id);
+        communityDto.setTitle(this.title);
+        communityDto.setContents(this.contents);
+        communityDto.setCreateDate(new Date(this.getCreateDate().getTime()));
+        return communityDto;
     }
 
 
