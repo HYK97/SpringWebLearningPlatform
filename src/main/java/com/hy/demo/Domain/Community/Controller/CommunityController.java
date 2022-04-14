@@ -20,10 +20,15 @@ public class CommunityController {
 
     private CommunityService communityService;
 
+
+    /**
+     * 게시글 view 데이터 전송 메서드
+     * 10개씩 검색 혹은 paging 데이터 ajax 콜백
+     * * */
     @ResponseBody
     @PostMapping("getCommunityList/{courseId}")
     public Page<CommunityDto> getCommunityList(@PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long courseId, @RequestParam(defaultValue = "") String search){
-        return communityService.findCommunityList(courseId, search, pageable);
+        return communityService.findCommunityList(courseId, search, pageable,null);
     };
 
 
