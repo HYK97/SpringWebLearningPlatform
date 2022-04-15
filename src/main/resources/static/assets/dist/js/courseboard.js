@@ -363,3 +363,9 @@ $(document).on('click', '.delete', function () {
         }
     })
 });
+
+function toggleBtn() {
+    if (viewSize == 0) {
+        $('.navbar-toggler').trigger('click');
+    }
+}
