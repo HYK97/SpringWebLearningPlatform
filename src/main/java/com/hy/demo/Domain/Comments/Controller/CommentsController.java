@@ -50,39 +50,29 @@ public class CommentsController {
     private CommentsService commentsService;
 
     @Autowired
-    private CourseService courseService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private FileService fileService;
-
-    @Autowired
     private Logger logger;
 
 
-
-    @PostMapping( {"/create/{id}"})
+    @PostMapping({"/create/{id}"})
     @ResponseBody
-    public String createComments(@PathVariable Long id,String comments,@AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+    public String createComments(@PathVariable Long id, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails, int status) throws Exception {
         User user = principalDetails.getUser();
         try {
-            commentsService.createComments(id,comments,user);
+            commentsService.createComments(id, comments, user, status);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return "2";
         }
-            return "1";
+        return "1";
     }
 
-    @PostMapping( {"/createReply/{commentsId}/{courseBoardId}"})
+    @PostMapping({"/createReply/{commentsId}"})
     @ResponseBody
-    public CommentsDto createReply(@PathVariable Long commentsId,@PathVariable Long courseBoardId,String comments,@AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+    public CommentsDto createReply(@PathVariable Long commentsId, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
         User user = principalDetails.getUser();
         CommentsDto reply;
         try {
-            reply = commentsService.createReply(commentsId, courseBoardId, comments, user);
+            reply = commentsService.createReply(commentsId, comments, user);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -91,9 +81,9 @@ public class CommentsController {
     }
 
 
-    @PostMapping( {"/updateReply/{commentsId}"})
+    @PostMapping({"/updateReply/{commentsId}"})
     @ResponseBody
-    public CommentsDto updateReply(@PathVariable Long commentsId,String comments,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public CommentsDto updateReply(@PathVariable Long commentsId, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         User user = principalDetails.getUser();
         CommentsDto reply;
         try {
@@ -106,9 +96,9 @@ public class CommentsController {
     }
 
 
-    @PostMapping( {"/deleteReply/{commentsId}"})
+    @PostMapping({"/deleteReply/{commentsId}"})
     @ResponseBody
-    public String deleteReply(@PathVariable Long commentsId,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String deleteReply(@PathVariable Long commentsId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         User user = principalDetails.getUser();
         try {
             commentsService.deleteReply(commentsId, user);
@@ -120,45 +110,35 @@ public class CommentsController {
     }
 
 
-
-    @GetMapping( {"/getComments/{id}"})
+    @GetMapping({"/getComments/{id}"})
     @ResponseBody
-    public Page<CommentsDto> getComments(@PathVariable Long id,@AuthenticationPrincipal PrincipalDetails principalDetails,@PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<CommentsDto> getComments(@PathVariable Long id, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, int status) {
         String username = principalDetails.getUser().getUsername();
         Page<CommentsDto> commentsList;
         try {
-            commentsList = commentsService.findCommentsListByCourseId(id,pageable);
-            commentsList.stream().filter(f->f.getUser().getUsername().equals(username)).forEach(f->f.setMyCommentsFlag(1));
+            commentsList = commentsService.findCommentsListByCourseId(id, pageable, status);
+            commentsList.stream().filter(f -> f.getUser().getUsername().equals(username)).forEach(f -> f.setMyCommentsFlag(1));
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
         }
-            return commentsList;
+        return commentsList;
     }
 
-    @GetMapping( {"/getReply/{id}"})
+    @GetMapping({"/getReply/{id}"})
     @ResponseBody
-    public Page<CommentsDto> getReply(@PathVariable Long id,@AuthenticationPrincipal PrincipalDetails principalDetails,@PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<CommentsDto> getReply(@PathVariable Long id, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.ASC) Pageable pageable) {
         String username = principalDetails.getUser().getUsername();
         Page<CommentsDto> replyList;
         try {
-            replyList = commentsService.findReplyListByCommentsId(id,pageable);
-            replyList.stream().filter(f->f.getUser().getUsername().equals(username)).forEach(f->f.setMyCommentsFlag(1));
+            replyList = commentsService.findReplyListByCommentsId(id, pageable);
+            replyList.stream().filter(f -> f.getUser().getUsername().equals(username)).forEach(f -> f.setMyCommentsFlag(1));
         } catch (NoResultException e) {
             e.printStackTrace();
             return null;
         }
-            return replyList;
+        return replyList;
     }
-
-
-
-
-
-
-
-
-
 
 
 }

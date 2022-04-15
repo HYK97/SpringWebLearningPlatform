@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface CommentsRepository extends JpaRepository<Comments, Long>, CommentsRepositoryCustom {
-    Page<CommentsDto> findByCourseBoardId(Long courseBoardId, Pageable pageable);
+    Page<CommentsDto> findByCourseBoardId(Long courseBoardId, Pageable pageable,int status);
 
     Page<CommentsDto> findReplyByIds(Long id, Pageable pageable);
 
