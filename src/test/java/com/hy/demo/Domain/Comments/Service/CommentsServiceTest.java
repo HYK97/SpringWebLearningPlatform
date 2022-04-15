@@ -6,10 +6,7 @@ import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Comments.Repository.CommentsRepository;
 import com.hy.demo.Domain.Course.Entity.Course;
-import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
-import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
 import com.hy.demo.Domain.Course.Repository.CourseRepository;
-import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Domain.File.Repository.FileRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
@@ -28,9 +25,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 
 @ExtendWith(SpringExtension.class)
@@ -114,19 +111,19 @@ class CommentsServiceTest {
                     courseBoardIdList.add(courseBoardE.getId());
 
                     for (int l = 0; l < 7; l++) {
-                        Comments comments =Comments.builder()
+                        Comments comments = Comments.builder()
                                 .user(user)
                                 .courseBoard(courseBoardE)
-                                .comments("testComment"+l)
+                                .comments("testComment" + l)
                                 .build();
                         Long id = commentsRepository.save(comments).getId();
                         commentsIdList.add(id);
                         for (int k = 0; k < 7; k++) {
-                            Comments reply =Comments.builder()
+                            Comments reply = Comments.builder()
                                     .user(user)
                                     .parent(comments)
                                     .courseBoard(courseBoardE)
-                                    .comments("testReply"+l)
+                                    .comments("testReply" + l)
                                     .build();
                             commentsRepository.save(reply);
                         }
@@ -148,20 +145,20 @@ class CommentsServiceTest {
 
 
     @Test
-    public void findCommentsListByCourseId() throws Exception{
-    //given
-        PageRequest page =PageRequest.of(0,3);
-    //when
-        Page<CommentsDto> commentsListByCourseId = commentsService.findCommentsListByCourseId(courseBoardIdList.get(0),page);
+    public void findCommentsListByCourseId() throws Exception {
+        //given
+        PageRequest page = PageRequest.of(0, 3);
+        //when
+        Page<CommentsDto> commentsListByCourseId = commentsService.findCommentsListByCourseId(courseBoardIdList.get(0), page, 1);
         List<CommentsDto> content = commentsListByCourseId.getContent();
         //then
 
 
-        assertThat(content).extracting("id","user.username","comments","replyCounts")
+        assertThat(content).extracting("id", "user.username", "comments", "replyCounts")
                 .containsOnly(
-                        tuple(1L,"manager1","testComment0",7L),
-                        tuple(9L,"manager1","testComment1",7L),
-                        tuple(17L,"manager1","testComment2",7L)
+                        tuple(1L, "manager1", "testComment0", 7L),
+                        tuple(9L, "manager1", "testComment1", 7L),
+                        tuple(17L, "manager1", "testComment2", 7L)
                 );
 
 

@@ -7,6 +7,7 @@ import com.hy.demo.Utils.DateFormatter;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -39,7 +40,7 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
 
 
     @Override
-    public Page<CommentsDto> findByCourseBoardId(Long courseBoardId, Pageable pageable) {
+    public Page<CommentsDto> findByCourseBoardId(Long id, Pageable pageable, int status) {
         QComments reply = new QComments("reply");
         return
                 applyPagination(pageable, query ->
@@ -52,9 +53,12 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
                         ))
                                 .from(comments1)
                                 .leftJoin(comments1.user, user)
-                                .where(comments1.courseBoard.id.eq(courseBoardId), comments1.parent.isNull())
+                                .where(checkStatus(status, id), comments1.parent.isNull())
                 );
+    }
 
+    private BooleanExpression checkStatus(int status, Long id) {
+        return status == 1 ? comments1.courseBoard.id.eq(id) : comments1.community.id.eq(id);
     }
 
 
@@ -89,12 +93,6 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
                 .where(course.id.eq(courseId).and(comments1.createDate.between(localDateParser.startDate(), localDateParser.endDate())))
                 .fetchOne();
     }
-
-
-
-
-
-
 
 
     public Map countMonthlyToDayCommentsByCourseId(Long courseId, String date) {
@@ -208,11 +206,6 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
     StringTemplate yearFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, 'Y')"
             , comments1.createDate);*/
-
-
-
-
-
 
 
 }
