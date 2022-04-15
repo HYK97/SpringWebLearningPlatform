@@ -1,75 +1,3 @@
-/*
-const temp =
-    '        <div class="row my-1 ">\n' +
-    '            <div >\n' +
-    '                <div class="text-break">\n' +
-    '                    <div >\n' +
-    '                        <div class="user-field">\n' +
-    '                            <div class="mx-2">\n' +
-    '                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"\n' +
-    '                                     class="rounded-circle">\n' +
-    '                            </div>\n' +
-    '                            <div class="user-field-name">\n' +
-    '                                <div> <p class=" my-3 ">{{username}}</p></div>\n' +
-    '               {{#teachUser}}{{^reply}} ' +
-    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
-    '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
-    '                </a>\n' +
-    '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item createReply" data-bs-toggle="modal" data-id="{{id}}" data-bs-target="#exampleModal3">답글쓰기</a></li>\n' +
-    '                </ul>{{/reply}}{{/teachUser}}\n' +
-
-    '               {{^teachUser}}' +
-    '                <div class="dropdown dropdown-user text-end" hidden data-user="{{username}}">\n' +
-    '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
-    '                </a>\n' +
-    '                      <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update" data-bs-toggle="modal" data-scope="{{scope}}" data-comments="{{comments}}" data-id="{{id}}"data-bs-target="#exampleModal" >수정</a></li>\n' +
-    '                    <li><a class="dropdown-item delete" data-id="{{id}}">삭제</a></li>\n' +
-    '                </ul>{{/teachUser}}\n' +
-    '            </div>\n' +
-    '                            </div>\n' +
-    '                        </div>\n' +
-    '                        <p class="text-muted my-2 comments">\n' +
-    '                            {{comments}}\n' +
-    '                        </p>\n' +
-    '\n' +
-    '                        <small class=" my-3 create-date">\n' +
-    '                            {{createDate}}\n' +
-    '                        </small>\n' +
-    '                    </div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '            {{#reply}}\n' +
-    '                <div class="reply-box  text-break">\n' +
-    '                            <div class="user-field-name">\n' +
-    '                                <div> <p class=" my-3"> 강사 ' + getId().teachName + '님의 답글</p></div>\n' +
-    '                   {{#teachUser}}\n' +
-    '                                <div class="dropdown text-end">\n' +
-    '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
-    '                </a>\n' +
-    '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
-    '                    <li><a class="dropdown-item update" data-id="{{replyId}}" data-comments="{{reply}}" data-bs-toggle="modal" data-bs-target="#exampleModal2">수정</a></li>\n' +
-    '                    <li><a class="dropdown-item delete" data-id="{{replyId}}" >삭제</a></li>\n' +
-    '                </ul>\n' +
-    '                            </div>\n' +
-    '                        {{/teachUser}}\n' +
-    '                        </div>\n' +
-    '                    <p class="text-muted my-2 ">\n' +
-    '                        {{reply}}\n' +
-    '                    </p>\n' +
-    '                     <div>  \n' +
-    '                    <small class=" my-3 create-date">\n' +
-    '                        {{createDate}}\n' +
-    '                    </small>\n' +
-    '                    </div> \n' +
-    '                </div>\n' +
-    '            {{/reply}}\n' +
-    '            <hr class=" mt-3 mb-2">\n' +
-    '        </div>\n'
-*/
-
-
 const template = ' ' +
     ' {{#data}}' +
     '<main class="col-md-12 ms-sm-auto col-lg-12  px-md-4">\n' +
@@ -107,10 +35,10 @@ const template = ' ' +
     '                <h5>댓글</h5>\n' +
     '\n' +
     '                <div class="my-3 col-12 border p-3 border-1">\n' +
-    '                <form id="commentsForm" onsubmit="return false">\n' +
-    '                <input type="text" class="form-control comments" placeholder="댓글을 입력하세요" name="comments">\n' +
+    '                <form class="commentsForm" onsubmit="return false">\n' +
+    '                <input type="text" class="form-control commentsInput" placeholder="댓글을 입력하세요" name="comments">\n' +
     '                </form>\n' +
-    '                           <button class="btn btn-secondary mt-3" type="button" id ="commentsCreateBtn">\n' +
+    '                           <button class="btn btn-secondary mt-3 commentsCreateBtn" type="button" >\n' +
     '                                     댓글쓰기\n' +
     '                            </button>\n' +
     '                </div>\n' +
@@ -149,7 +77,6 @@ const comments = '' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
     '                    <li><a class="dropdown-item createReply" data-use="disabled" data-id="{{id}}">답글쓰기</a></li>\n' +
     '                </ul>{{/myCommentsFlag}}\n' +
-
     '               {{#myCommentsFlag}}' +
     '                <div class="dropdown dropdown-user text-end"  data-user="{{user.username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
@@ -188,8 +115,8 @@ const comments = '' +
 
 const templateNav = '' +
     '{{#data}}' +
-    ' <li class="nav-item" s>\n' +
-    '                            <a role="button" class="courseboard-href nav-link" aria-current="page" data-id="{{id}}">\n' +
+    ' <li class="nav-item">\n' +
+    '                            <a role="button" class="courseboard-href nav-link" aria-current="page" data-view="viewBox" data-id="{{id}}">\n' +
     '                                {{title}}\n' +
     '                            </a>\n' +
     '                        </li>' +
@@ -198,20 +125,20 @@ const templateNav = '' +
 
 var courseBoard = getData();
 var courseBoardId;
-var viewSize=1;
+var viewSize = 1;
 $(document).ready(function () {
 
     var listeners = window.matchMedia("screen and (min-width: 768px)");
-        if (!listeners.matches) {
-            viewSize = 0;
-        }
+    if (!listeners.matches) {
+        viewSize = 0;
+    }
     listeners.addListener(function (e) {
-            if (e.matches) {
-                viewSize=1;//pc
-            } else {
-                viewSize=0;//모바일
-            }
-        });
+        if (e.matches) {
+            viewSize = 1;//pc
+        } else {
+            viewSize = 0;//모바일
+        }
+    });
 
 
     if (courseBoard.length > 0) {
@@ -226,7 +153,8 @@ $(document).ready(function () {
 
 
     $(document).on("click", ".courseboard-href", function () {
-        viewBoxShow();
+        $('.hiddenBox').attr("hidden", "hidden");
+        $('#viewBox').removeAttr("hidden");
         let id = $(this).data('id');
         $(".nav-link").removeClass("active");
         $(this).addClass('active');
@@ -239,38 +167,18 @@ $(document).ready(function () {
             $('.navbar-toggler').trigger('click');
         }
     });
-
-
 })
 
-function viewBoxShow() {
-    $('#viewBox').removeAttr("hidden");
-    $('#updateBox').attr("hidden", "hidden");
-    $('#createBox').attr("hidden", "hidden");
-    $('#statisticsBox').attr("hidden", "hidden");
 
-}
-
-function createBoxShow() {
-    $('#createBox').removeAttr("hidden");
-    $('#updateBox').attr("hidden", "hidden");
-    $('#viewBox').attr("hidden", "hidden");
-    $('#statisticsBox').attr("hidden", "hidden");
-}
-
-function updateBoxShow() {
-    $('#updateBox').removeAttr("hidden");
-    $('#viewBox').attr("hidden", "hidden");
-    $('#createBox').attr("hidden", "hidden");
-    $('#statisticsBox').attr("hidden", "hidden");
-}
-
-function statisticsBoxShow() {
-    $('#statisticsBox').removeAttr("hidden");
-    $('#viewBox').attr("hidden", "hidden");
-    $('#updateBox').attr("hidden", "hidden");
-    $('#createBox').attr("hidden", "hidden");
-}
+$(document).on('click', '#sidebarMenu .nav-item', function (e) {
+    let id = $(this).children('a').data("view");
+    let hidden = $("#viewBox").attr("hidden");
+    if (id == 'viewBox' && hidden === undefined) {
+        return;
+    }
+    $('.hiddenBox').attr("hidden", "hidden");
+    $('#' + id).removeAttr("hidden");
+});
 
 
 function getData() {
@@ -325,23 +233,24 @@ function mainRender(id, data) {
     commentsRender(1);
 }
 
-
-$(document).on('click', '#commentsCreateBtn', function () {
-    let comments = $("input[name=comments]").val();
+$(document).on('click', '.commentsCreateBtn', function () {
+    let status = boxStatus();
+    let comments = $(this).parent().find(".commentsInput").val();
     if (comments.length == 0) {
         alert("댓글을 작성후 눌러주세요");
         return;
     }
     $.ajax({
         type: "post",
-        url: "/comments/create/" + courseBoardId,
+        url: status == 1 ? '/comments/create/' + courseBoardId : '/comments/create/' + communityId,
         data: {
-            comments: comments
+            comments: comments,
+            status: status
         },
         success: function (data) {
             if (data == "1") {
                 alert("댓글 작성 성공");
-                $("input[name=comments]").val("");
+                $(".commentsInput").val("");
                 commentsRender(1);
             } else {
                 alert("실패");
@@ -454,3 +363,20 @@ $(document).on('click', '.delete', function () {
         }
     })
 });
+
+function toggleBtn() {
+    if (viewSize == 0) {
+        $('.navbar-toggler').trigger('click');
+    }
+}
+
+function formReset() {
+    $("form").each(function () {
+        this.reset();
+
+    })
+
+    $(".summernote").each(function () {
+        $(this).summernote('reset');
+    })
+}

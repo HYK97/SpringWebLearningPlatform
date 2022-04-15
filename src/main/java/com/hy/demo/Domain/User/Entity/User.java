@@ -3,8 +3,8 @@ package com.hy.demo.Domain.User.Entity;
 
 import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Comments.Entity.Comments;
+import com.hy.demo.Domain.Community.Entity.Community;
 import com.hy.demo.Domain.Course.Entity.Course;
-import com.hy.demo.Domain.Board.Entity.Notice;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import lombok.*;
 
@@ -42,7 +42,7 @@ public class User extends BaseEntity {
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notice> notices = new ArrayList<>();
+    private List<Community> community = new ArrayList<>();
 
     // 구글,페이스북,카카오등으로 가입됬을때
     private String provider;

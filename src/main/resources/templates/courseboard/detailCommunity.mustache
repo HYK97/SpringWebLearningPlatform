@@ -1,0 +1,46 @@
+<div id="detailCommunityBox" class="hiddenBox" hidden>
+    <div class="col-md-12 ms-sm-auto col-lg-12  px-md-4">
+
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div id="titleAndContents">
+            </div>
+        </div>
+        <div class="my-5 col-12">
+            <h5>댓글</h5>
+            <div class="my-3 col-12 border p-3 border-1">
+                <form class="commentsForm" onsubmit="return false">
+                    <input type="text" class="form-control comments commentsInput" placeholder="댓글을 입력하세요" name="comments">
+                </form>
+                <button class="btn btn-secondary mt-3 commentsCreateBtn" type="button" >
+                    댓글쓰기
+                </button>
+            </div>
+        </div>
+        <div class="my-5 col-12 ">
+
+            <div class="my-3 col-12" id="communityCommentList">
+            </div>
+        </div>
+
+    </div>
+    {{>courseboard/paging}}
+
+
+    <div class="justify-content-between d-flex" style="width:100%; position: sticky; bottom: 0px; z-index:999;">
+        <div role="button" class="align-item-center text-secondary backBtn" >
+            <i class="bi bi-backspace-fill "style="font-size:50px" ></i>
+            <span style="font-size:20px">목록으로</span>
+        </div>
+
+        <div role="button" class="align-item-center text-secondary" id="communityCreateBoxBtn" >
+            <i class="bi bi-pencil " style="font-size:50px"></i>
+            <span style="font-size:20px">글쓰기</span>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+

@@ -30,12 +30,8 @@ $(document).on("click", '#statisticsBtn', function () {
     $("#percentUser").empty();
     $("#percentScope").empty();
     $("#percentComment").empty();
-    statisticsBoxShow();
     getDashboardData();
-    $('.counter').counterUp({
-        delay: 10,
-        time: 500
-    });
+
 
 
 });
@@ -44,7 +40,6 @@ function getDashboardData() {
     $.ajax({
         url: '/courseboard/getDashBoard/' + getCourseId(),
         type: 'post',
-        async: false,
         success: function (data) {
             $('#resultRank').empty();
             var userPercent = data.todayRegisteredUser - data.yesterdayRegisteredUser;
@@ -68,6 +63,11 @@ function getDashboardData() {
             Mustache.parse(rankView);
             var rendered = Mustache.render(rankView, jsonData);
             $('#resultRank').html(rendered);
+
+            $('.counter').counterUp({
+                delay: 10,
+                time: 500
+            });
 
         },
         error: function (request, error) {
