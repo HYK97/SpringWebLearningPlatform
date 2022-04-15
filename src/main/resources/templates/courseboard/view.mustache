@@ -28,12 +28,18 @@
 
     <link href="{{springMacroRequestContext.request.contextPath}}/assets/dist/css/courseboard.css" rel="stylesheet">
     <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/community.js"></script>
+    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/summernote/summernote-lite.js"></script>
+    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/summernote/lang/summernote-ko-KR.js"></script>
+    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/form-validation.js"></script>
+    <link rel="stylesheet"
+          href="{{springMacroRequestContext.request.contextPath}}/assets/dist/summernote/summernote-lite.css">
+    <script src="{{springMacroRequestContext.request.contextPath}}/assets/dist/js/detailCommunity.js"></script>
 
 </head>
 <body>
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" >강좌 목차</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3">강좌 목차</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
             data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -54,24 +60,23 @@
                 <ul class="nav flex-column" id="navResult">
 
 
-
                 </ul>
 
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                     <span>게시판</span>
-                    <a class="link-secondary" href="#" aria-label="Add a new report">
+                    <a class="link-secondary" aria-label="Add a new report">
                         <span data-feather="plus-circle"></span>
                     </a>
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" id="communityTab">
+                        <a role="button" class="nav-link" id="communityTab" data-view="communityBox">
                             <span data-feather="file-text"></span>
                             커뮤니티
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="myCommunityListTab">
+                        <a role="button" class="nav-link" id="myCommunityListTab"  data-view="communityBox">
                             <span data-feather="file-text"></span>
                             내가 작성한 글
                         </a>
@@ -79,20 +84,43 @@
                 </ul>
             </div>
         </nav>
-        <div id="viewBox" hidden>
-            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ">
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ">
+            <div id="viewBox" class="hiddenBox" hidden>
                 <div id="result">
 
                 </div>
                 {{>courseboard/paging}}
+
             </div>
+            {{>courseboard/community}}
+            {{>courseboard/createCommunity}}
+            {{>courseboard/detailCommunity}}
         </div>
-        {{>courseboard/community}}
+
+        <div style=" background:white;  position: sticky; bottom: 0px;height: 79px; z-index:99">
+
+        </div>
+
     </div>
+
+
 </div>
 
 
 <script type="text/javascript">
+
+    $('.summernote').summernote({
+        height: 500,
+        lang: "ko-KR",
+        placeholder: '내용을 입력해주세요',
+        callbacks: {
+            onImageUpload: function (files, editor, welEditable) {
+                for (var i = 0; i < files.length; i++) {
+                    sendFile(files[i], this);
+                }
+            }
+        }
+    });
 
     function getCourseId() {
 
