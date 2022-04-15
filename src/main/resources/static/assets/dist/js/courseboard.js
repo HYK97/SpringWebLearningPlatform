@@ -369,3 +369,16 @@ function toggleBtn() {
         $('.navbar-toggler').trigger('click');
     }
 }
+function formReset() {
+    $("form").each(function () {
+        this.reset();
+
+    })
+
+    $(".summernote").each(function () {
+        $(this).summernote('reset');
+    })
+
+
+
+}
