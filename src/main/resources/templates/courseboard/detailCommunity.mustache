@@ -8,10 +8,10 @@
         <div class="my-5 col-12">
             <h5>댓글</h5>
             <div class="my-3 col-12 border p-3 border-1">
-                <form id="commentsForm" onsubmit="return false">
-                    <input type="text" class="form-control comments" placeholder="댓글을 입력하세요" name="comments">
+                <form class="commentsForm" onsubmit="return false">
+                    <input type="text" class="form-control comments commentsInput" placeholder="댓글을 입력하세요" name="comments">
                 </form>
-                <button class="btn btn-secondary mt-3" type="button" id="communityCommentCreateBtn">
+                <button class="btn btn-secondary mt-3 commentsCreateBtn" type="button" >
                     댓글쓰기
                 </button>
             </div>
@@ -21,8 +21,9 @@
             <div class="my-3 col-12" id="communityCommentList">
             </div>
         </div>
-    </div>
 
+    </div>
+    {{>courseboard/paging}}
 
 
     <div class="justify-content-between d-flex" style="width:100%; position: sticky; bottom: 0px; z-index:999;">
