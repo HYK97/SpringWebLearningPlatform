@@ -29,7 +29,7 @@ public class Community extends BaseEntity {
     private User user;
 
     private String title;
-
+    @Column(length = 100000000)
     private String contents;
 
     @ManyToOne(fetch = FetchType.LAZY)
