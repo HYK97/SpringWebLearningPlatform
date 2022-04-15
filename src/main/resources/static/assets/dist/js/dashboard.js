@@ -31,10 +31,7 @@ $(document).on("click", '#statisticsBtn', function () {
     $("#percentScope").empty();
     $("#percentComment").empty();
     getDashboardData();
-    $('.counter').counterUp({
-        delay: 10,
-        time: 500
-    });
+
 
 
 });
@@ -66,6 +63,11 @@ function getDashboardData() {
             Mustache.parse(rankView);
             var rendered = Mustache.render(rankView, jsonData);
             $('#resultRank').html(rendered);
+
+            $('.counter').counterUp({
+                delay: 10,
+                time: 500
+            });
 
         },
         error: function (request, error) {

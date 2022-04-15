@@ -392,12 +392,6 @@ $(document).on("click", '#deleteModalB', function () {
     $("#deleteModal").modal('show');
 });
 
-function toggleBtn() {
-    if (viewSize == 0) {
-        $('.navbar-toggler').trigger('click');
-    }
-}
-
 
 
 $(document).on("click", '.deleteUserCourseBtn', function () {
