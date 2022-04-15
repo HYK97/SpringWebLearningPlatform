@@ -60,12 +60,28 @@ const replys = '' +
     '          </div>\n' +
     ' {{/data}}'
 
+
+
+    function boxStatus() {
+        let status;
+        $('.hiddenBox').each(function () {
+            if ($(this).attr('hidden') != 'hidden') {
+                status = $(this).attr('id');
+            }
+            ;
+        });
+        return status=="viewBox" ? 1:2; //1 강의 댓글 2 커뮤니티 댓글
+    }
 function commentsRender(page) {
+
+    let status = boxStatus();
     $.ajax({
         type: "get",
-        url: '/comments/getComments/' + courseBoardId,
+        url: status==1 ? '/comments/getComments/' + courseBoardId : '/comments/getComments/' + communityId ,
+        async: false,
         data: {
-            page: page
+            page: page,
+            status : status
         },
         success: function (data) {
             $('#commentsList').empty();
@@ -93,20 +109,24 @@ function commentsRender(page) {
                     html += '<li class="page-item"><a class="page-link page" >' + num + '</a></li>';
                 }
             }
-            $("#previous").after(html);
+            $(".previous").after(html);
             if (Previous) {
-                $("#previous").removeClass("disabled");
+                $(".previous").removeClass("disabled");
             } else {
-                $("#previous").addClass("disabled");
+                $(".previous").addClass("disabled");
             }
             if (Next) {
-                $("#next").removeClass("disabled");
+                $(".next").removeClass("disabled");
             } else {
-                $("#next").addClass("disabled");
+                $(".next").addClass("disabled");
             }
             Mustache.parse(comments);
             var rendered = Mustache.render(comments, jsonData);
-            $('#commentsList').html(rendered);
+            if (status == 1) {
+                $('#commentsList').html(rendered);
+            }else if (status == 2) {
+                $('#communityCommentList').html(rendered);
+            }
 
         },
         error: function (request, error) {
@@ -122,10 +142,10 @@ $(document).on("click", ".page", function () {
     let page = $(this).text();
     commentsRender(page);
 });
-$(document).on("click", "#previousAtag", function () {
+$(document).on("click", ".previousAtag", function () {
     commentsRender(preNum);
 });
-$(document).on("click", "#nextAtag", function () {
+$(document).on("click", ".nextAtag", function () {
     commentsRender(nexNum);
 });
 
@@ -240,7 +260,7 @@ $(document).on('click', '.replyCreate', function () {
     }
     $.ajax({
         type: "post",
-        url: "/comments/createReply/" + id + "/" + courseBoardId,
+        url: "/comments/createReply/" + id ,
         data: {
             comments: data
         },

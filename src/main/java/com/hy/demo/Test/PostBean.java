@@ -4,6 +4,8 @@ import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Comments.Repository.CommentsRepository;
+import com.hy.demo.Domain.Community.Entity.Community;
+import com.hy.demo.Domain.Community.Repository.CommunityRepository;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
@@ -38,6 +40,10 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private CommentsRepository commentsRepository;
+
+    @Autowired
+    private CommunityRepository communityRepository;
+
 
     @Autowired
     private CourseBoardRepository courseBoardRepository;
@@ -100,6 +106,13 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
                         .title("courseBoardTitle" + f)
                         .build();
                 courseBoardRepository.save(courseBoard);
+            }
+            for (int i = 0; i < 125; i++) {
+                Community build = Community.builder().title("title" + i)
+                        .contents("content" + i)
+                        .user(users.get(i % 15))
+                        .course(course).build();
+                communityRepository.save(build);
             }
         }
 

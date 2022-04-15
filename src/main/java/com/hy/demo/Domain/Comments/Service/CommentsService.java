@@ -5,6 +5,8 @@ import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
 import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Comments.Repository.CommentsRepository;
+import com.hy.demo.Domain.Community.Entity.Community;
+import com.hy.demo.Domain.Community.Repository.CommunityRepository;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
@@ -36,24 +38,38 @@ public class CommentsService {
     private CommentsRepository commentsRepository;
 
     @Autowired
+    private CommunityRepository communityRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
 
     @Autowired
     Logger logger;
 
-    public void createComments(Long courseId, String comments, User user) {
-        CourseBoard courseBoard = courseBoardRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException("찾는 courseBoard없음"));
-
+    public void createComments(Long courseId, String comments, User user, int status) {
+        Comments comment;
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername()))
                 .orElseThrow(() -> new EntityNotFoundException("찾는 유저 없음"));
+        if (status == 1) {
+            CourseBoard courseBoard = courseBoardRepository.findById(courseId)
+                    .orElseThrow(() -> new EntityNotFoundException("찾는 courseBoard없음"));
+            comment = Comments.builder()
+                    .comments(comments)
+                    .user(findUser)
+                    .courseBoard(courseBoard)
+                    .build();
+        } else {
+            Community community = communityRepository.findById(courseId)
+                    .orElseThrow(() -> new EntityNotFoundException("찾는 courseBoard없음"));
+            comment = Comments.builder()
+                    .comments(comments)
+                    .user(findUser)
+                    .community(community)
+                    .build();
+        }
 
-        Comments comment = Comments.builder()
-                .comments(comments)
-                .user(findUser)
-                .courseBoard(courseBoard)
-                .build();
+
         commentsRepository.save(comment);
     }
 
@@ -67,9 +83,8 @@ public class CommentsService {
     }
 
 
-    public CommentsDto createReply(Long commentsId, Long courseId, String comments, User user) {
-        CourseBoard courseBoard = courseBoardRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException("찾는 courseBoard없음"));
+    public CommentsDto createReply(Long commentsId, String comments, User user) {
+
 
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername()))
                 .orElseThrow(() -> new EntityNotFoundException("찾는 유저 없음"));
@@ -86,7 +101,8 @@ public class CommentsService {
                 .parent(comment)
                 .comments(comments)
                 .user(findUser)
-                .courseBoard(courseBoard)
+                .courseBoard(comment.getCourseBoard())
+                .community(comment.getCommunity())
                 .build();
         Comments replyEntity = commentsRepository.save(reply);
         CommentsDto commentsDto = replyEntity.changeDto();
@@ -97,13 +113,14 @@ public class CommentsService {
     }
 
 
-    public Page<CommentsDto> findCommentsListByCourseId(Long courseId, Pageable pageable) {
-        Page<CommentsDto> commentsList = commentsRepository.findByCourseBoardId(courseId, pageable);
+    public Page<CommentsDto> findCommentsListByCourseId(Long courseId, Pageable pageable, int status) {
+        Page<CommentsDto> commentsList = commentsRepository.findByCourseBoardId(courseId, pageable, status);
         for (CommentsDto commentsDto : commentsList.getContent()) {
             logger.info("commentsList = " + commentsDto.toString());
         }
         return commentsList;
     }
+
 
     public Page<CommentsDto> findReplyListByCommentsId(Long commentsId, Pageable pageable) {
         Page<CommentsDto> replyByIds = commentsRepository.findReplyByIds(commentsId, pageable);
@@ -118,16 +135,18 @@ public class CommentsService {
     public Long countDateCommentCount(Long courseId, String date) {
         return commentsRepository.countDateCommentCountByCourseId(courseId, date);
     }
+
     public Map monthlyToDayComments(Long courseId, String date) {
         return commentsRepository.countMonthlyToDayCommentsByCourseId(courseId, date);
     }
+
     public Map thisYearToMonthlyComments(Long courseId, String date) {
         return commentsRepository.countThisYearToMonthlyCommentsByCourseId(courseId, date);
     }
+
     public Map tenYearToYearComments(Long courseId, String date) {
         return commentsRepository.countTenYearToYearCommentsByCourseId(courseId, date);
     }
-
 
 
 }
