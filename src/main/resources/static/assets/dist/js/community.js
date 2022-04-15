@@ -8,10 +8,10 @@ let NextCommunity = null;
 let startPageCommunity;
 let endPageCommunity;
 let searchKeyword;
-
+let status;
 
 const table = ' {{#data}}\n' +
-    '                                <tr data-id="{{id}}">\n' +
+    '                                <tr data-id="{{id}}" class="communityCol">\n' +
     '                                    <td>\n' +
     '                                        {{id}}\n' +
     '                                    </td>\n' +
@@ -30,11 +30,23 @@ const table = ' {{#data}}\n' +
 
 
 $(document).on('click', '#communityTab', function () {
+    status='getCommunityList';
+    $(".nav-link").removeClass("active");
+    $(this).addClass('active');
+
+    renderCommunityList(0);
+    toggleBtn();
+
+});
+
+$(document).on('click', '#myCommunityListTab', function () {
+    status='myCommunityList';
     $(".nav-link").removeClass("active");
     $(this).addClass('active');
     renderCommunityList(0);
-    communityBoxShow();
+    toggleBtn();
 });
+
 $(document).on('click', '#previousCommunityAtag', function () {
 
     renderCommunityList(preNumCommunity, searchKeyword);
@@ -45,14 +57,16 @@ $(document).on('click', '#nextCommunityAtag', function () {
     renderCommunityList(nexNumCommunity, searchKeyword);
 });
 
-$(document).on('click', '#myCommunityListTab', function () {
-    $(".nav-link").removeClass("active");
-    $(this).addClass('active');
 
-});
 $(document).on('click', '#communitySearchBtn', function () {
     let search = $('#communitySearchInput').val();
     renderCommunityList(0, search);
+});
+
+$(document).on('click', '#communityCreateBoxBtn', function () {
+    formReset();
+    $('.hiddenBox').attr("hidden", "hidden");
+    $('#createCommunityBox').removeAttr("hidden");
 });
 
 $(document).on("keyup", '#communitySearchInput', function (key) {
@@ -62,12 +76,42 @@ $(document).on("keyup", '#communitySearchInput', function (key) {
     }
 });
 
+
+$(document).on('click', '#communityCreateBtn', function () {
+    var check = formBtn('#communityCreateForm');
+    if (check == 1) {
+        return;
+    }
+    let courseId = getCourseId();
+    let data = $("form").serialize();
+    $.ajax({
+        type: "post",
+        url: "/community/createCommunity/" + courseId,
+        async: false,
+        data: data,
+        success: function (data) {
+            if (data != null) {
+                alert("글쓰기 성공");
+                $("#communityTab").trigger("click");
+            } else {
+                alert("오류");
+            }
+        },
+        error: function (request, error) {
+            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            alert("오류");
+        }
+    });
+    renderCommunityList(0);
+});
+
 function renderCommunityList(page, search = "") {
     let courseId = getCourseId();
     searchKeyword = search;
     $.ajax({
         type: "post",
-        url: "/community/getCommunityList/" + courseId,
+        url: "/community/"+status+"/" + courseId,
+        async: false,
         data: {
             page: page,
             search: search
@@ -120,7 +164,7 @@ function renderCommunityList(page, search = "") {
             alert("오류");
         }
     });
-}
 
+}
 
 
