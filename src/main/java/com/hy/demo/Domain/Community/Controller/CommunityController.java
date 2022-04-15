@@ -2,7 +2,6 @@ package com.hy.demo.Domain.Community.Controller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Community.Dto.CommunityDto;
-import com.hy.demo.Domain.Community.Entity.Community;
 import com.hy.demo.Domain.Community.Service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,10 +11,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
 
 @Controller
 @RequestMapping("/community/*")
@@ -33,25 +31,38 @@ public class CommunityController {
     @PostMapping("getCommunityList/{courseId}")
     public Page<CommunityDto> getCommunityList(@PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long courseId, @RequestParam(defaultValue = "") String search) {
         return communityService.findCommunityList(courseId, search, pageable, null);
-    };
+    }
+
+    ;
 
     @ResponseBody
     @PostMapping("myCommunityList/{courseId}")
     public Page<CommunityDto> myCommunityList(@AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long courseId, @RequestParam(defaultValue = "") String search) {
         return communityService.findCommunityList(courseId, search, pageable, principalDetails.getUser());
-    };
+    }
+
+    ;
 
     @ResponseBody
     @PostMapping("createCommunity/{courseId}")
-    public CommunityDto createCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long courseId, Community community) {
-        return communityService.addCommunity(community, principalDetails.getUser(), courseId);
-    };
+    public CommunityDto createCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long courseId, @ModelAttribute("data") CommunityDto community) {
+        try {
+            return communityService.addCommunity(community.toEntity(), principalDetails.getUser(), courseId);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    ;
 
     @ResponseBody
     @PostMapping("modifyCommunity/{communityId}")
-    public CommunityDto modifyCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long communityId, Community updateCommunity) {
-        return communityService.modifyCommunity(communityId,updateCommunity,principalDetails.getUser());
-    };
+    public CommunityDto modifyCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long communityId, @ModelAttribute("data") CommunityDto updateCommunity) {
+        return communityService.modifyCommunity(communityId, updateCommunity.toEntity(), principalDetails.getUser());
+    }
+
+    ;
 
     @ResponseBody
     @PostMapping("deleteCommunity/{communityId}")
@@ -64,14 +75,18 @@ public class CommunityController {
             return "0"; //실패
         }
         return "1"; //성공
-    };
+    }
+
+    ;
 
 
     @ResponseBody
     @PostMapping("getCommunity/{communityId}")
     public CommunityDto getCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long communityId) {
         return communityService.findCommunity(communityId);
-    };
+    }
+
+    ;
 
 
 }
