@@ -9,6 +9,7 @@ let startPageCommunity;
 let endPageCommunity;
 let searchKeyword;
 let status;
+let communityId;
 
 const table = ' {{#data}}\n' +
     '                                <tr data-id="{{id}}" class="communityCol">\n' +

@@ -35,10 +35,10 @@ const template = ' ' +
     '                <h5>댓글</h5>\n' +
     '\n' +
     '                <div class="my-3 col-12 border p-3 border-1">\n' +
-    '                <form id="commentsForm" onsubmit="return false">\n' +
-    '                <input type="text" class="form-control comments" placeholder="댓글을 입력하세요" name="comments">\n' +
+    '                <form class="commentsForm" onsubmit="return false">\n' +
+    '                <input type="text" class="form-control commentsInput" placeholder="댓글을 입력하세요" name="comments">\n' +
     '                </form>\n' +
-    '                           <button class="btn btn-secondary mt-3" type="button" id ="commentsCreateBtn">\n' +
+    '                           <button class="btn btn-secondary mt-3 commentsCreateBtn" type="button" >\n' +
     '                                     댓글쓰기\n' +
     '                            </button>\n' +
     '                </div>\n' +
@@ -77,7 +77,6 @@ const comments = '' +
     '                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">\n' +
     '                    <li><a class="dropdown-item createReply" data-use="disabled" data-id="{{id}}">답글쓰기</a></li>\n' +
     '                </ul>{{/myCommentsFlag}}\n' +
-
     '               {{#myCommentsFlag}}' +
     '                <div class="dropdown dropdown-user text-end"  data-user="{{user.username}}">\n' +
     '                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">\n' +
@@ -126,20 +125,20 @@ const templateNav = '' +
 
 var courseBoard = getData();
 var courseBoardId;
-var viewSize=1;
+var viewSize = 1;
 $(document).ready(function () {
 
     var listeners = window.matchMedia("screen and (min-width: 768px)");
-        if (!listeners.matches) {
-            viewSize = 0;
-        }
+    if (!listeners.matches) {
+        viewSize = 0;
+    }
     listeners.addListener(function (e) {
-            if (e.matches) {
-                viewSize=1;//pc
-            } else {
-                viewSize=0;//모바일
-            }
-        });
+        if (e.matches) {
+            viewSize = 1;//pc
+        } else {
+            viewSize = 0;//모바일
+        }
+    });
 
 
     if (courseBoard.length > 0) {
@@ -154,7 +153,8 @@ $(document).ready(function () {
 
 
     $(document).on("click", ".courseboard-href", function () {
-
+        $('.hiddenBox').attr("hidden", "hidden");
+        $('#viewBox').removeAttr("hidden");
         let id = $(this).data('id');
         $(".nav-link").removeClass("active");
         $(this).addClass('active');
@@ -170,16 +170,15 @@ $(document).ready(function () {
 })
 
 
-$(document).on('click', '.nav-item', function (e) {
+$(document).on('click', '#sidebarMenu .nav-item', function (e) {
     let id = $(this).children('a').data("view");
     let hidden = $("#viewBox").attr("hidden");
     if (id == 'viewBox' && hidden === undefined) {
         return;
     }
     $('.hiddenBox').attr("hidden", "hidden");
-    $('#'+id).removeAttr("hidden");
+    $('#' + id).removeAttr("hidden");
 });
-
 
 
 function getData() {
@@ -234,23 +233,24 @@ function mainRender(id, data) {
     commentsRender(1);
 }
 
-
-$(document).on('click', '#commentsCreateBtn', function () {
-    let comments = $("input[name=comments]").val();
+$(document).on('click', '.commentsCreateBtn', function () {
+    let status = boxStatus();
+    let comments = $(this).parent().find(".commentsInput").val();
     if (comments.length == 0) {
         alert("댓글을 작성후 눌러주세요");
         return;
     }
     $.ajax({
         type: "post",
-        url: "/comments/create/" + courseBoardId,
+        url: status == 1 ? '/comments/create/' + courseBoardId : '/comments/create/' + communityId,
         data: {
-            comments: comments
+            comments: comments,
+            status: status
         },
         success: function (data) {
             if (data == "1") {
                 alert("댓글 작성 성공");
-                $("input[name=comments]").val("");
+                $(".commentsInput").val("");
                 commentsRender(1);
             } else {
                 alert("실패");
@@ -369,6 +369,7 @@ function toggleBtn() {
         $('.navbar-toggler').trigger('click');
     }
 }
+
 function formReset() {
     $("form").each(function () {
         this.reset();
@@ -378,7 +379,4 @@ function formReset() {
     $(".summernote").each(function () {
         $(this).summernote('reset');
     })
-
-
-
 }

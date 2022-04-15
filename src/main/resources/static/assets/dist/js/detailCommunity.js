@@ -9,8 +9,10 @@ let communityDetail=' ' +
     '            </div>'
 
 $(document).on('click', '.communityCol', function () {
+    formReset();
     $('.hiddenBox').attr("hidden", "hidden");
-    let communityId = $(this).data("id");
+    let id = $(this).data("id");
+    communityId=id;
     $.ajax({
         type: "post",
         url: "/community/getCommunity/" + communityId,
@@ -22,6 +24,7 @@ $(document).on('click', '.communityCol', function () {
                 var rendered = Mustache.render(communityDetail, data);
                 $('#titleAndContents').html(rendered);
                 $('#detailCommunityBox').removeAttr("hidden");
+                commentsRender(0);
             } else {
                 alert("존재하지않는 게시판입니다.");
             }
