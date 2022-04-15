@@ -62,7 +62,7 @@ $(document).ready(function () {
     } else {
 
         alert("생성된 강의 목차가없습니다. 강의 회차를 추가해주세요");
-        createBoxShow();
+
     }
 
 })
@@ -100,7 +100,7 @@ $(document).on("click", "#createBtn", function () {
                 courseBoard = getData();
                 navRender(courseBoard);
                 $(".courseboard-href").last().trigger("click");
-                viewBoxShow();
+
                 $("form")[0].reset();
                 $("form").removeClass("was-validated");
                 $('#fileChange').empty();
@@ -138,7 +138,7 @@ $(document).on("click", "#deleteBtn", function () {
                 navRender(courseBoard);
                 $(".courseboard-href").removeClass("active");
                 $(".courseboard-href").first().trigger("click");
-                viewBoxShow();
+
                 $('#deleteText').val('');
             } else {
                 alert("error 삭제실패");
@@ -176,11 +176,11 @@ $(document).on("click", "#courseUpdateBtn", function () {
         success: function (data) {
             if (data == "1") {
                 $(".courseboard-href").first().trigger("click");
-                viewBoxShow();
+
                 $("form")[0].reset();
                 $("form").removeClass("was-validated");
                 $('#contents').summernote('reset');
-                viewBoxShow();
+
                 alert("업데이트 성공");
             } else {
                 alert("업데이트 실패");
@@ -226,7 +226,7 @@ $(document).on("click", "#courseInfoUpdateBtn", function () {
             alert("오류");
         }
     });
-    updateBoxShow();
+
     toggleBtn();
 });
 
@@ -319,7 +319,7 @@ $(document).on("click", "#addBtn", function () {
     $("#fileChange").empty();
     $('#contents').summernote('reset');
 
-    createBoxShow();
+
     toggleBtn();
 });
 
@@ -356,7 +356,6 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
                 mainRender(courseBoardId, courseBoard)
                 let index = courseBoard.findIndex(f => f.id == courseBoardId);
                 $(".courseboard-href").eq(index).trigger("click");
-                viewBoxShow();
                 $("#courseBoardUpdateForm")[0].reset();
                 $("#courseBoardUpdateForm").removeClass("was-validated");
                 $('#updateFileChange').empty();
@@ -382,7 +381,7 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
 $(document).on("click", '#statisticsBtn', function () {
     $(".nav-link").removeClass("active");
     $(this).addClass('active');
-    statisticsBoxShow();
+
     toggleBtn();
 });
 $(document).on("click", '#deleteModalB', function () {

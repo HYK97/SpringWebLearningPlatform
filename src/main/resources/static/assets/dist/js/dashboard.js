@@ -30,7 +30,6 @@ $(document).on("click", '#statisticsBtn', function () {
     $("#percentUser").empty();
     $("#percentScope").empty();
     $("#percentComment").empty();
-    statisticsBoxShow();
     getDashboardData();
     $('.counter').counterUp({
         delay: 10,
@@ -44,7 +43,6 @@ function getDashboardData() {
     $.ajax({
         url: '/courseboard/getDashBoard/' + getCourseId(),
         type: 'post',
-        async: false,
         success: function (data) {
             $('#resultRank').empty();
             var userPercent = data.todayRegisteredUser - data.yesterdayRegisteredUser;
