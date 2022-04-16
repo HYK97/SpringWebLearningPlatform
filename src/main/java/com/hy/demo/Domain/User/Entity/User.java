@@ -68,6 +68,7 @@ public class User extends BaseEntity {
         userdto.setProfileImage(this.profileImage);
         userdto.setSelfIntroduction(this.selfIntroduction);
         userdto.setNickname(this.nickname);
+        userdto.setRole(this.role);
         return userdto;
     }
 
