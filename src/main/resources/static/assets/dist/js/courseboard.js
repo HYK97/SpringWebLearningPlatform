@@ -147,8 +147,13 @@ $(document).ready(function () {
         navRender(courseBoard);
         mainRender(index, courseBoard);
         $(".courseboard-href").first().addClass('active');
-    } else {
+    } else if (courseBoard.length == 0 && $('#createBox').length == 0) {
         alert("아직 생성된 목차가 없습니다.");
+        $('#communityBox').removeAttr("hidden");
+    } else {
+        alert("생성된 강의 목차가없습니다. 강의 회차를 추가해주세요");
+        $("#createBox").removeAttr("hidden");
+
     }
 
 
