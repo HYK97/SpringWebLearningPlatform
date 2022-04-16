@@ -56,7 +56,9 @@
     </div>
         <div class="col-md-6 ">
             <h1 class="display-4 fst-italic my-4">{{courseName}}</h1>
-            <p class="sm-mg lead my-3 text-muted">강사명 : <a class="text-muted" href="/user/userDetailInfo/{{user.username}}">{{user.nickname}}({{user.username}})</a></p>
+            <p class="sm-mg lead my-3 text-muted">강사명 : <a class="text-muted"
+                                                           href="/user/userDetailInfo/{{user.username}}">{{user.nickname}}
+                ({{user.username}})</a></p>
             <p class="lead mb-0">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -85,6 +87,42 @@
         </div>
 
         <div class="row g-5">
+
+            <div class="col-md-4">
+
+                <div class="position-sticky" style="top: 5rem;">
+
+
+                    <div class="p-4">
+                        <h4 class="fst-italic">수강신청하기</h4>
+                        <p class="mb-0">
+                            주의사항! : --
+                        </p>
+                        <ol class="list-unstyled mb-0">
+
+                        </ol>
+                    </div>
+                    <div class="p-4 mb-3 bg-light rounded">
+
+
+                        {{#applicationCheck}}
+                            <a href="/courseboard/{{id}}" id="btn" class="w-100 btn btn-lg btn-success">> 강의 이어보기 </a>
+                        {{/applicationCheck}}
+                        {{^applicationCheck}}
+                            <form method="post" action="/course/application" id="applicationCheck">
+                                <input type="hidden" name="id" value="{{id}}">
+                                <a tabindex="0" id="joinBtn" role="button"
+                                   class="w-100 btn btn-lg btn-success popover-dismiss" data-bs-placement="bottom"
+                                   data-bs-toggle="popover" data-bs-trigger="focus"
+                                   data-bs-content="수강 신청을 해야 강의를 볼수있어요 ! 버튼을 클릭해 수강신청 해주세요!!">> 수강신청하기</a>
+                            </form>
+                        {{/applicationCheck}}
+
+                    </div>
+
+
+                </div>
+            </div>
             <div class="col-md-8">
                 <h3 class="pb-4 mb-4 border-bottom">
                     강좌소개
@@ -158,52 +196,64 @@
                                                 <p style="fontsize:20px">별점</p>
                                                 <div class="startRadio">
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="0.5" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="0.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="1.0" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="1.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="1.5" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="1.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="2.0" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="2.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="2.5" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="2.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="3.0" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="3.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star"value="3.5" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="3.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="4.0" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="4.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="4.5" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="4.5" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
                                                     <label class="startRadio-box">
-                                                        <input type="radio" class="form-check-input" name="star" value="5.0" required>
+                                                        <input type="radio" class="form-check-input" name="star"
+                                                               value="5.0" required>
                                                         <span class="startRadio-img"></span>
                                                     </label>
 
                                                 </div>
                                             </div>
-                                            <div class="mb-3 d-center" >
-                                                <textarea style="min-height:150px" name="content" class="form-control is-invalid" id="modal-message-text" placeholder="강의에 대한 평가를 써주세요!" required></textarea>
+                                            <div class="mb-3 d-center">
+                                                <textarea style="min-height:150px" name="content"
+                                                          class="form-control is-invalid" id="modal-message-text"
+                                                          placeholder="강의에 대한 평가를 써주세요!" required></textarea>
 
-                                                <a id="evaluationBtn" class="btn btn-success mt-4" >수강평 등록하기</a>
+                                                <a id="evaluationBtn" class="btn btn-success mt-4">수강평 등록하기</a>
                                             </div>
                                         </form>
 
@@ -215,10 +265,7 @@
                     </div>
 
 
-
                 </section>
-
-
 
 
                 <section>
@@ -226,22 +273,28 @@
                     <div class="row mt-5 ">
                         <div class="col-md-8 ">
                             <div class="text-break">
-                                <div  style="display: flex;align-items: center; white-space: nowrap;">
-                                    <span class="text-black  review">정렬</span>
-                                    <span> | </span>
+                                <div style="display: flex;align-items: center; white-space: nowrap;    flex-wrap: wrap;gap: 1em;">
+                                    <div>
+                                        <span class="text-black  review">정렬</span>
+                                        <span> | </span>
+                                    </div>
+                                    <div>
+                                        <span class="review review-sort text-success"
+                                              data-sort="createDate-Desc">ㆍ 최신 순</span>
+                                    </div>
+                                    <div>
+                                        <span class="review review-sort" data-sort="scope-Desc">ㆍ 높은 평점 순</span>
+                                    </div>
+                                    <div>
+                                        <span class="review review-sort" data-sort="scope-asc">ㆍ 낮은 평점 순</span>
+                                    </div>
 
-                                    <span class="review review-sort text-success" data-sort="createDate-Desc">ㆍ 최신 순</span>
-
-                                    <span class="review review-sort" data-sort="scope-Desc">ㆍ 높은 평점 순</span>
-
-                                    <span class="review review-sort" data-sort="scope-asc">ㆍ 낮은 평점 순</span>
 
                                 </div>
                             </div>
                         </div>
                         <hr class=" my-3">
                     </div>
-
 
 
                     <div id="result">
@@ -258,9 +311,8 @@
                                 </li>
 
 
-
                                 <li class="page-item" id="next">
-                                    <a class="page-link" id="nextAtag"  aria-label="Next">
+                                    <a class="page-link" id="nextAtag" aria-label="Next">
                                         <span aria-hidden="true">»</span>
                                     </a>
                                 </li>
@@ -274,38 +326,7 @@
 
             </div>
 
-            <div class="col-md-4">
 
-                <div class="position-sticky" style="top: 5rem;">
-
-
-                    <div class="p-4">
-                        <h4 class="fst-italic">수강신청하기</h4>
-                        <p class="mb-0">
-                            주의사항! : --
-                        </p>
-                        <ol class="list-unstyled mb-0">
-
-                        </ol>
-                    </div>
-                    <div class="p-4 mb-3 bg-light rounded">
-
-
-                        {{#applicationCheck}}
-                            <a href="/courseboard/{{id}}" id="btn" class="w-100 btn btn-lg btn-success">> 강의 이어보기 </a>
-                        {{/applicationCheck}}
-                        {{^applicationCheck}}
-                            <form method="post" action="/course/application" id = "applicationCheck">
-                                <input type="hidden" name="id" value="{{id}}">
-                                <a tabindex="0" id="joinBtn" role="button"  class="w-100 btn btn-lg btn-success popover-dismiss" data-bs-placement="bottom" data-bs-toggle="popover" data-bs-trigger="focus"  data-bs-content="수강 신청을 해야 강의를 볼수있어요 ! 버튼을 클릭해 수강신청 해주세요!!">> 수강신청하기</a>
-                            </form>
-                        {{/applicationCheck}}
-
-                    </div>
-
-
-                </div>
-            </div>
         </div>
 
 
@@ -327,139 +348,141 @@
             let course = {
                 id: {{id}},
                 teachNickname: '{{user.nickname}}',
-                teachUser : '{{user.username}}'==('{{loginUser}}') ? true : '',
-                loginUser : '{{loginUser}}',
-                applicationCheck : {{^applicationCheck}}''{{/applicationCheck}} {{#applicationCheck}}'{{applicationCheck}}' {{/applicationCheck}}
+                teachUser: '{{user.username}}' == ('{{loginUser}}') ? true : '',
+                loginUser: '{{loginUser}}',
+            applicationCheck : {{^applicationCheck}}''{{/applicationCheck}} {{#applicationCheck}}'{{applicationCheck}}' {{/applicationCheck}}
             }
             return course;
         }
     </script>
 
 
-
-
-
-
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">수강평 수정하기</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form name="evaluationUpdateForm" id="evaluationUpdateForm">
-                    <input type="hidden" id="evaluationId" name="id" value="">
-                    <input type="hidden" name="courseId" value="{{id}}">
-                    <div class="mb-3 d-center">
-                        <p style="fontsize:20px">별점</p>
-                        <div class="startRadio">
-                            <label class="startRadio-box">
-                            <input type="radio" class="form-check-input" name="star" value="0.5" required>
-                            <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="1.0" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="1.5" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="2.0" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="2.5" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="3.0" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star"value="3.5" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="4.0" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="4.5" required>
-                                <span class="startRadio-img"></span>
-                            </label>
-                            <label class="startRadio-box">
-                                <input type="radio" class="form-check-input" name="star" value="5.0" required>
-                                <span class="startRadio-img"></span>
-                            </label>
+    <div class="modal fade" id="exampleModal" tabindex="-1" id="staticBackdrop" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"
+         aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="exampleModalLabel">수강평 수정하기</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form name="evaluationUpdateForm" id="evaluationUpdateForm">
+                        <input type="hidden" id="evaluationId" name="id" value="">
+                        <input type="hidden" name="courseId" value="{{id}}">
+                        <div class="mb-3 d-center">
+                            <p style="fontsize:20px">별점</p>
+                            <div class="startRadio">
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="0.5" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="1.0" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="1.5" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="2.0" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="2.5" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="3.0" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="3.5" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="4.0" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="4.5" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                                <label class="startRadio-box">
+                                    <input type="radio" class="form-check-input" name="star" value="5.0" required>
+                                    <span class="startRadio-img"></span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <textarea style="min-height:300px;" name="content"class="form-control" id="modal-message-text"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary modalBtn">수정하기</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<div class="modal fade" id="exampleModal2" tabindex="-1" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">답글 수정하기</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form name="evaluationUpdate" id="replyUpdate">
-                    <input type="hidden" id= "evaluationId" name="id" value="">
-                    <input type="hidden" name="courseId" value="{{id}}">
-                    <div class="mb-3">
-                        <textarea style="min-height:300px;" name="content"class="form-control" id="modal-message-text"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary modalBtn">수정하기</button>
+                        <div class="mb-3">
+                            <textarea style="min-height:300px;" name="content" class="form-control"
+                                      id="modal-message-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary modalBtn">수정하기</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="exampleModal3" tabindex="-1" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">수강평 답글 달기</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="replyCreate" name="replyCreate">
-                    <input type="hidden"  id= "replyId" name="replyId" value="">
-                    <input type="hidden" name="courseId" value="{{id}}">
-                    <div class="mb-3">
-                        <textarea style="min-height:300px;" name="content"class="form-control" id="modal-message-text"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="replyCreateBtn" class="btn btn-primary">등록하기</button>
+
+    <div class="modal fade" id="exampleModal2" tabindex="-1" id="staticBackdrop" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"
+         aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="exampleModalLabel">답글 수정하기</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form name="evaluationUpdate" id="replyUpdate">
+                        <input type="hidden" id="evaluationId" name="id" value="">
+                        <input type="hidden" name="courseId" value="{{id}}">
+                        <div class="mb-3">
+                            <textarea style="min-height:300px;" name="content" class="form-control"
+                                      id="modal-message-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary modalBtn">수정하기</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" id="exampleModal3" tabindex="-1" id="staticBackdrop" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"
+         aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title" id="exampleModalLabel">수강평 답글 달기</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="replyCreate" name="replyCreate">
+                        <input type="hidden" id="replyId" name="replyId" value="">
+                        <input type="hidden" name="courseId" value="{{id}}">
+                        <div class="mb-3">
+                            <textarea style="min-height:300px;" name="content" class="form-control"
+                                      id="modal-message-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="replyCreateBtn" class="btn btn-primary">등록하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {{/course}}
 
 
