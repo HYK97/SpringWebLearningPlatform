@@ -172,6 +172,7 @@ $(document).ready(function () {
             $('.navbar-toggler').trigger('click');
         }
     });
+
 })
 
 
@@ -236,8 +237,24 @@ function mainRender(id, data) {
     $('#result').html(rendered);
     courseBoardId = content[0].id;
     commentsRender(1);
+    resizeIframe();
+
 }
 
+function resizeIframe() {
+    var width = $('.col-md-9.ms-sm-auto.col-lg-10.px-md-4').innerWidth();
+    $('iframe').each(function () {
+        $(this).attr("height", "500");
+        $(this).attr("width", width-100);
+    });
+    $('.col-md-9.ms-sm-auto.col-lg-10.px-md-4').find("div").each(function () {
+        $(this).attr("width", width-100);
+    })
+}
+
+$(window).resize(function () {
+    resizeIframe();
+})
 $(document).on('click', '.commentsCreateBtn', function () {
     let status = boxStatus();
     let comments = $(this).parent().find(".commentsInput").val();
