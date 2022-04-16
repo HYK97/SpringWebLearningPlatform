@@ -25,6 +25,8 @@ $(document).on('click', '.communityCol', function () {
                 $('#titleAndContents').html(rendered);
                 $('#detailCommunityBox').removeAttr("hidden");
                 commentsRender(0);
+                resizeIframe();
+
             } else {
                 alert("존재하지않는 게시판입니다.");
             }
