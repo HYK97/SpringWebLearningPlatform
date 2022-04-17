@@ -53,7 +53,7 @@ const template = ' ' +
 const comments = '' +
     '            <hr class=" mt-3 mb-2">\n' +
     ' {{#data}}' +
-    '        <div class="row my-1 mainComments">\n' +
+    '        <div class="row my-1 mainComments d-flex" >\n' +
     '            <div >\n' +
     '                <div class="text-break">\n' +
     '                    <div >\n' +
@@ -241,14 +241,31 @@ function mainRender(id, data) {
 
 }
 
+function aspect(maxWidth, maxHeight) {
+    var ratio = 0; // Used for aspect ratio
+    var width = $(this).width(); // Current image width
+    var height = $(this).height(); // Current image height // Check if the current width is larger than the max
+    if (width > maxWidth) {
+        ratio = maxWidth / width; // get ratio for scaling image
+        $(this).attr("width", maxWidth); // Set new width
+        $(this).attr("height", height * ratio); // Scale height based on ratio
+        height = height * ratio; // Reset height to match scaled image
+    }
+    var width = $(this).width(); // Current image width
+    var height = $(this).height(); // Current image height // Check if current height is larger than max
+    if (height > maxHeight) {
+        ratio = maxHeight / height; // get ratio for scaling
+        $(this).attr("height", maxHeight); // Set new height
+        $(this).attr("width", width * ratio); // Scale width based on ratio
+        width = width * ratio; // Reset width to match scaled image
+    }
+}
+
 function resizeIframe() {
-    var width = $('.col-md-9.ms-sm-auto.col-lg-10.px-md-4').innerWidth();
-    $('iframe').each(function () {
-        $(this).attr("height", "500");
-        $(this).attr("width", width-100);
-    });
-    $('.col-md-9.ms-sm-auto.col-lg-10.px-md-4').find("div").each(function () {
-        $(this).attr("width", width-100);
+
+    let maxWidth = $('.col-md-9.ms-sm-auto.col-lg-10.px-md-4').innerWidth()-100;
+    $('#content,#communityDetailContests').find("div,img,iframe").each(function () {
+        aspect.call(this,maxWidth,500)
     })
 }
 

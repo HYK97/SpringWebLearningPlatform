@@ -4,7 +4,7 @@ let communityDetail=' ' +
     '            </div>\n' +
     '        </div>\n' +
     '        <div class="d-flex justify-content-between">\n' +
-    '            <div class="my-4 w-100" id="content" width="900" height="380" id="communityDetailContests">\n' +
+    '            <div class="my-4 w-100"  width="900" height="380" id="communityDetailContests">\n' +
     '                {{{contents}}}\n' +
     '            </div>'
 
