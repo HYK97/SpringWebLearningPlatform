@@ -6,6 +6,7 @@ import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.slf4j.Logger;
@@ -113,9 +114,9 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
                 .from(course)
                 .leftJoin(course.user, user)
                 //h2
-                .orderBy(NumberExpression.random().asc())
+                //.orderBy(NumberExpression.random().asc())
                 //mysql
-                //.orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(amount)
                 .fetch();
     }

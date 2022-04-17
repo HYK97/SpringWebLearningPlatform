@@ -190,7 +190,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
 
     //h2
-    StringTemplate dayFormat = Expressions.stringTemplate(
+   /* StringTemplate dayFormat = Expressions.stringTemplate(
             "FORMATDATETIME({0}, 'Y-MM-dd')"
             , userCourse.createDate);
 
@@ -200,10 +200,10 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     StringTemplate yearFormat = Expressions.stringTemplate(
             "FORMATDATETIME({0}, 'Y')"
-            , userCourse.createDate);
+            , userCourse.createDate);*/
 
     //mysql
-  /*  StringTemplate dayCOURSE Format = Expressions.stringTemplate(
+    StringTemplate dayFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y-%m-%d')"
             , userCourse.createDate);
 
@@ -214,7 +214,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     StringTemplate yearFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y')"
-            , userCourse.createDate);*/
+            , userCourse.createDate);
 
 
 
@@ -230,11 +230,11 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
                 .from(userCourse)
                 .leftJoin(userCourse.course,course)
                 .leftJoin(course.user,user)
-                //h2
                 .groupBy(user.id)
-                .orderBy(user.id.count().desc(), NumberExpression.random().desc())
+                //h2
+                //.orderBy(user.id.count().desc(), NumberExpression.random().desc())
                 //mysql
-                //.orderBy(user.id.count().desc(),Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                .orderBy(user.id.count().desc(),Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(amount)
                 .fetch();
     }
