@@ -93,7 +93,8 @@ $(document).on('click', '#communityCreateBtn', function () {
         success: function (data) {
             if (data != null) {
                 alert("글쓰기 성공");
-                $("#communityTab").trigger("click");
+                $(".hiddenBox").attr("hidden","hidden");
+                $("#communityBox").removeAttr("hidden");
             } else {
                 alert("오류");
             }
