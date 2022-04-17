@@ -93,10 +93,38 @@ const template = '<div>\n' +
     '    {{/data.content}}\n' +
     '</div>';
 
+function aspect(maxWidth, maxHeight) {
+    var ratio = 0; // Used for aspect ratio
+    var width = $(this).width(); // Current image width
+    var height = $(this).height(); // Current image height // Check if the current width is larger than the max
+    if (width > maxWidth) {
+        ratio = maxWidth / width; // get ratio for scaling image
+        $(this).attr("width", maxWidth); // Set new width
+        $(this).attr("height", height * ratio); // Scale height based on ratio
+        height = height * ratio; // Reset height to match scaled image
+    }
+    var width = $(this).width(); // Current image width
+    var height = $(this).height(); // Current image height // Check if current height is larger than max
+    if (height > maxHeight) {
+        ratio = maxHeight / height; // get ratio for scaling
+        $(this).attr("height", maxHeight); // Set new height
+        $(this).attr("width", width * ratio); // Scale width based on ratio
+        width = width * ratio; // Reset width to match scaled image
+    }
+}
+$(window).resize(function () {
+    resizeIframe();
+})
+function resizeIframe() {
+    var width = $('#courseExplanationBox').innerWidth();
 
+    $('#courseExplanationBox').find("div,img,iframe").each(function () {
+        aspect.call(this, width, 500);
+    })
+}
 $(document).ready(function () {
 
-
+    resizeIframe();
     joinPopOver();
 
 
