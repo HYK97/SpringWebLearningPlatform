@@ -28,15 +28,16 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 
 ### 사용기술
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/></a>
-<img src="https://img.shields.io/badge/Spring Secuity-6DB33F?style=flat-square&logo=Spring Secuity&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=Spring Security&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/mysql-4479A1?style=flat-square&logo=mysql&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/AmazonAws-232F3E?style=flat-square&logo=AmazonAws&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/jQuery-0769AD?style=flat-square&logo=jQuery&logoColor=white"/></a>
-<img src="https://img.shields.io/badge/Css-1572B6?style=flat-square&logo=Css&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Css3-1572B6?style=flat-square&logo=Css3&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/></a>
-<img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=007396&logoColor=white"/></a>
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=F7DF1E&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=Java&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/QueryDsl-20336B?style=flat-square&logo=QueryDsl&logoColor=white"/></a>
 ### 데모
 [site](https://www.akaspringplatform.p-e.kr)
 
