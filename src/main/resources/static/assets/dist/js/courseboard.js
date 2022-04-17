@@ -5,9 +5,8 @@ const template = ' ' +
     '\n' +
     '                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">\n' +
     '                    <h1 class="h2">{{title}}</h1>\n' +
-    '                    <div class="btn-toolbar mb-2 mb-md-0">\n' +
-    '\n' +
-    '\n' +
+    '                    <div class="d-flex justify-content-end">\n' +
+    '                            작성일 : {{createDate}}' +
     '                    </div>\n' +
     '                </div>\n' +
     '\n' +

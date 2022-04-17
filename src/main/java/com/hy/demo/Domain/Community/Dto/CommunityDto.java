@@ -1,11 +1,11 @@
 package com.hy.demo.Domain.Community.Dto;
 
-import com.hy.demo.Domain.BaseEntity;
 import com.hy.demo.Domain.Community.Entity.Community;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -24,6 +24,8 @@ public class CommunityDto {
 
     private Date createDate;
 
+    private Integer myCommunity;
+
     public CommunityDto(Long id, User user, String title, String contents, Timestamp createDate) {
         this.id = id;
         this.user = user.changeDto();
@@ -31,6 +33,7 @@ public class CommunityDto {
         this.contents = contents;
         this.createDate = new Date(createDate.getTime());
     }
+
     public Community toEntity() {
         return Community.builder()
                 .id(id)

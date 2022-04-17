@@ -31,7 +31,7 @@ const table = ' {{#data}}\n' +
 
 
 $(document).on('click', '#communityTab', function () {
-    status='getCommunityList';
+    status = 'getCommunityList';
     $(".nav-link").removeClass("active");
     $(this).addClass('active');
 
@@ -41,7 +41,7 @@ $(document).on('click', '#communityTab', function () {
 });
 
 $(document).on('click', '#myCommunityListTab', function () {
-    status='myCommunityList';
+    status = 'myCommunityList';
     $(".nav-link").removeClass("active");
     $(this).addClass('active');
     renderCommunityList(0);
@@ -66,6 +66,8 @@ $(document).on('click', '#communitySearchBtn', function () {
 
 $(document).on('click', '#communityCreateBoxBtn', function () {
     formReset();
+    $('.communityCreateBtn').attr("hidden", "hidden");
+    $('#communityCreateBtn').removeAttr("hidden");
     $('.hiddenBox').attr("hidden", "hidden");
     $('#createCommunityBox').removeAttr("hidden");
 });
@@ -84,7 +86,7 @@ $(document).on('click', '#communityCreateBtn', function () {
         return;
     }
     let courseId = getCourseId();
-    let data = $("form").serialize();
+    let data = $("#communityCreateForm").serialize();
     $.ajax({
         type: "post",
         url: "/community/createCommunity/" + courseId,
@@ -92,8 +94,10 @@ $(document).on('click', '#communityCreateBtn', function () {
         data: data,
         success: function (data) {
             if (data != null) {
+                renderCommunityList(0);
                 alert("글쓰기 성공");
-                $("#communityTab").trigger("click");
+                $(".hiddenBox").attr("hidden", "hidden");
+                $("#communityBox").removeAttr("hidden");
             } else {
                 alert("오류");
             }
@@ -103,7 +107,6 @@ $(document).on('click', '#communityCreateBtn', function () {
             alert("오류");
         }
     });
-    renderCommunityList(0);
 });
 
 function renderCommunityList(page, search = "") {
@@ -111,7 +114,7 @@ function renderCommunityList(page, search = "") {
     searchKeyword = search;
     $.ajax({
         type: "post",
-        url: "/community/"+status+"/" + courseId,
+        url: "/community/" + status + "/" + courseId,
         async: false,
         data: {
             page: page,

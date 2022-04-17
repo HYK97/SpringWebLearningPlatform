@@ -59,7 +59,10 @@ public class CommunityController {
     @ResponseBody
     @PostMapping("modifyCommunity/{communityId}")
     public CommunityDto modifyCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long communityId, @ModelAttribute("data") CommunityDto updateCommunity) {
-        return communityService.modifyCommunity(communityId, updateCommunity.toEntity(), principalDetails.getUser());
+        CommunityDto communityDto = communityService.modifyCommunity(communityId, updateCommunity.toEntity(), principalDetails.getUser());
+        communityDto.setUser(principalDetails.getUser().changeDto());
+        communityDto.setMyCommunity(1);
+        return communityDto;
     }
 
     ;
@@ -83,7 +86,13 @@ public class CommunityController {
     @ResponseBody
     @PostMapping("getCommunity/{communityId}")
     public CommunityDto getCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long communityId) {
-        return communityService.findCommunity(communityId);
+        CommunityDto community = communityService.findCommunity(communityId);
+        if (principalDetails.getUsername().equals(community.getUser().getUsername())) {
+            community.setMyCommunity(1);
+        } else {
+            community.setMyCommunity(null);
+        }
+        return community;
     }
 
     ;
