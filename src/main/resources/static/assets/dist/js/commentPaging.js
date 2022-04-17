@@ -11,7 +11,7 @@ let endPage;
 
 const replys = '' +
     ' {{#data}}' +
-    '        <div class="row my-1 " style="margin-left:2rem;">\n' +
+    '        <div class="row my-1 " style="margin-left:2rem; flex:1">\n' +
     '            <div >\n' +
     '            <hr class=" mt-3 mb-2">\n' +
     '                <div class="text-break">\n' +
