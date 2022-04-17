@@ -264,7 +264,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
 
     //h2
-    StringTemplate dayFormat = Expressions.stringTemplate(
+  /*  StringTemplate dayFormat = Expressions.stringTemplate(
             "FORMATDATETIME({0}, 'Y-MM-dd')"
             , courseEvaluation.createDate);
 
@@ -274,21 +274,21 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
     StringTemplate yearFormat = Expressions.stringTemplate(
             "FORMATDATETIME({0}, 'Y')"
-            , courseEvaluation.createDate);
+            , courseEvaluation.createDate);*/
 
     //mysql
-  /* StringTemplate dayFormat = Expressions.stringTemplate(
+   StringTemplate dayFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y-%m-%d')"
             , courseEvaluation.createDate);
 
 
     StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            "DATE_FORMAT({0}, '%Y-%m')"
             , courseEvaluation.createDate);
 
     StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, 'Y')"
-            , courseEvaluation.createDate);*/
+            "DATE_FORMAT({0}, '%Y')"
+            , courseEvaluation.createDate);
 
 
 

@@ -24,6 +24,7 @@ import java.util.Optional;
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Comments.Entity.QComments.comments1;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
+import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
 
 
@@ -181,7 +182,7 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
     }
 
     //h2
-    StringTemplate dayFormat = Expressions.stringTemplate(
+/*    StringTemplate dayFormat = Expressions.stringTemplate(
             "FORMATDATETIME({0}, 'Y-MM-dd')"
             , comments1.createDate);
 
@@ -191,21 +192,21 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
 
     StringTemplate yearFormat = Expressions.stringTemplate(
             "FORMATDATETIME({0}, 'Y')"
-            , comments1.createDate);
+            , comments1.createDate);*/
 
     //mysql
-  /* StringTemplate dayFormat = Expressions.stringTemplate(
+    StringTemplate dayFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y-%m-%d')"
             , comments1.createDate);
 
 
     StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            "DATE_FORMAT({0}, '%Y-%m')"
             , comments1.createDate);
 
     StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, 'Y')"
-            , comments1.createDate);*/
+            "DATE_FORMAT({0}, '%Y')"
+            , comments1.createDate);
 
 
 }
