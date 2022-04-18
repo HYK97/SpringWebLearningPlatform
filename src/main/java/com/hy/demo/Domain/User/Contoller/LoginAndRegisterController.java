@@ -71,6 +71,13 @@ public class LoginAndRegisterController {
         return "error";
     }
 
+    @GetMapping("/userFindPassword")
+    public String userFindPassword() {
+
+        return "user/userFindPassword";
+    }
+
+
 
     @GetMapping({"/loginForm", "", "/"})
     public String loginForm(@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletRequest request) {
