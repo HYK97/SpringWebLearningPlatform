@@ -1,7 +1,9 @@
 # SpringWebLearningPlatform - readme
-### SpringBoot 및 Querydsl을 활용한 온라인 강의 커뮤니티 Platform 
 
-fastCampus, 인프런 등과 같은 온라인 강의 커뮤니티 사이트 
+
+### SpringBoot 및 Querydsl을 활용한 온라인 강의 커뮤니티 Platform 
+<br>
+fastCampus, 인프런 등과 같은 온라인 강의 커뮤니티 사이트 입니다 
 
 ## 목차
 
@@ -11,7 +13,10 @@ fastCampus, 인프런 등과 같은 온라인 강의 커뮤니티 사이트
 - [출처](#출처)
 
 ### 실행
+
 - 빌드
+<br>
+
 ```
 gradlew build -x test
 ```
@@ -27,6 +32,7 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 
 
 ### 사용기술
+
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=Spring Security&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/mysql-4479A1?style=flat-square&logo=mysql&logoColor=white"/></a>
@@ -38,10 +44,14 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 <img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=Java&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/QueryDsl-20336B?style=flat-square&logo=QueryDsl&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Jpa-6DB33F?style=flat-square&logo=Jpa&logoColor=white"/></a>
+
 ### 데모
-[site](https://www.akaspringplatform.p-e.kr)
+<br>
+[aws 배포 사이트](https://www.akaspringplatform.p-e.kr)
 
 ### 출처
+<br>
 
 dash board - [링크](https://www.creative-tim.com/product/material-dashboard)
 summernote - [링크](https://summernote.org/)
