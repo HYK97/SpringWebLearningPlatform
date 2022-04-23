@@ -58,12 +58,12 @@ class MailServiceTest {
 
     @Test
     void successSendPasswordMail() {
-
         //given
         String username = "manager1";
+        User findUser = userRepository.findByUsername(username);
         //when,then
         assertDoesNotThrow(() -> {
-            mailService.sendPasswordMail("manager1");
+            mailService.sendMail(findUser);
         });
     }
 
