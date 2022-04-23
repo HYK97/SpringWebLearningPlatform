@@ -1,11 +1,14 @@
 package com.hy.demo.Domain.Mail.Service;
 
 import com.hy.demo.Domain.Mail.Dto.MailDto;
+import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
-@Service
+@Service("async")
 public class MailService {
 
     @Autowired
@@ -26,21 +29,23 @@ public class MailService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void sendPasswordMail(String username) throws MessagingException {
-        User user = Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException("없는 유저"));
+
+
+
+    @Async("executor")
+    public void sendMail(User findUser) throws MessagingException {
         String tempPassword = tempPassword();
         MimeMessage message = null;
 
         //메일 객체 생성
         MailDto mail = new MailDto();
-        mail.setAddress(user.getEmail());
+        mail.setAddress(findUser.getEmail());
         mail.setTitle("akaSpring 임시 비밀번호 발송");
-        mail.setMessage(user.getUsername() + "님 임시 비밀번호입니다 : " + tempPassword + "<br> " + "<a href='https://www.akaspringplatform.p-e.kr/user/security'>임시비밀번호변경</a> ");
+        mail.setMessage(findUser.getUsername() + "님 임시 비밀번호입니다 : " + tempPassword + "<br> " + "<a href='https://www.akaspringplatform.p-e.kr/user/security'>임시비밀번호변경</a> ");
 
         //페스워드 변경
-        user.updatePassword(bCryptPasswordEncoder.encode(tempPassword));
-        userRepository.save(user);
-
+        findUser.updatePassword(bCryptPasswordEncoder.encode(tempPassword));
+        userRepository.save(findUser);
         message = mailSender.createMimeMessage();
         MimeMessageHelper mailHelper = new MimeMessageHelper(message, "UTF-8");
         mailHelper.setFrom("스프링강의사이트<ddh963963@gmail.com>");
@@ -48,7 +53,6 @@ public class MailService {
         mailHelper.setSubject(mail.getTitle());
         mailHelper.setText(mail.getMessage(), true);
         mailSender.send(message);
-
         mailSender.send(message);
     }
 
