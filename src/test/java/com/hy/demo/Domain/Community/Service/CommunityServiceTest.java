@@ -62,6 +62,7 @@ class CommunityServiceTest {
     private Long courseId2;
 
     private Long userId;
+    private Long communityId1;
 
 
     @BeforeEach
@@ -130,7 +131,7 @@ class CommunityServiceTest {
         userRepository.save(manager2);
         courseId1 = courseRepository.save(course1).getId();
         courseId2 = courseRepository.save(course2).getId();
-        communityRepository.save(community1);
+        communityId1 = communityRepository.save(community1).getId();
         communityRepository.save(community2);
         communityRepository.save(community3);
         communityRepository.save(community4);
@@ -177,7 +178,7 @@ class CommunityServiceTest {
     @Test
     public void modifyCommunity() throws Exception {
         //given
-        Community community = communityRepository.findById(courseId1).get();
+        Community community = communityRepository.findById(communityId1).get();
         User user = userRepository.findById(userId).get();
         Community update = Community.builder()
                 .contents("업데이트 콘텐츠")
@@ -187,7 +188,7 @@ class CommunityServiceTest {
         //when
         communityService.modifyCommunity(community.getId(), update, user);
         //then
-        Community updateCommunity = communityRepository.findById(courseId1).get();
+        Community updateCommunity = communityRepository.findById(communityId1).get();
         assertThat(updateCommunity).extracting("title", "user.username", "contents")
                 .containsOnly(
                         "업데이트 타이틀", "manager1", "업데이트 콘텐츠"
@@ -199,7 +200,7 @@ class CommunityServiceTest {
     @Test
     public void failModifyCommunity() throws Exception {
         //given
-        Community community = communityRepository.findById(courseId1).get();
+        Community community = communityRepository.findById(communityId1).get();
         User user1 = userRepository.findById(userId).get();
         User user2 = User.builder().id(999999L).build();
         Community update = Community.builder()
@@ -256,18 +257,6 @@ class CommunityServiceTest {
 
 
     @Test
-    public void deleteCommunity() throws Exception {
-        //given
-        User user = userRepository.findById(userId).get();
-        //when
-            communityService.deleteCommunity(user, courseId1);
-        //then
-        assertThrows(NoSuchElementException.class, () -> {
-            communityRepository.findById(courseId1).get();
-        });
-    }
-
-    @Test
     public void failDeleteCommunity() throws Exception {
         //given
         User user = userRepository.findById(userId).get();
@@ -277,7 +266,18 @@ class CommunityServiceTest {
         });
     }
 
+    @Test
+    public void deleteCommunity() throws Exception {
+        //given
+        User user = userRepository.findById(userId).get();
 
+        //when
+        communityService.deleteCommunity(user, communityId1);
+        //then
+        assertThrows(NoSuchElementException.class, () -> {
+            communityRepository.findById(communityId1).get();
+        });
+    }
 
 
 }
