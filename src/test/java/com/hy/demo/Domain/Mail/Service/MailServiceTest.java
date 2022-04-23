@@ -21,7 +21,6 @@ class MailServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
