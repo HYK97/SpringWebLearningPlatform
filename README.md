@@ -3,7 +3,8 @@
 
 ### SpringBoot 및 Querydsl을 활용한 온라인 강의 커뮤니티 Platform 
 <br>
-fastCampus, 인프런 등과 같은 온라인 강의 커뮤니티 사이트 입니다 
+fastCampus, 인프런 등과 같은 반응형 온라인 강의 커뮤니티  사이트 입니다 
+ 
 
 ## 목차
 
@@ -14,9 +15,7 @@ fastCampus, 인프런 등과 같은 온라인 강의 커뮤니티 사이트 입�
 
 ### 실행
 
-- 빌드
-<br>
-
+- gradle build
 ```
 gradlew build -x test
 ```
@@ -48,12 +47,51 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 
 ### 데모
 <br>
+
+- 로그인 화면
+
+![image](https://user-images.githubusercontent.com/39224132/164889762-083cec5a-3138-4897-95f9-01a05ea22629.png)
+
+<br>
+
+- 메인 화면
+![image](https://user-images.githubusercontent.com/39224132/164890274-923829c6-c7aa-482a-926e-394f0fe1eaca.png)
+
+
+<br>
+
+- 유저 정보 변경화면
+![image](https://user-images.githubusercontent.com/39224132/164889694-59dd44c3-dbdc-484a-aab6-5ec5f370511a.png)
+
+
+
+<br>
+
+- 수강생 수강 화면
+###### 강의 자료로 위키백과 참조 [링크](https://ko.wikipedia.org/wiki/%EC%9E%90%EB%B0%94_(%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EC%96%B8%EC%96%B4))
+![image](https://user-images.githubusercontent.com/39224132/164890350-166c4869-ad82-49bc-82af-a5d9b4a1f3f9.png)
+
+<br>
+
+- 강사 수강 관리 화면
+
+![image](https://user-images.githubusercontent.com/39224132/164890758-8f40e2e9-a26c-412f-90de-019fad809c4c.png)
+
+
+
+<br>
+
+
 [aws 배포 사이트](https://www.akaspringplatform.p-e.kr)
 
 ### 출처
 <br>
 
 dash board - [링크](https://www.creative-tim.com/product/material-dashboard)
+
+<br>
 summernote - [링크](https://summernote.org/)
+
+
 
 
