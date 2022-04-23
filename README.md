@@ -3,8 +3,10 @@
 
 ### SpringBoot 및 Querydsl을 활용한 온라인 강의 커뮤니티 Platform 
 <br>
+
 fastCampus, 인프런 등과 같은 반응형 온라인 강의 커뮤니티  사이트 입니다 
  
+<br>
 
 ## 목차
 
@@ -13,7 +15,10 @@ fastCampus, 인프런 등과 같은 반응형 온라인 강의 커뮤니티  사
 - [데모](#데모)
 - [출처](#출처)
 
-### 실행
+
+<br>
+
+## 실행
 
 - gradle build
 ```
@@ -29,9 +34,14 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 ```
 
 
+<br>
 
-### 사용기술
 
+## 사용기술
+
+<br>
+
+#### 기술
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=Spring Security&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/mysql-4479A1?style=flat-square&logo=mysql&logoColor=white"/></a>
@@ -45,7 +55,18 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 <img src="https://img.shields.io/badge/QueryDsl-20336B?style=flat-square&logo=QueryDsl&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Jpa-6DB33F?style=flat-square&logo=Jpa&logoColor=white"/></a>
 
-### 데모
+
+<br>
+
+#### 시스템 구성도
+
+![image](https://user-images.githubusercontent.com/39224132/164891462-bf6a2032-172b-412b-95e8-7cf34e5f6d2b.png)
+
+<br>
+<br>
+
+## 데모
+
 <br>
 
 - 로그인 화면
@@ -82,15 +103,19 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 <br>
 
 
-[aws 배포 사이트](https://www.akaspringplatform.p-e.kr/main/index)
+### [aws 배포 사이트](https://www.akaspringplatform.p-e.kr/main/index)
 
-### 출처
+<br>
+<br>
+
+## 출처
 <br>
 
 dash board - [링크](https://www.creative-tim.com/product/material-dashboard)
 
 <br>
-summernote - [링크](https://summernote.org/)
+
+summernote - [링크](https://summernote.org)
 
 
 
