@@ -82,7 +82,7 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 <br>
 
 
-[aws 배포 사이트](https://www.akaspringplatform.p-e.kr)
+[aws 배포 사이트](https://www.akaspringplatform.p-e.kr/main/index)
 
 ### 출처
 <br>
