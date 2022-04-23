@@ -204,6 +204,15 @@ public class UserService {
     }
 
 
+    public User findEmailAndUsername(UserDto user)  {
+        User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("없는 유저"));
+        if (!findUser.getEmail().equals(user.getEmail())) {
+            throw new AccessDeniedException("이메일 정보가 틀림");
+        }
+        return findUser;
+    }
+
+
     public List<UserDto> rankRandomUser(int amount) {
         return userCourseRepository.findRankRandomUserById(amount);
     }
