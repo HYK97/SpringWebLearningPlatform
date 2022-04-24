@@ -25,7 +25,6 @@ public class MailController {
     private UserService userService;
 
 
-
     @PostMapping("send")
     @ResponseBody
     public String send(UserDto user) {

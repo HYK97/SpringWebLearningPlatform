@@ -257,6 +257,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return map;
 
     }
+
     public Double findAvgScopeByCourseId(Long courseId) {
         return select(courseEvaluation.scope.avg()).from(courseEvaluation).
                 where(courseEvaluation.course.id.eq(courseId)).fetchOne();
@@ -277,7 +278,7 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
             , courseEvaluation.createDate);*/
 
     //mysql
-   StringTemplate dayFormat = Expressions.stringTemplate(
+    StringTemplate dayFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y-%m-%d')"
             , courseEvaluation.createDate);
 
@@ -289,8 +290,6 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     StringTemplate yearFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y')"
             , courseEvaluation.createDate);
-
-
 
 
 }

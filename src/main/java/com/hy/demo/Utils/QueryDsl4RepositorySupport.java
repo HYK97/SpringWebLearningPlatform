@@ -25,8 +25,7 @@ import java.util.function.Function;
  * Querydsl 4.x 버전에 맞춘 Querydsl 지원 라이브러리
  *
  * @author Younghan Kim
- * @see
-org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
+ * @see org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
  */
 @Repository
 public abstract class QueryDsl4RepositorySupport {
@@ -34,10 +33,12 @@ public abstract class QueryDsl4RepositorySupport {
     private Querydsl querydsl;
     private EntityManager entityManager;
     private JPAQueryFactory queryFactory;
+
     public QueryDsl4RepositorySupport(Class<?> domainClass) {
         Assert.notNull(domainClass, "Domain class must not be null!");
         this.domainClass = domainClass;
     }
+
     @Autowired
     public void setEntityManager(EntityManager entityManager) {
         Assert.notNull(entityManager, "EntityManager must not be null!");
@@ -50,27 +51,34 @@ public abstract class QueryDsl4RepositorySupport {
                 PathBuilder<>(path.getType(), path.getMetadata()));
         this.queryFactory = new JPAQueryFactory(entityManager);
     }
+
     @PostConstruct
     public void validate() {
         Assert.notNull(entityManager, "EntityManager must not be null!");
         Assert.notNull(querydsl, "Querydsl must not be null!");
         Assert.notNull(queryFactory, "QueryFactory must not be null!");
     }
+
     protected JPAQueryFactory getQueryFactory() {
         return queryFactory;
     }
+
     protected Querydsl getQuerydsl() {
         return querydsl;
     }
+
     protected EntityManager getEntityManager() {
         return entityManager;
     }
+
     protected <T> JPAQuery<T> select(Expression<T> expr) {
         return getQueryFactory().select(expr);
     }
+
     protected <T> JPAQuery<T> selectFrom(EntityPath<T> from) {
         return getQueryFactory().selectFrom(from);
     }
+
     protected <T> Page<T> applyPagination(Pageable pageable,
                                           Function<JPAQueryFactory, JPAQuery> contentQuery) {
         JPAQuery jpaQuery = contentQuery.apply(getQueryFactory());
@@ -78,6 +86,7 @@ public abstract class QueryDsl4RepositorySupport {
                 jpaQuery).fetch();
         return PageableExecutionUtils.getPage(content, pageable, jpaQuery::fetchCount);
     }
+
     protected <T> Page<T> applyPagination(Pageable pageable,
                                           Function<JPAQueryFactory, JPAQuery> contentQuery, Function<JPAQueryFactory,
             JPAQuery> countQuery) {

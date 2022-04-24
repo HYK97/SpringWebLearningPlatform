@@ -50,9 +50,9 @@ public class FileRepositoryImpl extends QueryDsl4RepositorySupport implements Fi
 
     public Optional<List<File>> findByCourseBoardId(Long courseBoardId) {
         return Optional.ofNullable(select(file)
-                        .from(file)
-                        .where(file.courseBoard.id.eq(courseBoardId))
-                        .fetch()
+                .from(file)
+                .where(file.courseBoard.id.eq(courseBoardId))
+                .fetch()
         );
     }
 
@@ -60,8 +60,6 @@ public class FileRepositoryImpl extends QueryDsl4RepositorySupport implements Fi
     public Long deleteByCourseBoardId(Long courseBoardId) {
         return getQueryFactory().delete(file).where(file.courseBoard.id.eq(courseBoardId)).execute();
     }
-
-
 
 
 }

@@ -2,9 +2,9 @@ package com.hy.demo.Config.OAuth.Provider;
 
 import java.util.Map;
 
-public class GoogleUserInfo implements OAuth2UserInfo{
+public class GoogleUserInfo implements OAuth2UserInfo {
 
-    public Map<String ,Object> attributes; //oauth2User.getAttributes();
+    public Map<String, Object> attributes; //oauth2User.getAttributes();
 
     public GoogleUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;

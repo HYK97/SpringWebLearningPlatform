@@ -28,10 +28,10 @@ public class CourseEvaluation extends BaseEntity {
     private Course course;
 
     private Double scope;
-
+    @Column(length = 100000000)
     private String comments;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private Long replyId;
 
     public void updateCourseEvaluation(String comments, Double scope) {
@@ -43,8 +43,6 @@ public class CourseEvaluation extends BaseEntity {
         this.comments = comments;
 
     }
-
-
 
 
 }

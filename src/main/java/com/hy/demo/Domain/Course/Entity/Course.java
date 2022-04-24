@@ -34,29 +34,28 @@ public class Course extends BaseEntity {
     @Column(length = 100000000)
     private String courseExplanation;
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseEvaluation> courseEvaluations = new ArrayList<>();
 
     private String thumbnail;
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCourse> userCourses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseBoard> courseBoards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Community> community = new ArrayList<>();
 
     //코스 저장될때 유저의 리스트에도 저장되게함
     public void addCourse(User user) {
-        this.user =user;
+        this.user = user;
         user.getCourses().add(this);
     }
 
     public void updateCourseName(String courseName) {
         this.courseName = courseName;
     }
-
 
 
     public void updateCourseExplanation(String courseExplanation) {
@@ -68,7 +67,7 @@ public class Course extends BaseEntity {
     }
 
     public CourseDto returnDto() {
-        CourseDto courseDto =new CourseDto();
+        CourseDto courseDto = new CourseDto();
         courseDto.setCourseName(courseName);
         courseDto.setCourseExplanation(courseExplanation);
         courseDto.setUser(user);

@@ -27,6 +27,7 @@ public class User extends BaseEntity {
     private String email;
     private String role; //ROLE_USER, ROLE_ADMIN
     private String profileImage;
+    @Column(length = 100000000)
     private String selfIntroduction;
     private String nickname;
 

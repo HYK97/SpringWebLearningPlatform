@@ -10,10 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PreDestroy;
 
-// 시큐리티 설정에서 login ProcessingUrl("/login"); 으로 되있음
-// login 요청이 들어오면 자도ㅓㅇ으로 UserDetailsService 타입으로 Ioc 되어있는 loadUserByUsername 함수가 실행됌
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
 
@@ -25,16 +22,16 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override // 로그인 html 의 name ="username"과 아래의 매개변수 username의 이름과 같아야 동작함 만약에 파라미터 바꾸고 싶으면 SecurityConifg에서
     //파라미터 변경 추가해줘야댐
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        
+
 
         logger.info("username = " + username);
-        User userEntity =userRepository.findByUsername(username);
+        User userEntity = userRepository.findByUsername(username);
 
 
         if (userEntity != null) {
             //로그인성공
             logger.info("userEntity.toString() = " + userEntity.toString());
-            return new PrincipalDetails(userEntity,true); // Security session(내부 Authentication(내부 UserDetails));
+            return new PrincipalDetails(userEntity, true); // Security session(내부 Authentication(내부 UserDetails));
         }
         throw new UsernameNotFoundException(username);
 

@@ -4,7 +4,8 @@ import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Utils.ObjectUtils;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -94,9 +95,9 @@ public class CourseDto {
         this.userJoinCount = userJoinCount;
     }
 
-    public CourseDto(Long id,String courseName, User user, String thumbnail, Double scope) {
+    public CourseDto(Long id, String courseName, User user, String thumbnail, Double scope) {
         this.id = id;
-        this.courseName=courseName;
+        this.courseName = courseName;
         this.thumbnail = thumbnail;
         this.user = user.changeDto();
         if (!ObjectUtils.isEmpty(scope)) {
@@ -108,13 +109,13 @@ public class CourseDto {
             this.starScope = 0.0;
         }
     }
-    public CourseDto(Long id,String courseName, User user, String thumbnail) {
+
+    public CourseDto(Long id, String courseName, User user, String thumbnail) {
         this.id = id;
-        this.courseName=courseName;
+        this.courseName = courseName;
         this.thumbnail = thumbnail;
         this.user = user.changeDto();
     }
-
 
 
 }

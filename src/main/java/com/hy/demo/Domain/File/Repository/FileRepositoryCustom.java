@@ -8,7 +8,10 @@ import java.util.Optional;
 
 public interface FileRepositoryCustom {
     List<FileDto> findFileIdByCourseId(Long courseBoardId);
+
     Optional<File> findFetchById(Long fileId);
+
     Optional<List<File>> findByCourseBoardId(Long courseBoardId);
+
     Long deleteByCourseBoardId(Long courseBoardId);
 }

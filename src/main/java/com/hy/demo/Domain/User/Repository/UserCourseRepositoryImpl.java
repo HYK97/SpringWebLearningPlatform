@@ -7,7 +7,6 @@ import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
@@ -217,7 +216,6 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
             , userCourse.createDate);
 
 
-
     //수강자수 가장 많이 보유한 강사순
     public List<UserDto> findRankRandomUserById(int amount) {
         return select(Projections.constructor(UserDto.class,
@@ -228,17 +226,16 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
                 user.nickname
         ))
                 .from(userCourse)
-                .leftJoin(userCourse.course,course)
-                .leftJoin(course.user,user)
+                .leftJoin(userCourse.course, course)
+                .leftJoin(course.user, user)
                 .groupBy(user.id)
                 //h2
                 //.orderBy(user.id.count().desc(), NumberExpression.random().desc())
                 //mysql
-                .orderBy(user.id.count().desc(),Expressions.numberTemplate(Double.class, "function('rand')").asc())
+                .orderBy(user.id.count().desc(), Expressions.numberTemplate(Double.class, "function('rand')").asc())
                 .limit(amount)
                 .fetch();
     }
-
 
 
 }

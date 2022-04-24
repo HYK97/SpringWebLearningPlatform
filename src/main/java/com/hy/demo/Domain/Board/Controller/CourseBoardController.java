@@ -10,7 +10,6 @@ import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Service.FileService;
-import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import org.slf4j.Logger;
