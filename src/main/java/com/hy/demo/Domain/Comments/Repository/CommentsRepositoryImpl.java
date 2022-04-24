@@ -24,7 +24,6 @@ import java.util.Optional;
 import static com.hy.demo.Domain.Board.Entity.QCourseBoard.courseBoard;
 import static com.hy.demo.Domain.Comments.Entity.QComments.comments1;
 import static com.hy.demo.Domain.Course.Entity.QCourse.course;
-import static com.hy.demo.Domain.Course.Entity.QCourseEvaluation.courseEvaluation;
 import static com.hy.demo.Domain.User.Entity.QUser.user;
 
 

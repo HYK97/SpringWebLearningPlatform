@@ -7,7 +7,6 @@ import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,13 +141,14 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
     }
 
     public List<CourseDto> findOrderByScopeAvgCourse(int limit) {
-        return  getRankEvaluationSelection()
+        return getRankEvaluationSelection()
                 .orderBy(courseEvaluation.scope.avg().desc())
                 .limit(limit)
                 .fetch();
     }
+
     public List<CourseDto> findOrderByEvaluationCountCourse(int limit) {
-        return  getRankEvaluationSelection()
+        return getRankEvaluationSelection()
                 .orderBy(courseEvaluation.count().desc())
                 .limit(limit)
                 .fetch();

@@ -2,9 +2,9 @@ package com.hy.demo.Config.OAuth.Provider;
 
 import java.util.Map;
 
-public class FacebookUserInfo implements OAuth2UserInfo{
+public class FacebookUserInfo implements OAuth2UserInfo {
 
-    public Map<String ,Object> attributes; //oauth2User.getAttributes();
+    public Map<String, Object> attributes; //oauth2User.getAttributes();
 
     public FacebookUserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;

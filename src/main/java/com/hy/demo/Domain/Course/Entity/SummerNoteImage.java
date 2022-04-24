@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -31,7 +30,6 @@ public class SummerNoteImage extends BaseEntity {
     private String contentType;
 
     private long size;
-
 
 
 }

@@ -11,11 +11,11 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(uniqueConstraints={@UniqueConstraint(name = "UserCourseUnique" ,columnNames={"User_id","Course_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "UserCourseUnique", columnNames = {"User_id", "Course_id"})})
 public class UserCourse extends BaseEntity {
 
     @Id // primary key
-    @Column(name="UserCourse_id")
+    @Column(name = "UserCourse_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,11 +30,10 @@ public class UserCourse extends BaseEntity {
     private Course course;
 
 
-
     //유저 코스 넣을때 유저의 리스트에도 포함되게
-    public void addUserCourse(User user,Course course) {
-        this.user=user;
-        this.course=course;
+    public void addUserCourse(User user, Course course) {
+        this.user = user;
+        this.course = course;
         user.getUserCourses().add(this);
         course.getUserCourses().add(this);
     }

@@ -2,9 +2,7 @@ package com.hy.demo.Config.AuthCheck;
 
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
-import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
-import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Domain.File.Repository.FileRepository;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
-import java.util.List;
 
 @Component
 public class AuthorizationChecker {

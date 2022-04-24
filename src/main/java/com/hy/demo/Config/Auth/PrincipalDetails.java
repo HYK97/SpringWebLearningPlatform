@@ -12,17 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * 시큐리티가 로그인 (/login) 주소요청이 오면 낚아서 로그인 진행
- * 로그인 진행되면 session을 만들어줌 -> (Securiy ContextHolder)에 세션을 저장함
- * 이 context 홀더에 들어가는 오브젝트는 Authentication 타입의 객체를 넣어줘야함
- * 또한 Authentication 안에 user 정보가있어야된다
- * 즉 user 오브젝트를 userDetails 타입 객체로 변환해야함
- *
- * 패키징 순서는 security Session -> Authentication -> userDetails(PrincipalDetails) 순으로 접근한다.
- * */
+
 @Data
-@EqualsAndHashCode(of= {"userCd"})
+@EqualsAndHashCode(of = {"userCd"})
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;// 콤포지션
@@ -34,7 +26,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     public PrincipalDetails(User userEntity, boolean flag) {
         this.user = userEntity;
-        this.flag=flag;
+        this.flag = flag;
     }
 
     public boolean isFlag() {
@@ -43,8 +35,8 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     public PrincipalDetails(User user, Map<String, Object> attributes, boolean flag) {
         this.user = user;
-        this.attributes =attributes;
-        this.flag=flag;
+        this.attributes = attributes;
+        this.flag = flag;
     }
 
     @Override
@@ -60,7 +52,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     //해당 User의 권한을 리턴해주는것
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collection =new ArrayList<>();
+        Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {

@@ -19,8 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static org.springframework.data.util.Optionals.ifPresentOrElse;
-
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.HashMap;
@@ -204,7 +202,7 @@ public class UserService {
     }
 
 
-    public User findEmailAndUsername(UserDto user)  {
+    public User findEmailAndUsername(UserDto user) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername())).orElseThrow(() -> new EntityNotFoundException("없는 유저"));
         if (!findUser.getEmail().equals(user.getEmail())) {
             throw new AccessDeniedException("이메일 정보가 틀림");

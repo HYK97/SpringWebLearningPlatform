@@ -37,11 +37,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         PageableHandlerMethodArgumentResolver pageableArgumentResolver = new PageableHandlerMethodArgumentResolver(sortArgumentResolver);
         pageableArgumentResolver.setOneIndexedParameters(true);
         pageableArgumentResolver.setMaxPageSize(100);
-        pageableArgumentResolver.setFallbackPageable(PageRequest.of(0,10));
+        pageableArgumentResolver.setFallbackPageable(PageRequest.of(0, 10));
         argumentResolvers.add(pageableArgumentResolver);
 
     }
-
 
 
 }

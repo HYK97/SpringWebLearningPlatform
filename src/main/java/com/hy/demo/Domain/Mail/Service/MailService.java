@@ -1,21 +1,17 @@
 package com.hy.demo.Domain.Mail.Service;
 
 import com.hy.demo.Domain.Mail.Dto.MailDto;
-import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 
 @Service("async")
 public class MailService {
@@ -28,8 +24,6 @@ public class MailService {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
 
 
     @Async("executor")
