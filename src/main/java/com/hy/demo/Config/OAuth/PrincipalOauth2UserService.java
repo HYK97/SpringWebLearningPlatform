@@ -23,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger;
 
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

@@ -9,6 +9,7 @@ import com.hy.demo.Domain.File.Repository.FileRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,32 +21,34 @@ import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 
 @Component
+@RequiredArgsConstructor
 public class AuthorizationChecker {
 
-    @Autowired
-    private UserCourseRepository userCourseRepository;
 
-    @Autowired
-    private FileRepository fileRepository;
 
-    @Autowired
-    private CourseRepository courseRepository;
+    private final UserCourseRepository userCourseRepository;
 
-    @Autowired
-    private CourseBoardRepository courseBoardRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final FileRepository fileRepository;
 
-    @Autowired
-    Logger logger;
+
+    private final CourseRepository courseRepository;
+
+
+    private final CourseBoardRepository courseBoardRepository;
+
+
+    private final UserRepository userRepository;
+
+
+    private final Logger logger;
 
     @Transactional
     public boolean isAccessBoard(Long courseId) throws AccessDeniedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 
-        User findUser = userRepository.findByUsername(principalDetails.getUser().getUsername());
+        final User findUser = userRepository.findByUsername(principalDetails.getUser().getUsername());
         userCourseRepository.findByUserAndCourseId(findUser, courseId)
                 .orElseThrow(() -> new AccessDeniedException("수강신청 안함", "1", "1"));
         return true;
@@ -53,9 +56,9 @@ public class AuthorizationChecker {
 
     @Transactional
     public boolean isManagementBoard(Long courseId) throws AccessDeniedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User findUser = userRepository.findByUsername(principalDetails.getUser().getUsername());
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        final User findUser = userRepository.findByUsername(principalDetails.getUser().getUsername());
         courseRepository.findByUserAndId(findUser, courseId)
                 .orElseThrow(() -> new AccessDeniedException("수강관리 접근권한에러", "2", "2"));
         return true;
@@ -65,9 +68,9 @@ public class AuthorizationChecker {
     @Transactional
     public boolean isFile(Long fileId, Long courseId, Long courseBoardId) throws AccessDeniedException, FileNotFoundException {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        User findUser = userRepository.findByUsername(principalDetails.getUser().getUsername());
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        final User findUser = userRepository.findByUsername(principalDetails.getUser().getUsername());
 
         if (findUser.getRole().equals("ROLE_USER")) {
             userCourseRepository.findByUserAndCourseId(findUser, courseId)
@@ -79,9 +82,9 @@ public class AuthorizationChecker {
         courseBoardRepository.findByCourseId(courseId)
                 .orElseThrow(() -> new AccessDeniedException("잘못된 코스"));
 
-        File findFile = fileRepository.findFetchById(fileId)
+        final File findFile = fileRepository.findFetchById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("찾는 파일 없음"));
-        Long findCourseId = findFile.getCourseBoard().getId();
+        final Long findCourseId = findFile.getCourseBoard().getId();
         if (findCourseId != courseBoardId) {
             throw new AccessDeniedException("잘못된 파일요청");
         }

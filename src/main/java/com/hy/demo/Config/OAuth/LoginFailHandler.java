@@ -1,5 +1,6 @@
 package com.hy.demo.Config.OAuth;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.*;
@@ -15,8 +16,6 @@ import java.io.IOException;
 @Service
 public class LoginFailHandler implements AuthenticationFailureHandler {
 
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,

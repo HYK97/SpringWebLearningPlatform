@@ -2,6 +2,7 @@ package com.hy.demo.Config.Auth;
 
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,13 @@ import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class PrincipalDetailsService implements UserDetailsService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private UserRepository userRepository;
+    private final Logger logger;
+
+    private final UserRepository userRepository;
+
 
 
     @Override // 로그인 html 의 name ="username"과 아래의 매개변수 username의 이름과 같아야 동작함 만약에 파라미터 바꾸고 싶으면 SecurityConifg에서
