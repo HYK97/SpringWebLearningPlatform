@@ -16,20 +16,5 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    @Bean(name = "uploadPath")
-    public String uploadPath() {
-        LocalDate now = LocalDate.now();
-        String Path = "resources/image/" + now;
-        return Path;
-    }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    Logger logger() {
-        return LoggerFactory.getLogger(this.getClass());
-    }
 }
