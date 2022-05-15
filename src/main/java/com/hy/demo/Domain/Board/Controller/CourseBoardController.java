@@ -12,9 +12,8 @@ import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Service.FileService;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,27 +36,27 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/courseboard/*")
+@RequiredArgsConstructor
 public class CourseBoardController {
 
-    @Autowired
-    private CourseBoardService courseBoardService;
 
-    @Autowired
-    private CourseService courseService;
+    private final CourseBoardService courseBoardService;
 
-    @Autowired
-    private CommentsService commentsService;
+    private final CourseService courseService;
 
-    @Autowired
-    private CourseEvaluationService courseEvaluationService;
 
-    @Autowired
-    private UserService userService;
+    private final CommentsService commentsService;
 
-    @Autowired
-    private FileService fileService;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final CourseEvaluationService courseEvaluationService;
+
+
+    private final UserService userService;
+
+
+    private final FileService fileService;
+
+    private final Logger logger;
 
 
     @GetMapping("/{id}")

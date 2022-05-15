@@ -7,8 +7,8 @@ import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Domain.File.Repository.FileRepository;
 import com.hy.demo.Domain.File.Service.FileService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * service 명명 규칙
@@ -32,19 +32,19 @@ import static java.util.stream.Collectors.toList;
  */
 
 @Service
+@RequiredArgsConstructor
 public class CourseBoardService {
-    @Autowired
-    private CourseBoardRepository courseBoardRepository;
 
-    @Autowired
-    private FileRepository fileRepository;
-
-    @Autowired
-    private FileService fileService;
+    private final CourseBoardRepository courseBoardRepository;
 
 
-    @Autowired
-    Logger logger;
+    private final FileRepository fileRepository;
+
+
+    private final FileService fileService;
+
+
+    private final Logger logger;
 
     @Transactional
     public void updateCourseBoard(Long id, List<MultipartFile> file, String title, String contents) throws Exception {
@@ -76,7 +76,7 @@ public class CourseBoardService {
 
                 for (File file1 : findFileList) { //추가된파일
                     file.stream().filter(f ->
-                            f.getOriginalFilename().equals(file1.getOrigFileName()) && f.getSize() == file1.getFileSize())
+                                    f.getOriginalFilename().equals(file1.getOrigFileName()) && f.getSize() == file1.getFileSize())
                             .collect(toList())
                             .forEach(li -> file.remove(li));
                 }
