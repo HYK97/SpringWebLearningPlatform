@@ -8,8 +8,7 @@ import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import com.hy.demo.Utils.ObjectUtils;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,20 +27,18 @@ import java.util.Optional;
  */
 
 @Service
+
+@RequiredArgsConstructor
 public class CommunityService {
 
 
-    @Autowired
-    private CommunityRepository communityRepository;
+    private final CommunityRepository communityRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private CourseRepository courseRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    Logger logger;
+
+    private final CourseRepository courseRepository;
 
 
     /**
