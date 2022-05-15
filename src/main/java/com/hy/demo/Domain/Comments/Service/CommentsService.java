@@ -10,8 +10,8 @@ import com.hy.demo.Domain.Community.Repository.CommunityRepository;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,22 +30,21 @@ import java.util.Optional;
  */
 
 @Service
+@RequiredArgsConstructor
 public class CommentsService {
-    @Autowired
-    private CourseBoardRepository courseBoardRepository;
 
-    @Autowired
-    private CommentsRepository commentsRepository;
-
-    @Autowired
-    private CommunityRepository communityRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final CourseBoardRepository courseBoardRepository;
 
 
-    @Autowired
-    Logger logger;
+    private final CommentsRepository commentsRepository;
+
+
+    private final CommunityRepository communityRepository;
+
+
+    private final UserRepository userRepository;
+
+    private final Logger logger;
 
     public void createComments(Long courseId, String comments, User user, int status) {
         Comments comment;
