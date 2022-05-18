@@ -6,9 +6,7 @@ import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,15 +22,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user/*")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    CourseService courseService;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final UserService userService;
+    private final CourseService courseService;
 
 
     @GetMapping("info")

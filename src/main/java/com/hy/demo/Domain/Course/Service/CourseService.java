@@ -7,8 +7,8 @@ import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
 import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -24,24 +24,24 @@ import java.util.Optional;
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class CourseService {
 
-    @Autowired
-    private CourseRepository courseRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final CourseRepository courseRepository;
 
-    @Autowired
-    private CourseBoardService courseBoardService;
 
-    @Autowired
-    private ImageService imageService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    Logger logger;
-    @Autowired
-    private CourseEvaluationRepository courseEvaluationRepository;
+
+    private final CourseBoardService courseBoardService;
+
+
+    private final ImageService imageService;
+
+
+    private final CourseEvaluationRepository courseEvaluationRepository;
 
     public Page<CourseDto> findMyCourseList(Pageable pageable, User user, String search) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(user.getUsername()))
@@ -77,7 +77,7 @@ public class CourseService {
             percent.add(countScope.get(Integer.toString(i)) / allCount * 100);
         }
         for (Double aDouble : percent) {
-            logger.info("aDouble = " + aDouble);
+            log.debug("aDouble = {}", aDouble);
         }
         results.setStarPercent(percent);
 

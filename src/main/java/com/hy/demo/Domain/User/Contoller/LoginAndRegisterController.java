@@ -3,16 +3,13 @@ package com.hy.demo.Domain.User.Contoller;
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,20 +22,12 @@ import javax.servlet.http.HttpSession;
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class LoginAndRegisterController {
 
-    @Autowired
-    UserService userService;
 
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final UserService userService;
 
 
     @PostMapping("/login")
@@ -56,7 +45,7 @@ public class LoginAndRegisterController {
     String loginRedirect(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         if (!isEmpty(principalDetails)) {
-            logger.info("redirect principalDetails.toString() = " + principalDetails.toString());
+            log.debug("redirect principalDetails.toString() = {}", principalDetails.toString());
             return "main/index";
         }
 
@@ -86,7 +75,7 @@ public class LoginAndRegisterController {
             if (check) {
                 return "main/index";
             } else {
-                logger.info("세션삭제");
+                log.debug("세션삭제");
                 HttpSession session = request.getSession();
                 session.invalidate();
                 SecurityContextHolder.clearContext();
@@ -136,7 +125,7 @@ public class LoginAndRegisterController {
     String join(Authentication authentication, User user, @AuthenticationPrincipal PrincipalDetails principalDetails) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
 
-        logger.info("user.toString() = " + user.toString());
+        log.debug("user.toString() = {}", user.toString());
         User provider = null;
         if (!isEmpty(principalDetails)) {
             provider = principalDetails.getUser();
@@ -169,29 +158,5 @@ public class LoginAndRegisterController {
     }
 
 
-
-
-
-
-
-
-
- /*   @Secured("ROLE_ADMIN")
-    @ResponseBody
-    @GetMapping("/info")
-    public String info(){
-
-        return "개인정보";
-
-    }
-
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    @ResponseBody
-    @GetMapping("/data")
-    public String data(){
-
-        return "개인정보";
-
-    }*/
 }
 

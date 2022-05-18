@@ -4,7 +4,6 @@ import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +20,8 @@ import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 @RequiredArgsConstructor
 public class ImageService {
 
-    @Autowired
-    ImageRepository imageRepository;
 
+    private final ImageRepository imageRepository;
 
     private final Logger logger;
 

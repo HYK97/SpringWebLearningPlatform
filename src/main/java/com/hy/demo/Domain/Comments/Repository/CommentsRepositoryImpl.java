@@ -11,8 +11,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -30,14 +28,21 @@ import static com.hy.demo.Domain.User.Entity.QUser.user;
 public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implements CommentsRepositoryCustom {
 
 
+    //mysql
+    StringTemplate dayFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            , comments1.createDate);
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m')"
+            , comments1.createDate);
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y')"
+            , comments1.createDate);
+
+
     public CommentsRepositoryImpl() {
         super(Comments.class);
     }
-
-
-    @Autowired
-    Logger logger;
-
 
     @Override
     public Page<CommentsDto> findByCourseBoardId(Long id, Pageable pageable, int status) {
@@ -45,12 +50,12 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
         return
                 applyPagination(pageable, query ->
                         query.select(Projections.constructor(CommentsDto.class,
-                                comments1.id,
-                                user,
-                                comments1.comments,
-                                comments1.createDate,
-                                select(reply.count()).from(reply).where(comments1.id.eq(reply.parent.id))
-                        ))
+                                        comments1.id,
+                                        user,
+                                        comments1.comments,
+                                        comments1.createDate,
+                                        select(reply.count()).from(reply).where(comments1.id.eq(reply.parent.id))
+                                ))
                                 .from(comments1)
                                 .leftJoin(comments1.user, user)
                                 .where(checkStatus(status, id), comments1.parent.isNull())
@@ -61,16 +66,15 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
         return status == 1 ? comments1.courseBoard.id.eq(id) : comments1.community.id.eq(id);
     }
 
-
     public Page<CommentsDto> findReplyByIds(Long id, Pageable pageable) {
         return applyPagination(pageable, query ->
                 query.select(Projections.constructor(CommentsDto.class,
-                        comments1.id,
-                        comments1.comments,
-                        comments1.createDate,
-                        comments1.parent.id,
-                        user
-                ))
+                                comments1.id,
+                                comments1.comments,
+                                comments1.createDate,
+                                comments1.parent.id,
+                                user
+                        ))
                         .from(comments1)
                         .where(comments1.parent.id.eq(id)));
     }
@@ -94,6 +98,18 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
                 .fetchOne();
     }
 
+    //h2
+/*    StringTemplate dayFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM-dd')"
+            , comments1.createDate);
+
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM')"
+            , comments1.createDate);
+
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y')"
+            , comments1.createDate);*/
 
     public Map countMonthlyToDayCommentsByCourseId(Long courseId, String date) {
         DateFormatter localDateParser = new DateFormatter(date);
@@ -121,7 +137,6 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
         }
         return map;
     }
-
 
     public Map countThisYearToMonthlyCommentsByCourseId(Long courseId, String date) {
         DateFormatter localDateParser = new DateFormatter(date);
@@ -179,33 +194,6 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
         return map;
 
     }
-
-    //h2
-/*    StringTemplate dayFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM-dd')"
-            , comments1.createDate);
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM')"
-            , comments1.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y')"
-            , comments1.createDate);*/
-
-    //mysql
-    StringTemplate dayFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
-            , comments1.createDate);
-
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m')"
-            , comments1.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y')"
-            , comments1.createDate);
 
 
 }

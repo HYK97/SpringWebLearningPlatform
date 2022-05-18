@@ -11,8 +11,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -29,14 +27,21 @@ import static com.hy.demo.Domain.User.Entity.QUser.user;
 public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport implements CourseEvaluationRepositoryCustom {
 
 
+    //mysql
+    StringTemplate dayFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            , courseEvaluation.createDate);
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m')"
+            , courseEvaluation.createDate);
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y')"
+            , courseEvaluation.createDate);
+
+
     public CourseEvaluationRepositoryImpl() {
         super(CourseEvaluation.class);
     }
-
-
-    @Autowired
-    Logger logger;
-
 
     public Map<String, Double> countScope(Long id) {
         JPAQueryFactory queryFactory = getQueryFactory();
@@ -115,17 +120,17 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         QCourseEvaluation reply = new QCourseEvaluation("reply");
         return applyPagination(pageable, query ->
                 query.select(Projections.constructor(CourseEvaluationDto.class
-                        , courseEvaluation.id
-                        , courseEvaluation.course.courseName
-                        , courseEvaluation.user
-                        , courseEvaluation.course.id
-                        , courseEvaluation.scope
-                        , courseEvaluation.comments
-                        , courseEvaluation.createDate
-                        , reply.comments
-                        , reply.createDate
-                        , reply.id
-                ))
+                                , courseEvaluation.id
+                                , courseEvaluation.course.courseName
+                                , courseEvaluation.user
+                                , courseEvaluation.course.id
+                                , courseEvaluation.scope
+                                , courseEvaluation.comments
+                                , courseEvaluation.createDate
+                                , reply.comments
+                                , reply.createDate
+                                , reply.id
+                        ))
                         .from(courseEvaluation)
                         .leftJoin(courseEvaluation.course, course)
                         .leftJoin(reply)
@@ -134,7 +139,6 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         );
 
     }
-
 
     public CourseEvaluation findByReply(Long id) {
         return select(courseEvaluation)
@@ -174,7 +178,6 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
                 .fetchOne();
     }
 
-
     public Map findMonthlyToDayScopeAvgByCourseId(Long courseId, String date) {
         DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
@@ -201,6 +204,19 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return map;
     }
 
+
+    //h2
+  /*  StringTemplate dayFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM-dd')"
+            , courseEvaluation.createDate);
+
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM')"
+            , courseEvaluation.createDate);
+
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y')"
+            , courseEvaluation.createDate);*/
 
     public Map findThisYearToMonthlyScopeAvgByCourseId(Long courseId, String date) {
         DateFormatter localDateParser = new DateFormatter(date);
@@ -262,34 +278,6 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return select(courseEvaluation.scope.avg()).from(courseEvaluation).
                 where(courseEvaluation.course.id.eq(courseId)).fetchOne();
     }
-
-
-    //h2
-  /*  StringTemplate dayFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM-dd')"
-            , courseEvaluation.createDate);
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM')"
-            , courseEvaluation.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y')"
-            , courseEvaluation.createDate);*/
-
-    //mysql
-    StringTemplate dayFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
-            , courseEvaluation.createDate);
-
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m')"
-            , courseEvaluation.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y')"
-            , courseEvaluation.createDate);
 
 
 }

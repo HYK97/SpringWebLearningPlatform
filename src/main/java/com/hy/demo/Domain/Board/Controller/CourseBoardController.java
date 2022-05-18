@@ -12,9 +12,8 @@ import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Service.FileService;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,27 +36,22 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/courseboard/*")
+@RequiredArgsConstructor
+@Slf4j
 public class CourseBoardController {
 
-    @Autowired
-    private CourseBoardService courseBoardService;
 
-    @Autowired
-    private CourseService courseService;
+    private final CourseBoardService courseBoardService;
 
-    @Autowired
-    private CommentsService commentsService;
+    private final CourseService courseService;
 
-    @Autowired
-    private CourseEvaluationService courseEvaluationService;
+    private final CommentsService commentsService;
 
-    @Autowired
-    private UserService userService;
+    private final CourseEvaluationService courseEvaluationService;
 
-    @Autowired
-    private FileService fileService;
+    private final UserService userService;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final FileService fileService;
 
 
     @GetMapping("/{id}")
@@ -94,7 +88,7 @@ public class CourseBoardController {
     @PostMapping("/deleteCourseBoard/{id}")
     @ResponseBody
     public String deleteBoard(@PathVariable Long id) {
-        logger.info("id = " + id);
+        log.debug("id = {}", id);
         try {
             courseBoardService.deleteBoardAndFiles(id);
         } catch (AccessDeniedException e) {
@@ -315,7 +309,7 @@ public class CourseBoardController {
         if (!ObjectUtils.isEmpty(file)) {
             try {
                 fileDtos = fileService.localSaveFile(file);
-                logger.info("fileDtos = " + fileDtos.size());
+                log.debug("fileDtos = {}", fileDtos.size());
             } catch (IOException e) {
                 e.printStackTrace();
                 return "2"; //파일오류
@@ -332,7 +326,7 @@ public class CourseBoardController {
             String requestURI = request.getRequestURI().trim();
             String[] split = requestURI.split("/");
             ModelAndView model = new ModelAndView();
-            logger.info("requestURI = " + split[2]);
+            log.debug("requestURI = {}", split[2]);
             model.addObject("id", split[2]);
             model.addObject("joinBtn", true);
             model.setViewName("redirect:/course/detailcourse");
