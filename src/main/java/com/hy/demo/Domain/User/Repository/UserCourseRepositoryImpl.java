@@ -26,14 +26,24 @@ import static com.hy.demo.Domain.User.Entity.QUserCourse.userCourse;
 public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport implements UserCourseRepositoryCustom {
 
 
-    public UserCourseRepositoryImpl() {
-        super(UserCourse.class);
-    }
+    private final Logger logger;
+    //mysql
+    StringTemplate dayFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m-%d')"
+            , userCourse.createDate);
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y-%m')"
+            , userCourse.createDate);
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "DATE_FORMAT({0}, '%Y')"
+            , userCourse.createDate);
 
 
     @Autowired
-    Logger logger;
-
+    public UserCourseRepositoryImpl(Logger logger) {
+        super(UserCourse.class);
+        this.logger = logger;
+    }
 
     public Long countDateRegisteredUserCountByCourseId(Long courseId, String date) {
 
@@ -44,6 +54,7 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
                 .fetchOne();
     }
 
+    // TODO 누적쿼리 만들기
 
     public Map countMonthlyToDayRegisteredUserByCourseId(Long courseId, String date) {
 
@@ -71,13 +82,26 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
     }
 
 
+    //h2
+   /* StringTemplate dayFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM-dd')"
+            , userCourse.createDate);
+
+    StringTemplate monthFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y-MM')"
+            , userCourse.createDate);
+
+    StringTemplate yearFormat = Expressions.stringTemplate(
+            "FORMATDATETIME({0}, 'Y')"
+            , userCourse.createDate);*/
+
     public Map countThisYearToMonthlyRegisteredUserByCourseId(Long courseId, String date) {
         DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(
-                monthFormat.count(),
-                monthFormat
-        )
+                        monthFormat.count(),
+                        monthFormat
+                )
                 .from(userCourse)
                 .where(userCourse.createDate.between(localDateParser.thisYearStart(), localDateParser.thisYearEnd())
                         .and(userCourse.course.id.eq(courseId)))
@@ -106,9 +130,9 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
         DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(
-                yearFormat.count(),
-                yearFormat
-        )
+                        yearFormat.count(),
+                        yearFormat
+                )
                 .from(userCourse)
                 .where(userCourse.createDate.between(localDateParser.tenYearAgo(), localDateParser.thisYearEnd())
                         .and(userCourse.course.id.eq(courseId)))
@@ -132,8 +156,6 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
         return map;
 
     }
-
-    // TODO 누적쿼리 만들기
 
     /**
      * 참고 쿼리
@@ -166,18 +188,18 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
     public void nativeQuery(Long courseId) {
         EntityManager em = getEntityManager();
         Query nativeQuery = em.createNativeQuery("" +
-                "select * from(" +
-                "select " +
-                "FORMATDATETIME(u2.create_date,'Y-MM')  as create_date, " +
-                "(select count(*)  " +
-                "from  " +
-                "USER_COURSE u1 " +
-                "      where FORMATDATETIME(u1.create_date,'Y-MM') between FORMATDATETIME(c.create_date,'Y-MM')  and FORMATDATETIME(u2.create_date,'Y-MM') and u1.course_id =?) as counts " +
-                "from USER_COURSE u2 " +
-                "left join course c " +
-                "on u2.course_id =c.course_id)" +
-                "group by create_date " +
-                "order by create_date asc; ")
+                        "select * from(" +
+                        "select " +
+                        "FORMATDATETIME(u2.create_date,'Y-MM')  as create_date, " +
+                        "(select count(*)  " +
+                        "from  " +
+                        "USER_COURSE u1 " +
+                        "      where FORMATDATETIME(u1.create_date,'Y-MM') between FORMATDATETIME(c.create_date,'Y-MM')  and FORMATDATETIME(u2.create_date,'Y-MM') and u1.course_id =?) as counts " +
+                        "from USER_COURSE u2 " +
+                        "left join course c " +
+                        "on u2.course_id =c.course_id)" +
+                        "group by create_date " +
+                        "order by create_date asc; ")
                 .setParameter(1, courseId);
 
         List<Object[]> resultList = nativeQuery.getResultList();
@@ -186,35 +208,6 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
             logger.info("age = " + row[1]);
         }
     }
-
-
-    //h2
-   /* StringTemplate dayFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM-dd')"
-            , userCourse.createDate);
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM')"
-            , userCourse.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y')"
-            , userCourse.createDate);*/
-
-    //mysql
-    StringTemplate dayFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
-            , userCourse.createDate);
-
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m')"
-            , userCourse.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y')"
-            , userCourse.createDate);
-
 
     //수강자수 가장 많이 보유한 강사순
     public List<UserDto> findRankRandomUserById(int amount) {

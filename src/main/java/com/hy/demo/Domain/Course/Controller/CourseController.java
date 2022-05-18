@@ -11,9 +11,7 @@ import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.Course.Service.ImageService;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -40,20 +38,17 @@ import static java.lang.Math.floor;
 
 @Controller
 @RequestMapping("/course/*")
+@RequiredArgsConstructor
 public class CourseController {
 
-    @Autowired
-    private CourseService courseService;
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private ImageService imageService;
+    private final CourseService courseService;
+    private final UserService userService;
 
-    @Autowired
-    private CourseEvaluationService courseEvaluationService;
+    private final ImageService imageService;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final CourseEvaluationService courseEvaluationService;
+
 
     @GetMapping({"/view"})
     public String course(@RequestParam(defaultValue = "") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {

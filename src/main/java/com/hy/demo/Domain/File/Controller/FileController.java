@@ -1,9 +1,8 @@
 package com.hy.demo.Domain.File.Controller;
 
 import com.hy.demo.Domain.File.Service.FileService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -30,13 +29,13 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/file/*")
+@RequiredArgsConstructor
 public class FileController {
 
 
-    @Autowired
-    private FileService fileService;
+    private final FileService fileService;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger;
 
 
     @GetMapping("/download/{courseId}/{courseBoardId}/{fileId}")

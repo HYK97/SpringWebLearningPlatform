@@ -4,8 +4,6 @@ import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.types.Projections;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,15 +14,9 @@ import static com.hy.demo.Domain.File.Entity.QFile.file;
 
 public class FileRepositoryImpl extends QueryDsl4RepositorySupport implements FileRepositoryCustom {
 
-
     public FileRepositoryImpl() {
         super(File.class);
     }
-
-
-    @Autowired
-    Logger logger;
-
 
     @Override
     public List<FileDto> findFileIdByCourseId(Long courseBoardId) {

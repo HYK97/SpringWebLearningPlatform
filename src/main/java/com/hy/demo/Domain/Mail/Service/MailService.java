@@ -3,7 +3,7 @@ package com.hy.demo.Domain.Mail.Service;
 import com.hy.demo.Domain.Mail.Dto.MailDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -14,16 +14,17 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service("async")
+@RequiredArgsConstructor
 public class MailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final JavaMailSender mailSender;
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final UserRepository userRepository;
+
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Async("executor")

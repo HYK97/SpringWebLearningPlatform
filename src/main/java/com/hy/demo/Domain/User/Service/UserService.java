@@ -10,13 +10,11 @@ import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import com.hy.demo.Utils.ObjectUtils;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,28 +25,22 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    UserCourseRepository userCourseRepository;
-
-    @Autowired
-    private CourseService courseService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    CourseRepository courseRepository;
+    private final UserRepository userRepository;
 
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserCourseRepository userCourseRepository;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final CourseService courseService;
+
+    private final CourseRepository courseRepository;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final Logger logger;
 
 
     @Transactional

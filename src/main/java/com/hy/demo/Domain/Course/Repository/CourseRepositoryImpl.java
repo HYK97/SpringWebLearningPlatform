@@ -8,8 +8,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,9 +23,6 @@ import static com.hy.demo.Domain.User.Entity.QUserCourse.userCourse;
 public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements CourseRepositoryCustom {
 
 
-    @Autowired
-    Logger logger;
-
     public CourseRepositoryImpl() {
         super(Course.class);
     }
@@ -35,11 +30,11 @@ public class CourseRepositoryImpl extends QueryDsl4RepositorySupport implements 
 
     public Page<CourseDto> findByUserIdAndCourseName(String courseName, Long userId, Pageable pageable) {
         return applyPagination(pageable, query -> select(Projections.constructor(CourseDto.class
-                , course.id
-                , course.courseName
-                , course.createDate
-                , select(courseEvaluation.scope.avg().as("scope")).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
-                , select(userCourse.course.count().as("userJoinCount")).from(userCourse).where(userCourse.course.id.eq(course.id)).groupBy(userCourse.course.id)
+                        , course.id
+                        , course.courseName
+                        , course.createDate
+                        , select(courseEvaluation.scope.avg().as("scope")).from(courseEvaluation).where(courseEvaluation.course.id.eq(course.id)).groupBy(courseEvaluation.course.id)
+                        , select(userCourse.course.count().as("userJoinCount")).from(userCourse).where(userCourse.course.id.eq(course.id)).groupBy(userCourse.course.id)
                 ))
                         .from(course)
                         .leftJoin(course.user, user)
