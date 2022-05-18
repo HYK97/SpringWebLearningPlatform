@@ -3,8 +3,8 @@ package com.hy.demo.Domain.File.Service;
 
 import com.hy.demo.Domain.File.Dto.FileDto;
 import com.hy.demo.Domain.File.Repository.FileRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,11 @@ import java.util.*;
 
 
 @Service
+@RequiredArgsConstructor
 public class FileService {
 
-    @Autowired
-    FileRepository fileRepository;
+
+    private final FileRepository fileRepository;
 
     public List<FileDto> localSaveFile(List<MultipartFile> multipartFile) throws IOException {
         LocalDate now = LocalDate.now();

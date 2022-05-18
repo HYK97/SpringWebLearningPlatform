@@ -5,7 +5,7 @@ import com.hy.demo.Domain.Mail.Service.MailService;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +17,12 @@ import javax.persistence.EntityNotFoundException;
 
 @Controller
 @RequestMapping("/mail/*")
+@RequiredArgsConstructor
 public class MailController {
-    @Autowired
-    private MailService mailService;
 
-    @Autowired
-    private UserService userService;
+    private final MailService mailService;
+
+    private final UserService userService;
 
 
     @PostMapping("send")

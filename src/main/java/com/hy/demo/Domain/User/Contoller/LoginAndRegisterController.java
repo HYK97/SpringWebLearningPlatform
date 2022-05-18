@@ -3,16 +3,13 @@ package com.hy.demo.Domain.User.Contoller;
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,20 +22,14 @@ import javax.servlet.http.HttpSession;
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginAndRegisterController {
 
-    @Autowired
-    UserService userService;
+
+    private final UserService userService;
 
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger;
 
 
     @PostMapping("/login")
@@ -169,29 +160,5 @@ public class LoginAndRegisterController {
     }
 
 
-
-
-
-
-
-
-
- /*   @Secured("ROLE_ADMIN")
-    @ResponseBody
-    @GetMapping("/info")
-    public String info(){
-
-        return "개인정보";
-
-    }
-
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    @ResponseBody
-    @GetMapping("/data")
-    public String data(){
-
-        return "개인정보";
-
-    }*/
 }
 

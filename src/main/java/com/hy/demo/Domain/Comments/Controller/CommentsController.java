@@ -6,6 +6,7 @@ import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Service.CommentsService;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Request;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,7 +32,7 @@ public class CommentsController {
 
     @PostMapping({"/create/{id}"})
     @ResponseBody
-    public String createComments(@PathVariable Long id, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails, int status) throws Exception {
+    public String createComments(@PathVariable Long id, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails, int status, Request request) throws Exception {
         User user = principalDetails.getUser();
         try {
             commentsService.createComments(id, comments, user, status);
