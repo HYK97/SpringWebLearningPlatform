@@ -8,7 +8,7 @@ import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Domain.File.Repository.FileRepository;
 import com.hy.demo.Domain.File.Service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +33,7 @@ import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CourseBoardService {
 
     private final CourseBoardRepository courseBoardRepository;
@@ -44,8 +45,6 @@ public class CourseBoardService {
     private final FileService fileService;
 
 
-    private final Logger logger;
-
     @Transactional
     public void updateCourseBoard(Long id, List<MultipartFile> file, String title, String contents) throws Exception {
         List<FileDto> fileDto = new ArrayList<>();
@@ -55,7 +54,7 @@ public class CourseBoardService {
         List<File> findFileList = fileRepository.findByCourseBoardId(id).get();
         if (!isEmpty(file)) { //파일없을때
             for (MultipartFile multipartFile : file) {
-                logger.info("Before MultipartFile.getOriginalFilename() = " + multipartFile.getOriginalFilename());
+                log.debug("Before MultipartFile.getOriginalFilename() = {}", multipartFile.getOriginalFilename());
             }
 
             if (!isEmpty(findFileList)) { //변경점 확인
@@ -66,10 +65,10 @@ public class CourseBoardService {
                             file.stream().map(e -> e.getSize()).collect(toList())
                                     .containsAll(Collections.singleton(file1.getFileSize()));
                     if (b) {
-                        logger.info("유지 file1.getOrigFileName() = " + file1.getOrigFileName()); //현재있는 파일 유지
+                        log.debug("유지 file1.getOrigFileName() = {}", file1.getOrigFileName()); //현재있는 파일 유지
                     } else {
 
-                        logger.info("삭제 file1.getOrigFileName() = " + file1.getOrigFileName()); //삭제된 파일 삭제
+                        log.debug("삭제 file1.getOrigFileName() = {}", file1.getOrigFileName()); //삭제된 파일 삭제
                         deleteFile.add(file1);
                     }
                 }
@@ -82,7 +81,7 @@ public class CourseBoardService {
                 }
 
                 for (MultipartFile multipartFile : file) { //추가된파일
-                    logger.info("After MultipartFile.getOriginalFilename() = " + multipartFile.getOriginalFilename());
+                    log.debug("After MultipartFile.getOriginalFilename() = {}", multipartFile.getOriginalFilename());
                 }
 
                 boolean b = fileService.deleteFile(deleteFile);

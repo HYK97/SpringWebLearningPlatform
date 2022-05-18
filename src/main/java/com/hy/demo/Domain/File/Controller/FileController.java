@@ -2,7 +2,7 @@ package com.hy.demo.Domain.File.Controller;
 
 import com.hy.demo.Domain.File.Service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -30,12 +30,10 @@ import java.util.Map;
 @Controller
 @RequestMapping("/file/*")
 @RequiredArgsConstructor
+@Slf4j
 public class FileController {
 
-
     private final FileService fileService;
-
-    private final Logger logger;
 
 
     @GetMapping("/download/{courseId}/{courseBoardId}/{fileId}")
@@ -46,7 +44,7 @@ public class FileController {
         File file = (File) map.get("file");
         Resource resource = (Resource) map.get("resource");
         String filename = (String) map.get("fileName");
-        logger.info("filename = " + filename);
+        log.debug("filename = {}", filename);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.builder("attachment").filename(URLEncoder.encode(filename, String.valueOf(StandardCharsets.UTF_8))).build());  // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
 

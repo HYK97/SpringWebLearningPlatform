@@ -4,7 +4,7 @@ import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,13 +23,11 @@ import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class LoginAndRegisterController {
 
 
     private final UserService userService;
-
-
-    private final Logger logger;
 
 
     @PostMapping("/login")
@@ -47,7 +45,7 @@ public class LoginAndRegisterController {
     String loginRedirect(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         if (!isEmpty(principalDetails)) {
-            logger.info("redirect principalDetails.toString() = " + principalDetails.toString());
+            log.debug("redirect principalDetails.toString() = {}", principalDetails.toString());
             return "main/index";
         }
 
@@ -77,7 +75,7 @@ public class LoginAndRegisterController {
             if (check) {
                 return "main/index";
             } else {
-                logger.info("세션삭제");
+                log.debug("세션삭제");
                 HttpSession session = request.getSession();
                 session.invalidate();
                 SecurityContextHolder.clearContext();
@@ -127,7 +125,7 @@ public class LoginAndRegisterController {
     String join(Authentication authentication, User user, @AuthenticationPrincipal PrincipalDetails principalDetails) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
 
-        logger.info("user.toString() = " + user.toString());
+        log.debug("user.toString() = {}", user.toString());
         User provider = null;
         if (!isEmpty(principalDetails)) {
             provider = principalDetails.getUser();

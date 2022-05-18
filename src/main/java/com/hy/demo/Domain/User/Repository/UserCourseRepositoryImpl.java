@@ -9,7 +9,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
@@ -23,10 +23,10 @@ import static com.hy.demo.Domain.User.Entity.QUser.user;
 import static com.hy.demo.Domain.User.Entity.QUserCourse.userCourse;
 
 
+@Slf4j
 public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport implements UserCourseRepositoryCustom {
 
 
-    private final Logger logger;
     //mysql
     StringTemplate dayFormat = Expressions.stringTemplate(
             "DATE_FORMAT({0}, '%Y-%m-%d')"
@@ -40,9 +40,8 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
 
     @Autowired
-    public UserCourseRepositoryImpl(Logger logger) {
+    public UserCourseRepositoryImpl() {
         super(UserCourse.class);
-        this.logger = logger;
     }
 
     public Long countDateRegisteredUserCountByCourseId(Long courseId, String date) {
@@ -204,8 +203,8 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
         List<Object[]> resultList = nativeQuery.getResultList();
         for (Object[] row : resultList) {
-            logger.info("id = " + row[0]);
-            logger.info("age = " + row[1]);
+            log.debug("id = {}", row[0]);
+            log.debug("age = {}", row[1]);
         }
     }
 

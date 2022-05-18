@@ -8,7 +8,7 @@ import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,6 +25,7 @@ import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CourseService {
 
 
@@ -39,7 +40,6 @@ public class CourseService {
 
     private final ImageService imageService;
 
-    private final Logger logger;
 
     private final CourseEvaluationRepository courseEvaluationRepository;
 
@@ -77,7 +77,7 @@ public class CourseService {
             percent.add(countScope.get(Integer.toString(i)) / allCount * 100);
         }
         for (Double aDouble : percent) {
-            logger.info("aDouble = " + aDouble);
+            log.debug("aDouble = {}", aDouble);
         }
         results.setStarPercent(percent);
 

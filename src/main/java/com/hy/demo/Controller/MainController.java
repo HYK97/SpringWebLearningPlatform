@@ -7,7 +7,6 @@ import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,6 @@ public class MainController {
 
     private final CourseEvaluationService courseEvaluationService;
 
-
-    private final Logger logger;
 
     @GetMapping({"/index"})
     public String index(Model model) {
