@@ -10,8 +10,6 @@ import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -23,7 +21,6 @@ import java.nio.file.AccessDeniedException;
 @Component
 @RequiredArgsConstructor
 public class AuthorizationChecker {
-
 
 
     private final UserCourseRepository userCourseRepository;
@@ -40,8 +37,6 @@ public class AuthorizationChecker {
 
     private final UserRepository userRepository;
 
-
-    private final Logger logger;
 
     @Transactional
     public boolean isAccessBoard(Long courseId) throws AccessDeniedException {

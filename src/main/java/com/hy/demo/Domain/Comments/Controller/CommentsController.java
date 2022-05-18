@@ -5,8 +5,8 @@ import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Service.CommentsService;
 import com.hy.demo.Domain.User.Entity.User;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Request;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,18 +23,16 @@ import java.nio.file.AccessDeniedException;
 
 @Controller
 @RequestMapping("/comments/*")
+@RequiredArgsConstructor
 public class CommentsController {
 
-    @Autowired
-    private CommentsService commentsService;
 
-    @Autowired
-    private Logger logger;
+    private final CommentsService commentsService;
 
 
     @PostMapping({"/create/{id}"})
     @ResponseBody
-    public String createComments(@PathVariable Long id, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails, int status) throws Exception {
+    public String createComments(@PathVariable Long id, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails, int status, Request request) throws Exception {
         User user = principalDetails.getUser();
         try {
             commentsService.createComments(id, comments, user, status);

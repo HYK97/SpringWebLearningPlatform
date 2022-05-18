@@ -7,8 +7,8 @@ import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
 import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +28,17 @@ import static com.hy.demo.Utils.ObjectUtils.isEmpty;
  */
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class CourseEvaluationService {
-    @Autowired
-    private CourseEvaluationRepository courseEvaluationRepository;
 
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final CourseEvaluationRepository courseEvaluationRepository;
 
-    @Autowired
-    Logger logger;
+
+    private final CourseRepository courseRepository;
+
+    private final UserRepository userRepository;
+
 
     public Page<CourseEvaluationDto> courseEvaluationView(Long id, Pageable pageable) {
         return courseEvaluationRepository.findByIDCourseEvaluationDTO(id, pageable);
@@ -89,7 +89,7 @@ public class CourseEvaluationService {
                 courseEvaluationRepository.deleteById(replyId.getId()); //리플삭제
             }
 
-            logger.info("id = " + id);
+            log.debug("id = {}", id);
             courseEvaluationRepository.deleteById(id);
         }
 

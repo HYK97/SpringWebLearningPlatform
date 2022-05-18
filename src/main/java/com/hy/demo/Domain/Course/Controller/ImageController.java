@@ -5,8 +5,7 @@ import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Service.ImageService;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +19,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
-
+@RequiredArgsConstructor
 public class ImageController {
 
-    @Autowired
-    ImageService imageService;
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    ResourceLoader resourceLoader;
+    private final ImageService imageService;
 
-    @Autowired
-    Logger logger;
+    private final UserService userService;
+
+
+    private final ResourceLoader resourceLoader;
 
 
     @PostMapping("/image")

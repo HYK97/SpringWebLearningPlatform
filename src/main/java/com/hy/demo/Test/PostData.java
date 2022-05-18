@@ -2,8 +2,6 @@ package com.hy.demo.Test;
 
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Repository.CourseBoardRepository;
-import com.hy.demo.Domain.Comments.Entity.Comments;
-import com.hy.demo.Domain.Comments.Repository.CommentsRepository;
 import com.hy.demo.Domain.Community.Entity.Community;
 import com.hy.demo.Domain.Community.Repository.CommunityRepository;
 import com.hy.demo.Domain.Course.Entity.Course;
@@ -14,7 +12,7 @@ import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Entity.UserCourse;
 import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,33 +24,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
-    private UserCourseRepository userCourseRepository;
-    @Autowired
-    private CourseEvaluationRepository courseEvaluationRepository;
-
-    @Autowired
-    private CommentsRepository commentsRepository;
-
-    @Autowired
-    private CommunityRepository communityRepository;
+@RequiredArgsConstructor
+public class PostData implements ApplicationListener<ContextRefreshedEvent> {
 
 
-    @Autowired
-    private CourseBoardRepository courseBoardRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final CourseRepository courseRepository;
+    private final UserCourseRepository userCourseRepository;
+    private final CourseEvaluationRepository courseEvaluationRepository;
+    private final CommunityRepository communityRepository;
+    private final CourseBoardRepository courseBoardRepository;
+    private final PasswordEncoder passwordEncoder;
 
     List<Course> courseList = new ArrayList<>();
-    List<CourseBoard> courseBoard = new ArrayList<>();
     List<User> users = new ArrayList<>();
 
     @Override
@@ -64,8 +48,8 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
                     .username("tuser" + i)
                     .role("ROLE_USER")
                     .email("user@gmail.com")
-                    .selfIntroduction("hi"+i)
-                    .nickname("nick"+i)
+                    .selfIntroduction("hi" + i)
+                    .nickname("nick" + i)
                     .password(passwordEncoder.encode("user"))
                     .build();
 
@@ -73,8 +57,8 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
                     .username("tmanager" + i)
                     .role("ROLE_MANAGER")
                     .email("manager@gmail.com")
-                    .nickname("mnick"+i)
-                    .selfIntroduction("hi"+i)
+                    .nickname("mnick" + i)
+                    .selfIntroduction("hi" + i)
                     .password(passwordEncoder.encode("manager"))
                     .build();
             userRepository.save(user);
@@ -84,7 +68,7 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
 
 
         }
-        int index =0;
+        int index = 0;
         for (User user : users) {
             Course course = Course.builder()
                     .courseName("test" + index)
@@ -131,18 +115,18 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
         }
 
 
-            for (Course course : courseList) {
-                int jndex = 0;
-                for (User user : users) {
-                    CourseEvaluation courseEvaluations = CourseEvaluation.builder()
+        for (Course course : courseList) {
+            int jndex = 0;
+            for (User user : users) {
+                CourseEvaluation courseEvaluations = CourseEvaluation.builder()
                         .comments("good" + jndex)
                         .scope((double) (jndex % 6))
                         .course(course)
                         .user(user)
                         .build();
-                    CourseEvaluation save1 = courseEvaluationRepository.save(courseEvaluations);
-                    courseEvaluations.setCreateDate(Timestamp.valueOf(LocalDateTime.now().minusDays(jndex)));
-                    courseEvaluationRepository.save(courseEvaluations);
+                CourseEvaluation save1 = courseEvaluationRepository.save(courseEvaluations);
+                courseEvaluations.setCreateDate(Timestamp.valueOf(LocalDateTime.now().minusDays(jndex)));
+                courseEvaluationRepository.save(courseEvaluations);
 
 //
 //                CourseEvaluation reply = CourseEvaluation.builder()
@@ -153,12 +137,11 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
 //                        .build();
 //                courseEvaluationRepository.save(reply);
 
-                    jndex++;
+                jndex++;
             }
 
 
         }
-
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -224,11 +207,6 @@ public class PostBean implements ApplicationListener<ContextRefreshedEvent> {
 //
 //
 //        }
-
-
-
-
-
 
 
     }

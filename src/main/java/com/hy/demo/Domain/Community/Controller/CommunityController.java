@@ -3,7 +3,7 @@ package com.hy.demo.Domain.Community.Controller;
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Community.Dto.CommunityDto;
 import com.hy.demo.Domain.Community.Service.CommunityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,15 +17,15 @@ import javax.persistence.EntityNotFoundException;
 
 @Controller
 @RequestMapping("/community/*")
+@RequiredArgsConstructor
 public class CommunityController {
-    @Autowired
-    private CommunityService communityService;
+
+    private final CommunityService communityService;
 
 
     /**
      * 게시글 view 데이터 전송 메서드
      * 10개씩 검색 혹은 paging 데이터 ajax 콜백
-     * *
      */
     @ResponseBody
     @PostMapping("getCommunityList/{courseId}")

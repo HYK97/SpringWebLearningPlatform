@@ -10,8 +10,8 @@ import com.hy.demo.Domain.Community.Repository.CommunityRepository;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,22 +30,21 @@ import java.util.Optional;
  */
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class CommentsService {
-    @Autowired
-    private CourseBoardRepository courseBoardRepository;
 
-    @Autowired
-    private CommentsRepository commentsRepository;
-
-    @Autowired
-    private CommunityRepository communityRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final CourseBoardRepository courseBoardRepository;
 
 
-    @Autowired
-    Logger logger;
+    private final CommentsRepository commentsRepository;
+
+
+    private final CommunityRepository communityRepository;
+
+
+    private final UserRepository userRepository;
+
 
     public void createComments(Long courseId, String comments, User user, int status) {
         Comments comment;
@@ -116,7 +115,7 @@ public class CommentsService {
     public Page<CommentsDto> findCommentsListByCourseId(Long courseId, Pageable pageable, int status) {
         Page<CommentsDto> commentsList = commentsRepository.findByCourseBoardId(courseId, pageable, status);
         for (CommentsDto commentsDto : commentsList.getContent()) {
-            logger.info("commentsList = " + commentsDto.toString());
+            log.debug("commentsList = {}", commentsDto.toString());
         }
         return commentsList;
     }
