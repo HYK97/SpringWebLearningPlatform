@@ -11,7 +11,7 @@ import com.hy.demo.Domain.User.Repository.UserCourseRepository;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +26,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
 
@@ -39,8 +40,6 @@ public class UserService {
     private final CourseRepository courseRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    private final Logger logger;
 
 
     @Transactional
@@ -57,7 +56,7 @@ public class UserService {
         }
         if (provider == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            logger.info("user.getPassword() = " + user.getPassword());
+            log.debug("user.getPassword() = {}", user.getPassword());
             userRepository.save(user);
         } else {
             User user2 = User.builder()
@@ -70,7 +69,7 @@ public class UserService {
                     .selfIntroduction(user.getSelfIntroduction())
                     .nickname(user.getNickname())
                     .build();
-            logger.info("user.getPassword() = " + user2.getPassword());
+            log.debug("user.getPassword() = {}", user2.getPassword());
             userRepository.save(user2);
         }
 
@@ -83,10 +82,8 @@ public class UserService {
         String username = user.getUsername();
         User findUser = userRepository.findByUsername(username);
         if (findUser != null) {
-            logger.info("회원");
             return true;
         } else {
-            logger.info("비회원");
             return false;
         }
     }
@@ -110,7 +107,6 @@ public class UserService {
 
     public Map findByUserCourse(String course, User user) {
         Long Lid = Long.parseLong(course);
-        logger.info("idss= " + Lid);
         CourseDto courseDto = courseService.findDetailCourse(Lid);
         User findUser = findByUsername(user.getUsername());
         UserCourse findUserCourse = userCourseRepository.findByUserAndCourse(findUser, courseDto.returnEntity());
@@ -124,7 +120,7 @@ public class UserService {
     public UserDto findUserInfo(String username) {
         User findUser = Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException("권한없음"));
 
-        logger.info("findUser.changeDto().toString() = " + findUser.changeDto().toString());
+        log.debug("findUser.changeDto().toString() = {}", findUser.changeDto().toString());
         return findUser.changeDto();
 
     }

@@ -3,7 +3,7 @@ package com.hy.demo.Config.Auth;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PrincipalDetailsService implements UserDetailsService {
 
-    private final Logger logger;
 
     private final UserRepository userRepository;
 
@@ -23,14 +23,10 @@ public class PrincipalDetailsService implements UserDetailsService {
     //파라미터 변경 추가해줘야댐
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-
-        logger.info("username = " + username);
         User userEntity = userRepository.findByUsername(username);
-
-
         if (userEntity != null) {
             //로그인성공
-            logger.info("userEntity.toString() = " + userEntity.toString());
+            log.debug("userEntity.toString() = {}", userEntity.toString());
             return new PrincipalDetails(userEntity, true); // Security session(내부 Authentication(내부 UserDetails));
         }
         throw new UsernameNotFoundException(username);

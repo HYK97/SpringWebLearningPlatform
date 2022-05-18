@@ -37,7 +37,6 @@ public class PostData implements ApplicationListener<ContextRefreshedEvent> {
     private final PasswordEncoder passwordEncoder;
 
     List<Course> courseList = new ArrayList<>();
-    List<CourseBoard> courseBoard = new ArrayList<>();
     List<User> users = new ArrayList<>();
 
     @Override

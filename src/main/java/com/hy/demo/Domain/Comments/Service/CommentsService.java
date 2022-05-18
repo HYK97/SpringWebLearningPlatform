@@ -11,7 +11,7 @@ import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentsService {
 
     private final CourseBoardRepository courseBoardRepository;
@@ -44,7 +45,6 @@ public class CommentsService {
 
     private final UserRepository userRepository;
 
-    private final Logger logger;
 
     public void createComments(Long courseId, String comments, User user, int status) {
         Comments comment;
@@ -115,7 +115,7 @@ public class CommentsService {
     public Page<CommentsDto> findCommentsListByCourseId(Long courseId, Pageable pageable, int status) {
         Page<CommentsDto> commentsList = commentsRepository.findByCourseBoardId(courseId, pageable, status);
         for (CommentsDto commentsDto : commentsList.getContent()) {
-            logger.info("commentsList = " + commentsDto.toString());
+            log.debug("commentsList = {}", commentsDto.toString());
         }
         return commentsList;
     }
