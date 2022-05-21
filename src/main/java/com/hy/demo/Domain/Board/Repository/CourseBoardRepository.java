@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CourseBoardRepository extends JpaRepository<CourseBoard, Long>, CourseBoardRepositoryCustom {
 
-    public List<CourseBoardDto> findByCourseIdNotContents(Long courseId);
+    List<CourseBoardDto> findByCourseIdNotContents(Long courseId);
 
     Optional<List<CourseBoard>> findByCourseId(Long courseId);
 
@@ -19,6 +19,6 @@ public interface CourseBoardRepository extends JpaRepository<CourseBoard, Long>,
 
     Long countViewByCourseId(Long courseId);
 
-    public List<CourseBoardDto> findRankViewByCourseId(Long courseId);
+    List<CourseBoardDto> findRankViewByCourseId(Long courseId);
 
 }

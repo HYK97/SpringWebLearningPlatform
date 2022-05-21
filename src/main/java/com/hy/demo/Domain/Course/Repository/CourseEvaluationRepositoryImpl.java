@@ -3,14 +3,14 @@ package com.hy.demo.Domain.Course.Repository;
 import com.hy.demo.Domain.Course.Dto.CourseEvaluationDto;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
 import com.hy.demo.Domain.Course.Entity.QCourseEvaluation;
-import com.hy.demo.Utils.DateFormatter;
+import com.hy.demo.Utils.DateFormat;
+import com.hy.demo.Utils.DateParser;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -27,20 +27,14 @@ import static com.hy.demo.Domain.User.Entity.QUser.user;
 public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport implements CourseEvaluationRepositoryCustom {
 
 
-    //mysql
-    StringTemplate dayFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
-            , courseEvaluation.createDate);
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m')"
-            , courseEvaluation.createDate);
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y')"
-            , courseEvaluation.createDate);
+    private final DateFormat dateFormat;
+    private final DateParser dateParser;
 
-
-    public CourseEvaluationRepositoryImpl() {
+    @Autowired
+    public CourseEvaluationRepositoryImpl(DateFormat dateFormat, DateParser dateParser) {
         super(CourseEvaluation.class);
+        this.dateFormat = dateFormat;
+        this.dateParser = dateParser;
     }
 
     public Map<String, Double> countScope(Long id) {
@@ -170,33 +164,33 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
 
     public Double findDateScopeAvgByCourseId(Long courseId, String date) {
 
-        DateFormatter localDateParser = new DateFormatter(date);
+
         return select(courseEvaluation.scope.avg())
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.course, course)
-                .where(courseEvaluation.createDate.goe(course.createDate).and(courseEvaluation.createDate.loe(localDateParser.endDate())).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .where(courseEvaluation.createDate.goe(course.createDate).and(courseEvaluation.createDate.loe(dateParser.endDate(date))).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
                 .fetchOne();
     }
 
     public Map findMonthlyToDayScopeAvgByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
+
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
-                .select(courseEvaluation.scope.avg(), dayFormat)
+                .select(courseEvaluation.scope.avg(), dateFormat.getDayFormat(courseEvaluation.createDate))
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.course, course)
-                .where(courseEvaluation.createDate.between(localDateParser.startMonth(), localDateParser.endMonth()).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
-                .groupBy(dayFormat)
+                .where(courseEvaluation.createDate.between(dateParser.startMonth(date), dateParser.endMonth(date)).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .groupBy(dateFormat.getDayFormat(courseEvaluation.createDate))
                 .having()
-                .orderBy(dayFormat.asc())
+                .orderBy(dateFormat.getDayFormat(courseEvaluation.createDate).asc())
                 .fetch();
         Map<String, Double> map = new LinkedHashMap<>();
-        for (int i = 1; i <= localDateParser.endDay(); i++) {
-            map.put(localDateParser.getYear() + "-" + localDateParser.getMonth() + "-" + String.format("%02d", i), 0.0);
+        for (int i = 1; i <= dateParser.endDay(date); i++) {
+            map.put(dateParser.getYear(date) + "-" + dateParser.getMonth(date) + "-" + String.format("%02d", i), 0.0);
         }
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(dayFormat))) {
+                if (key.equals(tuple.get(dateFormat.getDayFormat(courseEvaluation.createDate)))) {
                     map.replace(key, tuple.get(courseEvaluation.scope.avg()));
                 }
             }
@@ -204,39 +198,24 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
         return map;
     }
 
-
-    //h2
-  /*  StringTemplate dayFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM-dd')"
-            , courseEvaluation.createDate);
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM')"
-            , courseEvaluation.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y')"
-            , courseEvaluation.createDate);*/
-
     public Map findThisYearToMonthlyScopeAvgByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
-                .select(courseEvaluation.scope.avg(), monthFormat)
+                .select(courseEvaluation.scope.avg(), dateFormat.getMonthFormat(courseEvaluation.createDate))
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.course, course)
-                .where(courseEvaluation.createDate.between(localDateParser.thisYearStart(), localDateParser.thisYearEnd()).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
-                .groupBy(monthFormat)
-                .orderBy(monthFormat.asc())
+                .where(courseEvaluation.createDate.between(dateParser.thisYearStart(date), dateParser.thisYearEnd(date)).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .groupBy(dateFormat.getMonthFormat(courseEvaluation.createDate))
+                .orderBy(dateFormat.getMonthFormat(courseEvaluation.createDate).asc())
                 .fetch();
         Map<String, Double> map = new LinkedHashMap<>();
         for (int i = 1; i <= 12; i++) {
-            map.put(localDateParser.getYear() + "-" + String.format("%02d", i), 0.0);
+            map.put(dateParser.getYear(date) + "-" + String.format("%02d", i), 0.0);
         }
 
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(monthFormat))) {
+                if (key.equals(tuple.get(dateFormat.getMonthFormat(courseEvaluation.createDate)))) {
                     map.replace(key, tuple.get(courseEvaluation.scope.avg()));
                 }
             }
@@ -247,24 +226,24 @@ public class CourseEvaluationRepositoryImpl extends QueryDsl4RepositorySupport i
     }
 
     public Map findTenYearToYearScopeAvgByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
+
         JPAQueryFactory queryFactory = getQueryFactory();
-        List<Tuple> fetch = queryFactory.select(courseEvaluation.scope.avg(), yearFormat)
+        List<Tuple> fetch = queryFactory.select(courseEvaluation.scope.avg(), dateFormat.getYearFormat(courseEvaluation.createDate))
                 .from(courseEvaluation)
                 .leftJoin(courseEvaluation.course, course)
-                .where(courseEvaluation.createDate.between(localDateParser.tenYearAgo(), localDateParser.thisYearEnd()).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
-                .groupBy(yearFormat)
-                .orderBy(yearFormat.asc())
+                .where(courseEvaluation.createDate.between(dateParser.tenYearAgo(date), dateParser.thisYearEnd(date)).and(courseEvaluation.course.id.eq(courseId)).and(courseEvaluation.scope.isNotNull()))
+                .groupBy(dateFormat.getYearFormat(courseEvaluation.createDate))
+                .orderBy(dateFormat.getYearFormat(courseEvaluation.createDate).asc())
                 .fetch();
 
         Map<String, Double> map = new LinkedHashMap<>();
-        for (int i = localDateParser.getYear() - 10; i <= localDateParser.getYear(); i++) {
+        for (int i = dateParser.getYear(date) - 10; i <= dateParser.getYear(date); i++) {
             map.put(String.format("%04d", i), 0.0);
         }
 
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(yearFormat))) {
+                if (key.equals(tuple.get(dateFormat.getYearFormat(courseEvaluation.createDate)))) {
                     map.replace(key, tuple.get(courseEvaluation.scope.avg()));
                 }
             }
