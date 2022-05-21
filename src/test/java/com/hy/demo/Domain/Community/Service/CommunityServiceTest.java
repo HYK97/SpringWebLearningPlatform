@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -34,29 +33,17 @@ class CommunityServiceTest {
 
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private CommunityRepository communityRepository;
-
-
-    @Autowired
-    private CommunityService communityService;
-
-
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
-
     @Autowired
-    Logger logger;
-
+    private UserRepository userRepository;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private CommunityRepository communityRepository;
+    @Autowired
+    private CommunityService communityService;
     private Long courseId1;
 
     private Long courseId2;

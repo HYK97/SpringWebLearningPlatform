@@ -3,7 +3,7 @@ package com.hy.demo.Domain.Course.Service;
 import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,12 +18,12 @@ import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ImageService {
 
 
     private final ImageRepository imageRepository;
 
-    private final Logger logger;
 
     private final String uploadPath;
 
@@ -31,11 +31,10 @@ public class ImageService {
     public Boolean deleteImage(String id) throws FileNotFoundException {
         if (!isEmpty(id)) {
             String[] split = id.split("/");
-            logger.info("split[1] = " + split[2]);
             Long imageId = Long.valueOf(split[2]);
             SummerNoteImage load = load(imageId);
             String filePath = load.getFilePath();
-            logger.info("path = " + filePath);
+            log.debug("path = {}", filePath);
             File newFile = new File(filePath);
             imageRepository.deleteById(imageId);
             if (newFile.exists()) {

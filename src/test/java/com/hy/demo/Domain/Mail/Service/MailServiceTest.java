@@ -6,7 +6,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,20 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 @SpringBootTest
 class MailServiceTest {
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     MailService mailService;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
-
     @Autowired
-    Logger logger;
+    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
