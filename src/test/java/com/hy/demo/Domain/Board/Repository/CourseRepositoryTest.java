@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -31,27 +30,18 @@ class CourseRepositoryTest {
 
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private UserCourseRepository userCourseRepository;
-
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
-
-    @Autowired
-    Logger logger;
-
     Long course1Id;
     Long course2Id;
     Long managerId1;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private UserCourseRepository userCourseRepository;
 
     @BeforeEach
     public void setup() {
@@ -147,11 +137,11 @@ class CourseRepositoryTest {
     public void searchCourse() {
         //when
         //강좌명으로검색
-        AssertCourse(0, 3, "test", 3, "user.username",  new String[]{"manager1", "manager1", "manager2"}, "courseName", new String[]{"test1", "test2", "test3"});
-        AssertCourse(0, 2, "test", 2, "user.username",  new String[]{"manager1", "manager1"}, "courseName", new String[]{"test1", "test2"});
-        AssertCourse(0, 3, "english", 1, "user.username",  new String[]{"manager2"}, "courseName", new String[]{"english"});
+        AssertCourse(0, 3, "test", 3, "user.username", new String[]{"manager1", "manager1", "manager2"}, "courseName", new String[]{"test1", "test2", "test3"});
+        AssertCourse(0, 2, "test", 2, "user.username", new String[]{"manager1", "manager1"}, "courseName", new String[]{"test1", "test2"});
+        AssertCourse(0, 3, "english", 1, "user.username", new String[]{"manager2"}, "courseName", new String[]{"english"});
         AssertCourse(0, 3, "false", 0, "user.username", new String[]{}, "courseName", new String[]{});
-        AssertCourse(0, 3, "", 3, "user.username",  new String[]{"manager1", "manager1", "manager2"}, "courseName", new String[]{"test1", "test2", "test3"});
+        AssertCourse(0, 3, "", 3, "user.username", new String[]{"manager1", "manager1", "manager2"}, "courseName", new String[]{"test1", "test2", "test3"});
 
         //강사명으로 검색
         AssertCourse(0, 3, "manager2", 2, "user.username", new String[]{"manager2", "manager2"}, "courseName", new String[]{"english", "test3"});

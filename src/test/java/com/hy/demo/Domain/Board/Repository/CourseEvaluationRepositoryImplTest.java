@@ -7,11 +7,11 @@ import com.hy.demo.Domain.Course.Repository.CourseEvaluationRepository;
 import com.hy.demo.Domain.Course.Repository.CourseRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.entry;
@@ -28,6 +30,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Slf4j
 class CourseEvaluationRepositoryImplTest {
     @Autowired
     private UserRepository userRepository;
@@ -44,13 +47,12 @@ class CourseEvaluationRepositoryImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    Logger logger;
 
     private List<Long> userIdList = new ArrayList<Long>();
     private List<Long> courseIdList = new ArrayList<Long>();
     private List<Long> courseEvaluationIdList = new ArrayList<Long>();
     private List<Long> replyIdList = new ArrayList<Long>();
+
     @BeforeEach
     public void setup() {
 

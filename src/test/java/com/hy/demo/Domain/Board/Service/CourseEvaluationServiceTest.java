@@ -12,14 +12,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.contentOf;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -40,8 +38,6 @@ class CourseEvaluationServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    Logger logger;
 
     private Course course1;
 
@@ -163,17 +159,17 @@ class CourseEvaluationServiceTest {
 
 
     @Test
-    public void modifyCourseEvaluation() throws Exception{
-    //given
-        User user =userRepository.findByUsername("user1");
+    public void modifyCourseEvaluation() throws Exception {
+        //given
+        User user = userRepository.findByUsername("user1");
         CourseEvaluation courseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
-    //when
-        boolean result = courseEvaluationService.modifyCourseEvaluation(courseEvaluation1Id.toString(), "updatecomments", "4.5", user,course1Id.toString());
+        //when
+        boolean result = courseEvaluationService.modifyCourseEvaluation(courseEvaluation1Id.toString(), "updatecomments", "4.5", user, course1Id.toString());
         CourseEvaluation findCourseEvaluation = courseEvaluationRepository.findById(courseEvaluation1Id).get();
         //then
         assertThat(result).isEqualTo(true);
-        assertThat(findCourseEvaluation).extracting("comments","scope")
-                .containsOnly("updatecomments",4.5);
+        assertThat(findCourseEvaluation).extracting("comments", "scope")
+                .containsOnly("updatecomments", 4.5);
 
 
     }

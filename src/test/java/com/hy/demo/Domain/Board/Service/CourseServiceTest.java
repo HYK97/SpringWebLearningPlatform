@@ -1,4 +1,5 @@
 package com.hy.demo.Domain.Board.Service;
+
 import com.hy.demo.Domain.Course.Dto.CourseDto;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Entity.CourseEvaluation;
@@ -11,51 +12,41 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.security.SecureRandom;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.contentOf;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class CourseServiceTest {
     @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private CourseRepository courseRepository;
-
     @Autowired
     private CourseService courseService;
     @Autowired
     private CourseEvaluationRepository courseEvaluationRepository;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    Logger logger;
-
     private Course course1;
 
     private Long course1Id;
     private Long course2Id;
     private Long courseEvaluation4Id;
     private CourseEvaluation courseEvaluation4;
+
     @BeforeEach
-    public void setup(){
+    public void setup() {
 
         User user1 = User.builder()
                 .username("user1")
@@ -143,7 +134,7 @@ class CourseServiceTest {
         courseEvaluationRepository.save(courseEvaluation1);
         courseEvaluationRepository.save(courseEvaluation2);
         courseEvaluationRepository.save(courseEvaluation3);
-        courseEvaluation4Id= courseEvaluationRepository.save(courseEvaluation4).getId();
+        courseEvaluation4Id = courseEvaluationRepository.save(courseEvaluation4).getId();
 
 
         CourseEvaluation reply1 = CourseEvaluation.builder()
@@ -155,16 +146,18 @@ class CourseServiceTest {
 
         courseEvaluationRepository.save(reply1);
     }
+
     @AfterEach
-    public void after(){
+    public void after() {
         userRepository.deleteAll();
         courseRepository.deleteAll();
         courseEvaluationRepository.deleteAll();
     }
+
     @Test
     public void detailView() {
         //given
-        List<Double> doubles=new ArrayList<>();
+        List<Double> doubles = new ArrayList<>();
         doubles.add(16.666666666666664);
         doubles.add(66.66666666666666);
         doubles.add(16.666666666666664);
@@ -175,16 +168,16 @@ class CourseServiceTest {
         CourseDto courseDto = courseService.findDetailCourse(byCourseName.getId());
         //then
         assertThat(courseDto)
-                .extracting("courseName","user.username","scope","starScope","courseExplanation","starPercent")
-                .containsExactly("courseTest1","manager1",4.0,81.5,null,doubles);
+                .extracting("courseName", "user.username", "scope", "starScope", "courseExplanation", "starPercent")
+                .containsExactly("courseTest1", "manager1", 4.0, 81.5, null, doubles);
 
     }
 
     @Test
-    public void randomCourseList() throws Exception{
-    //given
-        int amount =2;
-    //when
+    public void randomCourseList() throws Exception {
+        //given
+        int amount = 2;
+        //when
         List<CourseDto> courseDto = courseService.randomCourseList(amount);
         //then
         assertThat(courseDto.size()).isEqualTo(2);

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -30,24 +29,15 @@ class CommunityRepositoryImplTest {
 
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private CommunityRepository communityRepository;
-
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
-
     @Autowired
-    Logger logger;
-
+    private UserRepository userRepository;
+    @Autowired
+    private CourseRepository courseRepository;
+    @Autowired
+    private CommunityRepository communityRepository;
     private Long courseId1;
 
     private Long courseId2;
@@ -123,8 +113,8 @@ class CommunityRepositoryImplTest {
                 .build();
         userRepository.save(manager1);
         userRepository.save(manager2);
-        courseId1=courseRepository.save(course1).getId();
-        courseId2=courseRepository.save(course2).getId();
+        courseId1 = courseRepository.save(course1).getId();
+        courseId2 = courseRepository.save(course2).getId();
         communityRepository.save(community1);
         communityRepository.save(community2);
         communityRepository.save(community3);
@@ -147,9 +137,9 @@ class CommunityRepositoryImplTest {
         //given
         PageRequest pageRequest = PageRequest.of(0, 10);
         //when
-        Page<CommunityDto> CommunityDto = communityRepository.findByCourseIdAndSearch(courseId1, pageRequest, "re",null);
-        Page<CommunityDto> CommunityDto2 = communityRepository.findByCourseIdAndSearch(courseId2, pageRequest, "",null);
-        Page<CommunityDto> CommunityDto3 = communityRepository.findByCourseIdAndSearch(courseId2, pageRequest, "","manager2");
+        Page<CommunityDto> CommunityDto = communityRepository.findByCourseIdAndSearch(courseId1, pageRequest, "re", null);
+        Page<CommunityDto> CommunityDto2 = communityRepository.findByCourseIdAndSearch(courseId2, pageRequest, "", null);
+        Page<CommunityDto> CommunityDto3 = communityRepository.findByCourseIdAndSearch(courseId2, pageRequest, "", "manager2");
         List<CommunityDto> content = CommunityDto.getContent();
         List<CommunityDto> content2 = CommunityDto2.getContent();
         List<CommunityDto> content3 = CommunityDto3.getContent();
@@ -157,26 +147,22 @@ class CommunityRepositoryImplTest {
         assertThat(content.size()).isEqualTo(1);
         assertThat(content2.size()).isEqualTo(3);
         assertThat(content3.size()).isEqualTo(2);
-        assertThat(content).extracting("title", "user.username","contents")
+        assertThat(content).extracting("title", "user.username", "contents")
                 .containsOnly(
-                        tuple("re1", "manager2","re1")
+                        tuple("re1", "manager2", "re1")
                 );
-        assertThat(content2).extracting("title", "user.username","contents")
+        assertThat(content2).extracting("title", "user.username", "contents")
                 .containsOnly(
-                        tuple("re2", "manager2","re2"),
-                        tuple("re3", "manager1","re3"),
-                        tuple("re4", "manager2","re4")
+                        tuple("re2", "manager2", "re2"),
+                        tuple("re3", "manager1", "re3"),
+                        tuple("re4", "manager2", "re4")
                 );
-        assertThat(content3).extracting("title", "user.username","contents")
+        assertThat(content3).extracting("title", "user.username", "contents")
                 .containsOnly(
-                        tuple("re2", "manager2","re2"),
-                        tuple("re4", "manager2","re4")
+                        tuple("re2", "manager2", "re2"),
+                        tuple("re4", "manager2", "re4")
                 );
     }
-
-
-
-
 
 
 }
