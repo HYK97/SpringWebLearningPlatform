@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -25,14 +24,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,28 +40,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CourseControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CourseEvaluationRepository courseEvaluationRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
     @Autowired
-    Logger logger;
-
+    private WebApplicationContext context;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CourseEvaluationRepository courseEvaluationRepository;
+    @Autowired
+    private CourseRepository courseRepository;
     private Long testCode;
 
     private MockMvc mvc;
+    private Course course;
+    private Course course2;
 
     @PostConstruct
     public void accountSetup() {
@@ -74,11 +65,6 @@ class CourseControllerTest {
                 .role("ROLE_USER")
                 .password("password").build()).getId();
     }
-
-
-    private Course course;
-    private Course course2;
-
 
     @BeforeEach
     public void setup() {
