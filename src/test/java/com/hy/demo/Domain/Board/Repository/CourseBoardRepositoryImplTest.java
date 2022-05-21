@@ -11,14 +11,13 @@ import com.hy.demo.Domain.File.Entity.File;
 import com.hy.demo.Domain.File.Repository.FileRepository;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -30,6 +29,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Slf4j
 class CourseBoardRepositoryImplTest {
 
 
@@ -45,18 +45,12 @@ class CourseBoardRepositoryImplTest {
     @Autowired
     private CourseBoardRepository courseBoardRepository;
 
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private FileRepository fileRepository;
 
-    @Autowired
-    Logger logger;
 
     private List<Long> userIdList = new ArrayList<Long>();
     private List<Long> courseIdList = new ArrayList<Long>();
@@ -98,15 +92,15 @@ class CourseBoardRepositoryImplTest {
                 courseIdList.add(courseId);
 
                 for (int j = 0; j < 5; j++) {
-                CourseBoard courseBoard = CourseBoard.builder()
-                        .course(course)
-                        .title("courseName"+i+"courseBoardTitle"+j)
-                        .contents("courseBoardContents"+j)
-                        .views(3L).build();
+                    CourseBoard courseBoard = CourseBoard.builder()
+                            .course(course)
+                            .title("courseName" + i + "courseBoardTitle" + j)
+                            .contents("courseBoardContents" + j)
+                            .views(3L).build();
                     CourseBoard courseBoardE = courseBoardRepository.save(courseBoard);
                     courseBoardIdList.add(courseBoardE.getId());
 
-                    File file =File.builder()
+                    File file = File.builder()
                             .filePath("ss")
                             .fileSize(2L)
                             .origFileName("testFile")
@@ -159,37 +153,38 @@ class CourseBoardRepositoryImplTest {
 
 
     @Test
-    public void findByCourseIdNotContents() throws Exception{
-    //given
-        Long courseId =courseIdList.get(0);
-    //when
+    public void findByCourseIdNotContents() throws Exception {
+        //given
+        Long courseId = courseIdList.get(0);
+        //when
         List<CourseBoardDto> findCourseBoard = courseBoardRepository.findByCourseIdNotContents(courseId);
         //then
         assertThat(findCourseBoard.size()).isEqualTo(5);
-        assertThat(findCourseBoard).extracting("title","contents","views")
+        assertThat(findCourseBoard).extracting("title", "contents", "views")
                 .containsOnly(
-                        tuple("courseName1courseBoardTitle0","courseBoardContents0",3L),
-                        tuple("courseName1courseBoardTitle1","courseBoardContents1",3L),
-                        tuple("courseName1courseBoardTitle2","courseBoardContents2",3L),
-                        tuple("courseName1courseBoardTitle3","courseBoardContents3",3L),
-                        tuple("courseName1courseBoardTitle4","courseBoardContents4",3L)
+                        tuple("courseName1courseBoardTitle0", "courseBoardContents0", 3L),
+                        tuple("courseName1courseBoardTitle1", "courseBoardContents1", 3L),
+                        tuple("courseName1courseBoardTitle2", "courseBoardContents2", 3L),
+                        tuple("courseName1courseBoardTitle3", "courseBoardContents3", 3L),
+                        tuple("courseName1courseBoardTitle4", "courseBoardContents4", 3L)
                 );
 
     }
 
 
     @Test
-    public void findByCourseBoardId() throws Exception{
-    //given
-
-    //when
+    public void findByCourseBoardId() throws Exception {
+        //given
         CourseBoard findDto = courseBoardRepository.findByCourseBoardId(courseBoardIdList.get(0));
         CourseBoardDto courseBoardDto = findDto.changeDto();
+
+        //when
+
+
         //then
         List<FileDto> files = courseBoardDto.getFiles();
-        for (FileDto file : files) {
-            logger.info("file.getOrigFileName() = " + file.getOrigFileName());
-        }
-        
+        files.stream().forEach(file -> log.info("file.getOrigFileName() = {}", file.getOrigFileName()));
+
+
     }
 }
