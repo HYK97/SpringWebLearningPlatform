@@ -40,8 +40,6 @@ class CourseServiceTest {
     private CourseEvaluationRepository courseEvaluationRepository;
     private Course course1;
 
-    private Long course1Id;
-    private Long course2Id;
     private Long courseEvaluation4Id;
     private CourseEvaluation courseEvaluation4;
 
@@ -126,8 +124,6 @@ class CourseServiceTest {
         userRepository.save(user1);
         userRepository.save(user2);
 
-        course1Id = courseRepository.save(course1).getId();
-        course2Id = courseRepository.save(course2).getId();
         courseRepository.save(course3);
         courseRepository.save(course4);
 

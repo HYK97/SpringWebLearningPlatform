@@ -3,14 +3,14 @@ package com.hy.demo.Domain.Comments.Repository;
 import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Entity.Comments;
 import com.hy.demo.Domain.Comments.Entity.QComments;
-import com.hy.demo.Utils.DateFormatter;
+import com.hy.demo.Utils.DateFormat;
+import com.hy.demo.Utils.DateParser;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -28,21 +28,18 @@ import static com.hy.demo.Domain.User.Entity.QUser.user;
 public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implements CommentsRepositoryCustom {
 
 
-    //mysql
-    StringTemplate dayFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
-            , comments1.createDate);
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m')"
-            , comments1.createDate);
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y')"
-            , comments1.createDate);
+    private final DateFormat dateFormat;
+    private final DateParser dateParser;
 
 
-    public CommentsRepositoryImpl() {
+    @Autowired
+    public CommentsRepositoryImpl(DateFormat dateFormat, DateParser dateParser) {
         super(Comments.class);
+        this.dateFormat = dateFormat;
+
+        this.dateParser = dateParser;
     }
+
 
     @Override
     public Page<CommentsDto> findByCourseBoardId(Long id, Pageable pageable, int status) {
@@ -89,48 +86,35 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
 
     public Long countDateCommentCountByCourseId(Long courseId, String date) {
 
-        DateFormatter localDateParser = new DateFormatter(date);
+
         return select(comments1.count())
                 .from(comments1)
                 .leftJoin(comments1.courseBoard, courseBoard)
                 .leftJoin(courseBoard.course, course)
-                .where(course.id.eq(courseId).and(comments1.createDate.between(localDateParser.startDate(), localDateParser.endDate())))
+                .where(course.id.eq(courseId).and(comments1.createDate.between(dateParser.startDate(date), dateParser.endDate(date))))
                 .fetchOne();
     }
 
-    //h2
-/*    StringTemplate dayFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM-dd')"
-            , comments1.createDate);
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM')"
-            , comments1.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y')"
-            , comments1.createDate);*/
 
     public Map countMonthlyToDayCommentsByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
-                .select(comments1.count(), dayFormat)
+                .select(comments1.count(), dateFormat.getDayFormat(comments1.createDate))
                 .from(comments1)
                 .leftJoin(comments1.courseBoard, courseBoard)
                 .leftJoin(courseBoard.course, course)
-                .where(comments1.createDate.between(localDateParser.startMonth(), localDateParser.endMonth()).and(course.id.eq(courseId)))
-                .groupBy(dayFormat)
+                .where(comments1.createDate.between(dateParser.startMonth(date), dateParser.endMonth(date)).and(course.id.eq(courseId)))
+                .groupBy(dateFormat.getDayFormat(comments1.createDate))
                 .having()
-                .orderBy(dayFormat.asc())
+                .orderBy(dateFormat.getDayFormat(comments1.createDate).asc())
                 .fetch();
         Map<String, Long> map = new LinkedHashMap<>();
-        for (int i = 1; i <= localDateParser.endDay(); i++) {
-            map.put(localDateParser.getYear() + "-" + localDateParser.getMonth() + "-" + String.format("%02d", i), 0L);
+        for (int i = 1; i <= dateParser.endDay(date); i++) {
+            map.put(dateParser.getYear(date) + "-" + dateParser.getMonth(date) + "-" + String.format("%02d", i), 0L);
         }
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(dayFormat))) {
+                if (key.equals(tuple.get(dateFormat.getDayFormat(comments1.createDate)))) {
                     map.replace(key, tuple.get(comments1.count()));
                 }
             }
@@ -139,25 +123,25 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
     }
 
     public Map countThisYearToMonthlyCommentsByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
+
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory
-                .select(comments1.count(), monthFormat)
+                .select(comments1.count(), dateFormat.getMonthFormat(comments1.createDate))
                 .from(comments1)
                 .leftJoin(comments1.courseBoard, courseBoard)
                 .leftJoin(courseBoard.course, course)
-                .where(comments1.createDate.between(localDateParser.thisYearStart(), localDateParser.thisYearEnd()))
-                .groupBy(monthFormat)
-                .orderBy(monthFormat.asc())
+                .where(comments1.createDate.between(dateParser.thisYearStart(date), dateParser.thisYearEnd(date)))
+                .groupBy(dateFormat.getMonthFormat(comments1.createDate))
+                .orderBy(dateFormat.getMonthFormat(comments1.createDate).asc())
                 .fetch();
         Map<String, Long> map = new LinkedHashMap<>();
         for (int i = 1; i <= 12; i++) {
-            map.put(localDateParser.getYear() + "-" + String.format("%02d", i), 0L);
+            map.put(dateParser.getYear(date) + "-" + String.format("%02d", i), 0L);
         }
 
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(monthFormat))) {
+                if (key.equals(tuple.get(dateFormat.getMonthFormat(comments1.createDate)))) {
                     map.replace(key, tuple.get(comments1.count()));
                 }
             }
@@ -168,24 +152,24 @@ public class CommentsRepositoryImpl extends QueryDsl4RepositorySupport implement
     }
 
     public Map countTenYearToYearCommentsByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
+
         JPAQueryFactory queryFactory = getQueryFactory();
-        List<Tuple> fetch = queryFactory.select(comments1.count(), yearFormat)
+        List<Tuple> fetch = queryFactory.select(comments1.count(), dateFormat.getYearFormat(comments1.createDate))
                 .from(comments1)
                 .leftJoin(comments1.courseBoard, courseBoard)
                 .leftJoin(courseBoard.course, course)
-                .where(comments1.createDate.between(localDateParser.tenYearAgo(), localDateParser.thisYearEnd()).and(course.id.eq(courseId)))
-                .groupBy(yearFormat)
-                .orderBy(yearFormat.asc())
+                .where(comments1.createDate.between(dateParser.tenYearAgo(date), dateParser.thisYearEnd(date)).and(course.id.eq(courseId)))
+                .groupBy(dateFormat.getYearFormat(comments1.createDate))
+                .orderBy(dateFormat.getYearFormat(comments1.createDate).asc())
                 .fetch();
 
         Map<String, Long> map = new LinkedHashMap<>();
-        for (int i = localDateParser.getYear() - 10; i <= localDateParser.getYear(); i++) {
+        for (int i = dateParser.getYear(date) - 10; i <= dateParser.getYear(date); i++) {
             map.put(String.format("%04d", i), 0L);
         }
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(yearFormat))) {
+                if (key.equals(tuple.get(dateFormat.getYearFormat(comments1.createDate)))) {
                     map.replace(key, tuple.get(comments1.count()));
                 }
             }

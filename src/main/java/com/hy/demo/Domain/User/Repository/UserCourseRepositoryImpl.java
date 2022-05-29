@@ -2,12 +2,12 @@ package com.hy.demo.Domain.User.Repository;
 
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.UserCourse;
-import com.hy.demo.Utils.DateFormatter;
+import com.hy.demo.Utils.DateFormat;
+import com.hy.demo.Utils.DateParser;
 import com.hy.demo.Utils.QueryDsl4RepositorySupport;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,53 +26,44 @@ import static com.hy.demo.Domain.User.Entity.QUserCourse.userCourse;
 @Slf4j
 public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport implements UserCourseRepositoryCustom {
 
+    private final DateParser dateParser;
+    private final DateFormat dateFormat;
 
-    //mysql
-    StringTemplate dayFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m-%d')"
-            , userCourse.createDate);
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y-%m')"
-            , userCourse.createDate);
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "DATE_FORMAT({0}, '%Y')"
-            , userCourse.createDate);
-
+    // TODO 누적쿼리 만들기
 
     @Autowired
-    public UserCourseRepositoryImpl() {
+    public UserCourseRepositoryImpl(DateParser dateParser, DateFormat dateFormat) {
         super(UserCourse.class);
+        this.dateParser = dateParser;
+        this.dateFormat = dateFormat;
     }
 
     public Long countDateRegisteredUserCountByCourseId(Long courseId, String date) {
 
-        DateFormatter localDateParser = new DateFormatter(date);
         return select(userCourse.user.count())
                 .from(userCourse)
-                .where(userCourse.createDate.between(localDateParser.startDate(), localDateParser.endDate()).and(course.id.eq(courseId)))
+                .where(userCourse.createDate.between(dateParser.startDate(date), dateParser.endDate(date)).and(course.id.eq(courseId)))
                 .fetchOne();
     }
 
-    // TODO 누적쿼리 만들기
-
     public Map countMonthlyToDayRegisteredUserByCourseId(Long courseId, String date) {
 
-        DateFormatter localDateParser = new DateFormatter(date);
+
         JPAQueryFactory queryFactory = getQueryFactory();
-        List<Tuple> fetch = queryFactory.select(dayFormat.count(), dayFormat)
+        List<Tuple> fetch = queryFactory.select(dateFormat.getDayFormat(userCourse.createDate).count(), dateFormat.getDayFormat(userCourse.createDate))
                 .from(userCourse)
-                .where(userCourse.createDate.between(localDateParser.startMonth(), localDateParser.endMonth()).and(userCourse.course.id.eq(courseId)))
-                .groupBy(dayFormat)
-                .orderBy(dayFormat.asc())
+                .where(userCourse.createDate.between(dateParser.startMonth(date), dateParser.endMonth(date)).and(userCourse.course.id.eq(courseId)))
+                .groupBy(dateFormat.getDayFormat(userCourse.createDate))
+                .orderBy(dateFormat.getDayFormat(userCourse.createDate).asc())
                 .fetch();
         Map<String, Long> map = new LinkedHashMap<>();
-        for (int i = 1; i <= localDateParser.endDay(); i++) {
-            map.put(localDateParser.getYear() + "-" + localDateParser.getMonth() + "-" + String.format("%02d", i), 0L);
+        for (int i = 1; i <= dateParser.endDay(date); i++) {
+            map.put(dateParser.getYear(date) + "-" + dateParser.getMonth(date) + "-" + String.format("%02d", i), 0L);
         }
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(dayFormat))) {
-                    map.replace(key, tuple.get(dayFormat.count()));
+                if (key.equals(tuple.get(dateFormat.getDayFormat(userCourse.createDate)))) {
+                    map.replace(key, tuple.get(dateFormat.getDayFormat(userCourse.createDate).count()));
                 }
             }
         }
@@ -80,43 +71,29 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
 
     }
 
-
-    //h2
-   /* StringTemplate dayFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM-dd')"
-            , userCourse.createDate);
-
-    StringTemplate monthFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y-MM')"
-            , userCourse.createDate);
-
-    StringTemplate yearFormat = Expressions.stringTemplate(
-            "FORMATDATETIME({0}, 'Y')"
-            , userCourse.createDate);*/
-
     public Map countThisYearToMonthlyRegisteredUserByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
+
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(
-                        monthFormat.count(),
-                        monthFormat
+                        dateFormat.getMonthFormat(userCourse.createDate).count(),
+                        dateFormat.getMonthFormat(userCourse.createDate)
                 )
                 .from(userCourse)
-                .where(userCourse.createDate.between(localDateParser.thisYearStart(), localDateParser.thisYearEnd())
+                .where(userCourse.createDate.between(dateParser.thisYearStart(date), dateParser.thisYearEnd(date))
                         .and(userCourse.course.id.eq(courseId)))
-                .groupBy(monthFormat)
-                .orderBy(monthFormat.asc())
+                .groupBy(dateFormat.getMonthFormat(userCourse.createDate))
+                .orderBy(dateFormat.getMonthFormat(userCourse.createDate).asc())
                 .fetch();
 
         Map<String, Long> map = new LinkedHashMap<>();
         for (int i = 1; i <= 12; i++) {
-            map.put(localDateParser.getYear() + "-" + String.format("%02d", i), 0L);
+            map.put(dateParser.getYear(date) + "-" + String.format("%02d", i), 0L);
         }
 
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(monthFormat))) {
-                    map.replace(key, tuple.get(monthFormat.count()));
+                if (key.equals(tuple.get(dateFormat.getMonthFormat(userCourse.createDate)))) {
+                    map.replace(key, tuple.get(dateFormat.getMonthFormat(userCourse.createDate).count()));
                 }
             }
         }
@@ -126,28 +103,28 @@ public class UserCourseRepositoryImpl extends QueryDsl4RepositorySupport impleme
     }
 
     public Map countTenYearToYearRegisteredUserByCourseId(Long courseId, String date) {
-        DateFormatter localDateParser = new DateFormatter(date);
+
         JPAQueryFactory queryFactory = getQueryFactory();
         List<Tuple> fetch = queryFactory.select(
-                        yearFormat.count(),
-                        yearFormat
+                        dateFormat.getYearFormat(userCourse.createDate).count(),
+                        dateFormat.getYearFormat(userCourse.createDate)
                 )
                 .from(userCourse)
-                .where(userCourse.createDate.between(localDateParser.tenYearAgo(), localDateParser.thisYearEnd())
+                .where(userCourse.createDate.between(dateParser.tenYearAgo(date), dateParser.thisYearEnd(date))
                         .and(userCourse.course.id.eq(courseId)))
-                .groupBy(yearFormat)
-                .orderBy(yearFormat.asc())
+                .groupBy(dateFormat.getYearFormat(userCourse.createDate))
+                .orderBy(dateFormat.getYearFormat(userCourse.createDate).asc())
                 .fetch();
 
         Map<String, Long> map = new LinkedHashMap<>();
-        for (int i = localDateParser.getYear() - 10; i <= localDateParser.getYear(); i++) {
+        for (int i = dateParser.getYear(date) - 10; i <= dateParser.getYear(date); i++) {
             map.put(String.format("%04d", i), 0L);
         }
 
         for (String key : map.keySet()) {
             for (Tuple tuple : fetch) {
-                if (key.equals(tuple.get(yearFormat))) {
-                    map.replace(key, tuple.get(yearFormat.count()));
+                if (key.equals(tuple.get(dateFormat.getYearFormat(userCourse.createDate)))) {
+                    map.replace(key, tuple.get(dateFormat.getYearFormat(userCourse.createDate).count()));
                 }
             }
         }

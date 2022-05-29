@@ -14,10 +14,11 @@ import java.util.Map;
 
 
 @Data
-@EqualsAndHashCode(of = {"userCd"})
+@EqualsAndHashCode(of = {"userId"})
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
-    private User user;// 콤포지션
+    private Long userId;
+    private User user;
 
     private Map<String, Object> attributes;
 
@@ -27,16 +28,18 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public PrincipalDetails(User userEntity, boolean flag) {
         this.user = userEntity;
         this.flag = flag;
-    }
-
-    public boolean isFlag() {
-        return flag;
+        this.userId = userEntity.getId();
     }
 
     public PrincipalDetails(User user, Map<String, Object> attributes, boolean flag) {
         this.user = user;
         this.attributes = attributes;
         this.flag = flag;
+        this.userId = user.getId();
+    }
+
+    public boolean isFlag() {
+        return flag;
     }
 
     @Override

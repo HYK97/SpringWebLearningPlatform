@@ -22,7 +22,8 @@ import javax.annotation.PostConstruct;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
 @ExtendWith(SpringExtension.class)
@@ -30,17 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MainControllerTest {
 
     @Autowired
-    private WebApplicationContext context;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private WebApplicationContext context;
+    @Autowired
+    private UserRepository userRepository;
     private Long testCode;
 
     private MockMvc mvc;
@@ -55,9 +52,8 @@ class MainControllerTest {
     }
 
 
-
     @BeforeEach
-    public void setup(){
+    public void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(this.context)
                 .apply(springSecurity())
@@ -88,8 +84,9 @@ class MainControllerTest {
         userRepository.save(admin);
 
     }
+
     @AfterEach
-    public void after(){
+    public void after() {
         userRepository.deleteAll();
     }
 
@@ -100,7 +97,7 @@ class MainControllerTest {
         // when
         mvc.perform(get("/main/index"))
                 .andDo(print())
-        // then
+                // then
                 .andExpect(status().isOk())
                 .andExpect(view().name("main/index"));
     }
@@ -116,14 +113,6 @@ class MainControllerTest {
                 .andExpect(status().is4xxClientError());
 
     }
-
-
-
-
-
-
-
-
 
 
 }

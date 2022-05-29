@@ -20,7 +20,7 @@ class MailServiceTest {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    MailService mailService;
+    MailServiceImpl mailService;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
