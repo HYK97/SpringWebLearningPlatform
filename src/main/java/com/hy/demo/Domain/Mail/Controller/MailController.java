@@ -1,7 +1,7 @@
 package com.hy.demo.Domain.Mail.Controller;
 
 
-import com.hy.demo.Domain.Mail.Service.MailService;
+import com.hy.demo.Domain.Mail.Service.MailServiceImpl;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
@@ -20,7 +20,7 @@ import javax.persistence.EntityNotFoundException;
 @RequiredArgsConstructor
 public class MailController {
 
-    private final MailService mailService;
+    private final MailServiceImpl mailService;
 
     private final UserService userService;
 
