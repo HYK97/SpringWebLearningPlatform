@@ -4,6 +4,7 @@ package com.hy.demo.Domain.Board.Controller;
 import com.hy.demo.Domain.Board.Dto.CourseBoardDto;
 import com.hy.demo.Domain.Board.Entity.CourseBoard;
 import com.hy.demo.Domain.Board.Service.CourseBoardService;
+import com.hy.demo.Domain.Board.form.CourseBoardForm;
 import com.hy.demo.Domain.Comments.Service.CommentsService;
 import com.hy.demo.Domain.Course.Entity.Course;
 import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
@@ -14,6 +15,8 @@ import com.hy.demo.Domain.User.Service.UserService;
 import com.hy.demo.Utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,16 +105,18 @@ public class CourseBoardController {
 
     @PostMapping("/updateCourseBoard/{id}")
     @ResponseBody
-    public String updateCourseBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws IOException {
+    public ResponseEntity updateCourseBoard(@PathVariable Long id, @ModelAttribute CourseBoardForm form) throws IOException {
         //파일 확인
+        log.info("updateCourseBoard/{} ", id);
+        log.info("form.toString() = {} ", form.toString());
         try {
-            courseBoardService.updateCourseBoard(id, file, title, contents);
+            courseBoardService.updateCourseBoard(id, form.getFile(), form.getTitle(), form.getContents());
         } catch (Exception e) {
             e.printStackTrace();
-            return "2"; //실패
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
             //실패
         }
-        return "1"; //성공
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/getDashBoard/{id}")
