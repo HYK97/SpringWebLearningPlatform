@@ -12,6 +12,8 @@ import com.hy.demo.Domain.Course.Service.ImageService;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +42,8 @@ import static java.lang.Math.floor;
 @Controller
 @RequestMapping("/course/*")
 @RequiredArgsConstructor
+@Slf4j
+@Validated
 public class CourseController {
 
 
@@ -51,10 +56,15 @@ public class CourseController {
 
 
     @GetMapping({"/view"})
-    public String course(@RequestParam(defaultValue = "") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public String course(@RequestParam(defaultValue = "") @Length(max = 200, message = "200자 이상 오류") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
+
+        log.info("search = {} ", search);
         Page<CourseDto> courseDtos = courseService.findCourseList(pageable, search);
+
         pagingDto(model, courseDtos);
+
+
         return "course/view";
     }
 
@@ -194,7 +204,6 @@ public class CourseController {
     @ResponseBody
     public String courseUpdate(@PathVariable Long id, @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail, String courseName, String courseExplanation) {
         Course course = null;
-
         try {
             course = courseService.findCourseById(id);
             if (!isEmpty(thumbnail)) {

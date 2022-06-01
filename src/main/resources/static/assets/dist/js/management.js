@@ -338,8 +338,8 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
         data: formData,
         processData: false,
         contentType: false,
-        success: function (data) {
-            if (data == "1") {
+        statusCode: {
+            200:function(data) {
                 courseBoard = getData();
                 navRender(courseBoard);
                 mainRender(courseBoardId, courseBoard)
@@ -351,13 +351,11 @@ $(document).on("click", "#updateCourseBoardBtn", function () {
                 $('#updateContents').summernote('reset');
                 fileReset();
                 alert('수정 성공');
-            } else {
-                alert('오류');
+            },
+            400:function(data) {
+
+                alert('잘못된 값입니다.');
             }
-        },
-        error: function (request, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-            alert("오류");
         }
     });
 
