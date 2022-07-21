@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+import static com.hy.demo.enumcode.AJAXResponseCode.*;
+
 @Controller
 @RequestMapping("/user/*")
 @RequiredArgsConstructor
@@ -116,11 +118,11 @@ public class UserController {
         try {
             userService.passwordUpdate(principalDetails.getUser(), nowPassword, newPassword);
         } catch (EntityNotFoundException e) {
-            return "3";
+            return ERROR.toString();
         } catch (AccessDeniedException e) {
-            return "2";
+            return FAIL.toString();
         }
-        return "1";
+        return OK.toString();
     }
 
     @PostMapping("courseWithdrawal/{courseId}")
@@ -129,9 +131,9 @@ public class UserController {
         try {
             userService.courseWithdrawal(principalDetails.getUsername(), courseId);
         } catch (AccessDeniedException e) {
-            return "0"; //삭제실패
+            return FAIL.toString(); //삭제실패
         }
-        return "1"; //삭제성공
+        return OK.toString(); //삭제성공
     }
 
 

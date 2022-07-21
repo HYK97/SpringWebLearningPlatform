@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
+import static com.hy.demo.enumcode.AJAXResponseCode.*;
 import static java.lang.Math.floor;
 
 ;
@@ -83,8 +84,6 @@ public class CourseController {
             } else {
                 model.addAttribute("commentAccess", null); //썻을때
             }
-
-
             model.addAttribute("applicationCheck", 1);
         }
         return "course/detailcourse";
@@ -109,12 +108,12 @@ public class CourseController {
     public String createEvaluation(String courseId, String content, String star, String replyId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         try {
             courseEvaluationService.addCourseEvaluation(courseId, content, star, principalDetails.getUser(), replyId);
-            return "1";
+            return OK.toString();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return "2";
+            return FAIL.toString();
         } catch (DataIntegrityViolationException e) {
-            return "3";
+            return ERROR.toString();
         }
     }
 
@@ -133,9 +132,9 @@ public class CourseController {
 
         boolean update = courseEvaluationService.modifyCourseEvaluation(id, content, star, principalDetails.getUser(), courseId);
         if (update) {
-            return "1";
+            return OK.toString();
         } else {
-            return "2";
+            return FAIL.toString();
         }
 
     }
@@ -149,12 +148,12 @@ public class CourseController {
             courseEvaluationService.delete(id, principalDetails.getUser(), courseId);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
-            return "0";
+            return ERROR.toString();
         } catch (NullPointerException e) {
             e.printStackTrace();
-            return "2";
+            return FAIL.toString();
         }
-        return "1";
+        return OK.toString();
     }
 
 
@@ -211,7 +210,7 @@ public class CourseController {
                     imageService.deleteImage(course.getThumbnail());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    return "2"; //파일 삭제에러
+                    return ERROR.toString(); //파일 삭제에러
                 }
                 SummerNoteImage uploadFile = imageService.store(thumbnail);
                 course.updateThumbnail("/image/" + uploadFile.getId());
@@ -219,13 +218,12 @@ public class CourseController {
             course.updateCourseExplanation(courseExplanation);
             course.updateCourseName(courseName);
         } catch (Exception e) {
-            //error
             e.printStackTrace();
-            return "2";
+            return FAIL.toString();
         }
         courseService.addCourse(course);
 
-        return "1";
+        return OK.toString();
 
     }
 
@@ -281,12 +279,12 @@ public class CourseController {
             courseService.deleteCourse(courseId, principalDetails.getUsername());
         } catch (AccessDeniedException e) {
             e.printStackTrace();
-            return "0"; //삭제실패
+            return ERROR.toString(); //삭제실패
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return "2"; //썸네일 삭제 실패
+            return FAIL.toString(); //썸네일 삭제 실패
         }
-        return "1"; //삭제성공
+        return OK.toString(); //삭제성공
 
     }
 

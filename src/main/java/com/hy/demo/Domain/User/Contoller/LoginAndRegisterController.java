@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
+import static com.hy.demo.enumcode.AJAXResponseCode.ERROR;
+import static com.hy.demo.enumcode.AJAXResponseCode.FAIL;
 
 @Controller
 @RequiredArgsConstructor
@@ -135,9 +137,11 @@ public class LoginAndRegisterController {
             } catch (DuplicateKeyException e) {
                 String cause = e.getMessage();
                 if (cause.equals("아이디")) {
-                    return "1";
+                    //아이디 존재
+                    return FAIL.toString();
                 } else {
-                    return "2";
+                    //닉네임 존재
+                    return ERROR.toString();
                 }
             }
             updateOAuth(authentication);
@@ -148,9 +152,9 @@ public class LoginAndRegisterController {
             } catch (DuplicateKeyException e) {
                 String cause = e.getMessage();
                 if (cause.equals("아이디")) {
-                    return "1";
+                    return FAIL.toString();
                 } else {
-                    return "2";
+                    return ERROR.toString();
                 }
             }
             return "loginForm";
