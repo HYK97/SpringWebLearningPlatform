@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 
+import static com.hy.demo.enumcode.AJAXResponseCode.FAIL;
+import static com.hy.demo.enumcode.AJAXResponseCode.OK;
+
 @Controller
 @RequestMapping("/community/*")
 @RequiredArgsConstructor
@@ -75,9 +78,9 @@ public class CommunityController {
             communityService.deleteCommunity(principalDetails.getUser(), communityId);
         } catch (AccessDeniedException e) {
             e.printStackTrace();
-            return "0"; //실패
+            return FAIL.toString(); //실패
         }
-        return "1"; //성공
+        return OK.toString(); //성공
     }
 
     ;

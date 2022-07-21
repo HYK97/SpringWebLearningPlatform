@@ -19,6 +19,9 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import java.nio.file.AccessDeniedException;
 
+import static com.hy.demo.enumcode.AJAXResponseCode.FAIL;
+import static com.hy.demo.enumcode.AJAXResponseCode.OK;
+
 ;
 
 @Controller
@@ -38,9 +41,9 @@ public class CommentsController {
             commentsService.createComments(id, comments, user, status);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
-            return "2";
+            return FAIL.toString();
         }
-        return "1";
+        return OK.toString();
     }
 
     @PostMapping({"/createReply/{commentsId}"})
@@ -81,9 +84,9 @@ public class CommentsController {
             commentsService.deleteReply(commentsId, user);
         } catch (AccessDeniedException e) {
             e.printStackTrace();
-            return "0";
+            return FAIL.toString();
         }
-        return "1";
+        return OK.toString();
     }
 
 

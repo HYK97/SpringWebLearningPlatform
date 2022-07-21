@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.hy.demo.enumcode.AJAXResponseCode.*;
+
 ;
 
 @Controller
@@ -96,10 +98,10 @@ public class CourseBoardController {
             courseBoardService.deleteBoardAndFiles(id);
         } catch (AccessDeniedException e) {
             e.printStackTrace();
-            return "2"; //실패
+            return FAIL.toString(); //실패
         }
 
-        return "1"; //성공
+        return OK.toString(); //성공
     }
 
 
@@ -297,13 +299,13 @@ public class CourseBoardController {
 
     @PostMapping("/createBoard/{id}")
     @ResponseBody
-    public String createBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) {
+    public String createBoardcreateBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) {
         List<FileDto> fileDtos = new ArrayList<>();
         Course findCourse;
         try {
             findCourse = courseService.findCourseById(id);
         } catch (Exception e) {
-            return "3"; //잘못된 courseId
+            return FAIL.toString(); //잘못된 courseId
         }
         CourseBoard courseBoard = CourseBoard.builder()
                 .title(title)
@@ -317,17 +319,17 @@ public class CourseBoardController {
                 log.debug("fileDtos = {}", fileDtos.size());
             } catch (IOException e) {
                 e.printStackTrace();
-                return "2"; //파일오류
+                return ERROR.toString(); //파일오류
             }
         }
         courseBoardService.save(courseBoard, fileDtos);
-        return "1";//성공
+        return OK.toString();//성공
     }
 
 
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (e.getReason().equals("1")) {
+        if (e.getReason().equals(OK.toString())) {
             String requestURI = request.getRequestURI().trim();
             String[] split = requestURI.split("/");
             ModelAndView model = new ModelAndView();
@@ -336,7 +338,7 @@ public class CourseBoardController {
             model.addObject("joinBtn", true);
             model.setViewName("redirect:/course/detailcourse");
             return model;
-        } else if (e.getReason().equals("2")) {
+        } else if (e.getReason().equals(FAIL.toString())) {
             throw new AccessDeniedException("403 에러");
         } else {
             throw new AccessDeniedException("403 에러");

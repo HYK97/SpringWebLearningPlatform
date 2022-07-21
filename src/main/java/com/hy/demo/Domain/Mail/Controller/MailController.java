@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
 
+import static com.hy.demo.enumcode.AJAXResponseCode.*;
+
 @Controller
 @RequestMapping("/mail/*")
 @RequiredArgsConstructor
@@ -37,13 +39,13 @@ public class MailController {
             mailService.sendMail(findUser);
         } catch (MessagingException e) {
             e.printStackTrace();
-            return "0";// 메일발송 실패
+            return ERROR.toString();// 메일발송 실패
         } catch (EntityNotFoundException e) {
-            return "1";// 없는 유저;
+            return FAIL.toString();// 없는 유저;
         } catch (AccessDeniedException e) {
-            return "1";// 잘못된 이메일;
+            return FAIL.toString();// 잘못된 이메일;
         }
-        return "2"; // 메일발송성공
+        return OK.toString(); // 메일발송성공
 
     }
 

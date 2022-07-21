@@ -21,8 +21,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
@@ -185,6 +187,27 @@ class CourseBoardRepositoryImplTest {
         List<FileDto> files = courseBoardDto.getFiles();
         files.stream().forEach(file -> log.info("file.getOrigFileName() = {}", file.getOrigFileName()));
 
+
+    }
+
+    @Test
+    @Transactional
+    public void test() throws Exception {
+        //given
+        Optional<CourseBoard> byId = courseBoardRepository.findById(courseIdList.get(0));
+        CourseBoard food = byId.get();
+
+        System.out.println(food.getId());
+        System.out.println(food.getComments());
+
+
+        System.out.println(" = =============");
+        Course restaurant = food.getCourse();
+
+        System.out.println("food = " + food);
+        //when
+
+        //then
 
     }
 }
