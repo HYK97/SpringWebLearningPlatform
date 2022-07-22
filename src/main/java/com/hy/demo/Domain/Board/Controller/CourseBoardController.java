@@ -20,8 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,7 +107,7 @@ public class CourseBoardController {
 
     @PostMapping("/updateCourseBoard/{id}")
     @ResponseBody
-    public ResponseEntity updateCourseBoard(@PathVariable Long id, @ModelAttribute CourseBoardForm form) throws IOException {
+    public ResponseEntity updateCourseBoard(@PathVariable Long id, @ModelAttribute @Validated CourseBoardForm form) throws IOException {
         //파일 확인
         log.info("updateCourseBoard/{} ", id);
         log.info("form.toString() = {} ", form.toString());
@@ -299,7 +299,7 @@ public class CourseBoardController {
 
     @PostMapping("/createBoard/{id}")
     @ResponseBody
-    public String createBoardcreateBoard(@PathVariable Long id, String title, String contents, @RequestParam(value = "file", required = false) List<MultipartFile> file) {
+    public String createBoardcreateBoard(@PathVariable Long id, @ModelAttribute @Validated CourseBoardForm form) {
         List<FileDto> fileDtos = new ArrayList<>();
         Course findCourse;
         try {
@@ -308,14 +308,14 @@ public class CourseBoardController {
             return FAIL.toString(); //잘못된 courseId
         }
         CourseBoard courseBoard = CourseBoard.builder()
-                .title(title)
-                .contents(contents)
+                .title(form.getTitle())
+                .contents(form.getContents())
                 .views(0L)
                 .course(findCourse)
                 .build();
-        if (!ObjectUtils.isEmpty(file)) {
+        if (!ObjectUtils.isEmpty(form.getFile())) {
             try {
-                fileDtos = fileService.localSaveFile(file);
+                fileDtos = fileService.localSaveFile(form.getFile());
                 log.debug("fileDtos = {}", fileDtos.size());
             } catch (IOException e) {
                 e.printStackTrace();

@@ -11,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -48,7 +49,7 @@ public class CommunityController {
 
     @ResponseBody
     @PostMapping("createCommunity/{courseId}")
-    public CommunityDto createCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long courseId, @ModelAttribute("data") CommunityDto community) {
+    public CommunityDto createCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long courseId, @Validated @ModelAttribute("data") CommunityDto community) {
         try {
             return communityService.addCommunity(community.toEntity(), principalDetails.getUser(), courseId);
         } catch (EntityNotFoundException e) {
@@ -61,7 +62,7 @@ public class CommunityController {
 
     @ResponseBody
     @PostMapping("modifyCommunity/{communityId}")
-    public CommunityDto modifyCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long communityId, @ModelAttribute("data") CommunityDto updateCommunity) {
+    public CommunityDto modifyCommunity(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long communityId, @Validated @ModelAttribute("data") CommunityDto updateCommunity) {
         CommunityDto communityDto = communityService.modifyCommunity(communityId, updateCommunity.toEntity(), principalDetails.getUser());
         communityDto.setUser(principalDetails.getUser().changeDto());
         communityDto.setMyCommunity(1);
