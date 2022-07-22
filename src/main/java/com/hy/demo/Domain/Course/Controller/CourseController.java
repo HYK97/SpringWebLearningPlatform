@@ -9,6 +9,7 @@ import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.Course.Service.ImageService;
+import com.hy.demo.Domain.Course.form.CourseForm;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +44,6 @@ import static java.lang.Math.floor;
 @RequestMapping("/course/*")
 @RequiredArgsConstructor
 @Slf4j
-@Validated
 public class CourseController {
 
 
@@ -178,13 +177,14 @@ public class CourseController {
 
 
     @PostMapping({"/create"})
-    public String courseCreate(@AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile thumbnail, String courseName, String courseExplanation) {
+    public String courseCreate(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                               @Validated @ModelAttribute CourseForm form) {
         Course course = null;
         try {
-            SummerNoteImage uploadFile = imageService.store(thumbnail);
+            SummerNoteImage uploadFile = imageService.store(form.getThumbnail());
             course = Course.builder()
-                    .courseExplanation(courseExplanation)
-                    .courseName(courseName)
+                    .courseExplanation(form.getCourseExplanation())
+                    .courseName(form.getCourseName())
                     .user(principalDetails.getUser())
                     .thumbnail("/image/" + uploadFile.getId())
                     .build();
@@ -201,22 +201,22 @@ public class CourseController {
 
     @PostMapping({"/update/{id}"})
     @ResponseBody
-    public String courseUpdate(@PathVariable Long id, @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail, String courseName, String courseExplanation) {
+    public String courseUpdate(@PathVariable Long id, @Validated @ModelAttribute CourseForm form) {
         Course course = null;
         try {
             course = courseService.findCourseById(id);
-            if (!isEmpty(thumbnail)) {
+            if (!isEmpty(form.getThumbnail())) {
                 try {
                     imageService.deleteImage(course.getThumbnail());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     return ERROR.toString(); //파일 삭제에러
                 }
-                SummerNoteImage uploadFile = imageService.store(thumbnail);
+                SummerNoteImage uploadFile = imageService.store(form.getThumbnail());
                 course.updateThumbnail("/image/" + uploadFile.getId());
             }
-            course.updateCourseExplanation(courseExplanation);
-            course.updateCourseName(courseName);
+            course.updateCourseExplanation(form.getCourseExplanation());
+            course.updateCourseName(form.getCourseName());
         } catch (Exception e) {
             e.printStackTrace();
             return FAIL.toString();
