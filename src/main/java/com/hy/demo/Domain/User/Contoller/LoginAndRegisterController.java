@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.hy.demo.Utils.ObjectUtils.isEmpty;
 import static com.hy.demo.enumcode.AJAXResponseCode.ERROR;
@@ -124,9 +128,19 @@ public class LoginAndRegisterController {
 
 
     @PostMapping("/join")
-    public @ResponseBody
-    String join(Authentication authentication, @Validated UserJoinForm userForm, @AuthenticationPrincipal PrincipalDetails principalDetails) {//setter 를 쓰지않기위해선 이렇게해야된다.
+    @ResponseBody
+    public Object join(Authentication authentication, @Validated UserJoinForm userForm, BindingResult bindingResult, @AuthenticationPrincipal PrincipalDetails principalDetails) {//setter 를 쓰지않기위해선 이렇게해야된다.
 
+        if (bindingResult.hasErrors()) {
+            Map<String, String> validationErrors = bindingResult.getFieldErrors()
+                    .stream().collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage
+                    ));
+            if (!validationErrors.isEmpty()) {
+                return validationErrors;
+            }
+        }
         UserDto userDto = userForm.toDto();
         log.debug("user.toString() = {}", userForm.toString());
         User provider = null;

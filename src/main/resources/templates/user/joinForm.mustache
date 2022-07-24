@@ -102,10 +102,16 @@
                         alert("이미 id가 존재합니다.");
                     } else if (data == "3") {
                         alert("이미 닉네임이 존재합니다");
-                    } else {
+                    } else if (data == "main/index"||data == "loginForm") {
                         alert("회원가입을 환영합니다.");
                         $('#check').val("1");
                         location.replace(data);
+                    } else {
+                        var string ="아래 필드를 조건에 맞게 다시 입력해주세요 \n"
+                        for (key of Object.keys(data)) {
+                            string += `${key}:${data[key]}\n`;
+                        }
+                        alert(string);
                     }
 
                 },
