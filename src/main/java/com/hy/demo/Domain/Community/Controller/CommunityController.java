@@ -4,6 +4,7 @@ import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Community.Dto.CommunityDto;
 import com.hy.demo.Domain.Community.Service.CommunityService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,7 +34,7 @@ public class CommunityController {
      */
     @ResponseBody
     @PostMapping("getCommunityList/{courseId}")
-    public Page<CommunityDto> getCommunityList(@PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long courseId, @RequestParam(defaultValue = "") String search) {
+    public Page<CommunityDto> getCommunityList(@PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long courseId, @RequestParam(defaultValue = "") @Length(max = 200, message = "200자 이하로 입력해주세요") String search) {
         return communityService.findCommunityList(courseId, search, pageable, null);
     }
 
@@ -41,7 +42,7 @@ public class CommunityController {
 
     @ResponseBody
     @PostMapping("myCommunityList/{courseId}")
-    public Page<CommunityDto> myCommunityList(@AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long courseId, @RequestParam(defaultValue = "") String search) {
+    public Page<CommunityDto> myCommunityList(@AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long courseId, @RequestParam(defaultValue = "") @Length(max = 200, message = "200자 이하로 입력해주세요") String search) {
         return communityService.findCommunityList(courseId, search, pageable, principalDetails.getUser());
     }
 
