@@ -58,7 +58,7 @@ public class CourseController {
 
 
     @GetMapping({"/view"})
-    public String course(@RequestParam(defaultValue = "") @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 입력해주세요") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public String course(@RequestParam(defaultValue = "") @Length(max = 200, message = "200자 이하로 입력해주세요") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
 
         log.info("search = {} ", search);
@@ -106,7 +106,7 @@ public class CourseController {
 
     @PostMapping({"/createevaluation"})
     @ResponseBody
-    public String createEvaluation(/*String courseId, String content, String star*/ @ModelAttribute @Validated CourseEvaluationForm form, String replyId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String createEvaluation(@ModelAttribute @Validated CourseEvaluationForm form, String replyId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         try {
 
             courseEvaluationService.addCourseEvaluation(form.getCourseId(), form.getContent(), String.valueOf(form.getStar()), principalDetails.getUser(), replyId);
@@ -252,7 +252,7 @@ public class CourseController {
     }
 
     @GetMapping("/info/myCourseList")
-    public String myCourseList(Model model, @RequestParam(defaultValue = "") @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 입력해주세요") String search, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String myCourseList(Model model, @RequestParam(defaultValue = "") @Length(max = 200, message = "200자 이하로 입력해주세요") String search, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         User findUser = userService.findByUsername(principalDetails.getUsername());
         Page<CourseDto> myCourseList = courseService.findMyCourseList(search, findUser.getId(), pageable);
 
@@ -262,7 +262,7 @@ public class CourseController {
 
 
     @GetMapping({"/myCourseView"})
-    public String myCourseView(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(defaultValue = "") @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 입력해주세요") String search) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public String myCourseView(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(defaultValue = "") @Length(max = 200, message = "200자 이하로 입력해주세요") String search) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         User user = principalDetails.getUser();
         Page<CourseDto> courseDtos;
         try {
