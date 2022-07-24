@@ -2,11 +2,15 @@ package com.hy.demo.Domain.User.Contoller;
 
 import com.hy.demo.Config.Auth.PrincipalDetails;
 import com.hy.demo.Domain.Course.Dto.CourseDto;
+import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Service.CourseService;
+import com.hy.demo.Domain.Course.Service.ImageService;
 import com.hy.demo.Domain.User.Dto.UserDto;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
+import com.hy.demo.Domain.User.form.UserUpdateForm;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,9 +19,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 import static com.hy.demo.enumcode.AJAXResponseCode.*;
@@ -25,12 +32,14 @@ import static com.hy.demo.enumcode.AJAXResponseCode.*;
 @Controller
 @RequestMapping("/user/*")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
 
     private final UserService userService;
     private final CourseService courseService;
 
+    private final ImageService imageService;
 
     @GetMapping("info")
     public String info(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
@@ -46,7 +55,7 @@ public class UserController {
 
 
     @GetMapping("userDetailInfo/{username}")
-    public String userDetailInfo(@PathVariable String username, Model model, @PageableDefault(size = 6, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String userDetailInfo(@PathVariable @Length(min = 1, max = 200, message = "1자 이상 200자 이하으로 작성해주세요") String username, Model model, @PageableDefault(size = 6, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         User userInfo;
         try {
             userInfo = userService.findByUsername(username);
@@ -63,7 +72,7 @@ public class UserController {
 
     @PostMapping("userDetailInfo/{username}")
     @ResponseBody
-    public Page<CourseDto> postUserDetailInfo(@PathVariable String username, Model model, @PageableDefault(size = 3, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<CourseDto> postUserDetailInfo(@PathVariable @Length(min = 1, max = 200, message = "1자 이상 200자 이하으로 작성해주세요") String username, @PageableDefault(size = 3, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CourseDto> courseDto = courseService.findByAuthorName(pageable, username);
         return courseDto;
     }
@@ -80,10 +89,11 @@ public class UserController {
 
     @PostMapping("update")
     @ResponseBody
-    public UserDto update(@AuthenticationPrincipal PrincipalDetails principalDetails, UserDto user) {
-        UserDto userDto;
+    public UserDto update(@AuthenticationPrincipal PrincipalDetails principalDetails, @ModelAttribute @Validated UserUpdateForm form) {
+        UserDto userDto = form.toDto();
         try {
-            userDto = userService.userUpdate(principalDetails.getUser(), user);
+
+            userDto = userService.userUpdate(principalDetails.getUser(), userDto);
 
         } catch (EntityNotFoundException e) {
             return null;
@@ -111,10 +121,30 @@ public class UserController {
     }
 
 
+    @PostMapping("profileUpdate")
+    @ResponseBody
+    public String profileUpdate(MultipartFile file, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        try {
+            User findUser = userService.findByUsername(principalDetails.getUsername());
+            imageService.deleteImage(findUser.getProfileImage());
+            SummerNoteImage uploadFile = imageService.store(file);
+            userService.updateUserProfileImage("/image/" + uploadFile.getId(), principalDetails.getUser());
+            return "/image/" + uploadFile.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @PostMapping("passwordChange")
     @ResponseBody
-    public String passwordChange(@AuthenticationPrincipal PrincipalDetails principalDetails, String nowPassword, String newPassword) {
-
+    public String passwordChange(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                 @NotBlank(message = "이칸은 비워둘 수 없었습니다.")
+                                 @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 작성하세요 ")
+                                 String nowPassword,
+                                 @NotBlank(message = "이칸은 비워둘 수 없었습니다.")
+                                 @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 작성하세요 ")
+                                 String newPassword) {
         try {
             userService.passwordUpdate(principalDetails.getUser(), nowPassword, newPassword);
         } catch (EntityNotFoundException e) {

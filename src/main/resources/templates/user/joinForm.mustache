@@ -159,11 +159,11 @@
         {{/user}}
         if (!username == "" && !email == "") {
             $('#username').val(username);
-            $('#username').attr('disabled', 'disabled');
+            $('#username').attr('readonly', 'readonly');
             $('#password').val("Password");
-            $('#password').attr('disabled', 'disabled');
+            $('#password').attr('readonly', 'readonly');
             $('#email').val(email);
-            $('#email').attr('disabled', 'disabled');
+            $('#email').attr('readonly', 'readonly');
         } else {
             $('#username').val("");
             $('#password').val("");
