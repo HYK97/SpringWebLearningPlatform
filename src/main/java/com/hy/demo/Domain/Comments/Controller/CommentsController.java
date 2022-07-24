@@ -6,13 +6,14 @@ import com.hy.demo.Domain.Comments.Dto.CommentsDto;
 import com.hy.demo.Domain.Comments.Service.CommentsService;
 import com.hy.demo.Domain.User.Entity.User;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Request;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,6 +28,7 @@ import static com.hy.demo.enumcode.AJAXResponseCode.OK;
 @Controller
 @RequestMapping("/comments/*")
 @RequiredArgsConstructor
+@Validated
 public class CommentsController {
 
 
@@ -35,7 +37,7 @@ public class CommentsController {
 
     @PostMapping({"/create/{id}"})
     @ResponseBody
-    public String createComments(@PathVariable Long id, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails, int status, Request request) throws Exception {
+    public String createComments(@PathVariable Long id, @RequestParam @Length(min = 1, max = 400) String comments, @AuthenticationPrincipal PrincipalDetails principalDetails, int status) throws Exception {
         User user = principalDetails.getUser();
         try {
             commentsService.createComments(id, comments, user, status);
@@ -48,7 +50,7 @@ public class CommentsController {
 
     @PostMapping({"/createReply/{commentsId}"})
     @ResponseBody
-    public CommentsDto createReply(@PathVariable Long commentsId, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+    public CommentsDto createReply(@PathVariable Long commentsId, @RequestParam @Length(min = 1, max = 400) String comments, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
         User user = principalDetails.getUser();
         CommentsDto reply;
         try {
@@ -63,7 +65,7 @@ public class CommentsController {
 
     @PostMapping({"/updateReply/{commentsId}"})
     @ResponseBody
-    public CommentsDto updateReply(@PathVariable Long commentsId, String comments, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public CommentsDto updateReply(@PathVariable Long commentsId, @RequestParam @Length(min = 1, max = 400) String comments, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         User user = principalDetails.getUser();
         CommentsDto reply;
         try {
