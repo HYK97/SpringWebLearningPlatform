@@ -16,7 +16,7 @@ $(function () {
             canvas.toBlob(function (blob) {
                 var formData = new FormData();
                 formData.append('file', blob, 'profile.jpg');
-                $.ajax('/profileUpdate', {
+                $.ajax('/user/profileUpdate', {
                     method: 'POST',
                     data: formData,
                     processData: false,
