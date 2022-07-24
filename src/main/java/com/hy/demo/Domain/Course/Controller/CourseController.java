@@ -9,6 +9,7 @@ import com.hy.demo.Domain.Course.Entity.SummerNoteImage;
 import com.hy.demo.Domain.Course.Service.CourseEvaluationService;
 import com.hy.demo.Domain.Course.Service.CourseService;
 import com.hy.demo.Domain.Course.Service.ImageService;
+import com.hy.demo.Domain.Course.form.CourseEvaluationForm;
 import com.hy.demo.Domain.Course.form.CourseForm;
 import com.hy.demo.Domain.User.Entity.User;
 import com.hy.demo.Domain.User.Service.UserService;
@@ -44,6 +45,7 @@ import static java.lang.Math.floor;
 @RequestMapping("/course/*")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class CourseController {
 
 
@@ -56,7 +58,7 @@ public class CourseController {
 
 
     @GetMapping({"/view"})
-    public String course(@RequestParam(defaultValue = "") @Length(max = 200, message = "200자 이상 오류") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public String course(@RequestParam(defaultValue = "") @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 입력해주세요") String search, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
 
         log.info("search = {} ", search);
@@ -69,7 +71,7 @@ public class CourseController {
     }
 
     @GetMapping({"/detailcourse"})
-    public String detailcourse(String id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public String detailcourse(String id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         Map map = userService.findByUserCourse(id, principalDetails.getUser());
         model.addAttribute("course", map.get("course"));
@@ -104,9 +106,10 @@ public class CourseController {
 
     @PostMapping({"/createevaluation"})
     @ResponseBody
-    public String createEvaluation(String courseId, String content, String star, String replyId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String createEvaluation(/*String courseId, String content, String star*/ @ModelAttribute @Validated CourseEvaluationForm form, String replyId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         try {
-            courseEvaluationService.addCourseEvaluation(courseId, content, star, principalDetails.getUser(), replyId);
+
+            courseEvaluationService.addCourseEvaluation(form.getCourseId(), form.getContent(), String.valueOf(form.getStar()), principalDetails.getUser(), replyId);
             return OK.toString();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -127,9 +130,9 @@ public class CourseController {
 
     @PostMapping({"/updateevaluation"})
     @ResponseBody
-    public String updateEvaluation(String id, String courseId, String content, String star, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String updateEvaluation(String id, @ModelAttribute @Validated CourseEvaluationForm form, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        boolean update = courseEvaluationService.modifyCourseEvaluation(id, content, star, principalDetails.getUser(), courseId);
+        boolean update = courseEvaluationService.modifyCourseEvaluation(id, form.getContent(), form.getContent(), principalDetails.getUser(), form.getCourseId());
         if (update) {
             return OK.toString();
         } else {
@@ -141,7 +144,7 @@ public class CourseController {
 
     @PostMapping({"/deleteevaluation/{id}/{courseId}"})
     @ResponseBody
-    public String deleteEvaluation(String content, String star, @AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, @PathVariable Long courseId) {
+    public String deleteEvaluation(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, @PathVariable Long courseId) {
 
         try {
             courseEvaluationService.delete(id, principalDetails.getUser(), courseId);
@@ -158,7 +161,7 @@ public class CourseController {
 
     @GetMapping({"/commentsview"})
     @ResponseBody
-    public Map<String, Object> commentsView(@PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails, String courseId) {
+    public Map<String, Object> commentsView(@PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, String courseId) {
         Long id = Long.parseLong(courseId);
         Page<CourseEvaluationDto> findView = courseEvaluationService.courseEvaluationView(id, pageable);
         Map<String, Object> map = new HashMap<>();
@@ -170,7 +173,7 @@ public class CourseController {
 
 
     @GetMapping({"/createview"})
-    public String createView(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String createView() {
 
         return "course/createview";
     }
@@ -249,7 +252,7 @@ public class CourseController {
     }
 
     @GetMapping("/info/myCourseList")
-    public String myCourseList(Model model, @RequestParam(defaultValue = "") String search, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String myCourseList(Model model, @RequestParam(defaultValue = "") @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 입력해주세요") String search, @AuthenticationPrincipal PrincipalDetails principalDetails, @PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         User findUser = userService.findByUsername(principalDetails.getUsername());
         Page<CourseDto> myCourseList = courseService.findMyCourseList(search, findUser.getId(), pageable);
 
@@ -259,7 +262,7 @@ public class CourseController {
 
 
     @GetMapping({"/myCourseView"})
-    public String myCourseView(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(defaultValue = "") String search) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public String myCourseView(@PageableDefault(size = 9, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(defaultValue = "") @Length(min = 1, max = 200, message = "1자 이상 200자 이하로 입력해주세요") String search) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         User user = principalDetails.getUser();
         Page<CourseDto> courseDtos;
         try {
