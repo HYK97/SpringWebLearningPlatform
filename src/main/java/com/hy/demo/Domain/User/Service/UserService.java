@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface UserService {
     @Transactional
-    void register(User user, User provider) throws DuplicateKeyException;
+    void register(UserDto user, User provider) throws DuplicateKeyException;
 
     Boolean loginForm(User user);
 

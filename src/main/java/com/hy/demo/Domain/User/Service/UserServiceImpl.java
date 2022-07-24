@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void register(User user, User provider) throws DuplicateKeyException {
+    public void register(UserDto user, User provider) throws DuplicateKeyException {
         User byUsername = userRepository.findByUsername(user.getUsername());
         boolean empty = ObjectUtils.isEmpty(byUsername);
         Long count = userRepository.countByNickname(user.getNickname());
@@ -52,13 +52,14 @@ public class UserServiceImpl implements UserService {
         if (count != 0) {
             throw new DuplicateKeyException("닉네임");
         }
+
         if (!empty) {
             throw new DuplicateKeyException("아이디");
         }
         if (provider == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             log.debug("user.getPassword() = {}", user.getPassword());
-            userRepository.save(user);
+            userRepository.save(user.toEntity());
         } else {
             User user2 = User.builder()
                     .username(provider.getUsername())

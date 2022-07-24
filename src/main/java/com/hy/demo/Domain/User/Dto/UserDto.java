@@ -1,5 +1,6 @@
 package com.hy.demo.Domain.User.Dto;
 
+import com.hy.demo.Domain.User.Entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,5 +26,19 @@ public class UserDto {
         this.profileImage = profileImage;
         this.selfIntroduction = selfIntroduction;
         this.nickname = nickname;
+    }
+
+    public User toEntity() {
+        return User.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .email(email)
+                .role(role)
+                .provider(provider)
+                .providerId(providerId)
+                .profileImage(profileImage)
+                .selfIntroduction(selfIntroduction)
+                .nickname(nickname).build();
     }
 }
