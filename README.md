@@ -70,7 +70,6 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 <br>
 
 - 로그인 화면
-
 ![image](https://user-images.githubusercontent.com/39224132/164889762-083cec5a-3138-4897-95f9-01a05ea22629.png)
 
 <br>
@@ -89,13 +88,13 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 <br>
 
 - 수강생 수강 화면
-###### 강의 자료로 위키백과 참조 [링크](https://ko.wikipedia.org/wiki/%EC%9E%90%EB%B0%94_(%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EC%96%B8%EC%96%B4))
 ![image](https://user-images.githubusercontent.com/39224132/164890350-166c4869-ad82-49bc-82af-a5d9b4a1f3f9.png)
+###### 강의 자료로 위키백과 참조 [링크](https://ko.wikipedia.org/wiki/%EC%9E%90%EB%B0%94_(%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EC%96%B8%EC%96%B4))
+
 
 <br>
 
 - 강사 수강 관리 화면
-
 ![image](https://user-images.githubusercontent.com/39224132/164890758-8f40e2e9-a26c-412f-90de-019fad809c4c.png)
 
 
