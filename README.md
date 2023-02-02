@@ -54,7 +54,7 @@ run  -p [usePort]:8080 [dockerImgname]:[dockerTag]
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/QueryDsl-20336B?style=flat-square&logo=QueryDsl&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Jpa-6DB33F?style=flat-square&logo=Jpa&logoColor=white"/></a>
-
+<img src="https://img.shields.io/badge/Jenkins-64433F?style=flat-square&logo=Jenkins&logoColor=white"/></a>
 
 <br>
 
