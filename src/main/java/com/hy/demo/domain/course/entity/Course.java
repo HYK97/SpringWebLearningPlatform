@@ -1,0 +1,79 @@
+package com.hy.demo.domain.course.entity;
+
+import com.hy.demo.domain.BaseEntity;
+import com.hy.demo.domain.board.entity.CourseBoard;
+import com.hy.demo.domain.community.entity.Community;
+import com.hy.demo.domain.course.dto.CourseDto;
+import com.hy.demo.domain.user.entity.User;
+import com.hy.demo.domain.user.entity.UserCourse;
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+
+public class Course extends BaseEntity {
+    @Id // primary key
+    @Column(name = "Course_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String courseName;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "User_id")
+    private User user;
+
+    @Column(length = 100000000)
+    private String courseExplanation;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CourseEvaluation> courseEvaluations = new ArrayList<>();
+
+    private String thumbnail;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserCourse> userCourses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CourseBoard> courseBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Community> community = new ArrayList<>();
+
+    //코스 저장될때 유저의 리스트에도 저장되게함
+    public void addCourse(User user) {
+        this.user = user;
+        user.getCourses().add(this);
+    }
+
+    public void updateCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+
+    public void updateCourseExplanation(String courseExplanation) {
+        this.courseExplanation = courseExplanation;
+    }
+
+    public void updateThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public CourseDto returnDto() {
+        CourseDto courseDto = new CourseDto();
+        courseDto.setCourseName(courseName);
+        courseDto.setCourseExplanation(courseExplanation);
+        courseDto.setUser(user);
+        courseDto.setThumbnail(thumbnail);
+        return courseDto;
+    }
+
+
+}

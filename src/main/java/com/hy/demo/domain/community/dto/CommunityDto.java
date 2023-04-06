@@ -1,0 +1,52 @@
+package com.hy.demo.domain.community.dto;
+
+import com.hy.demo.domain.community.entity.Community;
+import com.hy.demo.domain.user.dto.UserDto;
+import com.hy.demo.domain.user.entity.User;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import java.sql.Date;
+import java.sql.Timestamp;
+
+
+@Data
+@NoArgsConstructor
+@NotBlank(message = "이칸은 비워둘 수 없었습니다.")
+public class CommunityDto {
+
+    private Long id;
+
+
+    private UserDto user;
+    @NotBlank(message = "이칸은 비워둘 수 없었습니다.")
+    @Length(min = 1, max = 400, message = "최소 1자이상  최대 1000자 이하로 작성해주세요")
+    private String title;
+    @NotBlank(message = "이칸은 비워둘 수 없었습니다.")
+    @Length(min = 1, max = 99999, message = "최소 1자이상  최대 99999자 이하로 작성해주세요")
+    private String contents;
+
+    private Date createDate;
+
+    private Integer myCommunity;
+
+    public CommunityDto(Long id, User user, String title, String contents, Timestamp createDate) {
+        this.id = id;
+        this.user = user.changeDto();
+        this.title = title;
+        this.contents = contents;
+        this.createDate = new Date(createDate.getTime());
+    }
+
+    public Community toEntity() {
+        return Community.builder()
+                .id(id)
+                .title(this.title)
+                .contents(this.contents)
+                .build();
+
+    }
+
+}
